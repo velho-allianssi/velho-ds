@@ -1,0 +1,10 @@
+(ns velho-ds.tokens.color)
+
+(def color_primary "hsla(210, 100%, 40%, 1)")
+(def color_neutral-1 "hsla(0, 0%, 98%, 1)")
+(def color_neutral-2 "hsla(0, 0%, 96%, 1)")
+(def color_neutral-3 "hsla(0, 0%, 78%, 1)")
+(def color_neutral-4 "hsla(0, 0%, 39%, 1)")
+(def color_neutral-5 "hsla(0, 0%, 20%, 1)")
+(def color_black "hsla(0, 0%, 0%, 1)")
+(def color_white "hsla(0, 0%, 100%, 1)")
