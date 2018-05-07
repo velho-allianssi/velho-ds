@@ -6,9 +6,10 @@
   [:div
    [:p "This is the content of the Reagent Design System"]
    (buttons/button-primary "Heikin nappi")
-   (buttons/button-danger "Nyt on vaarallista")])
+   (buttons/button-danger "Nyt on vaarallista")
+   #_(valikko/alasveto)])
 
 (defn page [nav]
   (tpl/default {:navigation nav
-                :heading "Reagent Design System"
+                :heading "Velho Design System"
                 :main-content (page-content)}))

@@ -1,0 +1,19 @@
+#
+# FONT-SIZE TOKENS
+# Use these tokens to set a font-size.
+#
+
+props:
+  font_size_xx_large:
+    value: "1.5rem"
+  font_size_x_large:
+    value: "1.25rem"
+  font_size_large:
+    value: "1.125rem"
+  font_size_base:
+    value: "1rem"
+  font_size_small:
+    value: "0.875rem"
+global:
+  type: number
+  category: font-size

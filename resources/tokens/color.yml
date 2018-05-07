@@ -18,16 +18,16 @@ props:
     category: color_group_1
   color_neutral-1:
     value: "hsla({!black}, 98%, 1)"
-    category: color_group_2
+    category: color_group_2 
   color_neutral-2:
     value: "hsla({!black}, 96%, 1)"
-    category: color_group_2
+    category: color_group_2 
   color_neutral-3:
     value: "hsla({!black}, 78%, 1)"
-    category: color_group_2
+    category: color_group_2 
   color_neutral-4:
     value: "hsla({!black}, 39%, 1)"
-    category: color_group_2
+    category: color_group_2 
   color_neutral-5:
     value: "hsla({!black}, 20%, 1)"
     category: color_group_2

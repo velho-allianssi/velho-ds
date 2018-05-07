@@ -1,0 +1,13 @@
+#
+# SIZING TOKENS
+# Use these tokens for the width and height properties.
+#
+
+props:
+  height_header:
+    value: "64px"
+  width_navbar:
+    value: "200px"
+global:
+  type: number
+  category: size
