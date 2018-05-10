@@ -1,20 +1,7 @@
 (ns velho-ds.atoms.valikot
   (:require [stylefy.core :as stylefy]
             [reagent.core :as r]
-            [velho-ds.tokens.color :as color]
-            [velho-ds.tokens.line-height :as lh]))
-
-(def mode {:hover {:background-color "rgb(98, 131, 213)"}
-           :before{:content "\2228"
-                   :width "50px"
-                   :height "100%"
-                   :line-height lh/line_height_base
-                   :visibility "visible"}
-           :after {:content "\2228"
-                   :width "50px"
-                   :height "100%"
-                   :line-height lh/line_height_base
-                   :visibility "visible"} })
+            [velho-ds.tokens.color :as color]))
 
 (def alasveto-style {:display "inline-block"
                      :appearance "none"
