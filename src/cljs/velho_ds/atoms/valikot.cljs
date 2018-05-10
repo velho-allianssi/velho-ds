@@ -16,7 +16,6 @@
                      ::stylefy/auto-prefix #{:border-radius :appearance}
                      :visibility "visible"})
 
-;valinta-fn
 (defn alasvetovalikko [data]
   [:select (stylefy/use-style alasveto-style {:on-change #(-> % .-target .-value ((:on-change data)))})
    (for
