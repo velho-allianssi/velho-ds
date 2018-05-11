@@ -13,9 +13,9 @@
 (defn page-content []
   [:div
    [:p "This is the content of the Reagent Design System"]
-   (buttons/button-primary "Heikin nappi")
-   (buttons/button-danger "Nyt on vaarallista")
-   (valikot/alasvetovalikko data)])
+   [buttons/button-primary "Heikin nappi"]
+   [buttons/button-danger "Nyt on vaarallista"]
+   [valikot/alasvetovalikko data]])
 
 (defn page [nav]
   (tpl/default {:navigation nav
