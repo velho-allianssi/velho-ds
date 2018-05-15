@@ -101,4 +101,4 @@
       [:option {:value "2"} "Option 2"]
       [:option {:value "3"} "Option 3"]]
      [:span (stylefy/use-style otsikkoteksti-pudotusvalikko) content]
-     #_[:i.material-icons (stylefy/use-style ikoni) "arrow_drop_down"]]]))
+     [:i.material-icons (stylefy/use-style ikoni) "arrow_drop_down"]]]))
