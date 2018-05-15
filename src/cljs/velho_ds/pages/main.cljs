@@ -9,10 +9,11 @@
    [buttons/button-primary "Heikin nappi"]
    [buttons/button-danger "Nyt on vaarallista"]
    [kentat/teksti "Teksti"]
-   [kentat/pudotusvalikko {:otsikko "Teksti"
-                           :valinta-fn #(js/alert (str "Valittu arvo: " %))
-                           :valinnat [{:id 1 :arvo "eka"}
-                                      {:id 2 :arvo "toka"}]}]])
+   (let [valinnat [{:id 1 :arvo "eka"}
+                   {:id 2 :arvo "toka"}]]
+     [kentat/pudotusvalikko {:otsikko "Teksti"
+                             :valinta-fn #(js/alert (str "Valittu arvo: " %))
+                             :valinnat valinnat}])])
 
 (defn page [nav]
   (tpl/default {:navigation nav

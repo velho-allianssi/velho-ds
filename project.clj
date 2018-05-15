@@ -1,4 +1,4 @@
-(defproject velho-ds "0.0.0.4"
+(defproject velho-ds "0.0.0.5"
   :description "FIXME: write description"
   :url "http://example.com/FIXME"
   :license {:name "Eclipse Public License"
