@@ -35,7 +35,7 @@
              :css-dirs ["public/css"]}
 
   :cljsbuild {:builds {:app
-                       {:source-paths ["src" "env/dev/cljs"]
+                       {:source-paths ["src/cljs" "env/dev/cljs"]
                         :compiler
                         {:main "velho-ds.dev"
                          :output-to "public/js/app.js"
@@ -48,7 +48,7 @@
                         {:on-jsload "velho-ds.core/mount-root"
                          :open-urls ["http://localhost:3449/index.html"]}}
                        :release
-                       {:source-paths ["src" "env/prod/cljs"]
+                       {:source-paths ["src/cljs" "env/prod/cljs"]
                         :compiler
                         {:output-to "public/js/velho-ds.js"
                          :output-dir "public/js/release"
