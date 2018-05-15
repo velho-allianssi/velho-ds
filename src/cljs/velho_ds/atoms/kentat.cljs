@@ -87,18 +87,14 @@
      [:input (stylefy/use-style kentta {:required "required"})]
      [:span (stylefy/use-style otsikkoteksti) content]]]))
 
-(defn pudotusvalikko
-  ([content]
-   (pudotusvalikko content nil))
-  ([content args]
-   [:div
-    [:label (stylefy/use-style elementti)
-     [:select (stylefy/use-style kentta-pudotusvalikko)
-      [:option
-       {:value "value", :selected "selected", :disabled "disabled"}
-       "- Ei valintaa -"]
-      [:option {:value "1"} "Option 1"]
-      [:option {:value "2"} "Option 2"]
-      [:option {:value "3"} "Option 3"]]
-     [:span (stylefy/use-style otsikkoteksti-pudotusvalikko) content]
-     [:i.material-icons (stylefy/use-style ikoni) "arrow_drop_down"]]]))
+(defn pudotusvalikko [{:keys [otsikko valinta-fn valinnat :as parametrit]}]
+  [:div
+   [:label (stylefy/use-style elementti)
+    (into [:select (stylefy/use-style kentta-pudotusvalikko)
+           [:option
+            {:value "value", :selected "selected", :disabled "disabled"}
+            "- Ei valintaa -"]
+           (stylefy/use-style kentta-pudotusvalikko)]
+          (mapv #(vector :option {:value (:id %)} (:arvo %)) valinnat))
+    [:span (stylefy/use-style otsikkoteksti-pudotusvalikko) otsikko]
+    [:i.material-icons (stylefy/use-style ikoni) "arrow_drop_down"]]])
