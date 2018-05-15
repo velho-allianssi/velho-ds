@@ -6,7 +6,7 @@
                 :display "block"
                 :width "100%"
                 :min-height "64px"
-                })
+                :margin "20px"})
 
 (def kentta {:position "absolute"
              :top "16px"
