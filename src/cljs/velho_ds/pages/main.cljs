@@ -10,7 +10,7 @@
    [buttons/button-danger "Nyt on vaarallista"]
    [kentat/teksti "Teksti"]
    [kentat/pudotusvalikko {:otsikko "Teksti"
-                           :valinta-fn #(println "--->> valittu " (pr-str %))
+                           :valinta-fn #(js/alert (str "Valittu arvo: " %))
                            :valinnat [{:id 1 :arvo "eka"}
                                       {:id 2 :arvo "toka"}]}]])
 

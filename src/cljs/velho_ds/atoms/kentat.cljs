@@ -67,7 +67,7 @@
                             :border-bottom "1px solid #ddd"
                             :border-radius "0px"
                             :margin-top "16px"
-                            :font-size "1rem";
+                            :font-size "1rem"
                             ::stylefy/mode {:focus {:outline "none"}}})
 
 (def ikoni {:position "absolute"
@@ -90,7 +90,9 @@
 (defn pudotusvalikko [{:keys [otsikko valinta-fn valinnat :as parametrit]}]
   [:div
    [:label (stylefy/use-style elementti)
-    (into [:select (stylefy/use-style kentta-pudotusvalikko)
+    (into [:select (stylefy/use-style
+                     kentta-pudotusvalikko
+                     {:on-change #(-> % .-target .-value valinta-fn)})
            [:option
             {:value "value", :selected "selected", :disabled "disabled"}
             "- Ei valintaa -"]
