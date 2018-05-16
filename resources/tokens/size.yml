@@ -4,9 +4,9 @@
 #
 
 props:
-  height_header:
+  height-header:
     value: "64px"
-  width_navbar:
+  width-navbar:
     value: "200px"
 global:
   type: number

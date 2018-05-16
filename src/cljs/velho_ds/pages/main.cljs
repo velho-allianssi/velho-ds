@@ -9,6 +9,7 @@
    [buttons/button-primary "Heikin nappi"]
    [buttons/button-danger "Nyt on vaarallista"]
    [kentat/teksti "Teksti"]
+   [kentat/tekstikentta "Tekstikentta"]
    (let [valinnat [{:id 1 :arvo "eka"}
                    {:id 2 :arvo "toka"}]]
      [kentat/pudotusvalikko {:otsikko "Teksti"

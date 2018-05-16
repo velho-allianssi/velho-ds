@@ -4,9 +4,9 @@
 #
 
 props:
-  box_shadow:
+  box-shadow:
     value: "0 2px 2px 0 rgba(0,0,0,.5)"
-  box_shadow_small:
+  box-shadow-small:
     value: "0 1px 1px 0 rgba(0,0,0,.5)"
 global:
   type: ...

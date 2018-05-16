@@ -1,4 +1,4 @@
 (ns velho-ds.tokens.size)
 
-(def height_header "64px")
-(def width_navbar "200px")
+(def height-header "64px")
+(def width-navbar "200px")

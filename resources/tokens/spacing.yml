@@ -4,19 +4,19 @@
 #
 
 props:
-  space_xx_large:
+  space-xx-large:
     value: "128px"
-  space_x_large:
+  space-x-large:
     value: "64px"
-  space_large:
+  space-large:
     value: "48px"
-  space_base:
+  space-base:
     value: "24px"
-  space_small:
+  space-small:
     value: "16px"
-  space_x_small:
+  space-x-small:
     value: "8px"
-  space_xx_small:
+  space-xx-small:
     value: "4px"
 global:
   type: number

@@ -13,30 +13,36 @@ aliases:
   black:
     value: "0, 0%"
 props:
-  color_primary:
+  color-primary:
     value: "hsla({!primary}, 40%, 1)"
-    category: color_group_1
-  color_neutral-1:
+    category: color-group-1
+  color-neutral-1:
     value: "hsla({!black}, 98%, 1)"
-    category: color_group_2 
-  color_neutral-2:
+    category: color-group-2 
+  color-neutral-2:
     value: "hsla({!black}, 96%, 1)"
-    category: color_group_2 
-  color_neutral-3:
+    category: color-group-2 
+  color-neutral-3:
     value: "hsla({!black}, 78%, 1)"
-    category: color_group_2 
-  color_neutral-4:
+    category: color-group-2 
+  color-neutral-4:
     value: "hsla({!black}, 39%, 1)"
-    category: color_group_2 
-  color_neutral-5:
+    category: color-group-2 
+  color-neutral-5:
     value: "hsla({!black}, 20%, 1)"
-    category: color_group_2
-  color_black:
+    category: color-group-2
+  color-black:
     value: "hsla({!black}, 0%, 1)"
-    category: color_group_3
-  color_white:
+    category: color-group-3
+  color-white:
     value: "hsla({!black}, 100%, 1)"
-    category: color_group_3
+    category: color-group-3
+  text-default:
+    value: "hsla({!black}, 20%, 1)"
+    category: color-group-text
+  text-disabled:
+    value: "hsla({!black}, 78%, 1)"
+    category: color-group-text
 global:
   type: color
   category: color
