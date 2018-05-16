@@ -4,9 +4,9 @@
 #
 
 props:
-  duration_quick:
+  duration-quick:
     value: "0.08s"
-  duration_slow:
+  duration-slow:
     value: "0.5s"
 global:
   type: number

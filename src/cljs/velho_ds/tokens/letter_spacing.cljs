@@ -1,3 +1,3 @@
 (ns velho-ds.tokens.letter-spacing)
 
-(def letter_spacing_base "0")
+(def letter-spacing-base "0")

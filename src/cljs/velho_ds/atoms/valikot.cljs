@@ -7,7 +7,7 @@
                      :appearance "none"
                      :background-color "transparent"
                      :border "none"
-                     :border-bottom (str "1px solid " color/color_neutral-5)
+                     :border-bottom (str "1px solid " color/color-neutral-5)
                      :border-radius "0px"
                      :margin "0px"
                      :outline "none"

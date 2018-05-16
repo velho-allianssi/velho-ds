@@ -4,9 +4,9 @@
 #
 
 props:
-  media_query_medium:
+  media-query-medium:
     value: "(min-width: 768px)"
-  media_query_large:
+  media-query-large:
     value: "(min-width: 1024px)"
 global:
   type: ...
