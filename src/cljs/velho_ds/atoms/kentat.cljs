@@ -4,6 +4,7 @@
             [velho-ds.tokens.font-size :as font-size]
             [velho-ds.tokens.border :as border]
             [velho-ds.tokens.transition :as transition]
+            [velho-ds.tools.measures :as measures]
             [stylefy.core :as stylefy]))
 
 (def elementti {:position "relative"
@@ -19,7 +20,7 @@
              :outline "none"
              :padding "0"
              :margin "0"
-             :min-height (str (* (js/parseInt font-size/font-size-base) 2) "rem")
+             :min-height (measures/rem-times font-size/font-size-base 2)
              :background "none"
              :border-top "0"
              :border-left "0"
@@ -64,7 +65,7 @@
                             :font-family "inherit"
                             :background-color "transparent"
                             :width "100%"
-                            :height (str (* (js/parseInt font-size/font-size-base) 2) "rem")
+                            :height (measures/rem-times font-size/font-size-base 2)
                             :padding (str spacing/space-xx-small " 0")
                             :color color/text-default
                             :border-top "0"
@@ -105,22 +106,24 @@
      [:span (stylefy/use-style otsikkoteksti) content]]]))
 
 (defn pudotusvalikko [{:keys [otsikko valinta-fn valinnat oletusvalinta :as parametrit]}]
-  [:div
-   [:label (stylefy/use-style elementti)
-    (into [:select (stylefy/use-style
-                     kentta-pudotusvalikko
-                     {:on-change #(-> % .-target .-value valinta-fn)})
-           (when (not oletusvalinta)
-             [:option
-              {:value "value"
-               :selected "selected"
-               :disabled "disabled"}
-              "- Ei valintaa -"])
-           (stylefy/use-style kentta-pudotusvalikko)]
-          (mapv #(vector :option (merge {:value (:id %)}
-                                        (when (= oletusvalinta %)
-                                          {:selected "selected"}))
-                         (:arvo %))
-                valinnat))
-    [:span (stylefy/use-style otsikkoteksti-pudotusvalikko) otsikko]
-    [:i.material-icons (stylefy/use-style ikoni) "arrow_drop_down"]]])
+  (let [ei-valintaa [:option
+                     {:value "value"
+                      :selected "selected"
+                      :disabled "disabled"}
+                     "- Ei valintaa -"]
+        valinta (fn [nykyinen-valinta]
+                  (merge {:value (:id nykyinen-valinta)}
+                         (when (= oletusvalinta nykyinen-valinta)
+                           {:selected "selected"})))]
+    [:div
+     [:label (stylefy/use-style elementti)
+      (into [:select (stylefy/use-style
+                       kentta-pudotusvalikko
+                       {:on-change #(-> % .-target .-value valinta-fn)})
+             (when (or (not oletusvalinta)
+                       (not-any? #(= oletusvalinta %) valinnat))
+               ei-valintaa)
+             (stylefy/use-style kentta-pudotusvalikko)]
+            (mapv #(vector :option (valinta %) (:arvo %)) valinnat))
+      [:span (stylefy/use-style otsikkoteksti-pudotusvalikko) otsikko]
+      [:i.material-icons (stylefy/use-style ikoni) "arrow_drop_down"]]]))
