@@ -4,17 +4,17 @@
 #
 
 props:
-  font_family_heading:
+  font-family-heading:
     value: "Montserrat, sans-serif"
-  font_family_text:
+  font-family-text:
     value: "Roboto, sans-serif"
-  font_weight_bold:
+  font-weight-bold:
     value: "700"
-  font_weight_semi_bold:
+  font-weight-semi-bold:
     value: "600"
-  font_weight_base:
+  font-weight-base:
     value: "400"
-  font_weight_light:
+  font-weight-light:
     value: "300"
 global:
   type: ...

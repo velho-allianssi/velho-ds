@@ -2,7 +2,6 @@
 
 (def color-black "hsla(0, 0%, 0%, 1)")
 (def color-neutral-3 "hsla(0, 0%, 78%, 1)")
-(def color-primary-dark "hsla(210, 100%, 31%, 1)")
 (def color-white "hsla(0, 0%, 100%, 1)")
 (def color-primary "hsla(210, 100%, 40%, 1)")
 (def text-disabled "hsla(0, 0%, 78%, 1)")

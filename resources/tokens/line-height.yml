@@ -4,11 +4,11 @@
 #
 
 props:
-  line_height_base:
+  line-height-base:
     value: "1.5"
-  line_height_small:
+  line-height-small:
     value: "1.25"
-  line_height_heading:
+  line-height-heading:
     value: "1"
 global:
   type: number

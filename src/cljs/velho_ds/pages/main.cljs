@@ -20,6 +20,7 @@
    [napit/toissijainen-pieni "Päivitä" "autorenew"]
    [napit/kevyt-pieni "Päivitä" "autorenew"]
    [kentat/teksti "Teksti"]
+   [kentat/tekstikentta "Tekstikentta"]
    (let [valinnat [{:id 1 :arvo "eka"}
                    {:id 2 :arvo "toka"}]]
      [kentat/pudotusvalikko {:otsikko "Teksti"

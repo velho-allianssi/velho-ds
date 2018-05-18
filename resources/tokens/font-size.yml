@@ -4,15 +4,15 @@
 #
 
 props:
-  font_size_xx_large:
+  font-size-xx-large:
     value: "1.5rem"
-  font_size_x_large:
+  font-size-x-large:
     value: "1.25rem"
-  font_size_large:
+  font-size-large:
     value: "1.125rem"
-  font_size_base:
+  font-size-base:
     value: "1rem"
-  font_size_small:
+  font-size-small:
     value: "0.875rem"
 global:
   type: number
