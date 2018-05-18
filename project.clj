@@ -6,8 +6,12 @@
 
   :dependencies [[org.clojure/clojure "1.9.0"]
 
+                 ;; Filesystem support
+                 [me.raynes/fs "1.4.6"]
+
                  ;; Yaml
                  [io.forward/yaml "1.0.8"]
+
 
                  ;; Front end
                  [org.clojure/clojurescript "1.10.238"]

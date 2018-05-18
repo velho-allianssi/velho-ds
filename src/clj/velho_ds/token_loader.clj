@@ -1,7 +1,8 @@
 (ns velho-ds.token-loader
   (:require [yaml.core :as yaml]
             [clojure.string :as str]
-            [clojure.java.io :as io]))
+            [clojure.java.io :as io]
+            [me.raynes.fs :as fs]))
 
 (def tokens-path "src/cljs/velho_ds/tokens/")
 
@@ -19,7 +20,7 @@
                (assoc {} key (str "\""(map-aliases aliases (key props)) "\""))))))
 
 (defn read-tokens! [resource]
-  (when (not (.isHidden (io/as-file resource)))
+  (when (= ".yml" (fs/extension (io/as-file resource)))
     (let [data (yaml/from-file resource)
          props (handle-keys :props data)
          aliases (handle-keys :aliases data)]
@@ -34,7 +35,7 @@
 (defn write-tokens! [path data]
   (io/make-parents path)
   (let [file (io/as-file path)]
-    (when (.exists file)
+    (when (fs/exists? file)
      (io/delete-file path)))
   (doall (for [line (vec data)]
            (spit path line :append true)))
@@ -42,17 +43,18 @@
 
 (defn delete-tokens! [tokens-path]
   (doseq [f (.listFiles (clojure.java.io/file tokens-path))]
-    (when (.isFile f) (clojure.java.io/delete-file f))))
+    (when (fs/file? f) (clojure.java.io/delete-file f))))
 
 (defn create-tokens [[filename resource]]
-  (let [props (read-tokens! resource)
-        nspace (def-ns filename)
-        tokens (map (fn [key]
-                      (def-token (name key) (key props))) (keys props))]
-    (write-tokens! (str tokens-path (str/replace filename #"-" "_") ".cljs") (concat (list nspace) tokens))))
+  (when (= ".yml" (fs/extension (io/as-file resource)))
+    (let [props (read-tokens! resource)
+         nspace (def-ns filename)
+         tokens (map (fn [key]
+                       (def-token (name key) (key props))) (keys props))]
+     (write-tokens! (str tokens-path (str/replace filename #"-" "_") ".cljs") (concat (list nspace) tokens)))))
 
 (defn get-files-from-path [path]
-  (filter #(.isFile %) (file-seq (clojure.java.io/file path))))
+  (filter #(fs/file? %) (file-seq (clojure.java.io/file path))))
 
 (defn create-tokens-from-path [path]
   (delete-tokens! tokens-path)
