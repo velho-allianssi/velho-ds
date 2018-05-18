@@ -1,55 +1,62 @@
 (ns velho-ds.atoms.kentat
   (:require [velho-ds.tokens.color :as color]
-            [stylefy.core :as stylefy]))
+            [velho-ds.tokens.spacing :as spacing]
+            [velho-ds.tokens.font-size :as font-size]
+            [velho-ds.tokens.border :as border]
+            [velho-ds.tokens.timing :as timing]
+            [stylefy.core :as stylefy]
+            [velho-ds.tools.measures :as measures]))
 
 (def elementti {:position "relative"
                 :display "block"
-                :width "100%"
-                :min-height "64px"
-                :margin "20px"})
+                :min-height spacing/space-x-large
+                :margin spacing/space-base})
 
 (def kentta {:position "absolute"
-             :top "16px"
+             :top spacing/space-small-rem
              :width "100%"
-             :font-size "1rem"
-             :transition "border-color 200ms ease-in-out"
+             :font-size font-size/font-size-base
+             :transition (str "border-color " timing/duration-slow " ease-in-out")
              :outline "none"
              :padding "0"
              :margin "0"
-             :height "32px"
+             :min-height (measures/rem-times font-size/font-size-base 2)
              :background "none"
              :border-top "0"
              :border-left "0"
              :border-right "0"
-             :border-bottom "1px solid #ddd"
-             ::stylefy/mode {:focus {:border-bottom "2px solid #06c"}
-                             :valid {:border-bottom "1px solid #ddd"}
+             :border-bottom (str border/border-default " solid")
+             :border-color color/color-neutral-3
+             ::stylefy/mode {:focus {:border-bottom (str border/border-large " solid")
+                                     :border-color color/color-primary}
+                             :valid {:border-bottom (str border/border-default " solid")
+                                     :border-color color/color-neutral-3}
                              :valid+span {:top "0"
                                           :cursor "inherit"
-                                          :font-size "0.875rem"}
+                                          :font-size font-size/font-size-small}
                              :focus+span {:top "0"
                                           :cursor "inherit"
-                                          :font-size "0.875rem"
-                                          :color "#06c"}}})
+                                          :font-size font-size/font-size-small
+                                          :color color/color-primary}}})
 
-(def tekstialuesyote-kentta {:min-height "32px"
-                             :padding "8px 0"
-                             :background "none"})
+(def kentta-tekstikentta (merge kentta
+                                {:overflow-y "scroll"
+                                 :resize "none"}))
 
 (def otsikkoteksti {:position "absolute"
                     :display "block"
-                    :top "20px"
-                    :font-size "1rem"
-                    :transition "all 200ms ease-in-out"
+                    :top spacing/space-base-rem
+                    :font-size font-size/font-size-base
+                    :transition (str "all " timing/duration-slow " ease-in-out")
                     :width "100%"
                     :cursor "text"})
 
 (def otsikkoteksti-pudotusvalikko {:position "absolute"
                                    :display "block"
                                    :top "0"
-                                   :font-size "0.875rem"
+                                   :font-size font-size/font-size-small
                                    :cursor "inherit"
-                                   :transition "all 200ms ease-in-out"
+                                   :transition (str "all " timing/duration-slow " ease-in-out")
                                    :width "100%"})
 
 (def kentta-pudotusvalikko {:-webkit-appearance "none"
@@ -58,21 +65,23 @@
                             :font-family "inherit"
                             :background-color "transparent"
                             :width "100%"
-                            :height "32px"
-                            :padding "4px 0"
-                            :color "#323232"
+                            :height (measures/rem-times font-size/font-size-base 2)
+                            :padding (str spacing/space-xx-small-rem " 0")
+                            :color color/text-default
                             :border-top "0"
                             :border-left "0"
                             :border-right "0"
-                            :border-bottom "1px solid #ddd"
-                            :border-radius "0px"
-                            :margin-top "16px"
-                            :font-size "1rem"
+                            :border-bottom (str border/border-default " solid")
+                            :border-color color/color-neutral-3
+                            :border-radius "0"
+                            :margin-top spacing/space-small-rem
+                            :font-size font-size/font-size-base
                             ::stylefy/mode {:focus {:outline "none"}}})
 
 (def ikoni {:position "absolute"
-            :top "0.75em"
-            :right "0.75em"
+            :padding spacing/space-xx-small-rem
+            :top spacing/space-small-rem
+            :right spacing/space-xx-small-rem
             :pointer-events "none"})
 
 (defn merge-styles [a b]
@@ -85,6 +94,15 @@
    [:div
     [:label (stylefy/use-style elementti)
      [:input (stylefy/use-style kentta {:required "required"})]
+     [:span (stylefy/use-style otsikkoteksti) content]]]))
+
+(defn tekstikentta
+  ([content]
+   (tekstikentta content nil))
+  ([content args]
+   [:div
+    [:label (stylefy/use-style elementti)
+     [:textarea (stylefy/use-style kentta-tekstikentta {:required "required"})]
      [:span (stylefy/use-style otsikkoteksti) content]]]))
 
 (defn pudotusvalikko [{:keys [otsikko valinta-fn valinnat oletusvalinta :as parametrit]}]

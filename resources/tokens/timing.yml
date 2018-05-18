@@ -4,10 +4,10 @@
 #
 
 props:
-  duration_quick:
-    value: "0.08s"
-  duration_slow:
-    value: "0.5s"
+  duration-quick:
+    value: "0.03s"
+  duration-slow:
+    value: "0.25s"
 global:
   type: number
   category: time

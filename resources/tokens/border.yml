@@ -1,0 +1,13 @@
+#
+# BORDER TOKENS
+# Use these tokens to change border styles.
+#
+
+props:
+  border-default:
+    value: "1px"
+  border-large:
+    value: "2px"
+global:
+  type: number
+  category: border

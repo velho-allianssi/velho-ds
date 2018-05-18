@@ -18,6 +18,20 @@ props:
     value: "8px"
   space_xx_small:
     value: "4px"
+  space-xx-large-rem:
+    value: "8rem"
+  space-x-large-rem:
+    value: "4rem"
+  space-large-rem:
+    value: "3rem"
+  space-base-rem:
+    value: "1.5rem"
+  space-small-rem:
+    value: "1rem"
+  space-x-small-rem:
+    value: "0.5rem"
+  space-xx-small-rem:
+    value: "0.25rem"
 global:
   type: number
   category: space
