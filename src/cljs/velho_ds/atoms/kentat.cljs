@@ -3,9 +3,9 @@
             [velho-ds.tokens.spacing :as spacing]
             [velho-ds.tokens.font-size :as font-size]
             [velho-ds.tokens.border :as border]
-            [velho-ds.tokens.transition :as transition]
-            [velho-ds.tools.measures :as measures]
-            [stylefy.core :as stylefy]))
+            [velho-ds.tokens.timing :as timing]
+            [stylefy.core :as stylefy]
+            [velho-ds.tools.measures :as measures]))
 
 (def elementti {:position "relative"
                 :display "block"
@@ -13,10 +13,10 @@
                 :margin spacing/space-base})
 
 (def kentta {:position "absolute"
-             :top spacing/space-small
+             :top spacing/space-small-rem
              :width "100%"
              :font-size font-size/font-size-base
-             :transition (str "border-color " transition/transition-default)
+             :transition (str "border-color " timing/duration-slow " ease-in-out")
              :outline "none"
              :padding "0"
              :margin "0"
@@ -25,11 +25,11 @@
              :border-top "0"
              :border-left "0"
              :border-right "0"
-             :border-bottom border/border-default
+             :border-bottom (str border/border-default " solid")
              :border-color color/color-neutral-3
-             ::stylefy/mode {:focus {:border-bottom border/border-large
+             ::stylefy/mode {:focus {:border-bottom (str border/border-large " solid")
                                      :border-color color/color-primary}
-                             :valid {:border-bottom border/border-default
+                             :valid {:border-bottom (str border/border-default " solid")
                                      :border-color color/color-neutral-3}
                              :valid+span {:top "0"
                                           :cursor "inherit"
@@ -45,9 +45,9 @@
 
 (def otsikkoteksti {:position "absolute"
                     :display "block"
-                    :top spacing/space-base
+                    :top spacing/space-base-rem
                     :font-size font-size/font-size-base
-                    :transition (str "all " transition/transition-default)
+                    :transition (str "all " timing/duration-slow " ease-in-out")
                     :width "100%"
                     :cursor "text"})
 
@@ -56,7 +56,7 @@
                                    :top "0"
                                    :font-size font-size/font-size-small
                                    :cursor "inherit"
-                                   :transition (str "all " transition/transition-default)
+                                   :transition (str "all " timing/duration-slow " ease-in-out")
                                    :width "100%"})
 
 (def kentta-pudotusvalikko {:-webkit-appearance "none"
@@ -66,22 +66,22 @@
                             :background-color "transparent"
                             :width "100%"
                             :height (measures/rem-times font-size/font-size-base 2)
-                            :padding (str spacing/space-xx-small " 0")
+                            :padding (str spacing/space-xx-small-rem " 0")
                             :color color/text-default
                             :border-top "0"
                             :border-left "0"
                             :border-right "0"
-                            :border-bottom border/border-default
+                            :border-bottom (str border/border-default " solid")
                             :border-color color/color-neutral-3
                             :border-radius "0"
-                            :margin-top spacing/space-small
+                            :margin-top spacing/space-small-rem
                             :font-size font-size/font-size-base
                             ::stylefy/mode {:focus {:outline "none"}}})
 
 (def ikoni {:position "absolute"
-            :padding spacing/space-xx-small
-            :top spacing/space-small
-            :right spacing/space-xx-small
+            :padding spacing/space-xx-small-rem
+            :top spacing/space-small-rem
+            :right spacing/space-xx-small-rem
             :pointer-events "none"})
 
 (defn merge-styles [a b]
@@ -106,24 +106,22 @@
      [:span (stylefy/use-style otsikkoteksti) content]]]))
 
 (defn pudotusvalikko [{:keys [otsikko valinta-fn valinnat oletusvalinta :as parametrit]}]
-  (let [ei-valintaa [:option
-                     {:value "value"
-                      :selected "selected"
-                      :disabled "disabled"}
-                     "- Ei valintaa -"]
-        valinta (fn [nykyinen-valinta]
-                  (merge {:value (:id nykyinen-valinta)}
-                         (when (= oletusvalinta nykyinen-valinta)
-                           {:selected "selected"})))]
-    [:div
-     [:label (stylefy/use-style elementti)
-      (into [:select (stylefy/use-style
-                       kentta-pudotusvalikko
-                       {:on-change #(-> % .-target .-value valinta-fn)})
-             (when (or (not oletusvalinta)
-                       (not-any? #(= oletusvalinta %) valinnat))
-               ei-valintaa)
-             (stylefy/use-style kentta-pudotusvalikko)]
-            (mapv #(vector :option (valinta %) (:arvo %)) valinnat))
-      [:span (stylefy/use-style otsikkoteksti-pudotusvalikko) otsikko]
-      [:i.material-icons (stylefy/use-style ikoni) "arrow_drop_down"]]]))
+  [:div
+   [:label (stylefy/use-style elementti)
+    (into [:select (stylefy/use-style
+                     kentta-pudotusvalikko
+                     {:on-change #(-> % .-target .-value valinta-fn)})
+           (when (not oletusvalinta)
+             [:option
+              {:value "value"
+               :selected "selected"
+               :disabled "disabled"}
+              "- Ei valintaa -"])
+           (stylefy/use-style kentta-pudotusvalikko)]
+          (mapv #(vector :option (merge {:value (:id %)}
+                                        (when (= oletusvalinta %)
+                                          {:selected "selected"}))
+                         (:arvo %))
+                valinnat))
+    [:span (stylefy/use-style otsikkoteksti-pudotusvalikko) otsikko]
+    [:i.material-icons (stylefy/use-style ikoni) "arrow_drop_down"]]])

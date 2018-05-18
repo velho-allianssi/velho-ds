@@ -16,6 +16,9 @@ props:
   color-primary:
     value: "hsla({!primary}, 40%, 1)"
     category: color-group-1
+  color-primary-dark:
+    value: "hsla({!primary}, 31%, 1)"
+    category: color-group-1
   color-neutral-1:
     value: "hsla({!black}, 98%, 1)"
     category: color-group-2 

@@ -3,4 +3,6 @@
   (:require [velho-ds.token-loader :as tl]))
 
 (defn -main [& args]
-  (tl/create-tokens-from-path "resources/tokens"))
+  (println "Generating tokens")
+  (tl/create-tokens-from-path "resources/tokens")
+  (println "Tokens generated"))
