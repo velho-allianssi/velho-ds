@@ -19,6 +19,10 @@
    [napit/oletus-pieni "Päivitä" "autorenew"]
    [napit/toissijainen-pieni "Päivitä" "autorenew"]
    [napit/kevyt-pieni "Päivitä" "autorenew"]
+   [:h3 "Kartan painikkeet: Default"]
+   [napit/kartta-ikoni "zoom_out_map"]
+   [:h3 "Kartan painikkeet: Tupla"]
+   [napit/kartta-ikoni-tupla "add" "remove"]
    [kentat/teksti "Teksti"]
    [kentat/tekstikentta "Tekstikentta"]
    (let [valinnat [{:id 1 :arvo "eka"}
