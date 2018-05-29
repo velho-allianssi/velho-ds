@@ -1,35 +1,36 @@
 (ns velho-ds.pages.main
   (:require [velho-ds.templates.main :as tpl]
-            [velho-ds.atoms.napit :as napit]
-            [velho-ds.atoms.kentat :as kentat]))
+            [velho-ds.atoms.button :as buttons]
+            [velho-ds.atoms.field :as fields]))
 
 (defn page-content []
   [:div
    [:p "This is the content of the Reagent Design System"]
-   [:h2 "Napit"]
-   [:h3 "Ei ikonia"]
-   [napit/oletus "Päivitä"]
-   [napit/toissijainen "Päivitä"]
-   [napit/kevyt "Päivitä"]
-   [:h3 "Ikonilla"]
-   [napit/oletus "Päivitä" "autorenew"]
-   [napit/toissijainen "Päivitä" "autorenew"]
-   [napit/kevyt "Päivitä" "autorenew"]
-   [:h3 "Pieni"]
-   [napit/oletus-pieni "Päivitä" "autorenew"]
-   [napit/toissijainen-pieni "Päivitä" "autorenew"]
-   [napit/kevyt-pieni "Päivitä" "autorenew"]
-   [:h3 "Kartan painikkeet: Default"]
-   [napit/kartta-ikoni "zoom_out_map"]
-   [:h3 "Kartan painikkeet: Tupla"]
-   [napit/kartta-ikoni-tupla "add" "remove"]
-   [kentat/teksti "Teksti"]
-   [kentat/tekstikentta "Tekstikentta"]
-   (let [valinnat [{:id 1 :arvo "eka"}
-                   {:id 2 :arvo "toka"}]]
-     [kentat/pudotusvalikko {:otsikko "Teksti"
-                             :valinta-fn #(js/alert (str "Valittu arvo: " %))
-                             :valinnat valinnat}])])
+   [:h2 "Buttons"]
+   [:h3 "No icon"]
+   [buttons/default "Update"]
+   [buttons/secondary "Update"]
+   [buttons/light "Update"]
+   [:h3 "With an icon"]
+   [buttons/default "Update" "autorenew"]
+   [buttons/secondary "Update" "autorenew"]
+   [buttons/light "Update" "autorenew"]
+   [:h3 "Small"]
+   [buttons/default-small "Update" "autorenew"]
+   [buttons/secondary-small "Update" "autorenew"]
+   [buttons/light-small "Update" "autorenew"]
+   [:h3 "Map buttons: Default"]
+   [buttons/plain-icon "zoom_out_map"]
+   [:h3 "Map buttons: Double"]
+   [buttons/plain-icon-double "add" "remove"]
+   [fields/input-field "Text"]
+   [fields/multiline-field "Textfield"]
+   (let [values [{:id 1 :value "First"}
+                 {:id 2 :value "Second"}]]
+     [fields/dropdown-menu {:heading "Text"
+                            :selected-fn #(js/alert (str "Selected value: " %))
+                            :options values
+                            :no-selection-text "- No selection -"}])])
 
 (defn page [nav]
   (tpl/default {:navigation nav
