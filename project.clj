@@ -1,4 +1,4 @@
-(defproject velho-ds "0.0.0.7"
+(defproject velho-ds "0.0.0.8"
   :description "FIXME: write description"
   :url "https://github.com/trinne/velho-ds"
   :license {:name "Eclipse Public License"
@@ -27,11 +27,11 @@
 
   :min-lein-version "2.5.0"
   :clean-targets ^{:protect false}
-[:target-path
- [:cljsbuild :builds :app :compiler :output-dir]
- [:cljsbuild :builds :app :compiler :output-to]]
+ [:target-path
+  [:cljsbuild :builds :app :compiler :output-dir]
+  [:cljsbuild :builds :app :compiler :output-to]]
 
-  :resource-paths ["public"]
+ :resource-paths ["public"]
 
   :figwheel {:http-server-root "."
              :nrepl-port 7002
