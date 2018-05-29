@@ -1,7 +1,7 @@
 (ns velho-ds.pages.main
   (:require [velho-ds.templates.main :as tpl]
-            [velho-ds.atoms.buttons :as buttons]
-            [velho-ds.atoms.fields :as fields]))
+            [velho-ds.atoms.button :as buttons]
+            [velho-ds.atoms.field :as fields]))
 
 (defn page-content []
   [:div
@@ -20,9 +20,9 @@
    [buttons/secondary-small "Update" "autorenew"]
    [buttons/light-small "Update" "autorenew"]
    [:h3 "Map buttons: Default"]
-   [buttons/map-icon "zoom_out_map"]
+   [buttons/plain-icon "zoom_out_map"]
    [:h3 "Map buttons: Double"]
-   [buttons/map-icon-double "add" "remove"]
+   [buttons/plain-icon-double "add" "remove"]
    [fields/input-field "Text"]
    [fields/multiline-field "Textfield"]
    (let [values [{:id 1 :value "First"}

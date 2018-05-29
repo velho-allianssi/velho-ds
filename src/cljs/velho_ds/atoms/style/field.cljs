@@ -1,4 +1,4 @@
-(ns velho-ds.atoms.fields
+(ns velho-ds.atoms.style.field
   (:require [velho-ds.tokens.color :as color]
             [velho-ds.tokens.spacing :as spacing]
             [velho-ds.tokens.font-size :as font-size]
@@ -7,12 +7,13 @@
             [stylefy.core :as stylefy]
             [velho-ds.tools.measures :as measures]))
 
-(def element-style {:position "relative"
+
+(def element {:position "relative"
                     :display "block"
                     :min-height spacing/space-x-large
                     :margin spacing/space-base})
 
-(def input-field-style {:position "absolute"
+(def input-field {:position "absolute"
                         :top spacing/space-small-rem
                         :width "100%"
                         :font-size font-size/font-size-base
@@ -39,11 +40,11 @@
                                                      :font-size font-size/font-size-small
                                                      :color color/color-primary}}})
 
-(def text-field-style (merge input-field-style
+(def text-field (merge input-field
                              {:overflow-y "scroll"
                               :resize "none"}))
 
-(def input-field-heading-style {:position "absolute"
+(def input-field-heading {:position "absolute"
                                 :display "block"
                                 :top spacing/space-base-rem
                                 :font-size font-size/font-size-base
@@ -51,7 +52,7 @@
                                 :width "100%"
                                 :cursor "text"})
 
-(def dropdown-heading-style {:position "absolute"
+(def dropdown-heading {:position "absolute"
                              :display "block"
                              :top "0"
                              :font-size font-size/font-size-small
@@ -59,7 +60,7 @@
                              :transition (str "all " timing/duration-slow " ease-in-out")
                              :width "100%"})
 
-(def dropdown-style {:-webkit-appearance "none"
+(def dropdown {:-webkit-appearance "none"
                      :-moz-appearance "none"
                      :appearance "none"
                      :font-family "inherit"
@@ -78,50 +79,8 @@
                      :font-size font-size/font-size-base
                      ::stylefy/mode {:focus {:outline "none"}}})
 
-(def icon-style {:position "absolute"
+(def icon {:position "absolute"
                  :padding spacing/space-xx-small-rem
                  :top spacing/space-small-rem
                  :right spacing/space-xx-small-rem
                  :pointer-events "none"})
-
-(defn merge-styles [a b]
-  {:style (merge (:style a) (:style b))})
-
-(defn input-field
-  ([content]
-   (input-field content nil))
-  ([content args]
-   [:div
-    [:label (stylefy/use-style element-style)
-     [:input (stylefy/use-style input-field-style {:required "required"})]
-     [:span (stylefy/use-style input-field-heading-style) content]]]))
-
-(defn multiline-field
-  ([content]
-   (multiline-field content nil))
-  ([content args]
-   [:div
-    [:label (stylefy/use-style element-style)
-     [:textarea (stylefy/use-style text-field-style {:required "required"})]
-     [:span (stylefy/use-style input-field-heading-style) content]]]))
-
-(defn dropdown-menu [{:keys [heading selected-fn options default-value no-selection-text]}]
-  [:div
-   [:label (stylefy/use-style element-style)
-    (into [:select (stylefy/use-style
-                     dropdown-style
-                     {:on-change #(-> % .-target .-value selected-fn)})
-           (when (not default-value)
-             [:option
-              {:value "value"
-               :selected "selected"
-               :disabled "disabled"}
-              no-selection-text])
-           (stylefy/use-style dropdown-style)]
-          (mapv #(vector :option (merge {:value (:id %)}
-                                        (when (= default-value %)
-                                          {:selected "selected"}))
-                         (:value %))
-                options))
-    [:span (stylefy/use-style dropdown-heading-style) heading]
-    [:i.material-icons (stylefy/use-style icon-style) "arrow_drop_down"]]])
