@@ -11,45 +11,69 @@
    [:p "Default"]
 
    [buttons/default {:content "Update"
-                     :icon "autorenew"}]
-   [buttons/default {:content "Update"}]
-   [buttons/default {:icon "autorenew"}]
+                     :icon "autorenew"
+                     :on-click-fn #(println "Default button with icon and text clicked")}]
+   [buttons/default {:content "Update"
+                     :on-click-fn #(println "Default button with text clicked")}]
+   [buttons/default {:icon "autorenew"
+                     :on-click-fn #(println "Default button with icon clicked")}]
    
    [buttons/primary {:content "Update"
-                     :icon "autorenew"}]
-   [buttons/primary {:content "Update"}]
-   [buttons/primary {:icon "autorenew"}]
+                     :icon "autorenew"
+                     :on-click-fn #(println "Primary button with icon and text clicked")}]
+   [buttons/primary {:content "Update"
+                     :on-click-fn #(println "Primary button with text clicked")}]
+   [buttons/primary {:icon "autorenew"
+                     :on-click-fn #(println "Primary button with icon clicked")}]
    
    [buttons/secondary {:content "Update"
-                       :icon "autorenew"}]
-   [buttons/secondary {:content "Update"}]
-   [buttons/secondary {:icon "autorenew"}]
+                       :icon "autorenew"
+                       :on-click-fn #(println "Secondary button with icon and text clicked")}]
+   [buttons/secondary {:content "Update"
+                       :on-click-fn #(println "Secondary button with text clicked")}]
+   [buttons/secondary {:icon "autorenew"
+                       :on-click-fn #(println "Secondary button with icon clicked")}]
    
    [buttons/outline {:content "Update"
-                     :icon "autorenew"}]
-   [buttons/outline {:content "Update"}]
-   [buttons/outline {:icon "autorenew"}]
+                     :icon "autorenew"
+                     :on-click-fn #(println "Outline button with icon and text clicked")}]
+   [buttons/outline {:content "Update"
+                     :on-click-fn #(println "Outline button with text clicked")}]
+   [buttons/outline {:icon "autorenew"
+                     :on-click-fn #(println "Outline button with icon clicked")}]
 
    [:p "Small"]
    [buttons/default-small {:content "Update"
-                           :icon "autorenew"}]
-   [buttons/default-small {:content "Update"}]
-   [buttons/default-small {:icon "autorenew"}]
-   
+                           :icon "autorenew"
+                           :on-click-fn #(println "Small default button with icon and text clicked")}]
+   [buttons/default-small {:content "Update"
+                           :on-click-fn #(println "Small default button with text clicked")}]
+   [buttons/default-small {:icon "autorenew"
+                           :on-click-fn #(println "Small default button with icon clicked")}]
+
    [buttons/primary-small {:content "Update"
-                           :icon "autorenew"}]
-   [buttons/primary-small {:content "Update"}]
-   [buttons/primary-small {:icon "autorenew"}]
+                           :icon "autorenew"
+                           :on-click-fn #(println "Small primary button with icon and text clicked")}]
+   [buttons/primary-small {:content "Update"
+                           :on-click-fn #(println "Small primary button with text clicked")}]
+   [buttons/primary-small {:icon "autorenew"
+                           :on-click-fn #(println "Small primary button with icon clicked")}]
    
    [buttons/secondary-small {:content "Update"
-                             :icon "autorenew"}]
-   [buttons/secondary-small {:content "Update"}]
-   [buttons/secondary-small {:icon "autorenew"}]
+                             :icon "autorenew"
+                             :on-click-fn #(println "Small secondary button with icon and text clicked")}]
+   [buttons/secondary-small {:content "Update"
+                             :on-click-fn #(println "Small secondary button with text clicked")}]
+   [buttons/secondary-small {:icon "autorenew"
+                             :on-click-fn #(println "Small secondary button with icon clicked")}]
    
    [buttons/outline-small {:content "Update"
-                           :icon "autorenew"}]
-   [buttons/outline-small {:content "Update"}]
-   [buttons/outline-small {:icon "autorenew"}]
+                           :icon "autorenew"
+                           :on-click-fn #(println "Small outline button with icon and text clicked")}]
+   [buttons/outline-small {:content "Update"
+                           :on-click-fn #(println "Small outline button with text clicked")}]
+   [buttons/outline-small {:icon "autorenew"
+                           :on-click-fn #(println "Small outline button with icon clicked")}]
 
    [:h3 "Fields"]
    
