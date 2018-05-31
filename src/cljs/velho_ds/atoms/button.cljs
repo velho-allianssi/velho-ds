@@ -49,16 +49,3 @@
   [default-small {:content content 
             :icon icon 
             :styles (merge style/outline-small styles)}])
-
-;;(defn plain-icon
-;;  ([icon]
-;;   [:button (stylefy/use-style style/plain-icon)
-;;    [:i.material-icons (stylefy/use-sub-style style/plain-icon :i) icon]]))
-;;
-;;(defn plain-icon-double
-;;  ([icon-first icon-second]
-;;   [:div (stylefy/use-style style/double)
-;;    [:button (stylefy/use-style (merge style/plain-icon style/upper))
-;;     [:i.material-icons (stylefy/use-sub-style style/plain-icon :i) icon-first]]
-;;    [:button (stylefy/use-style (merge style/plain-icon style/lower))
-;;     [:i.material-icons (stylefy/use-sub-style style/plain-icon :i) icon-second]]]))
