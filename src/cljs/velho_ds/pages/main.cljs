@@ -7,22 +7,53 @@
   [:div
    [:p "This is the content of the Reagent Design System"]
    [:h2 "Buttons"]
-   [:h3 "No icon"]
-   [buttons/default "Update"]
-   [buttons/secondary "Update"]
-   [buttons/light "Update"]
-   [:h3 "With an icon"]
-   [buttons/default "Update" "autorenew"]
-   [buttons/secondary "Update" "autorenew"]
-   [buttons/light "Update" "autorenew"]
-   [:h3 "Small"]
-   [buttons/default-small "Update" "autorenew"]
-   [buttons/secondary-small "Update" "autorenew"]
-   [buttons/light-small "Update" "autorenew"]
-   [:h3 "Map buttons: Default"]
-   [buttons/plain-icon "zoom_out_map"]
-   [:h3 "Map buttons: Double"]
-   [buttons/plain-icon-double "add" "remove"]
+   
+   [:p "Default"]
+
+   [buttons/default {:content "Update"
+                     :icon "autorenew"}]
+   [buttons/default {:content "Update"}]
+   [buttons/default {:icon "autorenew"}]
+   
+   [buttons/primary {:content "Update"
+                     :icon "autorenew"}]
+   [buttons/primary {:content "Update"}]
+   [buttons/primary {:icon "autorenew"}]
+   
+   [buttons/secondary {:content "Update"
+                       :icon "autorenew"}]
+   [buttons/secondary {:content "Update"}]
+   [buttons/secondary {:icon "autorenew"}]
+   
+   [buttons/outline {:content "Update"
+                     :icon "autorenew"}]
+   [buttons/outline {:content "Update"}]
+   [buttons/outline {:icon "autorenew"}]
+
+   [:p "Small"]
+   [buttons/default-small {:content "Update"
+                           :icon "autorenew"}]
+   [buttons/default-small {:content "Update"}]
+   [buttons/default-small {:icon "autorenew"}]
+   
+   [buttons/primary-small {:content "Update"
+                           :icon "autorenew"}]
+   [buttons/primary-small {:content "Update"}]
+   [buttons/primary-small {:icon "autorenew"}]
+   
+   [buttons/secondary-small {:content "Update"
+                             :icon "autorenew"}]
+   [buttons/secondary-small {:content "Update"}]
+   [buttons/secondary-small {:icon "autorenew"}]
+   
+   [buttons/outline-small {:content "Update"
+                           :icon "autorenew"}]
+   [buttons/outline-small {:content "Update"}]
+   [buttons/outline-small {:icon "autorenew"}]
+
+   [:h3 "Fields"]
+   
+   [:p "Input"]
    [fields/input-field "Text"]
    [fields/multiline-field "Textfield"]
    (let [values [{:id 1 :value "First"}

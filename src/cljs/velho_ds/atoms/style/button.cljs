@@ -11,17 +11,18 @@
 (def button
   {:cursor "pointer"
    :user-select "none"
-   :border "none"
    :font-size font-size/font-size-base
-   :padding spacing/space-small-rem
-   :margin (str "0 " spacing/space-small-rem)
+   :padding (str font-size/font-size-large " " font-size/font-size-x-large)
    :box-sizing "border-box"
+   :border "none"
    :box-shadow box-shadow/box-shadow
-   :color color/color-white
-   :background (str "linear-gradient(-45deg," color/color-primary-dark "0%," color/color-primary " 100%)")
+   :color color/color-neutral-5
+   :background color/color-white
    :background-color color/color-primary
    :background-position "left center"
    :background-size "200% auto"
+   :display "inline-table"
+   :line-height font-size/font-size-xx-large
    :height spacing/space-x-large
    :transition (str "all " timing/duration-slow " ease-in-out")
    ::stylefy/mode {:hover {:background-position "left bottom"
@@ -32,21 +33,37 @@
                             :transform "scale(0.95, 0.95)"}
                    :focus {:outline "none"}}
    ::stylefy/sub-styles {:i {:font-size font-size/font-size-xx-large
-                             :vertical-align "-25%"}
-                         :span {:padding-left spacing/space-small-rem
+                             :display "table-cell"
+                             :vertical-align "middle"}
+                         :span {:padding-left spacing/space-x-small-rem
                                 :padding-right spacing/space-x-small-rem
                                 :text-decoration "none"
-                                :border "none"}}
+                                :display "table-cell"
+                                :vertical-align "middle"}}
    ::stylefy/vendors ["webkit" "moz" "o"]
-   ::stylefy/auto-prefix #{:transition}})
+   ::stylefy/auto-prefix #{:transition :box-sizing}})
 
 (def small
   {:height (measures/rem-times spacing/space-small-rem 2)
-   :padding "0 1rem"})
+   :padding "0 0.375rem"
+   :display "inline-table"
+   :line-height font-size/font-size-x-large
+   ::stylefy/sub-styles {:i {:font-size font-size/font-size-x-large
+                             :display "table-cell"
+                             :vertical-align "middle"}
+                         :span {:padding (str "0 " spacing/space-x-small-rem)
+                                :display "table-cell"
+                                :vertical-align "middle"}}})
 
-(def dark
+(def primary
+  {:background (str "linear-gradient(-45deg," color/color-primary-dark "0%," color/color-primary " 100%)")
+   :background-color color/color-primary
+   :color color/color-white})
+
+(def secondary
   {:background (str "linear-gradient(-45deg," color/color-neutral-5 "0%," color/color-neutral-4 " 100%)")
-   :background-color color/color-primary})
+   :background-color color/color-primary
+   :color color/color-white})
 
 (def outline
   {:color color/color-primary
@@ -54,41 +71,15 @@
    :border (str border/border-default " solid")
    :border-color color/color-primary
    :background-color color/color-white
+   :padding (str font-size/font-size-large " calc(" font-size/font-size-x-large " - " border/border-default ")")
    ::stylefy/mode {:hover {:border-color color/color-primary-dark}
                    :active {:background-color color/color-primary
                             :color color/color-white
                             :outline "none"
                             :box-shadow box-shadow/box-shadow-small}
                    :focus {:outline "none"}}})
-
-(def plain-icon
-  {:cursor "pointer"
-   :user-select "none"
-   :border (str border/border-default " solid " color/color-neutral-1)
-   :font-size font-size/font-size-base
-   :padding spacing/space-x-small-rem
-   :margin (str "0 " spacing/space-small-rem)
-   :box-sizing "border-box"
-   :box-shadow box-shadow/box-shadow
-   :color color/color-neutral-5
-   :background color/color-white
-   :height spacing/space-large
-   :width spacing/space-large
-   :transition (str "all " timing/duration-slow " ease-in-out")
-   ::stylefy/mode {:hover {:background color/color-neutral-1}
-                   :active {:background color/color-neutral-2
-                            :box-shadow box-shadow/box-shadow-small
-                            :transform "scale(0.95, 0.95)"}
-                   :focus {:outline "none"}}
-   ::stylefy/sub-styles {:i {:font-size font-size/font-size-xx-large
-                             :vertical-align "-25%"}}
-   ::stylefy/vendors ["webkit" "moz" "o"]
-   ::stylefy/auto-prefix #{:transition}})
-
-(def double
-  {:user-select "none"
-   :margin "0"
-   :width spacing/space-large})
+(def outline-small
+  (merge small outline {:padding (str "0 calc(0.375rem - "  border/border-default ")")}))
 
 (def upper
   {:position "relative"
