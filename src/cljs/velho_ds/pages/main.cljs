@@ -54,7 +54,8 @@
    [:h3 "Fields"]
    
    [:p "Input"]
-   [fields/input-field "Text"]
+   [fields/input-field {:label "Name"
+                        :content "Pekka"}]
    [fields/multiline-field "Textfield"]
    (let [values [{:id 1 :value "First"}
                  {:id 2 :value "Second"}]]
