@@ -1,6 +1,7 @@
 (ns velho-ds.core
     (:require [reagent.core :as r]
               [velho-ds.pages.main :as main]
+              [velho-ds.atoms.font :as font]
               [velho-ds.design-system :as design-system]))
 
 ;; -------------------------
@@ -14,6 +15,7 @@
 ;; Initialize app
 
 (defn mount-root []
+  (font/font-styles)
   (r/render (main/page nav) (.getElementById js/document "app")))
 
 (defn init! []

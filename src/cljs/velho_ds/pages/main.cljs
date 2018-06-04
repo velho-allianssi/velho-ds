@@ -6,6 +6,14 @@
 (defn page-content []
   [:div
    [:p "This is the content of the Reagent Design System"]
+   [:h2 "Typography"]
+   [:p "Text P"]
+   [:small "Text Small"]
+   [:h1 "Header H1"]
+   [:h2 "Header H2"]
+   [:h3 "Header H3"]
+   [:h4 "Header H4"]
+   
    [:h2 "Buttons"]
    
    [:p "Default"]
