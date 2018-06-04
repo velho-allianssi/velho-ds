@@ -8,8 +8,7 @@
   {:width "100%"
    :padding "0"
    :margin "0"
-   :line-height  (measures/rem-times font-size/font-size-base 2)
-   :min-height (measures/rem-times font-size/font-size-base 2)})
+   :line-height font-size/font-size-base})
 
 (def keyvalue-label
   {:color color/color-neutral-4})
