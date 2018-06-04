@@ -40,7 +40,9 @@
                    :focus+span {:top "0"
                                 :cursor "inherit"
                                 :font-size font-size/font-size-small
-                                :color color/color-primary}}})
+                                :color color/color-primary}}
+   ::stylefy/vendors ["webkit" "moz" "o"]
+   ::stylefy/auto-prefix #{:transition}})
 
 (def text-field
   (merge input-field
@@ -54,7 +56,9 @@
    :font-size font-size/font-size-base
    :transition (str "all " timing/duration-slow " ease-in-out")
    :width "100%"
-   :cursor "text"})
+   :cursor "text"
+   ::stylefy/vendors ["webkit" "moz" "o"]
+   ::stylefy/auto-prefix #{:transition}})
 
 (def dropdown-heading
   {:position "absolute"
@@ -63,12 +67,12 @@
    :font-size font-size/font-size-small
    :cursor "inherit"
    :transition (str "all " timing/duration-slow " ease-in-out")
-   :width "100%"})
+   :width "100%"
+   ::stylefy/vendors ["webkit" "moz" "o"]
+   ::stylefy/auto-prefix #{:transition}})
 
 (def dropdown
-  {:-webkit-appearance "none"
-   :-moz-appearance "none"
-   :appearance "none"
+  {:appearance "none"
    :font-family "inherit"
    :background-color "transparent"
    :width "100%"
@@ -83,7 +87,9 @@
    :border-radius "0"
    :margin-top spacing/space-small-rem
    :font-size font-size/font-size-base
-   ::stylefy/mode {:focus {:outline "none"}}})
+   ::stylefy/mode {:focus {:outline "none"}}
+   ::stylefy/vendors ["webkit" "moz" "o"]
+   ::stylefy/auto-prefix #{:appearance}})
 
 (def icon
   {:position "absolute"
