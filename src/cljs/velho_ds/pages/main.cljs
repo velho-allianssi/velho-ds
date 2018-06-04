@@ -90,6 +90,11 @@
    [mol-fields/keyvalue {:label "Otsikko" 
                          :content "Arvo"}]
    
+   [mol-fields/labeless-value {:icon "wallpaper" 
+                               :content "Arvo"}]
+   
+   [mol-fields/labeless-value {:content "Arvo"}]
+   
    [:p "Input"]
    [fields/input-field {:label "Name"
                         :content "Pekka"
