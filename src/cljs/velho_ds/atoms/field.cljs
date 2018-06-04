@@ -6,13 +6,16 @@
 (defn merge-styles [a b]
   {:style (merge (:style a) (:style b))})
 
-(defn input-field [{:keys [content label]}]
-  (let [input-text (r/atom content)]
+(defn input-field [{:keys [content label on-change-fn]}]
+  (let [input-text (r/atom content)
+        update-and-send (fn [val]
+                (reset! input-text val)
+                (on-change-fn @input-text))]
     (fn []
       [:div
        [:label (stylefy/use-style style/element)
         [:input (stylefy/use-style style/input-field {:required "required"
-                                                      :on-change #(reset! input-text (-> % .-target .-value))
+                                                      :on-change #(-> % .-target .-value update-and-send)
                                                       :value @input-text})]
         [:span (stylefy/use-style style/input-field-heading) label]]])))
 
