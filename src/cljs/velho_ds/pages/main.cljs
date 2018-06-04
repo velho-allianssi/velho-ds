@@ -87,8 +87,8 @@
    [:h3 "Fields"]
    
    [:p "Keyvalue"]
-   [mol-fields/keyvalue-field {:label "Otsikko" 
-                               :content "Arvo"}]
+   [mol-fields/keyvalue {:label "Otsikko" 
+                         :content "Arvo"}]
    
    [:p "Input"]
    [fields/input-field {:label "Name"
