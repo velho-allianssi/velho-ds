@@ -1,7 +1,8 @@
 (ns velho-ds.pages.main
   (:require [velho-ds.templates.main :as tpl]
             [velho-ds.atoms.button :as buttons]
-            [velho-ds.atoms.field :as fields]))
+            [velho-ds.atoms.field :as fields]
+            [velho-ds.molecules.field :as mol-fields]))
 
 (defn page-content []
   [:div
@@ -84,6 +85,10 @@
                            :on-click-fn #(println "Small outline button with icon clicked")}]
 
    [:h3 "Fields"]
+   
+   [:p "Keyvalue"]
+   [mol-fields/keyvalue-field {:label "Otsikko" 
+                               :content "Arvo"}]
    
    [:p "Input"]
    [fields/input-field {:label "Name"
