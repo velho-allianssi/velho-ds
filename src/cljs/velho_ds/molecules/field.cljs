@@ -1,10 +1,15 @@
-(ns velho-ds.atoms.field
+(ns velho-ds.molecules.field
   (:require [reagent.core :as r]
             [stylefy.core :as stylefy]
-            [velho-ds.atoms.style.field :as style]))
+            [velho-ds.molecules.style.field :as style]))
 
 (defn merge-styles [a b]
   {:style (merge (:style a) (:style b))})
+
+(defn keyvalue [{:keys [content label]}]
+ [:div
+  [:small (stylefy/use-style style/keyvalue-label) label]
+  [:p (stylefy/use-style style/keyvalue-content) content]])
 
 (defn input-field [{:keys [content label on-change-fn]}]
   (let [input-text (r/atom content)

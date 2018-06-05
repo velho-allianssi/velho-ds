@@ -1,7 +1,7 @@
 (ns velho-ds.pages.main
   (:require [velho-ds.templates.main :as tpl]
             [velho-ds.atoms.button :as buttons]
-            [velho-ds.atoms.field :as fields]))
+            [velho-ds.molecules.field :as fields]))
 
 (defn page-content []
   [:div
@@ -16,7 +16,7 @@
    
    [:h2 "Buttons"]
    
-   [:p "Default"]
+   [:h3 "Default"]
 
    [buttons/default {:content "Update"
                      :icon "autorenew"
@@ -50,7 +50,7 @@
    [buttons/outline {:icon "autorenew"
                      :on-click-fn #(println "Outline button with icon clicked")}]
 
-   [:p "Small"]
+   [:h3 "Small"]
    [buttons/default-small {:content "Update"
                            :icon "autorenew"
                            :on-click-fn #(println "Small default button with icon and text clicked")}]
@@ -83,9 +83,13 @@
    [buttons/outline-small {:icon "autorenew"
                            :on-click-fn #(println "Small outline button with icon clicked")}]
 
-   [:h3 "Fields"]
+   [:h2 "Fields"]
    
-   [:p "Input"]
+   [:h3 "Keyvalue"]
+   [fields/keyvalue {:label "Otsikko" 
+                     :content "Arvo"}]
+   
+   [:h3 "Input"]
    [fields/input-field {:label "Name"
                         :content "Pekka"
                         :on-change-fn #(println %)}]

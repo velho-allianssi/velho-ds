@@ -1,4 +1,4 @@
-(defproject velho-ds "0.0.0.10"
+(defproject velho-ds "0.0.0.11"
   :description "FIXME: write description"
   :url "https://github.com/trinne/velho-ds"
   :license {:name "Eclipse Public License"

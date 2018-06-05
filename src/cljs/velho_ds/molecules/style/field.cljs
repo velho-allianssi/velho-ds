@@ -1,4 +1,4 @@
-(ns velho-ds.atoms.style.field
+(ns velho-ds.molecules.style.field
   (:require [velho-ds.tokens.color :as color]
             [velho-ds.tokens.spacing :as spacing]
             [velho-ds.tokens.font-size :as font-size]
@@ -11,8 +11,7 @@
 (def element
   {:position "relative"
    :display "block"
-   :min-height spacing/space-x-large
-   :margin spacing/space-base})
+   :min-height spacing/space-x-large})
 
 (def input-field
   {:position "absolute"
@@ -24,7 +23,7 @@
    :padding "0"
    :margin "0"
    :min-height (measures/rem-times font-size/font-size-base 2)
-   :background "none"
+   :background color/color-neutral-1
    :border-top "0"
    :border-left "0"
    :border-right "0"
@@ -36,7 +35,8 @@
                            :border-color color/color-neutral-3}
                    :valid+span {:top "0"
                                 :cursor "inherit"
-                                :font-size font-size/font-size-small}
+                                :font-size font-size/font-size-small
+                                :color color/color-neutral-4}
                    :focus+span {:top "0"
                                 :cursor "inherit"
                                 :font-size font-size/font-size-small
@@ -97,3 +97,12 @@
    :top spacing/space-small-rem
    :right spacing/space-xx-small-rem
    :pointer-events "none"})
+
+(def keyvalue-content
+  {:width "100%"
+   :padding "0"
+   :margin "0"
+   :line-height font-size/font-size-base})
+
+(def keyvalue-label
+  {:color color/color-neutral-4})
