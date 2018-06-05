@@ -8,50 +8,30 @@
     (if icon [:i.material-icons (stylefy/use-sub-style (merge style/button styles) :i) icon])
     (if content [:span (stylefy/use-sub-style (merge style/button styles) :span) content])])
 
-(defn primary [{:keys [content icon styles on-click-fn]}]
+(defn primary [{:keys [content icon] :as btn-args}]
   (assert (or content icon))
-  [default {:content content 
-            :icon icon 
-            :styles (merge style/primary styles)
-            :on-click-fn on-click-fn}])
+  [default (merge {:styles style/primary} btn-args)])
 
-(defn secondary [{:keys [content icon styles on-click-fn]}]
+(defn secondary [{:keys [content icon] :as btn-args}]
   (assert (or content icon))
-  [default {:content content 
-            :icon icon 
-            :styles (merge style/secondary styles)
-            :on-click-fn on-click-fn}])
+  [default (merge {:styles style/secondary} btn-args)])
 
-(defn outline [{:keys [content icon styles on-click-fn]}]
+(defn outline [{:keys [content icon] :as btn-args}]
   (assert (or content icon))
-  [default {:content content 
-            :icon icon 
-            :styles (merge style/outline styles)
-            :on-click-fn on-click-fn}])
+  [default (merge {:styles style/outline} btn-args)])
 
-(defn default-small [{:keys [content icon styles on-click-fn]}]
+(defn default-small [{:keys [content icon] :as btn-args}]
   (assert (or content icon))
-   [:button (stylefy/use-style (merge style/button style/small styles) {:on-click on-click-fn})
-    (if icon [:i.material-icons (stylefy/use-sub-style (merge style/button style/small styles) :i) icon])
-    (if content [:span (stylefy/use-sub-style (merge style/button style/small styles) :span) content])])
+  [default (merge {:styles style/small} btn-args)])
 
-(defn primary-small [{:keys [content icon styles on-click-fn]}]
+(defn primary-small [{:keys [content icon] :as btn-args}]
   (assert (or content icon))
-  [default-small {:content content 
-                  :icon icon
-                  :styles (merge style/primary styles)
-                  :on-click-fn on-click-fn}])
+  [default (merge {:styles (merge style/primary style/small)} btn-args)])
 
-(defn secondary-small [{:keys [content icon styles on-click-fn]}]
+(defn secondary-small [{:keys [content icon] :as btn-args}]
   (assert (or content icon))
-  [default-small {:content content 
-                  :icon icon
-                  :styles (merge style/secondary styles)
-                  :on-click-fn on-click-fn}])
+  [default (merge {:styles (merge style/secondary style/small)} btn-args)])
 
-(defn outline-small [{:keys [content icon styles on-click-fn]}]
+(defn outline-small [{:keys [content icon] :as btn-args}]
   (assert (or content icon))
-  [default-small {:content content 
-                  :icon icon
-                  :styles (merge style/outline-small styles)
-                  :on-click-fn on-click-fn}])
+  [default (merge {:styles style/outline-small} btn-args)])

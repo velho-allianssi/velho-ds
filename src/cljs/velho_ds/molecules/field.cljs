@@ -11,12 +11,6 @@
   [:small (stylefy/use-style style/keyvalue-label) label]
   [:p (stylefy/use-style style/keyvalue-content) content]])
 
-(defn labeless-value [{:keys [content icon]}]
- (assert content)
- [:div
-  (if icon [:i.material-icons (stylefy/use-style style/labeless-icon) icon])
-  [:p (stylefy/use-style style/labeless-content) content]])
-
 (defn input-field [{:keys [content label on-change-fn]}]
   (let [input-text (r/atom content)
         update-and-send (fn [val]

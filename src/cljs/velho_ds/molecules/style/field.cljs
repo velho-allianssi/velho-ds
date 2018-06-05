@@ -106,13 +106,3 @@
 
 (def keyvalue-label
   {:color color/color-neutral-4})
-
-(def labeless-icon
-  {:vertical-align "middle"
-   :font-size font-size/font-size-xx-large
-   :padding-right spacing/space-xx-small
-   :height spacing/space-base})
-
-(def labeless-content
-  {:display "inline-block"
-   :vertical-align "middle"})
