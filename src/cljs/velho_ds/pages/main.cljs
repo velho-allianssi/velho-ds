@@ -87,12 +87,7 @@
    
    [:h3 "Keyvalue"]
    [fields/keyvalue {:label "Otsikko" 
-                         :content "Arvo"}]
-   
-   [fields/labeless-value {:icon "wallpaper" 
-                               :content "Arvo"}]
-   
-   [fields/labeless-value {:content "Arvo"}]
+                     :content "Arvo"}]
    
    [:h3 "Input"]
    [fields/input-field {:label "Name"
