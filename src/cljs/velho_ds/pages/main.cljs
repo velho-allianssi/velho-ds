@@ -1,23 +1,21 @@
 (ns velho-ds.pages.main
   (:require [velho-ds.templates.main :as tpl]
             [velho-ds.atoms.button :as buttons]
-            [velho-ds.molecules.field :as fields]))
+            [velho-ds.molecules.field :as fields]
+            [velho-ds.organisms.grid :as grid]))
 
 (defn page-content []
   [:div
-   [:p "This is the content of the Reagent Design System"]
    [:h2 "Typography"]
-   [:p "Text P"]
-   [:small "Text Small"]
    [:h1 "Header H1"]
    [:h2 "Header H2"]
    [:h3 "Header H3"]
    [:h4 "Header H4"]
-   
-   [:h2 "Buttons"]
-   
-   [:h3 "Default"]
+   [:p "Paragraph text looks like this."]
+   [:small "Small text is much smaller than a paragraph."]
 
+   [:h2 "Buttons"]
+   [:h3 "Default"]
    [buttons/default {:content "Update"
                      :icon "autorenew"
                      :on-click-fn #(println "Default button with icon and text clicked")}]
@@ -84,7 +82,6 @@
                            :on-click-fn #(println "Small outline button with icon clicked")}]
 
    [:h2 "Fields"]
-   
    [:h3 "Keyvalue"]
    [fields/keyvalue {:label "Otsikko" 
                      :content "Arvo"}]
@@ -100,7 +97,33 @@
      [fields/dropdown-menu {:heading "Text"
                             :selected-fn #(js/alert (str "Selected value: " %))
                             :options values
-                            :no-selection-text "- No selection -"}])])
+                            :no-selection-text "- No selection -"}])
+   [:h2 "Grid"]
+   [grid/grid-wrap {:rows 3
+                    :cols 3}
+    [grid/grid-cell {:col-start 1
+                     :col-end 4
+                     :style {:background-color "whitesmoke"
+                             :text-align "center"
+                             :border "1px solid silver"}} [:p "test"]]
+    [:div {:style {:background-color "whitesmoke"
+                   :text-align "center"
+                   :border "1px solid silver"}} [:p "2"]]
+    [:div {:style {:background-color "whitesmoke"
+                   :text-align "center"
+                   :border "1px solid silver"}} [:p "3"]]
+    [:div {:style {:background-color "whitesmoke"
+                   :text-align "center"
+                   :border "1px solid silver"}} [:p "4"]]
+    [:div {:style {:background-color "whitesmoke"
+                   :text-align "center"
+                   :border "1px solid silver"}} [:p "5"]]
+    [:div {:style {:background-color "whitesmoke"
+                   :text-align "center"
+                   :border "1px solid silver"}} [:p "6"]]
+    [:div {:style {:background-color "whitesmoke"
+                   :text-align "center"
+                   :border "1px solid silver"}} [:p "7"]]]])
 
 (defn page [nav]
   (tpl/default {:navigation nav
