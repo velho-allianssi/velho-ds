@@ -103,7 +103,7 @@
                     :cols 3}
     [grid/grid-cell {:col-start 1
                      :col-end 4
-                     :style {:background-color "springgreen"
+                     :style {:background-color "whitesmoke"
                              :text-align "center"
                              :border "1px solid silver"}} [:p "test"]]
     [:div {:style {:background-color "whitesmoke"
@@ -123,8 +123,7 @@
                    :border "1px solid silver"}} [:p "6"]]
     [:div {:style {:background-color "whitesmoke"
                    :text-align "center"
-                   :border "1px solid silver"}} [:p "7"]]]
-   ])
+                   :border "1px solid silver"}} [:p "7"]]]])
 
 (defn page [nav]
   (tpl/default {:navigation nav
