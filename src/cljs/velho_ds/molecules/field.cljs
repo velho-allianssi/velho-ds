@@ -67,10 +67,10 @@
                (conj (mapv #(vector :li (merge (stylefy/use-sub-style style/input-field-multiple :li)
                                                {:on-mouseDown (fn [_] (println "click"))})
                                     [buttons/secondary-small {:content (:value %)}]) @selected-options)
-                     [:li (stylefy/use-style style/input-field-multiple-last)
+
                       [:input (merge (stylefy/use-style style/input-field-multiple-input)
                                      {:on-focus (fn [_] (reset! dropdown-multiple-open? true))
-                                      :on-blur  (fn [_] (reset! dropdown-multiple-open? false))})]]))]
+                                      :on-blur  (fn [_] (reset! dropdown-multiple-open? false))})]))]
         [:div (merge (stylefy/use-style style/droplist) (if @dropdown-multiple-open? {:style {:display "inline"}} {:style {:display "none"}}))
          (into [:ul (stylefy/use-sub-style style/droplist :ul)]
                (mapv #(vector :li (merge (stylefy/use-sub-style style/droplist :li)
