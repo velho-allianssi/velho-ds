@@ -113,24 +113,36 @@
 
 (def input-field-multiple
   (merge input-field
-   {:background "none"
-    :border "0"
-    :top "0"
-    ::stylefy/sub-styles {:ul {:position "relative"
-                               :overflow "hidden"
-                               :margin "0"
-                               :padding "0"
-                               :min-height "2rem"}
-                          :li {:position "relative"
-                               :margin "0"
-                               :padding "0 8px 0 0"
-                               :min-height "2rem"}
-                          :input (merge input-field
-                                        {:top "0"})}}))
+         {:background "none"
+          :border-bottom "0"
+          :top "0"
+          ::stylefy/sub-styles {:ul {:position "relative"
+                                     :overflow "hidden"
+                                     :margin "0"
+                                     :padding "0"
+                                     :min-height "2rem"}
+                                :li {:display "inline-block"
+                                     :position "relative"
+                                     :margin "0"
+                                     :padding "0 8px 0 0"
+                                     :min-height "2rem"}}}))
+
+(def input-field-multiple-last
+  (merge input-field-multiple
+         {:position "relative"
+          :display "inline-block"
+          :min-width spacing/space-large
+          :width "auto"
+          :top spacing/space-xx-small-rem}))
+
+(def input-field-multiple-input
+  (merge input-field
+         {:top "0"
+          :border-bottom "0"
+          ::stylefy/mode {:valid {:border-bottom "0"}}}))
 
 (def droplist
-  {
-   :position "absolute"
+  {:position "absolute"
    :top "77%"
    :z-index "1010"
    :width "100%"
@@ -140,8 +152,9 @@
    :-webkit-box-shadow "0 4px 5px rgba(0, 0, 0, 0.15)"
    :box-shadow "0 4px 5px rgba(0, 0, 0, 0.15)"
    ::stylefy/sub-styles {:ul {:margin "0"
-                              :padding "0"
-                              :min-height "2rem"}
-                         :li {:margin "0"
-                              :padding "0 8px 0 0"
-                              :min-height "2rem"}}})
+                              :padding "0"}
+                         :li {:list-style "none"
+                              :cursor "pointer"
+                              :padding spacing/space-x-small-rem
+                              ::stylefy/mode {:hover {:background color/color-primary
+                                                      :color color/color-white}}}}})
