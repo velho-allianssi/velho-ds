@@ -115,6 +115,7 @@
   (merge input-field
    {:background "none"
     :border "0"
+    :top "0"
     ::stylefy/sub-styles {:ul {:position "relative"
                                :overflow "hidden"
                                :margin "0"

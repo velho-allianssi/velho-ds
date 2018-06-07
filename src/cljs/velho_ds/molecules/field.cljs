@@ -53,19 +53,20 @@
     [:span (stylefy/use-style style/dropdown-heading) heading]
     [:i.material-icons (stylefy/use-style style/icon) "arrow_drop_down"]]])
 
+(def dropdown-multiple-open? (r/atom false))
+
 (defn dropdown-multiple [{:keys [heading selected-fn options default-value no-selection-text]}]
-  (let [open? (r/atom false)]
-  [:div
-    [:label (stylefy/use-style style/element)
-     [:div (stylefy/use-style style/input-field)
-      [:ul (stylefy/use-sub-style style/input-field-multiple :ul)
-       [:li (stylefy/use-sub-style style/input-field-multiple :li)
-        [:input (stylefy/use-sub-style style/input-field-multiple :input)
-          {:on-focus (fn [_]
-                       (reset! open? true))}]]]]
-     [:div (stylefy/use-style style/droplist)
-      {:style (if open? {:display "inline"} {:display "none"})}
-      (into [:ul]
-            (mapv #(vector :li (:value %)) options))]
-     [:span (stylefy/use-style style/dropdown-heading) heading]
-     [:i.material-icons (stylefy/use-style style/icon) "arrow_drop_down"]]]))
+      [:div
+       [:label (stylefy/use-style style/element)
+        [:div (stylefy/use-style style/input-field)
+         [:ul (stylefy/use-sub-style style/input-field-multiple :ul)
+          [:li (stylefy/use-sub-style style/input-field-multiple :li)
+           [:input
+            {:style style/input-field-multiple
+             :on-focus (fn [_] (reset! dropdown-multiple-open? true))
+             :on-blur (fn [par] (js/console.log par) (reset! dropdown-multiple-open? false))}]]]]
+        [:div (merge (stylefy/use-style style/droplist) (if @dropdown-multiple-open? {:style {:display "inline"}} {:style {:display "none"}}))
+         (into [:ul]
+               (mapv #(vector :li {:on-click (fn [_] (println "clikki"))} (:value %)) options))]
+        [:span (stylefy/use-style style/dropdown-heading) heading]
+        [:i.material-icons (stylefy/use-style style/icon) "arrow_drop_down"]]])
