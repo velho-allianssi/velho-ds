@@ -106,3 +106,41 @@
 
 (def keyvalue-label
   {:color color/color-neutral-4})
+
+(def dropdown-multiple
+  (merge dropdown 
+   {:display "none"}))
+
+(def input-field-multiple
+  (merge input-field
+   {:background "none"
+    :border "0"
+    ::stylefy/sub-styles {:ul {:position "relative"
+                               :overflow "hidden"
+                               :margin "0"
+                               :padding "0"
+                               :min-height "2rem"}
+                          :li {:position "relative"
+                               :margin "0"
+                               :padding "0 8px 0 0"
+                               :min-height "2rem"}
+                          :input (merge input-field
+                                        {:top "0"})}}))
+
+(def droplist
+  {
+   :position "absolute"
+   :top "77%"
+   :z-index "1010"
+   :width "100%"
+   :border "1px solid #aaa"
+   :border-top "0"
+   :background "#fff"
+   :-webkit-box-shadow "0 4px 5px rgba(0, 0, 0, 0.15)"
+   :box-shadow "0 4px 5px rgba(0, 0, 0, 0.15)"
+   ::stylefy/sub-styles {:ul {:margin "0"
+                              :padding "0"
+                              :min-height "2rem"}
+                         :li {:margin "0"
+                              :padding "0 8px 0 0"
+                              :min-height "2rem"}}})

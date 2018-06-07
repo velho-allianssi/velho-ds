@@ -84,7 +84,15 @@
                            :on-click-fn #(println "Small outline button with icon clicked")}]
 
    [:h2 "Fields"]
-   
+   (let [values [{:id 1 :value "First"}
+                 {:id 2 :value "Second"}
+                 {:id 3 :value "Third"}
+                 {:id 4 :value "Fourth"}
+                 {:id 5 :value "Fifth"}]]
+     [fields/dropdown-multiple {:heading "Text"
+                                :selected-fn #(js/alert (str "Selected value: " %))
+                                :options values
+                                :no-selection-text "- No selection -"}])
    [:h3 "Keyvalue"]
    [fields/keyvalue {:label "Otsikko" 
                      :content "Arvo"}]
@@ -95,12 +103,20 @@
                         :on-change-fn #(println %)}]
 
    [fields/multiline-field "Textfield"]
+   
    (let [values [{:id 1 :value "First"}
                  {:id 2 :value "Second"}]]
      [fields/dropdown-menu {:heading "Text"
                             :selected-fn #(js/alert (str "Selected value: " %))
                             :options values
-                            :no-selection-text "- No selection -"}])])
+                            :no-selection-text "- No selection -"}])
+   
+   (let [values [{:id 1 :value "First"}
+                 {:id 2 :value "Second"}]]
+     [fields/dropdown-multiple {:heading "Text"
+                                :selected-fn #(js/alert (str "Selected value: " %))
+                                :options values
+                                :no-selection-text "- No selection -"}])])
 
 (defn page [nav]
   (tpl/default {:navigation nav
