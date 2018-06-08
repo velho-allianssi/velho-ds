@@ -29,7 +29,8 @@
                    :grid-column-end "3"
                    :grid-row-start "2"
                    :grid-row-end "3"
-                   :background-color "#FEFEFE"})
+                   :background-color "#FEFEFE"
+                   :overflow-y "auto"})
 
 (defn default [content]
   [:div (use-style grid)
