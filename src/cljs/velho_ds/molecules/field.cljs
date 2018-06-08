@@ -1,5 +1,7 @@
 (ns velho-ds.molecules.field
-  (:require [reagent.core :as r]
+  (:require [clojure.string :as string]
+            [clojure.set :as set]
+            [reagent.core :as r]
             [stylefy.core :as stylefy]
             [velho-ds.molecules.style.field :as style]
             [velho-ds.atoms.button :as buttons]))
@@ -55,7 +57,7 @@
     [:i.material-icons (stylefy/use-style style/icon) "arrow_drop_down"]]])
 
 
-(defn dropdown-multiple [{:keys [heading selected-fn options preselected-values default-value no-selection-text]}]
+(defn dropdown-multiple2 [{:keys [heading selected-fn options preselected-values default-value no-selection-text]}]
   (let [selected-options (r/atom (or preselected-values []))
         dropdown-multiple-open? (r/atom false)]
 
@@ -82,3 +84,74 @@
                               (:value %)) options))]
         [:span (stylefy/use-style style/dropdown-heading) heading]
         [:i.material-icons (stylefy/use-style style/icon) "arrow_drop_down"]]])))
+
+
+
+
+;; ---------------
+;; FILTERABLE-LIST
+;; ---------------
+(defn- list-item [{:keys [on-click-fn content]}]
+  [:li (stylefy/use-style {:border-bottom "1px solid lightgray"
+                           :display "block"
+                           :padding "0.5rem"}
+                          {:on-click #(on-click-fn content)
+                           :key content}) content])
+
+(defn- selected-list-items [{:keys [on-click-fn content]}]
+  [:li (stylefy/use-style {:background-color "cyan"
+                           :margin "4px 0.5rem"}
+                          {:on-click #(on-click-fn content)
+                           :key content}) content])
+
+(defn- search-in-list [collection search-word]
+  (filter #(string/includes? (string/lower-case %) search-word) collection))
+
+(defn dropdown-multiple [{:keys [heading selected-fn options preselected-values default-value no-selection-text]}]
+  (let [items #{"Nina" "Kimmo" "Mikko" "Saara" "Jaakko" "Tuomas" "Ville" "Heikki"}
+        state (r/atom {:items items
+                       :selectable items
+                       :filtered-selectable items
+                       :typed-text ""
+                       :selected-items []})
+        selectable (r/atom items)
+        filtered-selectable (r/atom @selectable)
+        typed-text (r/atom "")
+        selected-items (r/atom [])
+        input-value-changed-fn #(do
+                                  (reset! typed-text %)
+                                  (reset! filtered-selectable (search-in-list @selectable %)))
+        list-item-selected-fn (fn [selected]
+                                (do
+                                  (swap! selected-items conj selected)
+                                  (reset! typed-text "")
+                                  (reset! selectable (set/difference @selectable (into #{} @selected-items)))
+                                  (reset! filtered-selectable @selectable)))
+        selected-list-item-selected-fn (fn [selected]
+                                         (do
+                                           (reset! selected-items (set/difference (into #{} @selected-items) #{selected}))
+                                           (swap! selectable conj selected)
+                                           (swap! filtered-selectable conj selected)))]
+    (fn []
+      [:div (stylefy/use-style {:border "1px solid black"})
+       [:div (stylefy/use-style {:border "1px solid red"})
+        [:div (stylefy/use-style {:display "inline-block"})
+         (into [:ul]
+               (mapv #(vector selected-list-items {:on-click-fn selected-list-item-selected-fn
+                                                   :content %}) @selected-items))]
+        [:div (stylefy/use-style {:display "block"
+                                  :background-color "springgreen"})
+         [:input (stylefy/use-style {:background "none"
+                                     :border 0
+                                     :display "inline-block"
+                                     :height "1rem"
+                                     :width "100%"}
+                                    {:type "text"
+                                     :on-change #(-> % .-target .-value input-value-changed-fn)
+                                     :value @typed-text})]]]
+       [:div (stylefy/use-style {:border "1px solid yellow"})
+        (into [:ul (stylefy/use-style {:list-style-type "none"
+                                       :margin 0
+                                       :padding 0})]
+              (mapv #(vector list-item {:on-click-fn list-item-selected-fn
+                                        :content %}) (apply sorted-set @filtered-selectable)))]])))
