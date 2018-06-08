@@ -114,31 +114,27 @@
                        :filtered-selectable items
                        :typed-text ""
                        :selected-items []})
-        selectable (r/atom items)
-        filtered-selectable (r/atom @selectable)
-        typed-text (r/atom "")
-        selected-items (r/atom [])
         input-value-changed-fn #(do
-                                  (reset! typed-text %)
-                                  (reset! filtered-selectable (search-in-list @selectable %)))
+                                  (swap! state assoc :typed-text %)
+                                  (swap! state assoc :filtered-selectable (search-in-list (:selectable @state) %)))
         list-item-selected-fn (fn [selected]
                                 (do
-                                  (swap! selected-items conj selected)
-                                  (reset! typed-text "")
-                                  (reset! selectable (set/difference @selectable (into #{} @selected-items)))
-                                  (reset! filtered-selectable @selectable)))
+                                  (swap! state assoc :selected-items (conj (:selected-items @state) selected))
+                                  (swap! state assoc :typed-text "")
+                                  (swap! state assoc :selectable (set/difference (:selectable @state) (into #{} (:selected-items @state))))
+                                  (swap! state assoc :filtered-selectable (:selectable @state))))
         selected-list-item-selected-fn (fn [selected]
                                          (do
-                                           (reset! selected-items (set/difference (into #{} @selected-items) #{selected}))
-                                           (swap! selectable conj selected)
-                                           (swap! filtered-selectable conj selected)))]
+                                           (swap! state assoc :selected-items (set/difference (into #{} (:selected-items @state)) #{selected}))
+                                           (swap! state assoc :selectable (conj (:selectable @state) selected))
+                                           (swap! state assoc :filtered-selectable (conj (:filtered-selectable @state) selected))))]
     (fn []
       [:div (stylefy/use-style {:border "1px solid black"})
        [:div (stylefy/use-style {:border "1px solid red"})
         [:div (stylefy/use-style {:display "inline-block"})
          (into [:ul]
                (mapv #(vector selected-list-items {:on-click-fn selected-list-item-selected-fn
-                                                   :content %}) @selected-items))]
+                                                   :content %}) (:selected-items @state)))]
         [:div (stylefy/use-style {:display "block"
                                   :background-color "springgreen"})
          [:input (stylefy/use-style {:background "none"
@@ -148,10 +144,10 @@
                                      :width "100%"}
                                     {:type "text"
                                      :on-change #(-> % .-target .-value input-value-changed-fn)
-                                     :value @typed-text})]]]
+                                     :value (:typed-text @state)})]]]
        [:div (stylefy/use-style {:border "1px solid yellow"})
         (into [:ul (stylefy/use-style {:list-style-type "none"
                                        :margin 0
                                        :padding 0})]
               (mapv #(vector list-item {:on-click-fn list-item-selected-fn
-                                        :content %}) (apply sorted-set @filtered-selectable)))]])))
+                                        :content %}) (apply sorted-set (:filtered-selectable @state))))]])))
