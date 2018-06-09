@@ -86,10 +86,11 @@
                  {:id 2 :value "Second"}
                  {:id 3 :value "Third"}
                  {:id 4 :value "Fourth"}
-                 {:id 5 :value "Fifth"}]]
-     [fields/dropdown-multiple {:heading "Text"
-                                :selected-fn #(js/alert (str "Selected value: " %))
-                                :options values
+                 {:id 5 :value "Fifth"}]
+         options ["Nina" "Kimmo" "Mikko" "Saara" "Jaakko" "Tuomas" "Ville" "Heikki"]]
+     [fields/dropdown-multiple2 {:heading "Text"
+                                :selected-fn #(println (str "Selected values: " %))
+                                :options options
                                 :no-selection-text "- No selection -"}])
    [:h3 "Keyvalue"]
    [fields/keyvalue {:label "Otsikko" 

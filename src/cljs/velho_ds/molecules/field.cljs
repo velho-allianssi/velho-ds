@@ -1,8 +1,14 @@
 (ns velho-ds.molecules.field
+  (:require-macros [cljs.core.async.macros :as m :refer [go]])
   (:require [clojure.string :as string]
             [clojure.set :as set]
+            [cljs.core.async :refer [chan close!]]
             [reagent.core :as r]
             [stylefy.core :as stylefy]
+            [velho-ds.tokens.color :as color]
+            [velho-ds.tokens.font :as font]
+            [velho-ds.tokens.font-size :as font-size]
+            [velho-ds.tokens.z-index :as z-index]
             [velho-ds.molecules.style.field :as style]
             [velho-ds.atoms.button :as buttons]))
 
@@ -57,7 +63,7 @@
     [:i.material-icons (stylefy/use-style style/icon) "arrow_drop_down"]]])
 
 
-(defn dropdown-multiple2 [{:keys [heading selected-fn options preselected-values default-value no-selection-text]}]
+(defn dropdown-multiple [{:keys [heading selected-fn options preselected-values default-value no-selection-text]}]
   (let [selected-options (r/atom (or preselected-values []))
         dropdown-multiple-open? (r/atom false)]
 
@@ -70,9 +76,9 @@
                                                {:on-mouseDown (fn [_] (println "click"))})
                                     [buttons/secondary-small {:content (:value %)}]) @selected-options)
 
-                      [:input (merge (stylefy/use-style style/input-field-multiple-input)
-                                     {:on-focus (fn [_] (reset! dropdown-multiple-open? true))
-                                      :on-blur  (fn [_] (reset! dropdown-multiple-open? false))})]))]
+                     [:input (merge (stylefy/use-style style/input-field-multiple-input)
+                                    {:on-focus (fn [_] (reset! dropdown-multiple-open? true))
+                                     :on-blur  (fn [_] (reset! dropdown-multiple-open? false))})]))]
         [:div (merge (stylefy/use-style style/droplist) (if @dropdown-multiple-open? {:style {:display "inline"}} {:style {:display "none"}}))
          (into [:ul (stylefy/use-sub-style style/droplist :ul)]
                (mapv #(vector :li (merge (stylefy/use-sub-style style/droplist :li)
@@ -91,63 +97,125 @@
 ;; ---------------
 ;; FILTERABLE-LIST
 ;; ---------------
-(defn- list-item [{:keys [on-click-fn content]}]
-  [:li (stylefy/use-style {:border-bottom "1px solid lightgray"
+(defn- list-item [{:keys [on-click-fn content is-selected?]}]
+  [:li (stylefy/use-style {:background-color (if is-selected? color/color-primary color/color-neutral-1)
+                           :border-bottom "1px solid lightgray"
+                           :color (if is-selected? color/color-neutral-2 color/color-black)
+                           :cursor "pointer"
                            :display "block"
-                           :padding "0.5rem"}
+                           :padding "0.5rem"
+                           ::stylefy/mode {:hover {:background-color color/color-primary
+                                                   :color color/color-neutral-2}}}
                           {:on-click #(on-click-fn content)
                            :key content}) content])
 
 (defn- selected-list-items [{:keys [on-click-fn content]}]
-  [:li (stylefy/use-style {:background-color "cyan"
-                           :margin "4px 0.5rem"}
-                          {:on-click #(on-click-fn content)
+  [:li (stylefy/use-style {:background-color color/color-neutral-5
+                           :color color/color-neutral-2
+                           :cursor "pointer"
+                           :display "inline-block"
+                           :margin "4px"
+                           :padding "0.5rem"}
+                          {:on-mouse-down #(on-click-fn content)
                            :key content}) content])
 
 (defn- search-in-list [collection search-word]
   (filter #(string/includes? (string/lower-case %) search-word) collection))
 
-(defn dropdown-multiple [{:keys [heading selected-fn options preselected-values default-value no-selection-text]}]
-  (let [items #{"Nina" "Kimmo" "Mikko" "Saara" "Jaakko" "Tuomas" "Ville" "Heikki"}
-        state (r/atom {:items items
-                       :selectable items
-                       :filtered-selectable items
-                       :typed-text ""
-                       :selected-items []})
-        input-value-changed-fn #(do
-                                  (swap! state assoc :typed-text %)
-                                  (swap! state assoc :filtered-selectable (search-in-list (:selectable @state) %)))
-        list-item-selected-fn (fn [selected]
-                                (do
-                                  (swap! state assoc :selected-items (conj (:selected-items @state) selected))
-                                  (swap! state assoc :typed-text "")
-                                  (swap! state assoc :selectable (set/difference (:selectable @state) (into #{} (:selected-items @state))))
-                                  (swap! state assoc :filtered-selectable (:selectable @state))))
-        selected-list-item-selected-fn (fn [selected]
-                                         (do
-                                           (swap! state assoc :selected-items (set/difference (into #{} (:selected-items @state)) #{selected}))
-                                           (swap! state assoc :selectable (conj (:selectable @state) selected))
-                                           (swap! state assoc :filtered-selectable (conj (:filtered-selectable @state) selected))))]
+(defn- remove-from-vector [vect values]
+  (assert (vector? vect))
+  (let [remove-from (into #{} vect)
+        to-be-removed (if (coll? values)
+                        (into #{} values)
+                        #{values})]
+    (into [] (set/difference remove-from to-be-removed))))
+
+(defn- timeout [ms]
+  (let [c (chan)]
+    (js/setTimeout (fn [] (close! c)) ms)
+    c))
+
+(defn dropdown-multiple2 [{:keys [heading selected-fn options preselected-values default-value no-selection-text]}]
+  (assert (fn? selected-fn) ":selected-fn function is required for dropdown-multiple")
+  (assert (vector? options) ":options vector is required for dropdown-multiple")
+  (let [state (r/atom {:options options
+                       :input-text ""
+                       :selected-items []
+                       :selected-idx nil
+                       :selected-from-filter ""
+                       :focus false})
+        input-value-changed-fn #(swap! state assoc :input-text %)
+        list-item-selected-fn #(do
+                                 (swap! state update-in [:selected-items] conj %)
+                                 (swap! state assoc :input-text "")
+                                 (swap! state assoc :selected-idx nil)
+                                 (selected-fn (:selected-items @state)))
+        selected-list-item-selected-fn #(do
+                                          (swap! state update-in [:selected-items] remove-from-vector %)
+                                          (selected-fn (:selected-items @state)))
+        selectable-items #(remove-from-vector (:options @state) (:selected-items @state))
+        filtered-selections #(into []
+                                   (apply sorted-set
+                                          (search-in-list
+                                            (selectable-items)
+                                            (:input-text @state))))
+        key-press-handler-fn (fn [key]
+                               (when (and (= key "ArrowDown")
+                                          (or (and (nil? (:selected-idx @state)) ; For the case there is only one item in the suggestion list
+                                                   (= (count (filtered-selections)) 1))
+                                              (< (:selected-idx @state) (dec (count (filtered-selections))))))
+                                 (if (nil? (:selected-idx @state))
+                                   (swap! state assoc :selected-idx 0)
+                                   (swap! state update-in [:selected-idx] inc))
+                                 (swap! state assoc :selected-from-filter (nth (filtered-selections) (:selected-idx @state))))
+                               (when (and (= key "ArrowUp") (> (:selected-idx @state) 0))
+                                 (swap! state update-in [:selected-idx] dec)
+                                 (swap! state assoc :selected-from-filter (nth (filtered-selections) (:selected-idx @state))))
+                               (when (and (= key "Enter"))
+                                 (when (not (nil? (:selected-idx @state)))
+                                   (list-item-selected-fn (nth (filtered-selections) (:selected-idx @state))))
+                                 (swap! state assoc :selected-idx nil)
+                                 (swap! state assoc :selected-from-filter "")))]
     (fn []
-      [:div (stylefy/use-style {:border "1px solid black"})
-       [:div (stylefy/use-style {:border "1px solid red"})
-        [:div (stylefy/use-style {:display "inline-block"})
-         (into [:ul]
+      [:div (stylefy/use-style {:border "1px solid black"
+                                :position "relative"})
+       [:div
+        [:div
+         (into [:ul (stylefy/use-style {:list-style-type "none"
+                                        :margin 0
+                                        :padding 0})]
                (mapv #(vector selected-list-items {:on-click-fn selected-list-item-selected-fn
                                                    :content %}) (:selected-items @state)))]
-        [:div (stylefy/use-style {:display "block"
-                                  :background-color "springgreen"})
+        [:div
          [:input (stylefy/use-style {:background "none"
                                      :border 0
+                                     :box-sizing "border-box"
                                      :display "inline-block"
-                                     :height "1rem"
-                                     :width "100%"}
+                                     :font-family font/font-family-text
+                                     :font-weight font/font-weight-base
+                                     :font-size font-size/font-size-base
+                                     :padding "0.5rem"
+                                     :width "100%"
+                                     ::stylefy/mode {:focus {:outline "none"}}
+                                     ::stylefy/vendors ["webkit" "moz" "o"]
+                                     ::stylefy/auto-prefix #{:outline}}
                                     {:type "text"
                                      :on-change #(-> % .-target .-value input-value-changed-fn)
-                                     :value (:typed-text @state)})]]]
-       [:div (stylefy/use-style {:border "1px solid yellow"})
+                                     :on-focus #(swap! state assoc :focus true)
+                                     :on-blur #(swap! state assoc :focus false)
+                                     :on-key-down #(-> % .-key key-press-handler-fn)
+                                     :value (:input-text @state)})]]]
+       [:div (stylefy/use-style {:border-top (str "1px solid " color/color-primary)
+                                 :max-height (str "calc(4*" font-size/font-size-base " + 8*0.5rem + 4*1px)")
+                                 :overflow-y "auto"
+                                 :position "absolute"
+                                 :width "100%"
+                                 :z-index z-index/z-index-sticky
+                                 :display (if (:focus @state) "block" "none")})
         (into [:ul (stylefy/use-style {:list-style-type "none"
                                        :margin 0
                                        :padding 0})]
-              (mapv #(vector list-item {:on-click-fn list-item-selected-fn
-                                        :content %}) (apply sorted-set (:filtered-selectable @state))))]])))
+              (mapv #(do
+                       (vector list-item {:on-click-fn list-item-selected-fn
+                                          :is-selected? (= (:selected-from-filter @state) %)
+                                          :content %})) (filtered-selections)))]])))
