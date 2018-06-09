@@ -107,7 +107,8 @@
                            ::stylefy/mode {:hover {:background-color color/color-primary
                                                    :color color/color-neutral-2}}}
                           {:on-click #(on-click-fn content)
-                           :key content}) content])
+                           :key content
+                           :class "dropdown-multi"}) content])
 
 (defn- selected-list-items [{:keys [on-click-fn content]}]
   [:li (stylefy/use-style {:background-color color/color-neutral-5
@@ -117,7 +118,8 @@
                            :margin "4px"
                            :padding "0.5rem"}
                           {:on-mouse-down #(on-click-fn content)
-                           :key content}) content])
+                           :key content
+                           :class "dropdown-multi"}) content])
 
 (defn- search-in-list [collection search-word]
   (filter #(string/includes? (string/lower-case %) search-word) collection))
@@ -129,11 +131,6 @@
                         (into #{} values)
                         #{values})]
     (into [] (set/difference remove-from to-be-removed))))
-
-(defn- timeout [ms]
-  (let [c (chan)]
-    (js/setTimeout (fn [] (close! c)) ms)
-    c))
 
 (defn dropdown-multiple2 [{:keys [heading selected-fn options preselected-values default-value no-selection-text]}]
   (assert (fn? selected-fn) ":selected-fn function is required for dropdown-multiple")
@@ -175,46 +172,61 @@
                                  (when (not (nil? (:selected-idx @state)))
                                    (list-item-selected-fn (nth (filtered-selections) (:selected-idx @state))))
                                  (swap! state assoc :selected-idx nil)
-                                 (swap! state assoc :selected-from-filter "")))]
+                                 (swap! state assoc :selected-from-filter ""))
+                               (when (= key "Tab")
+                                 (swap! state assoc :focus false)))
+        global-click-handler #(let [target (.-target %)]
+                                (if (empty? (search-in-list (string/split (-> target .-className) #" ") "dropdown-multi"))
+                                    (swap! state assoc :focus false)))
+        addEventListener #(.addEventListener (.getElementById js/document "app") "click" global-click-handler)] ;; Do global eventlistener for catching the click outside
     (fn []
       [:div (stylefy/use-style {:border "1px solid black"
-                                :position "relative"})
-       [:div
-        [:div
+                                :position "relative"}
+                               {:class "dropdown-multi"})
+
+       [:div {:class "dropdown-multi"}
+        [:div {:class "dropdown-multi"}
          (into [:ul (stylefy/use-style {:list-style-type "none"
                                         :margin 0
-                                        :padding 0})]
+                                        :padding 0}
+                                       {:class "dropdown-multi"})]
                (mapv #(vector selected-list-items {:on-click-fn selected-list-item-selected-fn
                                                    :content %}) (:selected-items @state)))]
-        [:div
+        [:div {:class "dropdown-multi"}
          [:input (stylefy/use-style {:background "none"
-                                     :border 0
+                                     :border (str "1px solid " color/color-neutral-3)
                                      :box-sizing "border-box"
                                      :display "inline-block"
                                      :font-family font/font-family-text
                                      :font-weight font/font-weight-base
                                      :font-size font-size/font-size-base
+                                     :margin "0.5rem"
                                      :padding "0.5rem"
-                                     :width "100%"
+                                     :width "calc(100% - 1rem)"
                                      ::stylefy/mode {:focus {:outline "none"}}
                                      ::stylefy/vendors ["webkit" "moz" "o"]
                                      ::stylefy/auto-prefix #{:outline}}
                                     {:type "text"
                                      :on-change #(-> % .-target .-value input-value-changed-fn)
-                                     :on-focus #(swap! state assoc :focus true)
-                                     :on-blur #(swap! state assoc :focus false)
                                      :on-key-down #(-> % .-key key-press-handler-fn)
-                                     :value (:input-text @state)})]]]
-       [:div (stylefy/use-style {:border-top (str "1px solid " color/color-primary)
+                                     :on-focus #(do
+                                                  (swap! state assoc :focus true)
+                                                  (addEventListener))
+                                     :value (:input-text @state)
+                                     :class "dropdown-multi"})]]]
+       [:div (stylefy/use-style {:border (str "1px solid " color/color-neutral-5)
+                                 :border-top (str "1px solid " color/color-primary)
                                  :max-height (str "calc(4*" font-size/font-size-base " + 8*0.5rem + 4*1px)")
                                  :overflow-y "auto"
                                  :position "absolute"
-                                 :width "100%"
+                                 :width "calc(100% - 2px)"
                                  :z-index z-index/z-index-sticky
-                                 :display (if (:focus @state) "block" "none")})
+                                 :display (if (:focus @state) "block" "none")}
+                                {:class "dropdown-multi"})
         (into [:ul (stylefy/use-style {:list-style-type "none"
                                        :margin 0
-                                       :padding 0})]
+                                       :padding 0}
+                                      {:class "dropdown-multi"})]
               (mapv #(do
                        (vector list-item {:on-click-fn list-item-selected-fn
                                           :is-selected? (= (:selected-from-filter @state) %)
