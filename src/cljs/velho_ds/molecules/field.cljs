@@ -10,7 +10,8 @@
             [velho-ds.tokens.font-size :as font-size]
             [velho-ds.tokens.z-index :as z-index]
             [velho-ds.molecules.style.field :as style]
-            [velho-ds.atoms.button :as buttons]))
+            [velho-ds.atoms.button :as buttons]
+            [velho-ds.atoms.icon :as icon]))
 
 (defn merge-styles [a b]
   {:style (merge (:style a) (:style b))})
@@ -202,7 +203,7 @@
                                      :font-size font-size/font-size-base
                                      :margin "0.5rem"
                                      :padding "0.5rem"
-                                     :width "calc(100% - 1rem)"
+                                     :width "calc(100% - 2.5rem)"
                                      ::stylefy/mode {:focus {:outline "none"}}
                                      ::stylefy/vendors ["webkit" "moz" "o"]
                                      ::stylefy/auto-prefix #{:outline}}
@@ -213,7 +214,8 @@
                                                   (swap! state assoc :focus true)
                                                   (addEventListener))
                                      :value (:input-text @state)
-                                     :class "dropdown-multi"})]]]
+                                     :class "dropdown-multi"})]
+         [icon/icon {:name "arrow_drop_down"}]]]
        [:div (stylefy/use-style {:border (str "1px solid " color/color-neutral-5)
                                  :border-top (str "1px solid " color/color-primary)
                                  :max-height (str "calc(4*" font-size/font-size-base " + 8*0.5rem + 4*1px)")
