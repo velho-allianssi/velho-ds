@@ -100,7 +100,6 @@
 ;; ---------------
 (defn- list-item [{:keys [on-click-fn content is-selected?]}]
   [:li (stylefy/use-style {:background-color (if is-selected? color/color-primary color/color-neutral-1)
-                           :border-bottom "1px solid lightgray"
                            :color (if is-selected? color/color-neutral-2 color/color-black)
                            :cursor "pointer"
                            :display "block"
@@ -120,7 +119,11 @@
                            :padding "0.5rem"}
                           {:on-mouse-down #(on-click-fn content)
                            :key content
-                           :class "dropdown-multi"}) content])
+                           :class "dropdown-multi"})
+   [:span (stylefy/use-style {:margin-right "0.5rem"}) content]
+   [icon/icon {:name "cancel"
+               :styles {:top "3px"
+                        :font-size "1rem"}}]])
 
 (defn- search-in-list [collection search-word]
   (filter #(string/includes? (string/lower-case %) search-word) collection))
@@ -181,8 +184,7 @@
                                     (swap! state assoc :focus false)))
         addEventListener #(.addEventListener (.getElementById js/document "app") "click" global-click-handler)] ;; Do global eventlistener for catching the click outside
     (fn []
-      [:div (stylefy/use-style {:border "1px solid black"
-                                :position "relative"}
+      [:div (stylefy/use-style {:position "relative"}
                                {:class "dropdown-multi"})
 
        [:div {:class "dropdown-multi"}
@@ -193,17 +195,18 @@
                                        {:class "dropdown-multi"})]
                (mapv #(vector selected-list-items {:on-click-fn selected-list-item-selected-fn
                                                    :content %}) (:selected-items @state)))]
-        [:div {:class "dropdown-multi"}
+        [:div  (stylefy/use-style {:background-color color/color-neutral-1
+                                   :border-bottom (str "1px solid " color/color-neutral-5)}
+                                  {:class "dropdown-multi"})
          [:input (stylefy/use-style {:background "none"
-                                     :border (str "1px solid " color/color-neutral-3)
+                                     :border 0
                                      :box-sizing "border-box"
                                      :display "inline-block"
                                      :font-family font/font-family-text
                                      :font-weight font/font-weight-base
                                      :font-size font-size/font-size-base
-                                     :margin "0.5rem"
                                      :padding "0.5rem"
-                                     :width "calc(100% - 2.5rem)"
+                                     :width "calc(100% - 1.5rem)"
                                      ::stylefy/mode {:focus {:outline "none"}}
                                      ::stylefy/vendors ["webkit" "moz" "o"]
                                      ::stylefy/auto-prefix #{:outline}}
@@ -216,12 +219,11 @@
                                      :value (:input-text @state)
                                      :class "dropdown-multi"})]
          [icon/icon {:name "arrow_drop_down"}]]]
-       [:div (stylefy/use-style {:border (str "1px solid " color/color-neutral-5)
-                                 :border-top (str "1px solid " color/color-primary)
+       [:div (stylefy/use-style {:box-shadow "0 2px 2px 0 rgba(0,0,0,.5)"
                                  :max-height (str "calc(4*" font-size/font-size-base " + 8*0.5rem + 4*1px)")
                                  :overflow-y "auto"
                                  :position "absolute"
-                                 :width "calc(100% - 2px)"
+                                 :width "100%"
                                  :z-index z-index/z-index-sticky
                                  :display (if (:focus @state) "block" "none")}
                                 {:class "dropdown-multi"})
