@@ -84,6 +84,10 @@
                            :on-click-fn #(println "Small outline button with icon clicked")}]
 
    [:h2 "Fields"]
+
+   [:h2 "input with validation"]
+   [fields/input-field2 {:content "something"
+                         :on-change-fn #(println %)}]
    
    [:h3 "Keyvalue"]
    [fields/keyvalue {:label "Otsikko" 

@@ -53,3 +53,31 @@
                 options))
     [:span (stylefy/use-style style/dropdown-heading) heading]
     [:i.material-icons (stylefy/use-style style/icon) "arrow_drop_down"]]])
+
+;;;;;;;;;;;;;;;;;;;;;;
+
+(defn is-number? [my-text]
+  (def pat (re-pattern "\\d+"))
+  (re-find pat my-text)
+  )
+
+(defn message-text [input-text]
+  (let[valid-message "is text"
+       invalid-message "not text"]
+    (if(nil?(is-number? input-text))
+      (do (println "nil") valid-message)
+      (do (println "has numbers") invalid-message)
+      )))
+
+(defn input-field2 [{:keys [content on-change-fn]}]
+  (let [input-text (r/atom content)
+        update-and-send (fn [val]
+                          (reset! input-text val)
+                          (on-change-fn @input-text))]
+    (fn []
+      [:div
+       [:label (stylefy/use-style style/element)
+        [:input (stylefy/use-style style/input-field {:required "required"
+                                                      :on-change #(-> % .-target .-value update-and-send)
+                                                      :value @input-text})]
+        [:span (stylefy/use-style style/input-field-heading) (message-text @input-text)]]])))
