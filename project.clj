@@ -2,7 +2,7 @@
   :description "FIXME: write description"
   :url "https://github.com/trinne/velho-ds"
   :license {:name "Eclipse Public License"
-            :url "http://www.eclipse.org/legal/epl-v10.html"}
+            :url  "http://www.eclipse.org/legal/epl-v10.html"}
 
   :dependencies [[org.clojure/clojure "1.9.0"]
 
@@ -12,57 +12,64 @@
                  ;; Yaml
                  [io.forward/yaml "1.0.8"]
 
-
                  ;; Front end
                  [org.clojure/clojurescript "1.10.238"]
                  [reagent "0.8.0"]
-                 [stylefy "1.5.0"]]
+                 [stylefy "1.5.0"]
+                 [devcards "0.2.5"]]
 
-  :plugins [[lein-cljsbuild "1.1.5"]
+  :plugins [[lein-cljsbuild "1.1.5" :exclusions [[org.clojure/clojure]]]
             [lein-figwheel "0.5.15"]]
 
   :source-paths ["src/clj" "src/cljs"]
+  :test-paths ["test/clj" "test/cljs"]
 
   :main ^:skip-aot velho-ds.main
 
   :min-lein-version "2.5.0"
-  :clean-targets ^{:protect false}
- [:target-path
-  [:cljsbuild :builds :app :compiler :output-dir]
-  [:cljsbuild :builds :app :compiler :output-to]]
+  :clean-targets ^{:protect false} [:target-path
+                                    [:cljsbuild :builds :dev :compiler :output-dir]
+                                    [:cljsbuild :builds :dev :compiler :output-to]
+                                    [:cljsbuild :builds :test :compiler :output-dir]
+                                    [:cljsbuild :builds :test :compiler :output-to]]
 
- :resource-paths ["public"]
+  :resource-paths ["public"]
 
   :figwheel {:http-server-root "."
-             :nrepl-port 7002
-             :nrepl-middleware ["cemerick.piggieback/wrap-cljs-repl"]
-             :css-dirs ["public/css"]}
+             :css-dirs         ["public/css"]}
+  :cljsbuild {:builds [{:id "dev"
+                        :source-paths ["src/cljs" "env/dev/cljs"]
+                        :compiler {:main                 "velho-ds.dev"
+                                   :output-to            "public/js/app.js"
+                                   :output-dir           "public/js/out"
+                                   :asset-path           "js/out"
+                                   :source-map-timestamp true
+                                   :optimizations        :none
+                                   :pretty-print         true}
+                        :figwheel {:open-urls ["http://localhost:3449/index.html"]}}
 
-  :cljsbuild {:builds {:app
-                       {:source-paths ["src/cljs" "env/dev/cljs"]
-                        :compiler
-                        {:main "velho-ds.dev"
-                         :output-to "public/js/app.js"
-                         :output-dir "public/js/out"
-                         :asset-path "js/out"
-                         :source-map true
-                         :optimizations :none
-                         :pretty-print true}
-                        :figwheel
-                        {:on-jsload "velho-ds.core/mount-root"
-                         :open-urls ["http://localhost:3449/index.html"]}}
-                       :release
-                       {:source-paths ["src/cljs" "env/prod/cljs"]
-                        :compiler
-                        {:output-to "public/js/velho-ds.js"
-                         :output-dir "public/js/release"
-                         :asset-path "js/out"
-                         :optimizations :advanced
-                         :pretty-print false}}}}
+                       {:id "test"
+                        :source-paths ["src/cljs" "env/dev/cljs" "test/cljs"]
+                        :compiler {:output-to            "public/js/test/tests.js"
+                                   :output-dir           "public/js/test/out"
+                                   :optimizations        :whitespace
+                                   :pretty-print         true}
+                        :figwheel {:open-urls ["http://localhost:3449/index.html"]}}
 
-  :aliases {"package" ["do" "clean" ["cljsbuild" "once" "release"]]}
+                       {:id "devcards"
+                        :source-paths ["src/cljs" "env/dev/cljs" "test/cljs"]
+                        :figwheel {:devcards true}
+                        :compiler {:main                 "velho-ds.dev"
+                                   :asset-path           "js/out"
+                                   :output-to            "public/js/devcards.js"
+                                   :output-dir           "public/js/devcards/out"
+                                   :source-map-timestamp true
+                                   :optimizations        :none}}]}
+
+  :aliases {"dev" ["do" "clean"
+                   ["figwheel"]]
+            "prod" ["do" "clean"
+                    ["cljsbuild" "once" "release"]]}
 
   :profiles {:dev {:dependencies [[binaryage/devtools "0.9.7"]
-                                  [figwheel-sidecar "0.5.15"]
-                                  [org.clojure/tools.nrepl "0.2.13"]
-                                  [com.cemerick/piggieback "0.2.2"]]}})
+                                  [clj-chrome-devtools "20180528"]]}})

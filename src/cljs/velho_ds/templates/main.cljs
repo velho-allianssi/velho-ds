@@ -34,5 +34,5 @@
 (defn default [content]
   [:div (use-style grid)
    [:div (use-style top-right) (heading/main (:heading content))]
-   [:div (use-style bottom-left)(navigation/nested-navigation (:navigation content))]
+   #_[:div (use-style bottom-left)(navigation/nested-navigation (:navigation content))]
    [:div (use-style bottom-right)[:section (:main-content content)]]])
