@@ -13,5 +13,5 @@ after_success:
   - mkdir -p docs
   - cp -r ./public ./docs
   - git add docs
-  - git commit --message "Travis build: $TRAVIS_BUILD_NUMBER"
+  - git commit --message \"Travis build\"
   - git push --quiet origin master:master
