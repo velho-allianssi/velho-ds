@@ -15,8 +15,7 @@
                  ;; Front end
                  [org.clojure/clojurescript "1.10.238"]
                  [reagent "0.8.0"]
-                 [stylefy "1.5.0"]
-                 [devcards "0.2.5"]]
+                 [stylefy "1.5.0"]]
 
   :plugins [[lein-cljsbuild "1.1.5" :exclusions [[org.clojure/clojure]]]
             [lein-figwheel "0.5.15"]]
@@ -53,18 +52,7 @@
                         :compiler {:output-to            "public/js/test/tests.js"
                                    :output-dir           "public/js/test/out"
                                    :optimizations        :whitespace
-                                   :pretty-print         true}
-                        :figwheel {:open-urls ["http://localhost:3449/index.html"]}}
-
-                       {:id "devcards"
-                        :source-paths ["src/cljs" "env/dev/cljs" "test/cljs"]
-                        :figwheel {:devcards true}
-                        :compiler {:main                 "velho-ds.dev"
-                                   :asset-path           "js/out"
-                                   :output-to            "public/js/devcards.js"
-                                   :output-dir           "public/js/devcards/out"
-                                   :source-map-timestamp true
-                                   :optimizations        :none}}]}
+                                   :pretty-print         true}}]}
 
   :aliases {"dev" ["do" "clean"
                    ["figwheel"]]
