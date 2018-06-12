@@ -1,0 +1,1 @@
+{:output-to "public/js/test/tests.js", :output-dir "public/js/test/out", :optimizations :whitespace, :pretty-print true, :main "clj-chrome-devtools-runner", :warnings {:single-segment-namespace false}}
