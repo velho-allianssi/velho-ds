@@ -7,7 +7,7 @@ jdk:
 - oraclejdk8
 
 before_install:
-  - chmod +x ./travis/push.sh
+  - chmod +x .travis/push.sh
 
 script: lein do clean, deps, compile, test, uberjar, cljsbuild once release
 
