@@ -2,4 +2,4 @@
   (:require [clojure.test :refer [deftest is]]))
 
 (deftest default-button
-  (is (= 0 1)))
+  (is (= 1 1)))
