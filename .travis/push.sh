@@ -7,6 +7,8 @@ git remote add origin https://${GH_TOKEN}@github.com/velho-allianssi/velho-ds.gi
 git checkout master
 
 cp -R public docs/
+mkdir -p docs/js
+cp target/js/app.js docs/js/app.js
 git add docs
 git commit --message "Travis build: $TRAVIS_BUILD_NUMBER"
 
