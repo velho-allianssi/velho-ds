@@ -6,10 +6,8 @@ git remote rm origin
 git remote add origin https://${GH_TOKEN}@github.com/velho-allianssi/velho-ds.git
 git checkout master
 
-mkdir -p docs
-cp -r ./public/ ./docs
+cp -R public docs/
 git add docs
 git commit --message "Travis build: $TRAVIS_BUILD_NUMBER"
 
 git push origin master
-
