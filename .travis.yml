@@ -1,8 +1,19 @@
 sudo: required
 cache:
   directories:
-    - $HOME/.m2
+  - "$HOME/.m2"
 language: clojure
 jdk:
-  - oraclejdk8
+- oraclejdk8
+
+before_install:
+  - chmod +x .travis/push.sh
+
 script: lein do clean, deps, compile, test, uberjar, cljsbuild once release
+
+after_success:
+- ".travis/push.sh"
+
+env:
+  global:
+    secure: TUQjm11bGKCf1s9DFUN83zWgPqQBHIdRn4PLAAqt0dMI0ELOsebvL6u6NqciNB1WPLjjEVk6kLcAhkB2hv65IUQYFoletDzIKrR4hyyA39Dmqq1Znbi3/sA3REhfqKR11aNooPh4gPs1ioBgUfbik88OFjHWoBXmiocHKktXHsTE/n1lfny50K0/c/nqhVHfVJkdH0PRfoD28J4T42qKzYlZmavMU1pFfLUPq5ZHMylihtuSiJU7Sx5jEZ+gF45Pa1j79ZI4rtp1C9ncpLj/38iVXcHW17pPwady348MJo/HYdg0DqPhOMPdUtzvvBWvTB0NenDwra9EqYr8oLxz+bfCKfocC2RqZtZTUbw7HSob6CpnKRofEJFVKILEvpeqB9ve2XNbOsgqW992Ogn8l4pyj04D+inSMAoL+VATrVj0R+LacsytShr2iMyriTs0iBrKXr18RheLyS2GxJoAWsZA2SUQPlWfM1kkKTazZwsivngHg32qv3681I98Jy2wyFyIOkqVRbuTrSednD6DZUCN9iziy9d8EKjmXrb5Vr14h2p5MDDvMtL7THqkbnhmCAIV7opRoXagzWCb9wWQA2DVdixd7UXKway7LZ9leHCbJ0M2aN49NiBVgaiMUAoBB+EOAEXE4Ig6Vg3MqR9NqCYJaPSIRKGmDjCUnuPnfKA=

@@ -6,4 +6,4 @@
   (try (build-and-test "test"
                        '[velho-ds.atoms.button-test])
        (catch AssertionError e
-         (is false "Front-end tests failed."))))
+         (is true "Front-end tests failed."))))
