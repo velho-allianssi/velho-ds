@@ -89,6 +89,11 @@
                            :on-click-fn #(println "Small outline button with icon clicked")}]
 
    [:h2 "Fields"]
+   (let [options ["John" "Sandra" "Matt" "Will" "Kate" "Alex" "Keith" "Melinda"]]
+     [fields/dropdown-multiple {:heading "Text"
+                                :selected-fn #(println (str "Selected values: " %))
+                                :options options
+                                :no-selection-text "- No selection -"}])
    [:h3 "Keyvalue"]
    [fields/keyvalue {:label "Title"
                      :content "Arvo"}]
@@ -99,6 +104,7 @@
                         :on-change-fn #(println %)}]
 
    [fields/multiline-field "Textfield"]
+
    (let [values [{:id 1 :value "First"}
                  {:id 2 :value "Second"}]]
      [fields/dropdown-menu {:heading "Text"
