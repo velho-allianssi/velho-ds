@@ -4,7 +4,6 @@ git config --global user.name "Travis CI"
 
 mkdir -p docs
 cp -r ./public ./docs
-git checkout -b master
 git add docs
 git commit --message "Travis build: $TRAVIS_BUILD_NUMBER"
 
