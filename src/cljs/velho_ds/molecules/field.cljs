@@ -10,7 +10,6 @@
             [velho-ds.tokens.font-size :as font-size]
             [velho-ds.tokens.z-index :as z-index]
             [velho-ds.molecules.style.field :as style]
-            [velho-ds.atoms.button :as buttons]
             [velho-ds.atoms.icon :as icon]))
 
 (defn merge-styles [a b]
@@ -63,41 +62,6 @@
     [:span (stylefy/use-style style/dropdown-heading) heading]
     [:i.material-icons (stylefy/use-style style/icon) "arrow_drop_down"]]])
 
-
-(defn dropdown-multiple [{:keys [heading selected-fn options preselected-values default-value no-selection-text]}]
-  (let [selected-options (r/atom (or preselected-values []))
-        dropdown-multiple-open? (r/atom false)]
-
-    (fn []
-      [:div
-       [:label (stylefy/use-style style/element)
-        [:div (stylefy/use-style style/input-field)
-         (into [:ul (stylefy/use-sub-style style/input-field-multiple :ul)]
-               (conj (mapv #(vector :li (merge (stylefy/use-sub-style style/input-field-multiple :li)
-                                               {:on-mouseDown (fn [_] (println "click"))})
-                                    [buttons/secondary-small {:content (:value %)}]) @selected-options)
-
-                     [:input (merge (stylefy/use-style style/input-field-multiple-input)
-                                    {:on-focus (fn [_] (reset! dropdown-multiple-open? true))
-                                     :on-blur  (fn [_] (reset! dropdown-multiple-open? false))})]))]
-        [:div (merge (stylefy/use-style style/droplist) (if @dropdown-multiple-open? {:style {:display "inline"}} {:style {:display "none"}}))
-         (into [:ul (stylefy/use-sub-style style/droplist :ul)]
-               (mapv #(vector :li (merge (stylefy/use-sub-style style/droplist :li)
-                                         {:on-mouseDown (fn [_]
-                                                          (println "--->>> selected options" (pr-str @selected-options))
-                                                          (println "--->>> %" (pr-str %))
-                                                          (reset! selected-options (conj @selected-options %))
-                                                          (println @selected-options))})
-                              (:value %)) options))]
-        [:span (stylefy/use-style style/dropdown-heading) heading]
-        [:i.material-icons (stylefy/use-style style/icon) "arrow_drop_down"]]])))
-
-
-
-
-;; ---------------
-;; FILTERABLE-LIST
-;; ---------------
 (defn- list-item [{:keys [on-click-fn content is-selected?]}]
   [:li (stylefy/use-style {:background-color (if is-selected? color/color-primary color/color-neutral-1)
                            :color (if is-selected? color/color-neutral-2 color/color-black)
@@ -136,7 +100,7 @@
                         #{values})]
     (into [] (set/difference remove-from to-be-removed))))
 
-(defn dropdown-multiple2 [{:keys [heading selected-fn options preselected-values default-value no-selection-text]}]
+(defn dropdown-multiple [{:keys [heading selected-fn options preselected-values default-value no-selection-text]}]
   (assert (fn? selected-fn) ":selected-fn function is required for dropdown-multiple")
   (assert (vector? options) ":options vector is required for dropdown-multiple")
   (let [state (r/atom {:options options

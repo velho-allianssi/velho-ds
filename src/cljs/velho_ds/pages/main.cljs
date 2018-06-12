@@ -82,13 +82,8 @@
                            :on-click-fn #(println "Small outline button with icon clicked")}]
 
    [:h2 "Fields"]
-   (let [values [{:id 1 :value "First"}
-                 {:id 2 :value "Second"}
-                 {:id 3 :value "Third"}
-                 {:id 4 :value "Fourth"}
-                 {:id 5 :value "Fifth"}]
-         options ["Nina" "Kimmo" "Mikko" "Saara" "Jaakko" "Tuomas" "Ville" "Heikki"]]
-     [fields/dropdown-multiple2 {:heading "Text"
+   (let [options ["John" "Sandra" "Matt" "Will" "Kate" "Alex" "Keith" "Melinda"]]
+     [fields/dropdown-multiple {:heading "Text"
                                 :selected-fn #(println (str "Selected values: " %))
                                 :options options
                                 :no-selection-text "- No selection -"}])
