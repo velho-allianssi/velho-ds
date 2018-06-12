@@ -1,1 +1,0 @@
-{:output-wrapper false, :output-to "docs/js/app.js", :externs ["closure-js/externs"], :libs ["closure-js/libs"], :output-dir "docs/js/out", :optimizations :whitespace}
