@@ -1,4 +1,5 @@
 (ns velho-ds.pages.main
+  (:require-macros [velho-ds.macros :refer [$->]])
   (:require [velho-ds.templates.main :as tpl]
             [velho-ds.atoms.button :as buttons]
             [velho-ds.molecules.field :as fields]
@@ -21,9 +22,15 @@
                      :on-click-fn #(println "Default button with icon and text clicked")}]
    [buttons/default {:content "Update"
                      :on-click-fn #(println "Default button with text clicked")}]
+   [:div {:style {:border "1px solid lightgray"
+                  :margin "1rem"}}
+    ($-> [buttons/default {:content "Update"
+                           :icon "autorenew"
+                           :on-click-fn #(println "Default button with icon and text clicked")}])]
+
    [buttons/default {:icon "autorenew"
                      :on-click-fn #(println "Default button with icon clicked")}]
-   
+
    [buttons/primary {:content "Update"
                      :icon "autorenew"
                      :on-click-fn #(println "Primary button with icon and text clicked")}]
@@ -31,7 +38,7 @@
                      :on-click-fn #(println "Primary button with text clicked")}]
    [buttons/primary {:icon "autorenew"
                      :on-click-fn #(println "Primary button with icon clicked")}]
-   
+
    [buttons/secondary {:content "Update"
                        :icon "autorenew"
                        :on-click-fn #(println "Secondary button with icon and text clicked")}]
@@ -39,7 +46,7 @@
                        :on-click-fn #(println "Secondary button with text clicked")}]
    [buttons/secondary {:icon "autorenew"
                        :on-click-fn #(println "Secondary button with icon clicked")}]
-   
+
    [buttons/outline {:content "Update"
                      :icon "autorenew"
                      :on-click-fn #(println "Outline button with icon and text clicked")}]
@@ -64,7 +71,7 @@
                            :on-click-fn #(println "Small primary button with text clicked")}]
    [buttons/primary-small {:icon "autorenew"
                            :on-click-fn #(println "Small primary button with icon clicked")}]
-   
+
    [buttons/secondary-small {:content "Update"
                              :icon "autorenew"
                              :on-click-fn #(println "Small secondary button with icon and text clicked")}]
@@ -72,7 +79,7 @@
                              :on-click-fn #(println "Small secondary button with text clicked")}]
    [buttons/secondary-small {:icon "autorenew"
                              :on-click-fn #(println "Small secondary button with icon clicked")}]
-   
+
    [buttons/outline-small {:content "Update"
                            :icon "autorenew"
                            :on-click-fn #(println "Small outline button with icon and text clicked")}]
@@ -83,9 +90,9 @@
 
    [:h2 "Fields"]
    [:h3 "Keyvalue"]
-   [fields/keyvalue {:label "Otsikko" 
+   [fields/keyvalue {:label "Title"
                      :content "Arvo"}]
-   
+
    [:h3 "Input"]
    [fields/input-field {:label "Name"
                         :content "Pekka"
