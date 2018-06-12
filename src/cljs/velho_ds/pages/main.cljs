@@ -7,6 +7,8 @@
 
 (defn page-content []
   [:div
+   [:h1 "Content header"]
+   [:p "Page content explained here with MD-file."]
    [:h2 "Typography"]
    [:h1 "Header H1"]
    [:h2 "Header H2"]
@@ -22,8 +24,7 @@
                      :on-click-fn #(println "Default button with icon and text clicked")}]
    [buttons/default {:content "Update"
                      :on-click-fn #(println "Default button with text clicked")}]
-   [:div {:style {:border "1px solid lightgray"
-                  :margin "1rem"}}
+   [:div.code-example
     ($-> [buttons/default {:content "Update"
                            :icon "autorenew"
                            :on-click-fn #(println "Default button with icon and text clicked")}])]
@@ -140,5 +141,5 @@
 
 (defn page [nav]
   (tpl/default {:navigation nav
-                :heading "Reagent Design System"
+                :heading "Page Name"
                 :main-content (page-content)}))
