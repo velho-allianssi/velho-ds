@@ -1,0 +1,15 @@
+// Compiled by ClojureScript 1.10.238 {:static-fns true, :optimize-constants true}
+goog.provide('velho_ds.templates.main');
+goog.require('cljs.core');
+goog.require('cljs.core.constants');
+goog.require('stylefy.core');
+goog.require('velho_ds.organisms.heading');
+goog.require('velho_ds.organisms.navigation');
+velho_ds.templates.main.grid = new cljs.core.PersistentArrayMap(null, 6, [cljs.core.cst$kw$display,"grid",cljs.core.cst$kw$grid_DASH_template_DASH_rows,"6rem auto",cljs.core.cst$kw$grid_DASH_template_DASH_columns,"200px auto",cljs.core.cst$kw$width,"100vw",cljs.core.cst$kw$height,"100vh",cljs.core.cst$kw$background_DASH_color,"#333333"], null);
+velho_ds.templates.main.top_left = new cljs.core.PersistentArrayMap(null, 4, [cljs.core.cst$kw$grid_DASH_column_DASH_start,"1",cljs.core.cst$kw$grid_DASH_column_DASH_end,"2",cljs.core.cst$kw$grid_DASH_row_DASH_start,"1",cljs.core.cst$kw$grid_DASH_row_DASH_end,"2"], null);
+velho_ds.templates.main.top_right = new cljs.core.PersistentArrayMap(null, 4, [cljs.core.cst$kw$grid_DASH_column_DASH_start,"2",cljs.core.cst$kw$grid_DASH_column_DASH_end,"3",cljs.core.cst$kw$grid_DASH_row_DASH_start,"1",cljs.core.cst$kw$grid_DASH_row_DASH_end,"2"], null);
+velho_ds.templates.main.bottom_left = new cljs.core.PersistentArrayMap(null, 4, [cljs.core.cst$kw$grid_DASH_column_DASH_start,"1",cljs.core.cst$kw$grid_DASH_column_DASH_end,"2",cljs.core.cst$kw$grid_DASH_row_DASH_start,"2",cljs.core.cst$kw$grid_DASH_row_DASH_end,"3"], null);
+velho_ds.templates.main.bottom_right = new cljs.core.PersistentArrayMap(null, 5, [cljs.core.cst$kw$grid_DASH_column_DASH_start,"2",cljs.core.cst$kw$grid_DASH_column_DASH_end,"3",cljs.core.cst$kw$grid_DASH_row_DASH_start,"2",cljs.core.cst$kw$grid_DASH_row_DASH_end,"3",cljs.core.cst$kw$background_DASH_color,"#FEFEFE"], null);
+velho_ds.templates.main.default$ = (function velho_ds$templates$main$default(content){
+return new cljs.core.PersistentVector(null, 5, 5, cljs.core.PersistentVector.EMPTY_NODE, [cljs.core.cst$kw$div,stylefy.core.use_style.cljs$core$IFn$_invoke$arity$1(velho_ds.templates.main.grid),new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [cljs.core.cst$kw$div,stylefy.core.use_style.cljs$core$IFn$_invoke$arity$1(velho_ds.templates.main.top_right),velho_ds.organisms.heading.main(cljs.core.cst$kw$heading.cljs$core$IFn$_invoke$arity$1(content))], null),new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [cljs.core.cst$kw$div,stylefy.core.use_style.cljs$core$IFn$_invoke$arity$1(velho_ds.templates.main.bottom_left),velho_ds.organisms.navigation.nested_navigation(cljs.core.cst$kw$navigation.cljs$core$IFn$_invoke$arity$1(content))], null),new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [cljs.core.cst$kw$div,stylefy.core.use_style.cljs$core$IFn$_invoke$arity$1(velho_ds.templates.main.bottom_right),new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [cljs.core.cst$kw$section,cljs.core.cst$kw$main_DASH_content.cljs$core$IFn$_invoke$arity$1(content)], null)], null)], null);
+});
