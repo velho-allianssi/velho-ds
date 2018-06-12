@@ -6,3 +6,5 @@ language: clojure
 jdk:
   - oraclejdk8
 script: lein do clean, deps, compile, test, uberjar, cljsbuild once release
+after_success:
+  - .travis/push.sh

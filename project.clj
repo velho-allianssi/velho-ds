@@ -54,9 +54,8 @@
                                    :pretty-print true}}
                        {:id "release"
                         :source-paths ["src/cljs" "env/dev/cljs" "test/cljs"]
-                        :compiler {:output-to "docs/js/app.js"
-                                   :output-dir "docs/js/out"
-                                   :optimizations :whitespace}}]}
+                        :compiler {:output-to "target/js/app.js"
+                                   :optimizations :advanced}}]}
 
   :aliases {"dev" ["do" "clean"
                    ["figwheel"]]
