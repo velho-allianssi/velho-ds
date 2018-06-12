@@ -8,4 +8,4 @@ git add docs
 git commit --message "Travis build: $TRAVIS_BUILD_NUMBER"
 
 git remote add ds-origin https://${GH_TOKEN}@github.com/velho-allianssi/velho-ds.git > /dev/null 2>&1
-git push --quiet --set-upstream ds-origin gh-pages
+git push --quiet --set-upstream ds-origin master
