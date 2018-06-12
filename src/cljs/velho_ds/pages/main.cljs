@@ -88,7 +88,7 @@
                                 :options options
                                 :no-selection-text "- No selection -"}])
    [:h3 "Keyvalue"]
-   [fields/keyvalue {:label "Otsikko" 
+   [fields/keyvalue {:label "Title"
                      :content "Arvo"}]
    
    [:h3 "Input"]
