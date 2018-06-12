@@ -2,7 +2,7 @@
   :description "FIXME: write description"
   :url "https://github.com/trinne/velho-ds"
   :license {:name "Eclipse Public License"
-            :url  "http://www.eclipse.org/legal/epl-v10.html"}
+            :url "http://www.eclipse.org/legal/epl-v10.html"}
 
   :dependencies [[org.clojure/clojure "1.9.0"]
 
@@ -35,24 +35,28 @@
   :resource-paths ["public"]
 
   :figwheel {:http-server-root "."
-             :css-dirs         ["public/css"]}
+             :css-dirs ["public/css"]}
   :cljsbuild {:builds [{:id "dev"
                         :source-paths ["src/cljs" "env/dev/cljs"]
-                        :compiler {:main                 "velho-ds.dev"
-                                   :output-to            "public/js/app.js"
-                                   :output-dir           "public/js/out"
-                                   :asset-path           "js/out"
+                        :compiler {:main "velho-ds.dev"
+                                   :output-to "public/js/app.js"
+                                   :output-dir "public/js/out"
+                                   :asset-path "js/out"
                                    :source-map-timestamp true
-                                   :optimizations        :none
-                                   :pretty-print         true}
+                                   :optimizations :none
+                                   :pretty-print true}
                         :figwheel {:open-urls ["http://localhost:3449/index.html"]}}
-
                        {:id "test"
                         :source-paths ["src/cljs" "env/dev/cljs" "test/cljs"]
-                        :compiler {:output-to            "public/js/test/tests.js"
-                                   :output-dir           "public/js/test/out"
-                                   :optimizations        :whitespace
-                                   :pretty-print         true}}]}
+                        :compiler {:output-to "public/js/test/tests.js"
+                                   :output-dir "public/js/test/out"
+                                   :optimizations :whitespace
+                                   :pretty-print true}}
+                       {:id "release"
+                        :source-paths ["src/cljs" "env/dev/cljs" "test/cljs"]
+                        :compiler {:output-to "docs/js/app.js"
+                                   :output-dir "docs/js/out"
+                                   :optimizations :whitespace}}]}
 
   :aliases {"dev" ["do" "clean"
                    ["figwheel"]]

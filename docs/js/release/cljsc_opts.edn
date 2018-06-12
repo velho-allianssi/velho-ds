@@ -1,0 +1,1 @@
+{:output-wrapper true, :output-to "public/js/velho-ds.js", :externs ["closure-js/externs"], :libs ["closure-js/libs"], :output-dir "public/js/release", :asset-path "js/out", :optimizations :advanced, :pretty-print false}
