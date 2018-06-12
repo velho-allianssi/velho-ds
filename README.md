@@ -1,4 +1,6 @@
 # Velho Design System
+[![Build Status](https://api.travis-ci.org/velho-allianssi/velho-ds.svg)](https://api.travis-ci.org/velho-allianssi/velho-ds)
+
 
 Velho Design System is a library for creating visual Styleguide / Storybook presentation of Reagent components.
 This library aims to ease the pain for developing front-end component system together with designers.
