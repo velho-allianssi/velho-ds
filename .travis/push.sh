@@ -3,12 +3,14 @@ git config --global user.email "travis@travis-ci.org"
 git config --global user.name "Travis CI"
 
 # git remote add ds-origin https://${GH_TOKEN}@github.com/velho-allianssi/velho-ds.git > /dev/null 2>&1
-git remote set-url origin https://${GH_TOKEN}@github.com/velho-allianssi/velho-ds.git
+git remote rm origin
+git remote add origin https://${GH_TOKEN}@github.com/velho-allianssi/velho-ds.git
+git checkout master
 
 mkdir -p docs
 cp -r ./public ./docs
 git add docs
 git commit --message "Travis build: $TRAVIS_BUILD_NUMBER"
 
-git push
+git push origin master
 
