@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+echo Test! 
 git config --global user.email "travis@travis-ci.org"
 git config --global user.name "Travis CI"
 git pull
