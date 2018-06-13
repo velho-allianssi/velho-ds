@@ -1,11 +1,66 @@
 (ns velho-ds.pages.main
   (:require-macros [velho-ds.macros :refer [$->]])
-  (:require [velho-ds.templates.main :as tpl]
+  (:require [reagent.session :as session]
+            [velho-ds.templates.main :as tpl]
             [velho-ds.atoms.button :as buttons]
             [velho-ds.molecules.field :as fields]
             [velho-ds.organisms.grid :as grid]))
 
-(defn page-content []
+(defmulti page-contents identity)
+
+(defmethod page-contents :index []
+  [:div
+   [:h2 "Fields"]
+   (let [options ["John" "Sandra" "Matt" "Will" "Kate" "Alex" "Keith" "Melinda"]]
+     [fields/dropdown-multiple {:heading "Text"
+                                :selected-fn #(println (str "Selected values: " %))
+                                :options options
+                                :no-selection-text "- No selection -"}])
+   [:h3 "Keyvalue"]
+   [fields/keyvalue {:label "Title"
+                     :content "Arvo"}]
+
+   [:h3 "Input"]
+   [fields/input-field {:label "Name"
+                        :content "Pekka"
+                        :on-change-fn #(println %)}]
+
+   [fields/multiline-field "Textfield"]
+
+   (let [values [{:id 1 :value "First"}
+                 {:id 2 :value "Second"}]]
+     [fields/dropdown-menu {:heading "Text"
+                            :selected-fn #(js/alert (str "Selected value: " %))
+                            :options values
+                            :no-selection-text "- No selection -"}])
+   [:h2 "Grid"]
+   [grid/grid-wrap {:rows 3
+                    :cols 3}
+    [grid/grid-cell {:col-start 1
+                     :col-end 4
+                     :style {:background-color "whitesmoke"
+                             :text-align "center"
+                             :border "1px solid silver"}} [:p "test"]]
+    [:div {:style {:background-color "whitesmoke"
+                   :text-align "center"
+                   :border "1px solid silver"}} [:p "2"]]
+    [:div {:style {:background-color "whitesmoke"
+                   :text-align "center"
+                   :border "1px solid silver"}} [:p "3"]]
+    [:div {:style {:background-color "whitesmoke"
+                   :text-align "center"
+                   :border "1px solid silver"}} [:p "4"]]
+    [:div {:style {:background-color "whitesmoke"
+                   :text-align "center"
+                   :border "1px solid silver"}} [:p "5"]]
+    [:div {:style {:background-color "whitesmoke"
+                   :text-align "center"
+                   :border "1px solid silver"}} [:p "6"]]
+    [:div {:style {:background-color "whitesmoke"
+                   :text-align "center"
+                   :border "1px solid silver"}} [:p "7"]]]])
+
+(defmethod page-contents :fonts []
   [:div
    [:h2 "Typography"]
    [:h1 "Header H1"]
@@ -13,8 +68,11 @@
    [:h3 "Header H3"]
    [:h4 "Header H4"]
    [:p "Paragraph text looks like this."]
-   [:small "Small text is much smaller than a paragraph."]
+   [:small "Small text is much smaller than a paragraph."]])
 
+
+(defmethod page-contents :buttons []
+  [:div
    [:h2 "Buttons"]
    [:h3 "Default"]
    [buttons/default {:content "Update"
@@ -86,59 +144,9 @@
    [buttons/outline-small {:content "Update"
                            :on-click-fn #(println "Small outline button with text clicked")}]
    [buttons/outline-small {:icon "autorenew"
-                           :on-click-fn #(println "Small outline button with icon clicked")}]
-
-   [:h2 "Fields"]
-   (let [options ["John" "Sandra" "Matt" "Will" "Kate" "Alex" "Keith" "Melinda"]]
-     [fields/dropdown-multiple {:heading "Text"
-                                :selected-fn #(println (str "Selected values: " %))
-                                :options options
-                                :no-selection-text "- No selection -"}])
-   [:h3 "Keyvalue"]
-   [fields/keyvalue {:label "Title"
-                     :content "Arvo"}]
-
-   [:h3 "Input"]
-   [fields/input-field {:label "Name"
-                        :content "Pekka"
-                        :on-change-fn #(println %)}]
-
-   [fields/multiline-field "Textfield"]
-
-   (let [values [{:id 1 :value "First"}
-                 {:id 2 :value "Second"}]]
-     [fields/dropdown-menu {:heading "Text"
-                            :selected-fn #(js/alert (str "Selected value: " %))
-                            :options values
-                            :no-selection-text "- No selection -"}])
-   [:h2 "Grid"]
-   [grid/grid-wrap {:rows 3
-                    :cols 3}
-    [grid/grid-cell {:col-start 1
-                     :col-end 4
-                     :style {:background-color "whitesmoke"
-                             :text-align "center"
-                             :border "1px solid silver"}} [:p "test"]]
-    [:div {:style {:background-color "whitesmoke"
-                   :text-align "center"
-                   :border "1px solid silver"}} [:p "2"]]
-    [:div {:style {:background-color "whitesmoke"
-                   :text-align "center"
-                   :border "1px solid silver"}} [:p "3"]]
-    [:div {:style {:background-color "whitesmoke"
-                   :text-align "center"
-                   :border "1px solid silver"}} [:p "4"]]
-    [:div {:style {:background-color "whitesmoke"
-                   :text-align "center"
-                   :border "1px solid silver"}} [:p "5"]]
-    [:div {:style {:background-color "whitesmoke"
-                   :text-align "center"
-                   :border "1px solid silver"}} [:p "6"]]
-    [:div {:style {:background-color "whitesmoke"
-                   :text-align "center"
-                   :border "1px solid silver"}} [:p "7"]]]])
+                           :on-click-fn #(println "Small outline button with icon clicked")}]])
 
 (defn page [nav]
   (tpl/default {:navigation nav
                 :heading "Reagent Design System"
-                :main-content (page-content)}))
+                :main-content (page-contents (:current-page (session/get :route)))}))
