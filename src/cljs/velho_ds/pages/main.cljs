@@ -3,7 +3,8 @@
   (:require [velho-ds.templates.main :as tpl]
             [velho-ds.atoms.button :as buttons]
             [velho-ds.molecules.field :as fields]
-            [velho-ds.organisms.grid :as grid]))
+            [velho-ds.organisms.grid :as grid]
+            [velho-ds.atoms.loader :as loaders]))
 
 (defn page-content []
   [:div
@@ -112,6 +113,11 @@
                             :selected-fn #(js/alert (str "Selected value: " %))
                             :options values
                             :no-selection-text "- No selection -"}])
+   [:h2 "Loaders"]
+   [:div.code-example ($-> [loaders/bar])]
+   [:div.code-example ($-> [loaders/bar {:percentage "50%"}])]
+   [:div.code-example ($-> [loaders/spinner])]
+
    [:h2 "Grid"]
    [grid/grid-wrap {:rows 3
                     :cols 3}
