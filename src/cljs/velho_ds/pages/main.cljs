@@ -4,7 +4,8 @@
             [velho-ds.atoms.button :as buttons]
             [velho-ds.molecules.field :as fields]
             [velho-ds.organisms.grid :as grid]
-            [velho-ds.atoms.loader :as loaders]))
+            [velho-ds.atoms.loader :as loaders]
+            [velho-ds.molecules.notification :as notifications]))
 
 (defn page-content []
   [:div
@@ -114,9 +115,16 @@
                             :options values
                             :no-selection-text "- No selection -"}])
    [:h2 "Loaders"]
-   [:div.code-example ($-> [loaders/bar])]
-   [:div.code-example ($-> [loaders/bar {:percentage "50%"}])]
-   [:div.code-example ($-> [loaders/spinner])]
+   [:div.code-example ($-> [loaders/progress-bar])]
+   [:div.code-example ($-> [loaders/progress-bar {:percentage "50%"}])]
+   [:div.code-example ($-> [loaders/pulse])]
+
+   [:h2 "Notification"]
+   [notifications/default {:icon-fn #(println "Default notification icon clicked")} [:span "Default notification"]]
+   [notifications/error {:icon-fn #(println "Error notification icon clicked")} [:span "Error notification"]]
+   [notifications/warning {:icon-fn #(println "Warning notification icon clicked")}[:span "Warning notification"] [:span {:style {:text-decoration "underline"}
+                                                                                                                          :on-click #(js/alert "Alert") } "Warning notification 2"]]
+   [notifications/success {:icon-fn #(println "Success notification icon clicked")} [:p {:style {:margin "0"}} "Success notification"]]
 
    [:h2 "Grid"]
    [grid/grid-wrap {:rows 3
