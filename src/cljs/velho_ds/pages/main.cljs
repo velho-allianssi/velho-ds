@@ -21,6 +21,7 @@
 
    [:h2 "Buttons"]
    [:h3 "Default"]
+
    [buttons/default {:content "Update"
                      :icon "autorenew"
                      :on-click-fn #(println "Default button with icon and text clicked")}]
@@ -120,11 +121,11 @@
    [:div.code-example ($-> [loaders/pulse])]
 
    [:h2 "Notification"]
-   [notifications/default {:icon-fn #(println "Default notification icon clicked")} [:span "Default notification"]]
-   [notifications/error {:icon-fn #(println "Error notification icon clicked")} [:span "Error notification"]]
-   [notifications/warning {:icon-fn #(println "Warning notification icon clicked")}[:span "Warning notification"] [:span {:style {:text-decoration "underline"}
-                                                                                                                          :on-click #(js/alert "Alert") } "Warning notification 2"]]
-   [notifications/success {:icon-fn #(println "Success notification icon clicked")} [:p {:style {:margin "0"}} "Success notification"]]
+   [notifications/default {:close-fn #(println "Default notification icon clicked")} [:span "Default notification"]]
+   [notifications/error {:close-fn #(println "Error notification icon clicked")} [:span "Error notification"]]
+   [notifications/warning {:close-fn #(println "Warning notification icon clicked")} [:span "Warning notification"] [:span {:style {:text-decoration "underline"}
+                                                                                                                           :on-click #(js/alert "Alert") } "Warning notification 2"]]
+   [notifications/success {:close-fn #(println "Success notification icon clicked")} [:p {:style {:margin "0"}} "Success notification"]]
 
    [:h2 "Grid"]
    [grid/grid-wrap {:rows 3

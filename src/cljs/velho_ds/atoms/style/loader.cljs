@@ -8,17 +8,14 @@
 
 (stylefy/keyframes "bar-calculating"
                    [:0%
-                    {:width "0%"
-                     :left "100%"}]
-                   [:40%
-                    {:width "50%"
-                     :left "50%"}]
-                   [:75%
-                    {:width "50%"
-                     :left "0%"}]
+                    {:opacity "0.0"
+                     :transform "scaleX(0)"}]
+                   [:30%
+                    {:opacity "1.0"
+                     :transform "scaleX(1)"}]
                    [:100%
-                    {:width "0%"
-                     :left "0%"}])
+                    {:opacity "0.0"
+                     :transform "scaleX(0)"}])
 
 (stylefy/keyframes "box-spinner"
                    [:0%
@@ -39,15 +36,14 @@
    :background color/color-primary
    :animation-duration timing/duration-x-slow
    :animation-iteration-count "infinite"
-   :animation-timing-function "linear"
-   :transition "width 1s"
+   :animation-timing-function "ease-in-out"
+   :transition (str "width " timing/duration-x-slow)
    ::stylefy/vendors ["webkit" "moz" "o"]
    ::stylefy/auto-prefix #{:transition}})
 
 (def bar-unknown
   (merge bar
-         {:width "100%"
-          :animation-name "bar-calculating"}))
+         {:animation-name "bar-calculating"}))
 
 (def spinner
   {:width spacing/space-base
@@ -59,5 +55,4 @@
    :animation-name "box-spinner"
    :animation-duration timing/duration-x-slow
    :animation-iteration-count "infinite"
-   :animation-timing-function "ease-in-out"
    })
