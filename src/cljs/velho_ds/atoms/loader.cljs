@@ -8,4 +8,4 @@
                         (use-style (merge style/bar-unknown styles)))]])
 
 (defn pulse [{:keys [styles]}]
-  [:div (use-style (merge style/spinner styles))])
+  [:div (use-style (merge style/pulse-animated styles))])

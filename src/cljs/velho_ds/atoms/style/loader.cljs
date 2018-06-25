@@ -31,8 +31,7 @@
    :width "100%"})
 
 (def bar
-  {:position "relative"
-   :height spacing/space-xx-small
+  {:height spacing/space-xx-small
    :background color/color-primary
    :animation-duration timing/duration-x-slow
    :animation-iteration-count "infinite"
@@ -45,7 +44,7 @@
   (merge bar
          {:animation-name "bar-calculating"}))
 
-(def spinner
+(def pulse-animated
   {:width spacing/space-base
    :height spacing/space-base
    :box-sizing "border-box"
