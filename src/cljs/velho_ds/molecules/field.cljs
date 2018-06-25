@@ -45,16 +45,13 @@
 (defn dropdown-menu [{:keys [heading selected-fn options default-value no-selection-text]}]
   [:div
    [:label (stylefy/use-style style/element)
-    (into [:select (stylefy/use-style
-                     style/dropdown
-                     {:on-change #(-> % .-target .-value selected-fn)})
+    (into [:select (stylefy/use-style style/dropdown {:value "value"
+                                                      :on-change #(-> % .-target .-value selected-fn)})
            (when (not default-value)
              [:option
               {:value    "value"
-               :selected "selected"
                :disabled "disabled"}
-              no-selection-text])
-           (stylefy/use-style style/dropdown)]
+              no-selection-text])]
           (mapv #(vector :option (merge {:value (:id %)}
                                         (when (= default-value %)
                                           {:selected "selected"}))

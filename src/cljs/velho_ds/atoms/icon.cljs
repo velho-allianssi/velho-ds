@@ -1,6 +1,6 @@
 (ns velho-ds.atoms.icon
   (:require [stylefy.core :refer [use-style]]
-            [velho-ds.atoms.style.icon :as s]))
+            [velho-ds.atoms.style.icon :as style]))
 
 (defn icon [{:keys [name styles]}]
-  [:i.material-icons (use-style (merge s/icon styles)) name])
+  [:i.material-icons (use-style (merge style/icon styles)) name])
