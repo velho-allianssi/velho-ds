@@ -3,6 +3,11 @@
             [stylefy.core :as stylefy]
             [velho-ds.molecules.style.field :as style]))
 
+(defn is-number? [my-text]
+  (def pat (re-pattern "\\d+"))
+  (re-find pat my-text)
+  )
+
 (defn merge-styles [a b]
   {:style (merge (:style a) (:style b))})
 
@@ -54,30 +59,48 @@
     [:span (stylefy/use-style style/dropdown-heading) heading]
     [:i.material-icons (stylefy/use-style style/icon) "arrow_drop_down"]]])
 
-;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;; muuta väriä
 
-(defn is-number? [my-text]
-  (def pat (re-pattern "\\d+"))
-  (re-find pat my-text)
-  )
-
-(defn message-text [input-text]
-  (let[valid-message "is text"
-       invalid-message "not text"]
+(defn message-color [input-text]
+  (let[valid-color "black"
+       invalid-color "#ff0000"]
     (if(nil?(is-number? input-text))
-      (do (println "nil") valid-message)
-      (do (println "has numbers") invalid-message)
+      valid-color
+      invalid-color
       )))
 
-(defn input-field2 [{:keys [content on-change-fn]}]
+(defn line-color [input-text]
+  (let[valid-color "white"
+       invalid-color "#ff0000"]
+    (if(nil?(is-number? input-text))
+      valid-color
+      invalid-color
+      )))
+
+(defn message-text [input-text ]
+  (let[valid-message ""
+       invalid-message "Error message"]
+    (if(nil?(is-number? input-text))
+      valid-message
+      invalid-message
+      )))
+
+(defn input-field2[{:keys [label content on-change-fn validation-fn]}]
   (let [input-text (r/atom content)
+        validation-message (r/atom nil)
         update-and-send (fn [val]
                           (reset! input-text val)
+                          (if validation-fn (reset! validation-message (validation-fn val)))
                           (on-change-fn @input-text))]
     (fn []
       [:div
        [:label (stylefy/use-style style/element)
-        [:input (stylefy/use-style style/input-field {:required "required"
-                                                      :on-change #(-> % .-target .-value update-and-send)
-                                                      :value @input-text})]
-        [:span (stylefy/use-style style/input-field-heading) (message-text @input-text)]]])))
+        [:input (stylefy/use-style (if @validation-message style/input-field-error
+                                                           style/input-field){:required "required"
+                                                                                    :on-change #(-> % .-target .-value update-and-send)
+                                                                                    :value @input-text})]
+        [:span  (if @validation-message (stylefy/use-style style/input-field-heading-error)
+                                        (stylefy/use-style style/input-field-heading)) label]
+        (if @validation-message
+          [:span (stylefy/use-style style/validation-message-error) @validation-message])
+        ]])))

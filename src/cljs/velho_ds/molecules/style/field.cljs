@@ -28,7 +28,7 @@
    :border-left "0"
    :border-right "0"
    :border-bottom (str border/border-default " solid")
-   :border-color color/color-neutral-3
+   :border-color color/color-primary
    ::stylefy/mode {:focus {:border-bottom (str border/border-large " solid")
                            :border-color color/color-primary}
                    :valid {:border-bottom (str border/border-default " solid")
@@ -36,13 +36,27 @@
                    :valid+span {:top "0"
                                 :cursor "inherit"
                                 :font-size font-size/font-size-small
-                                :color color/color-neutral-4}
+                               #_#_:color color/color-neutral-4}
                    :focus+span {:top "0"
                                 :cursor "inherit"
                                 :font-size font-size/font-size-small
-                                :color color/color-primary}}
+                               #_#_:color color/color-primary}}
    ::stylefy/vendors ["webkit" "moz" "o"]
    ::stylefy/auto-prefix #{:transition}})
+
+(def input-field-error
+  (merge input-field
+         { ::stylefy/mode {:focus {:border-bottom (str border/border-large " solid")
+                                   :border-color "red"}
+                           :valid+span {:top "0"
+                                        :cursor "inherit"
+                                        :font-size font-size/font-size-small
+                                        #_#_:color color/color-neutral-4}
+                           :focus+span {:top "0"
+                                        :cursor "inherit"
+                                        :font-size font-size/font-size-small
+                                        #_#_:color color/color-primary}}
+          }))
 
 (def text-field
   (merge input-field
@@ -57,8 +71,18 @@
    :transition (str "all " timing/duration-slow " ease-in-out")
    :width "100%"
    :cursor "text"
+   :color color/color-neutral-4
    ::stylefy/vendors ["webkit" "moz" "o"]
    ::stylefy/auto-prefix #{:transition}})
+
+(def input-field-heading-error
+  (merge input-field-heading {:color "red"}))
+
+(def validation-message-error
+  {:bottom "0px"
+   :position "absolute"
+   :font-size "14px"
+   :color "red"})
 
 (def dropdown-heading
   {:position "absolute"

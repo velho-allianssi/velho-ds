@@ -85,10 +85,38 @@
 
    [:h2 "Fields"]
 
-   [:h2 "input with validation"]
-   [fields/input-field2 {:content "something"
+
+   (defn validaatio [input-text]
+     (let[validaatio-viesti "virhe!"]
+       (if(= input-text "a")
+         validaatio-viesti
+         nil
+         )))
+
+   (defn is-number? [my-text]
+     (def pat (re-pattern "\\d+"))
+     (re-find pat my-text)
+     )
+
+   (defn message-text [input-text]
+     (let[invalid-message "error message"]
+       (if(nil?(is-number? input-text))
+         nil
+         invalid-message
+         )))
+
+   [:h3 "Validaatio"]
+   [fields/input-field2 {:label "input with colour validation test"
+                                        :content "jos 'a' niin virhe"
+                                        :validation-fn validaatio
+                                        :on-change-fn #(println %)}]
+
+   [fields/input-field2 {:label "input with colour validation test"
+                         :content "jos numeroita niin virhe"
+                         :validation-fn message-text
                          :on-change-fn #(println %)}]
-   
+
+
    [:h3 "Keyvalue"]
    [fields/keyvalue {:label "Otsikko" 
                      :content "Arvo"}]
