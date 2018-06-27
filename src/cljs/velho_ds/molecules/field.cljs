@@ -3,11 +3,6 @@
             [stylefy.core :as stylefy]
             [velho-ds.molecules.style.field :as style]))
 
-(defn is-number? [my-text]
-  (def pat (re-pattern "\\d+"))
-  (re-find pat my-text)
-  )
-
 (defn merge-styles [a b]
   {:style (merge (:style a) (:style b))})
 
@@ -58,32 +53,6 @@
                 options))
     [:span (stylefy/use-style style/dropdown-heading) heading]
     [:i.material-icons (stylefy/use-style style/icon) "arrow_drop_down"]]])
-
-;;;;;;;;;;;;;;;;;;;;;; muuta väriä
-
-(defn message-color [input-text]
-  (let[valid-color "black"
-       invalid-color "#ff0000"]
-    (if(nil?(is-number? input-text))
-      valid-color
-      invalid-color
-      )))
-
-(defn line-color [input-text]
-  (let[valid-color "white"
-       invalid-color "#ff0000"]
-    (if(nil?(is-number? input-text))
-      valid-color
-      invalid-color
-      )))
-
-(defn message-text [input-text ]
-  (let[valid-message ""
-       invalid-message "Error message"]
-    (if(nil?(is-number? input-text))
-      valid-message
-      invalid-message
-      )))
 
 (defn input-field2[{:keys [label content on-change-fn validation-fn]}]
   (let [input-text (r/atom content)

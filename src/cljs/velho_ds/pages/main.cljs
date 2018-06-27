@@ -85,7 +85,6 @@
 
    [:h2 "Fields"]
 
-
    (defn validaatio [input-text]
      (let[validaatio-viesti "virhe!"]
        (if(= input-text "a")
