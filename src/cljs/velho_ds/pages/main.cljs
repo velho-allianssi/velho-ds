@@ -3,6 +3,22 @@
             [velho-ds.atoms.button :as buttons]
             [velho-ds.molecules.field :as fields]))
 
+(defn validation-a [input-text]
+  (let[validaatio-viesti "error message!"]
+    (if(= input-text "a")
+      validaatio-viesti
+      nil)))
+
+(defn is-number? [my-text]
+  (let [pat (re-pattern "\\d+")]
+    (re-find pat my-text)))
+
+(defn validation-number [input-text]
+  (let[invalid-message "error message"]
+    (if(nil?(is-number? input-text))
+      nil
+      invalid-message)))
+
 (defn page-content []
   [:div
    [:p "This is the content of the Reagent Design System"]
@@ -85,45 +101,20 @@
 
    [:h2 "Fields"]
 
-   (defn validaatio [input-text]
-     (let[validaatio-viesti "virhe!"]
-       (if(= input-text "a")
-         validaatio-viesti
-         nil
-         )))
-
-   (defn is-number? [my-text]
-     (def pat (re-pattern "\\d+"))
-     (re-find pat my-text)
-     )
-
-   (defn message-text [input-text]
-     (let[invalid-message "error message"]
-       (if(nil?(is-number? input-text))
-         nil
-         invalid-message
-         )))
-
    [:h3 "Validaatio"]
-   [fields/input-field2 {:label "input with colour validation test"
-                                        :content "jos 'a' niin virhe"
-                                        :validation-fn validaatio
-                                        :on-change-fn #(println %)}]
+   [fields/input-field {:label "input with colour validation test"
+                                        :content "if 'a' then error"
+                                        :validation-fn validation-a}]
 
-   [fields/input-field2 {:label "input with colour validation test"
-                         :content "jos numeroita niin virhe"
-                         :validation-fn message-text
-                         :on-change-fn #(println %)}]
-
+   [fields/input-field {:label "input with colour validation test"
+                         :content "if numbers then error"
+                         :validation-fn validation-number}]
 
    [:h3 "Keyvalue"]
    [fields/keyvalue {:label "Otsikko" 
                      :content "Arvo"}]
    
    [:h3 "Input"]
-   [fields/input-field {:label "Name"
-                        :content "Pekka"
-                        :on-change-fn #(println %)}]
 
    [fields/multiline-field "Textfield"]
    (let [values [{:id 1 :value "First"}
