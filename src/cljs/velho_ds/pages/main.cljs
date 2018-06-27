@@ -5,7 +5,8 @@
             [velho-ds.molecules.field :as fields]
             [velho-ds.organisms.grid :as grid]
             [velho-ds.atoms.loader :as loaders]
-            [velho-ds.molecules.notification :as notifications]))
+            [velho-ds.molecules.notification :as notifications]
+            [velho-ds.molecules.tab :as tabs]))
 
 (defn page-content []
   [:div
@@ -21,6 +22,13 @@
 
    [:h2 "Buttons"]
    [:h3 "Default"]
+   [tabs/tabset {:style {:margin "0"}}
+    [tabs/default {:icon "close"
+                   :label "Perustiedot"
+                   :on-click-fn #(println "Default button with icon and text clicked")}]
+    [tabs/default {:icon "group_work"
+                   :label "Relaatiot"
+                   :on-click-fn #(println "Default button with icon and text clicked")}]]
 
    [buttons/default {:content "Update"
                      :icon "autorenew"

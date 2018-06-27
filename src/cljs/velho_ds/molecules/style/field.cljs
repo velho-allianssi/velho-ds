@@ -36,11 +36,11 @@
                    :valid+span {:top "0"
                                 :cursor "inherit"
                                 :font-size font-size/font-size-small
-                                :color color/color-neutral-4}
+                                }
                    :focus+span {:top "0"
                                 :cursor "inherit"
                                 :font-size font-size/font-size-small
-                                :color color/color-primary}}
+                                }}
    ::stylefy/vendors ["webkit" "moz" "o"]
    ::stylefy/auto-prefix #{:transition}})
 
