@@ -1,5 +1,5 @@
 (defproject velho-ds "0.0.0.12"
-  :description "FIXME: write description"
+  :description "Velho Allianssi Design System"
   :url "https://github.com/trinne/velho-ds"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}

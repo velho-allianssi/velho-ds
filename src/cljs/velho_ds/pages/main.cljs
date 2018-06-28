@@ -114,7 +114,7 @@
                                 :options options
                                 :no-selection-text "- No selection -"}])
 
-   [:h3 "Validaatio"]
+   [:h3 "Validation"]
    [fields/input-field {:label "Validation (validation-a)"
                         :content ""
                         :validation-fn (fn [input-text]
@@ -122,15 +122,6 @@
                                            (if(= input-text "a")
                                              validation-message
                                              nil)))}]
-
-   [fields/input-field {:label "Validation (validation-number)"
-                         :content ""
-                         :validation-fn (fn [input-text]
-                                          (let[validation-message "error message"
-                                               pat (re-pattern "\\d+")]
-                                            (if(re-find pat input-text)
-                                              validation-message
-                                              nil)))}]
 
    [:h3 "Keyvalue"]
    [fields/keyvalue {:label "Title"
