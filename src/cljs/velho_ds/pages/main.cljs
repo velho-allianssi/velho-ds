@@ -8,6 +8,22 @@
             [velho-ds.molecules.notification :as notifications]
             [velho-ds.molecules.tab :as tabs]))
 
+(defn validation-a [input-text]
+  (let[validaatio-viesti "error message!"]
+    (if(= input-text "a")
+      validaatio-viesti
+      nil)))
+
+(defn is-number? [my-text]
+  (let [pat (re-pattern "\\d+")]
+    (re-find pat my-text)))
+
+(defn validation-number [input-text]
+  (let[invalid-message "error message"]
+    (if(nil?(is-number? input-text))
+      nil
+      invalid-message)))
+
 (defn page-content []
   [:div
    [:h1 "Content header"]
@@ -21,53 +37,47 @@
    [:small "Small text is much smaller than a paragraph."]
 
    [:h2 "Buttons"]
-   [:h3 "Default"]
-   [tabs/tabset {:style {:margin "0"}}
-    [tabs/default {:icon "close"
-                   :label "Perustiedot"
-                   :on-click-fn #(println "Default button with icon and text clicked")}]
-    [tabs/default {:icon "group_work"
-                   :label "Relaatiot"
-                   :on-click-fn #(println "Default button with icon and text clicked")}]]
+   [:h3 "Default size"]
 
-   [buttons/default {:content "Update"
-                     :icon "autorenew"
-                     :on-click-fn #(println "Default button with icon and text clicked")}]
-   [buttons/default {:content "Update"
-                     :on-click-fn #(println "Default button with text clicked")}]
    [:div.code-example
-    ($-> [buttons/default {:content "Update"
+    ($-> [buttons/default {:content "Default"
                            :icon "autorenew"
                            :on-click-fn #(println "Default button with icon and text clicked")}])]
+
+   [buttons/default {:content "Default"
+                     :icon "autorenew"
+                     :on-click-fn #(println "Default button with icon and text clicked")}]
+   [buttons/default {:content "Default"
+                     :on-click-fn #(println "Default button with text clicked")}]
 
    [buttons/default {:icon "autorenew"
                      :on-click-fn #(println "Default button with icon clicked")}]
 
-   [buttons/primary {:content "Update"
+   [buttons/primary {:content "Primary"
                      :icon "autorenew"
                      :on-click-fn #(println "Primary button with icon and text clicked")}]
-   [buttons/primary {:content "Update"
+   [buttons/primary {:content "Primary"
                      :on-click-fn #(println "Primary button with text clicked")}]
    [buttons/primary {:icon "autorenew"
                      :on-click-fn #(println "Primary button with icon clicked")}]
 
-   [buttons/secondary {:content "Update"
+   [buttons/secondary {:content "Secondary"
                        :icon "autorenew"
                        :on-click-fn #(println "Secondary button with icon and text clicked")}]
-   [buttons/secondary {:content "Update"
+   [buttons/secondary {:content "Secondary"
                        :on-click-fn #(println "Secondary button with text clicked")}]
    [buttons/secondary {:icon "autorenew"
                        :on-click-fn #(println "Secondary button with icon clicked")}]
 
-   [buttons/outline {:content "Update"
+   [buttons/outline {:content "Outline"
                      :icon "autorenew"
                      :on-click-fn #(println "Outline button with icon and text clicked")}]
-   [buttons/outline {:content "Update"
+   [buttons/outline {:content "Outline"
                      :on-click-fn #(println "Outline button with text clicked")}]
    [buttons/outline {:icon "autorenew"
                      :on-click-fn #(println "Outline button with icon clicked")}]
 
-   [:h3 "Small"]
+   [:h3 "Small size"]
    [buttons/default-small {:content "Update"
                            :icon "autorenew"
                            :on-click-fn #(println "Small default button with icon and text clicked")}]
@@ -100,20 +110,40 @@
    [buttons/outline-small {:icon "autorenew"
                            :on-click-fn #(println "Small outline button with icon clicked")}]
 
+   [:h2 "Tabs"]
+
+   [tabs/tabset {:selected-id 1
+                 :style {:margin "0"}}
+    [tabs/default {:tab-id 1
+                   :icon "info"
+                   :label "Info"
+                   :on-click-fn #(println "Default tab clicked")}]
+    [tabs/default {:tab-id 2
+                   :icon "group_work"
+                   :label "Relations"
+                   :on-click-fn #(println "Default tab clicked")} ]]
+
    [:h2 "Fields"]
    (let [options ["John" "Sandra" "Matt" "Will" "Kate" "Alex" "Keith" "Melinda"]]
      [fields/dropdown-multiple {:heading "Text"
                                 :selected-fn #(println (str "Selected values: " %))
                                 :options options
                                 :no-selection-text "- No selection -"}])
+
+   [:h3 "Validaatio"]
+   [fields/input-field {:label "Validation (validation-a)"
+                        :content ""
+                        :validation-fn validation-a}]
+
+   [fields/input-field {:label "Validation (validation-number)"
+                         :content ""
+                         :validation-fn validation-number}]
+
    [:h3 "Keyvalue"]
    [fields/keyvalue {:label "Title"
-                     :content "Arvo"}]
+                     :content "Value"}]
 
    [:h3 "Input"]
-   [fields/input-field {:label "Name"
-                        :content "Pekka"
-                        :on-change-fn #(println %)}]
 
    [fields/multiline-field "Textfield"]
 

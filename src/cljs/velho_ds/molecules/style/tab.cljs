@@ -1,6 +1,5 @@
 (ns velho-ds.molecules.style.tab
   (:require [velho-ds.tokens.color :as color]
-            [velho-ds.tokens.spacing :as spacing]
             [stylefy.core :as stylefy]))
 
 (def tab
@@ -26,3 +25,7 @@
           ::stylefy/sub-styles {:a {:padding-right "16px"}}
           ::stylefy/mode {:hover {:color color/color-neutral-5}
                           :active {:border-bottom (str "2px solid " color/color-neutral-5)}}}))
+
+(def tabset
+  {:margin "0"
+   :padding "0"})
