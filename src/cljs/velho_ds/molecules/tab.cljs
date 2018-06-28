@@ -22,7 +22,6 @@
 (defn tabset [{:keys [selected-id styles]} & content]
   (when selected-id
     (reset! selected-tab selected-id))
-  (println (map (last [item content]) item))
   (fn []
     [:ul (stylefy/use-style (merge style/tabset styles))
      (map-indexed #(with-meta %2 {:key %1}) content)]))
