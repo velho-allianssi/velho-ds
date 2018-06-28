@@ -17,13 +17,12 @@
    [:small (stylefy/use-style style/keyvalue-label) label]
    [:p (stylefy/use-style style/keyvalue-content) content]])
 
-(defn input-field [{:keys [label content on-change-fn validation-fn]}]
+(defn input-field [{:keys [label content validation-fn]}]
   (let [input-text (r/atom content)
         validation-message (r/atom nil)
         update-and-send (fn [val]
                           (reset! input-text val)
-                          (when validation-fn (reset! validation-message (validation-fn val)))
-                          (on-change-fn @input-text))]
+                          (when validation-fn (reset! validation-message (validation-fn val))))]
     (fn []
       [:div
        [:label (stylefy/use-style style/element)

@@ -8,22 +8,6 @@
             [velho-ds.molecules.notification :as notifications]
             [velho-ds.molecules.tab :as tabs]))
 
-(defn validation-a [input-text]
-  (let[validaatio-viesti "error message!"]
-    (if(= input-text "a")
-      validaatio-viesti
-      nil)))
-
-(defn is-number? [my-text]
-  (let [pat (re-pattern "\\d+")]
-    (re-find pat my-text)))
-
-(defn validation-number [input-text]
-  (let[invalid-message "error message"]
-    (if(nil?(is-number? input-text))
-      nil
-      invalid-message)))
-
 (defn page-content []
   [:div
    [:h1 "Content header"]
@@ -133,11 +117,20 @@
    [:h3 "Validaatio"]
    [fields/input-field {:label "Validation (validation-a)"
                         :content ""
-                        :validation-fn validation-a}]
+                        :validation-fn (fn [input-text]
+                                         (let[validation-message "error message!"]
+                                           (if(= input-text "a")
+                                             validation-message
+                                             nil)))}]
 
    [fields/input-field {:label "Validation (validation-number)"
                          :content ""
-                         :validation-fn validation-number}]
+                         :validation-fn (fn [input-text]
+                                          (let[validation-message "error message"
+                                               pat (re-pattern "\\d+")]
+                                            (if(re-find pat input-text)
+                                              validation-message
+                                              nil)))}]
 
    [:h3 "Keyvalue"]
    [fields/keyvalue {:label "Title"
