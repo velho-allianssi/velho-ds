@@ -12,26 +12,28 @@
             [velho-ds.molecules.style.field :as style]
             [velho-ds.atoms.icon :as icon]))
 
-(defn merge-styles [a b]
-  {:style (merge (:style a) (:style b))})
-
 (defn keyvalue [{:keys [content label]}]
   [:div
    [:small (stylefy/use-style style/keyvalue-label) label]
    [:p (stylefy/use-style style/keyvalue-content) content]])
 
-(defn input-field [{:keys [content label on-change-fn]}]
+(defn input-field [{:keys [label content validation-fn]}]
   (let [input-text (r/atom content)
+        validation-message (r/atom nil)
         update-and-send (fn [val]
                           (reset! input-text val)
-                          (on-change-fn @input-text))]
+                          (when validation-fn (reset! validation-message (validation-fn val))))]
     (fn []
       [:div
        [:label (stylefy/use-style style/element)
-        [:input (stylefy/use-style style/input-field {:required  "required"
-                                                      :on-change #(-> % .-target .-value update-and-send)
-                                                      :value     @input-text})]
-        [:span (stylefy/use-style style/input-field-heading) label]]])))
+        [:input (stylefy/use-style (if @validation-message style/input-field-error
+                                                           style/input-field){:required "required"
+                                                                              :on-change #(-> % .-target .-value update-and-send)
+                                                                              :value @input-text})]
+        [:span  (if @validation-message (stylefy/use-style style/input-field-heading-error)
+                                        (stylefy/use-style style/input-field-heading)) label]
+        (when @validation-message
+          [:span (stylefy/use-style style/validation-message-error) @validation-message])]])))
 
 (defn multiline-field
   ([content]
@@ -45,7 +47,7 @@
 (defn dropdown-menu [{:keys [heading selected-fn options default-value no-selection-text]}]
   [:div
    [:label (stylefy/use-style style/element)
-    (into [:select (stylefy/use-style style/dropdown {:value "value"
+    (into [:select (stylefy/use-style style/dropdown {:defaultValue "value"
                                                       :on-change #(-> % .-target .-value selected-fn)})
            (when (not default-value)
              [:option
