@@ -6,7 +6,8 @@
             [velho-ds.organisms.grid :as grid]
             [velho-ds.atoms.loader :as loaders]
             [velho-ds.molecules.notification :as notifications]
-            [velho-ds.molecules.tab :as tabs]))
+            [velho-ds.molecules.tab :as tabs]
+            [velho-ds.atoms.table :as tables] ))
 
 (defn page-content []
   [:div
@@ -20,6 +21,43 @@
    [:p "Paragraph text looks like this."]
    [:small "Small text is much smaller than a paragraph."]
 
+   [tables/default {:headers [{:label    "Name"
+                               :key-path [:name]}
+                              {:label    "Tasks"
+                               :key-path [:tasks 0]}
+                              {:label    "Organization"
+                               :key-path [:organization 0 :org]}
+                              {:label    "State"
+                               :key-path [:state]}
+                              {:label    "Progress"
+                               :key-path [:element]}]
+                    :content [{:id           1
+                               :name         "Example 1"
+                               :tasks        ["Being amazing"]
+                               :organization [{:org "Amazing Organization"}]
+                               :state        "On going"
+                               :element      [loaders/progress-bar {:percentage "75%"}]}
+                              {:id           2
+                               :name         "Example 2"
+                               :tasks        ["Cleaning"]
+                               :organization [{:org "Clean Organization"}]
+                               :state        "Done"
+                               :element      [loaders/progress-bar {:percentage "100%"}]}
+                              {:id           3
+                               :name         "Example 3"
+                               :tasks        ["Foo"]
+                               :organization [{:org "Bar Organization"}]
+                               :state        "Starting"
+                               :element      [loaders/progress-bar]}]
+                    :footers [{:label "Name"
+                               :value "Total"}
+                              {:label "Tasks"
+                               :value nil}
+                              {:label "Organization"
+                               :value nil}
+                              {:label "Progress"
+                               :value nil}
+                              {:value [loaders/progress-bar {:percentage "58%"}]}]}]
    [:h2 "Buttons"]
    [:h3 "Default size"]
 

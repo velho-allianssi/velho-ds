@@ -32,3 +32,11 @@
   {:font-family font/font-family-text
    :font-size font-size/font-size-base
    :font-weight font/font-weight-bold})
+
+(def th
+  {:font-family font/font-family-heading
+   :font-size font-size/font-size-large
+   :font-weight font/font-weight-semi-bold})
+
+(def td
+  p)
