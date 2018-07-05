@@ -7,7 +7,7 @@
             [velho-ds.atoms.loader :as loaders]
             [velho-ds.molecules.notification :as notifications]
             [velho-ds.molecules.tab :as tabs]
-            [velho-ds.atoms.table :as tables] ))
+            [velho-ds.atoms.table :as tables]))
 
 (defn page-content []
   [:div
@@ -106,7 +106,7 @@
     [tabs/default {:tab-id 2
                    :icon "group_work"
                    :label "Relations"
-                   :on-click-fn #(println "Default tab clicked")} ]]
+                   :on-click-fn #(println "Default tab clicked")}]]
 
    [:h2 "Fields"]
    (let [options ["John" "Sandra" "Matt" "Will" "Kate" "Alex" "Keith" "Melinda"]]
@@ -119,8 +119,8 @@
    [fields/input-field {:label "Validation (validation-a)"
                         :content ""
                         :validation-fn (fn [input-text]
-                                         (let[validation-message "error message!"]
-                                           (if(= input-text "a")
+                                         (let [validation-message "error message!"]
+                                           (if (= input-text "a")
                                              validation-message
                                              nil)))}]
 
@@ -129,6 +129,9 @@
                      :content "Value"}]
 
    [:h3 "Input"]
+
+   [fields/input-field {:placeholder "Placeholder"
+                        :icon "search"}]
 
    [fields/multiline-field "Textfield"]
 
@@ -147,38 +150,38 @@
    [notifications/default {:close-fn #(println "Default notification icon clicked")} [:span "Default notification"]]
    [notifications/error {:close-fn #(println "Error notification icon clicked")} [:span "Error notification"]]
    [notifications/warning {:close-fn #(println "Warning notification icon clicked")} [:span "Warning notification"] [:span {:style {:text-decoration "underline"}
-                                                                                                                           :on-click #(js/alert "Alert") } "Warning notification 2"]]
+                                                                                                                            :on-click #(js/alert "Alert")} "Warning notification 2"]]
    [notifications/success {:close-fn #(println "Success notification icon clicked")} [:p {:style {:margin "0"}} "Success notification"]]
 
    [:h2 "Tables"]
-   [tables/default {:headers [{:label    "Name"
+   [tables/default {:headers [{:label "Name"
                                :key-path [:name]}
-                              {:label    "Tasks"
+                              {:label "Tasks"
                                :key-path [:tasks 0]}
-                              {:label    "Organization"
+                              {:label "Organization"
                                :key-path [:organization 0 :org]}
-                              {:label    "State"
+                              {:label "State"
                                :key-path [:state]}
-                              {:label    "Progress"
+                              {:label "Progress"
                                :key-path [:element]}]
-                    :content [{:id           1
-                               :name         "Example 1"
-                               :tasks        ["Being amazing"]
+                    :content [{:id 1
+                               :name "Example 1"
+                               :tasks ["Being amazing"]
                                :organization [{:org "Amazing Organization"}]
-                               :state        "On going"
-                               :element      [loaders/progress-bar {:percentage "75%"}]}
-                              {:id           2
-                               :name         "Example 2"
-                               :tasks        ["Cleaning"]
+                               :state "On going"
+                               :element [loaders/progress-bar {:percentage "75%"}]}
+                              {:id 2
+                               :name "Example 2"
+                               :tasks ["Cleaning"]
                                :organization [{:org "Clean Organization"}]
-                               :state        "Done"
-                               :element      [loaders/progress-bar {:percentage "100%"}]}
-                              {:id           3
-                               :name         "Example 3"
-                               :tasks        ["Foo"]
+                               :state "Done"
+                               :element [loaders/progress-bar {:percentage "100%"}]}
+                              {:id 3
+                               :name "Example 3"
+                               :tasks ["Foo"]
                                :organization [{:org "Bar Organization"}]
-                               :state        "Starting"
-                               :element      [loaders/progress-bar]}]
+                               :state "Starting"
+                               :element [loaders/progress-bar]}]
                     :footers [{:label "Name"
                                :value "Total"}
                               {:label "Tasks"
@@ -188,7 +191,7 @@
                               {:label "Progress"
                                :value nil}
                               {:value [loaders/progress-bar {:percentage "58%"}]}]}]
-   
+
    [:h2 "Grid"]
    [grid/grid-wrap {:rows 3
                     :cols 3}

@@ -43,15 +43,15 @@
 
 (def input-field-error
   (merge input-field
-         { ::stylefy/mode {:focus {:border-bottom (str border/border-large " solid")
-                                   :border-color color/state-error}
-                           :valid {:border-color color/state-error}
-                           :valid+span {:top "0"
-                                        :cursor "inherit"
-                                        :font-size font-size/font-size-small}
-                           :focus+span {:top "0"
-                                        :cursor "inherit"
-                                        :font-size font-size/font-size-small}}}))
+         {::stylefy/mode {:focus {:border-bottom (str border/border-large " solid")
+                                  :border-color color/state-error}
+                          :valid {:border-color color/state-error}
+                          :valid+span {:top "0"
+                                       :cursor "inherit"
+                                       :font-size font-size/font-size-small}
+                          :focus+span {:top "0"
+                                       :cursor "inherit"
+                                       :font-size font-size/font-size-small}}}))
 
 (def text-field
   (merge input-field
@@ -127,8 +127,8 @@
   {:color color/color-neutral-4})
 
 (def dropdown-multiple
-  (merge dropdown 
-   {:display "none"}))
+  (merge dropdown
+         {:display "none"}))
 
 (def input-field-multiple
   (merge input-field

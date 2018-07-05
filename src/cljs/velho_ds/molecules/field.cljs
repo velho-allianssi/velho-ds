@@ -17,7 +17,7 @@
    [:small (stylefy/use-style style/keyvalue-label) label]
    [:p (stylefy/use-style style/keyvalue-content) content]])
 
-(defn input-field [{:keys [label content validation-fn]}]
+(defn input-field [{:keys [label content placeholder icon validation-fn]}]
   (let [input-text (r/atom content)
         validation-message (r/atom nil)
         update-and-send (fn [val]
@@ -27,11 +27,13 @@
       [:div
        [:label (stylefy/use-style style/element)
         [:input (stylefy/use-style (if @validation-message style/input-field-error
-                                                           style/input-field){:required "required"
-                                                                              :on-change #(-> % .-target .-value update-and-send)
-                                                                              :value @input-text})]
-        [:span  (if @validation-message (stylefy/use-style style/input-field-heading-error)
-                                        (stylefy/use-style style/input-field-heading)) label]
+                                                           style/input-field) {:required "required"
+                                                                               :on-change #(-> % .-target .-value update-and-send)
+                                                                               :value @input-text
+                                                                               :placeholder placeholder})]
+        [:span (if @validation-message (stylefy/use-style style/input-field-heading-error)
+                                       (stylefy/use-style style/input-field-heading)) label]
+        (when icon [:i.material-icons (stylefy/use-style style/icon) icon])
         (when @validation-message
           [:span (stylefy/use-style style/validation-message-error) @validation-message])]])))
 
@@ -51,7 +53,7 @@
                                                       :on-change #(-> % .-target .-value selected-fn)})
            (when (not default-value)
              [:option
-              {:value    "value"
+              {:value "value"
                :disabled "disabled"}
               no-selection-text])]
           (mapv #(vector :option (merge {:value (:id %)}
@@ -144,7 +146,7 @@
                                  (swap! state assoc :focus false)))
         global-click-handler #(let [target (.-target %)]
                                 (if (empty? (search-in-list (string/split (-> target .-className) #" ") "dropdown-multi"))
-                                    (swap! state assoc :focus false)))
+                                  (swap! state assoc :focus false)))
         addEventListener #(.addEventListener (.getElementById js/document "app") "click" global-click-handler)] ;; Do global eventlistener for catching the click outside
     (fn []
       [:div (stylefy/use-style {:position "relative"}
@@ -158,9 +160,9 @@
                                        {:class "dropdown-multi"})]
                (mapv #(vector selected-list-items {:on-click-fn selected-list-item-selected-fn
                                                    :content %}) (:selected-items @state)))]
-        [:div  (stylefy/use-style {:background-color color/color-neutral-1
-                                   :border-bottom (str "1px solid " color/color-neutral-5)}
-                                  {:class "dropdown-multi"})
+        [:div (stylefy/use-style {:background-color color/color-neutral-1
+                                  :border-bottom (str "1px solid " color/color-neutral-5)}
+                                 {:class "dropdown-multi"})
          [:input (stylefy/use-style {:background "none"
                                      :border 0
                                      :box-sizing "border-box"

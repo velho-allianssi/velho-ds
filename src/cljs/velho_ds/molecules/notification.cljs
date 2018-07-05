@@ -11,8 +11,8 @@
                 :styles {:top "0"}}]]
    (into [:div] (for [item content]
                   (if (vector? (first item))
-                   (for [i item] ^{:key i} [:div i])
-                   (for [item content] ^{:key item} [:div item]))))])
+                    (for [i item] ^{:key i} [:div i])
+                    (for [item content] ^{:key item} [:div item]))))])
 
 (defn error [{:keys [icon-fn styles] :as args} & content]
   [default (merge {:styles style/error} args) content])
