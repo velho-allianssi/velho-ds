@@ -25,7 +25,7 @@
                      (path-to-vector)
                      (append-string "/"))
         mds (map #(str/replace % #".md" "") (filter #(= ".md" (fs/extension %)) files))]
-    (map #(vector (conj path-vec %) (keyword %)) mds)))
+    (map #(vector (conj path-vec (str/replace % "index" "")) (keyword %)) mds)))
 
 (defn create-route-map [path-list]
   (reduce
