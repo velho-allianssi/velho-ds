@@ -113,7 +113,8 @@
      [fields/dropdown-multiple {:label "Text"
                                 :selected-fn #(println (str "Selected values: " %))
                                 :options options
-                                :no-selection-text "- No selection -"}])
+                                :no-selection-text "- No selection -"
+                                :preselected-values ["John"]}])
 
    [:h3 "Validation"]
    [fields/input-field {:label "Validation (validation-a)"

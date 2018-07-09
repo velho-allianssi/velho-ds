@@ -103,12 +103,12 @@
                         #{values})]
     (into [] (set/difference remove-from to-be-removed))))
 
-(defn dropdown-multiple [{:keys [label selected-fn options preselected-values default-value no-selection-text]}]
+(defn dropdown-multiple [{:keys [label selected-fn options preselected-values]}]
   (assert (fn? selected-fn) ":selected-fn function is required for dropdown-multiple")
   (assert (vector? options) ":options vector is required for dropdown-multiple")
   (let [state (r/atom {:options options
                        :input-text ""
-                       :selected-items []
+                       :selected-items (if preselected-values preselected-values [])
                        :selected-idx nil
                        :selected-from-filter ""
                        :focus false})
@@ -120,7 +120,9 @@
                                  (selected-fn (:selected-items @state)))
         selected-list-item-selected-fn #(do
                                           (swap! state update-in [:selected-items] remove-from-vector %)
-                                          (selected-fn (:selected-items @state)))
+                                          (selected-fn (:selected-items @state))
+                                          (println @state)
+                                          (println state))
         selectable-items #(remove-from-vector (:options @state) (:selected-items @state))
         filtered-selections #(into []
                                    (apply sorted-set
