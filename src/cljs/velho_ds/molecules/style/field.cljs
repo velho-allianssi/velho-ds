@@ -43,22 +43,22 @@
 
 (def input-field-error
   (merge input-field
-         { ::stylefy/mode {:focus {:border-bottom (str border/border-large " solid")
-                                   :border-color color/state-error}
-                           :valid {:border-color color/state-error}
-                           :valid+span {:top "0"
-                                        :cursor "inherit"
-                                        :font-size font-size/font-size-small}
-                           :focus+span {:top "0"
-                                        :cursor "inherit"
-                                        :font-size font-size/font-size-small}}}))
+         {::stylefy/mode {:focus {:border-bottom (str border/border-large " solid")
+                                  :border-color color/state-error}
+                          :valid {:border-color color/state-error}
+                          :valid+span {:top "0"
+                                       :cursor "inherit"
+                                       :font-size font-size/font-size-small}
+                          :focus+span {:top "0"
+                                       :cursor "inherit"
+                                       :font-size font-size/font-size-small}}}))
 
 (def text-field
   (merge input-field
          {:overflow-y "scroll"
           :resize "none"}))
 
-(def input-field-heading
+(def input-field-label
   {:position "absolute"
    :display "block"
    :top spacing/space-base-rem
@@ -70,8 +70,13 @@
    ::stylefy/vendors ["webkit" "moz" "o"]
    ::stylefy/auto-prefix #{:transition}})
 
-(def input-field-heading-error
-  (merge input-field-heading {:color color/state-error}))
+(def input-field-label-static
+  (merge input-field-label
+         {:top "0"
+          :font-size font-size/font-size-small}))
+
+(def input-field-label-error
+  (merge input-field-label {:color color/state-error}))
 
 (def validation-message-error
   {:bottom "0px"
@@ -79,7 +84,7 @@
    :font-size "14px"
    :color "red"})
 
-(def dropdown-heading
+(def dropdown-label
   {:position "absolute"
    :display "block"
    :top "0"
@@ -127,8 +132,8 @@
   {:color color/color-neutral-4})
 
 (def dropdown-multiple
-  (merge dropdown 
-   {:display "none"}))
+  (merge dropdown
+         {:display "none"}))
 
 (def input-field-multiple
   (merge input-field

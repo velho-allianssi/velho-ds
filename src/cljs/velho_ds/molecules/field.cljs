@@ -17,7 +17,7 @@
    [:small (stylefy/use-style style/keyvalue-label) label]
    [:p (stylefy/use-style style/keyvalue-content) content]])
 
-(defn input-field [{:keys [label content validation-fn]}]
+(defn input-field [{:keys [label content placeholder icon icon-click-fn validation-fn]}]
   (let [input-text (r/atom content)
         validation-message (r/atom nil)
         update-and-send (fn [val]
@@ -26,12 +26,16 @@
     (fn []
       [:div
        [:label (stylefy/use-style style/element)
-        [:input (stylefy/use-style (if @validation-message style/input-field-error
-                                                           style/input-field){:required "required"
-                                                                              :on-change #(-> % .-target .-value update-and-send)
-                                                                              :value @input-text})]
-        [:span  (if @validation-message (stylefy/use-style style/input-field-heading-error)
-                                        (stylefy/use-style style/input-field-heading)) label]
+        [:input (stylefy/use-style (merge (if @validation-message style/input-field-error
+                                                                  style/input-field) (when icon {:width "calc(100% - 2.5rem)"
+                                                                                                 :padding-right "2.5rem"})) {:required "required"
+                                                                                                                             :on-change #(-> % .-target .-value update-and-send)
+                                                                                                                             :value @input-text
+                                                                                                                             :placeholder placeholder})]
+        [:span (if @validation-message (stylefy/use-style style/input-field-label-error)
+                                       (stylefy/use-style (if (and label placeholder) style/input-field-label-static style/input-field-label))) label]
+        (when icon [:i.material-icons (stylefy/use-style (merge style/icon (when icon-click-fn {:pointer-events "auto"
+                                                                                                :cursor "pointer"}))) icon])
         (when @validation-message
           [:span (stylefy/use-style style/validation-message-error) @validation-message])]])))
 
@@ -42,23 +46,23 @@
    [:div
     [:label (stylefy/use-style style/element)
      [:textarea (stylefy/use-style style/text-field {:required "required"})]
-     [:span (stylefy/use-style style/input-field-heading) content]]]))
+     [:span (stylefy/use-style style/input-field-label) content]]]))
 
-(defn dropdown-menu [{:keys [heading selected-fn options default-value no-selection-text]}]
+(defn dropdown-menu [{:keys [label selected-fn options default-value no-selection-text]}]
   [:div
    [:label (stylefy/use-style style/element)
     (into [:select (stylefy/use-style style/dropdown {:defaultValue "value"
                                                       :on-change #(-> % .-target .-value selected-fn)})
            (when (not default-value)
              [:option
-              {:value    "value"
+              {:value "value"
                :disabled "disabled"}
               no-selection-text])]
           (mapv #(vector :option (merge {:value (:id %)}
                                         (when (= default-value %)
                                           {:selected "selected"}))
                          (:value %)) options))
-    [:span (stylefy/use-style style/dropdown-heading) heading]
+    [:span (stylefy/use-style style/dropdown-label) label]
     [:i.material-icons (stylefy/use-style style/icon) "arrow_drop_down"]]])
 
 (defn- list-item [{:keys [on-click-fn content is-selected?]}]
@@ -78,7 +82,7 @@
                            :color color/color-neutral-2
                            :cursor "pointer"
                            :display "inline-block"
-                           :margin "4px"
+                           :margin "4px 4px 4px 0px"
                            :padding "0.5rem"}
                           {:on-mouse-down #(on-click-fn content)
                            :key content
@@ -99,12 +103,12 @@
                         #{values})]
     (into [] (set/difference remove-from to-be-removed))))
 
-(defn dropdown-multiple [{:keys [heading selected-fn options preselected-values default-value no-selection-text]}]
+(defn dropdown-multiple [{:keys [label selected-fn options preselected-values]}]
   (assert (fn? selected-fn) ":selected-fn function is required for dropdown-multiple")
   (assert (vector? options) ":options vector is required for dropdown-multiple")
   (let [state (r/atom {:options options
                        :input-text ""
-                       :selected-items []
+                       :selected-items (if preselected-values preselected-values [])
                        :selected-idx nil
                        :selected-from-filter ""
                        :focus false})
@@ -116,7 +120,9 @@
                                  (selected-fn (:selected-items @state)))
         selected-list-item-selected-fn #(do
                                           (swap! state update-in [:selected-items] remove-from-vector %)
-                                          (selected-fn (:selected-items @state)))
+                                          (selected-fn (:selected-items @state))
+                                          (println @state)
+                                          (println state))
         selectable-items #(remove-from-vector (:options @state) (:selected-items @state))
         filtered-selections #(into []
                                    (apply sorted-set
@@ -144,13 +150,12 @@
                                  (swap! state assoc :focus false)))
         global-click-handler #(let [target (.-target %)]
                                 (if (empty? (search-in-list (string/split (-> target .-className) #" ") "dropdown-multi"))
-                                    (swap! state assoc :focus false)))
+                                  (swap! state assoc :focus false)))
         addEventListener #(.addEventListener (.getElementById js/document "app") "click" global-click-handler)] ;; Do global eventlistener for catching the click outside
     (fn []
       [:div (stylefy/use-style {:position "relative"}
                                {:class "dropdown-multi"})
-
-       [:div {:class "dropdown-multi"}
+       [:div (stylefy/use-style {:padding-top "1rem"}{:class "dropdown-multi"})
         [:div {:class "dropdown-multi"}
          (into [:ul (stylefy/use-style {:list-style-type "none"
                                         :margin 0
@@ -158,9 +163,9 @@
                                        {:class "dropdown-multi"})]
                (mapv #(vector selected-list-items {:on-click-fn selected-list-item-selected-fn
                                                    :content %}) (:selected-items @state)))]
-        [:div  (stylefy/use-style {:background-color color/color-neutral-1
-                                   :border-bottom (str "1px solid " color/color-neutral-5)}
-                                  {:class "dropdown-multi"})
+        [:div (stylefy/use-style {:background-color color/color-neutral-1
+                                  :border-bottom (str "1px solid " color/color-neutral-5)}
+                                 {:class "dropdown-multi"})
          [:input (stylefy/use-style {:background "none"
                                      :border 0
                                      :box-sizing "border-box"
@@ -168,7 +173,7 @@
                                      :font-family font/font-family-text
                                      :font-weight font/font-weight-base
                                      :font-size font-size/font-size-base
-                                     :padding "0.5rem"
+                                     :padding "0.5rem 0.5rem 0.5rem 0"
                                      :width "calc(100% - 1.5rem)"
                                      ::stylefy/mode {:focus {:outline "none"}}
                                      ::stylefy/vendors ["webkit" "moz" "o"]
@@ -181,6 +186,7 @@
                                                   (addEventListener))
                                      :value (:input-text @state)
                                      :class "dropdown-multi"})]
+         [:span (stylefy/use-style style/dropdown-label) label]
          [icon/icon {:name "arrow_drop_down"}]]]
        [:div (stylefy/use-style {:box-shadow "0 2px 2px 0 rgba(0,0,0,.5)"
                                  :max-height (str "calc(4*" font-size/font-size-base " + 8*0.5rem + 4*1px)")

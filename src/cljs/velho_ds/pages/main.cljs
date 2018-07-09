@@ -6,7 +6,8 @@
             [velho-ds.organisms.grid :as grid]
             [velho-ds.atoms.loader :as loaders]
             [velho-ds.molecules.notification :as notifications]
-            [velho-ds.molecules.tab :as tabs]))
+            [velho-ds.molecules.tab :as tabs]
+            [velho-ds.atoms.table :as tables]))
 
 (defn page-content []
   [:div
@@ -105,21 +106,22 @@
     [tabs/default {:tab-id 2
                    :icon "group_work"
                    :label "Relations"
-                   :on-click-fn #(println "Default tab clicked")} ]]
+                   :on-click-fn #(println "Default tab clicked")}]]
 
    [:h2 "Fields"]
    (let [options ["John" "Sandra" "Matt" "Will" "Kate" "Alex" "Keith" "Melinda"]]
-     [fields/dropdown-multiple {:heading "Text"
+     [fields/dropdown-multiple {:label "Text"
                                 :selected-fn #(println (str "Selected values: " %))
                                 :options options
-                                :no-selection-text "- No selection -"}])
+                                :no-selection-text "- No selection -"
+                                :preselected-values ["John"]}])
 
    [:h3 "Validation"]
    [fields/input-field {:label "Validation (validation-a)"
                         :content ""
                         :validation-fn (fn [input-text]
-                                         (let[validation-message "error message!"]
-                                           (if(= input-text "a")
+                                         (let [validation-message "error message!"]
+                                           (if (= input-text "a")
                                              validation-message
                                              nil)))}]
 
@@ -129,11 +131,22 @@
 
    [:h3 "Input"]
 
+   [fields/input-field {:label "Input"
+                        :placeholder "Placeholder"
+                        :icon "search"
+                        :icon-click-fn #(println (str "Icon Clicked"))}]
+
+   [fields/input-field {:placeholder "Placeholder"
+                        :icon "search"
+                        :icon-click-fn #(println (str "Icon Clicked"))}]
+
+   [fields/input-field {:placeholder "Placeholder"}]
+
    [fields/multiline-field "Textfield"]
 
    (let [values [{:id 1 :value "First"}
                  {:id 2 :value "Second"}]]
-     [fields/dropdown-menu {:heading "Text"
+     [fields/dropdown-menu {:label "Text"
                             :selected-fn #(js/alert (str "Selected value: " %))
                             :options values
                             :no-selection-text "- No selection -"}])
@@ -146,8 +159,47 @@
    [notifications/default {:close-fn #(println "Default notification icon clicked")} [:span "Default notification"]]
    [notifications/error {:close-fn #(println "Error notification icon clicked")} [:span "Error notification"]]
    [notifications/warning {:close-fn #(println "Warning notification icon clicked")} [:span "Warning notification"] [:span {:style {:text-decoration "underline"}
-                                                                                                                           :on-click #(js/alert "Alert") } "Warning notification 2"]]
+                                                                                                                            :on-click #(js/alert "Alert")} "Warning notification 2"]]
    [notifications/success {:close-fn #(println "Success notification icon clicked")} [:p {:style {:margin "0"}} "Success notification"]]
+
+   [:h2 "Tables"]
+   [tables/default {:headers [{:label "Name"
+                               :key-path [:name]}
+                              {:label "Tasks"
+                               :key-path [:tasks 0]}
+                              {:label "Organization"
+                               :key-path [:organization 0 :org]}
+                              {:label "State"
+                               :key-path [:state]}
+                              {:label "Progress"
+                               :key-path [:element]}]
+                    :content [{:id 1
+                               :name "Example 1"
+                               :tasks ["Being amazing"]
+                               :organization [{:org "Amazing Organization"}]
+                               :state "On going"
+                               :element [loaders/progress-bar {:percentage "75%"}]}
+                              {:id 2
+                               :name "Example 2"
+                               :tasks ["Cleaning"]
+                               :organization [{:org "Clean Organization"}]
+                               :state "Done"
+                               :element [loaders/progress-bar {:percentage "100%"}]}
+                              {:id 3
+                               :name "Example 3"
+                               :tasks ["Foo"]
+                               :organization [{:org "Bar Organization"}]
+                               :state "Starting"
+                               :element [loaders/progress-bar]}]
+                    :footers [{:label "Name"
+                               :value "Total"}
+                              {:label "Tasks"
+                               :value nil}
+                              {:label "Organization"
+                               :value nil}
+                              {:label "Progress"
+                               :value nil}
+                              {:value [loaders/progress-bar {:percentage "58%"}]}]}]
 
    [:h2 "Grid"]
    [grid/grid-wrap {:rows 3
@@ -178,5 +230,5 @@
 
 (defn page [nav]
   (tpl/default {:navigation nav
-                :heading "Page Name"
+                :label "Page Name"
                 :main-content (page-content)}))
