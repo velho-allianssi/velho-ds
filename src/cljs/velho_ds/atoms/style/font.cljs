@@ -24,12 +24,12 @@
    :font-weight font/font-weight-light})
 
 (def h3
-  {:font-family font/font-family-text
+  {:font-family font/font-family-heading
    :font-size font-size/font-size-large
    :font-weight font/font-weight-bold})
 
 (def h4
-  {:font-family font/font-family-text
+  {:font-family font/font-family-heading
    :font-size font-size/font-size-base
    :font-weight font/font-weight-bold})
 

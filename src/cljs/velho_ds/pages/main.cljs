@@ -130,8 +130,16 @@
 
    [:h3 "Input"]
 
+   [fields/input-field {:label "Input"
+                        :placeholder "Placeholder"
+                        :icon "search"
+                        :icon-click-fn #(println (str "Icon Clicked"))}]
+
    [fields/input-field {:placeholder "Placeholder"
-                        :icon "search"}]
+                        :icon "search"
+                        :icon-click-fn #(println (str "Icon Clicked"))}]
+
+   [fields/input-field {:placeholder "Placeholder"}]
 
    [fields/multiline-field "Textfield"]
 

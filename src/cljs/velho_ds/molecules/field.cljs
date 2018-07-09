@@ -17,7 +17,7 @@
    [:small (stylefy/use-style style/keyvalue-label) label]
    [:p (stylefy/use-style style/keyvalue-content) content]])
 
-(defn input-field [{:keys [label content placeholder icon validation-fn]}]
+(defn input-field [{:keys [label content placeholder icon icon-click-fn validation-fn]}]
   (let [input-text (r/atom content)
         validation-message (r/atom nil)
         update-and-send (fn [val]
@@ -26,14 +26,16 @@
     (fn []
       [:div
        [:label (stylefy/use-style style/element)
-        [:input (stylefy/use-style (if @validation-message style/input-field-error
-                                                           style/input-field) {:required "required"
-                                                                               :on-change #(-> % .-target .-value update-and-send)
-                                                                               :value @input-text
-                                                                               :placeholder placeholder})]
+        [:input (stylefy/use-style (merge (if @validation-message style/input-field-error
+                                                                  style/input-field) (when icon {:width "calc(100% - 2.5rem)"
+                                                                                                 :padding-right "2.5rem"})) {:required "required"
+                                                                                                                             :on-change #(-> % .-target .-value update-and-send)
+                                                                                                                             :value @input-text
+                                                                                                                             :placeholder placeholder})]
         [:span (if @validation-message (stylefy/use-style style/input-field-heading-error)
-                                       (stylefy/use-style style/input-field-heading)) label]
-        (when icon [:i.material-icons (stylefy/use-style style/icon) icon])
+                                       (stylefy/use-style (if (and label placeholder) style/input-field-heading-static style/input-field-heading))) label]
+        (when icon [:i.material-icons (stylefy/use-style (merge style/icon (when icon-click-fn {:pointer-events "auto"
+                                                                                                :cursor "pointer"}))) icon])
         (when @validation-message
           [:span (stylefy/use-style style/validation-message-error) @validation-message])]])))
 

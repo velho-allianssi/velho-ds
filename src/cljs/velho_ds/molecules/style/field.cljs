@@ -70,6 +70,11 @@
    ::stylefy/vendors ["webkit" "moz" "o"]
    ::stylefy/auto-prefix #{:transition}})
 
+(def input-field-heading-static
+  (merge input-field-heading
+         {:top "0"
+          :font-size font-size/font-size-small}))
+
 (def input-field-heading-error
   (merge input-field-heading {:color color/state-error}))
 
