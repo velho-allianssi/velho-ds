@@ -58,7 +58,7 @@
          {:overflow-y "scroll"
           :resize "none"}))
 
-(def input-field-heading
+(def input-field-label
   {:position "absolute"
    :display "block"
    :top spacing/space-base-rem
@@ -70,13 +70,13 @@
    ::stylefy/vendors ["webkit" "moz" "o"]
    ::stylefy/auto-prefix #{:transition}})
 
-(def input-field-heading-static
-  (merge input-field-heading
+(def input-field-label-static
+  (merge input-field-label
          {:top "0"
           :font-size font-size/font-size-small}))
 
-(def input-field-heading-error
-  (merge input-field-heading {:color color/state-error}))
+(def input-field-label-error
+  (merge input-field-label {:color color/state-error}))
 
 (def validation-message-error
   {:bottom "0px"
@@ -84,7 +84,7 @@
    :font-size "14px"
    :color "red"})
 
-(def dropdown-heading
+(def dropdown-label
   {:position "absolute"
    :display "block"
    :top "0"
