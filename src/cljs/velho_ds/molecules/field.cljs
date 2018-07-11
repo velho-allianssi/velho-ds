@@ -6,9 +6,6 @@
             [reagent.core :as r]
             [stylefy.core :as stylefy]
             [velho-ds.tokens.color :as color]
-            [velho-ds.tokens.font :as font]
-            [velho-ds.tokens.font-size :as font-size]
-            [velho-ds.tokens.z-index :as z-index]
             [velho-ds.molecules.style.field :as style]
             [velho-ds.atoms.icon :as icon]))
 
@@ -107,7 +104,7 @@
                         #{values})]
     (into [] (set/difference remove-from to-be-removed))))
 
-(defn dropdown-multiple [{:keys [label selected-fn options preselected-values]}]
+(defn dropdown-multiple [{:keys [label placeholder selected-fn options preselected-values]}]
   (assert (fn? selected-fn) ":selected-fn function is required for dropdown-multiple")
   (assert (vector? options) ":options vector is required for dropdown-multiple")
   (let [state (r/atom {:options options
@@ -159,50 +156,27 @@
     (fn []
       [:div (stylefy/use-style {:position "relative"}
                                {:class "dropdown-multi"})
-       [:div (stylefy/use-style {:padding-top "1rem"}{:class "dropdown-multi"})
+       [:div (stylefy/use-style {:padding-top "1rem"} {:class "dropdown-multi"})
+        [:span (stylefy/use-style style/dropdown-label) label]
         [:div {:class "dropdown-multi"}
-         (into [:ul (stylefy/use-style {:list-style-type "none"
-                                        :margin 0
-                                        :padding 0}
-                                       {:class "dropdown-multi"})]
+         (into [:ul (stylefy/use-style style/dropdown-multiple-selected-items {:class "dropdown-multi"})]
                (mapv #(vector selected-list-items {:on-click-fn selected-list-item-selected-fn
                                                    :content %}) (:selected-items @state)))]
-        [:div (stylefy/use-style {:background-color color/color-neutral-1
-                                  :border-bottom (str "1px solid " color/color-neutral-5)}
-                                 {:class "dropdown-multi"})
-         [:input (stylefy/use-style {:background "none"
-                                     :border 0
-                                     :box-sizing "border-box"
-                                     :display "inline-block"
-                                     :font-family font/font-family-text
-                                     :font-weight font/font-weight-base
-                                     :font-size font-size/font-size-base
-                                     :padding "0.5rem 0.5rem 0.5rem 0"
-                                     :width "calc(100% - 1.5rem)"
-                                     ::stylefy/mode {:focus {:outline "none"}}
-                                     ::stylefy/vendors ["webkit" "moz" "o"]
-                                     ::stylefy/auto-prefix #{:outline}}
-                                    {:type "text"
-                                     :on-change #(-> % .-target .-value input-value-changed-fn)
-                                     :on-key-down #(-> % .-key key-press-handler-fn)
-                                     :on-focus #(do
-                                                  (swap! state assoc :focus true)
-                                                  (addEventListener))
-                                     :value (:input-text @state)
-                                     :class "dropdown-multi"})]
-         [:span (stylefy/use-style style/dropdown-label) label]
-         [icon/icon {:name "arrow_drop_down"}]]]
-       [:div (stylefy/use-style {:box-shadow "0 2px 2px 0 rgba(0,0,0,.5)"
-                                 :max-height (str "calc(4*" font-size/font-size-base " + 8*0.5rem + 4*1px)")
-                                 :overflow-y "auto"
-                                 :position "absolute"
-                                 :width "100%"
-                                 :z-index z-index/z-index-sticky
-                                 :display (if (:focus @state) "block" "none")}
+        [:div (stylefy/use-style style/dropdown-multiple-input-background {:class "dropdown-multi"})
+         [:input (stylefy/use-style style/dropdown-multiple-input {:type "text"
+                                                                   :on-change #(-> % .-target .-value input-value-changed-fn)
+                                                                   :on-key-down #(-> % .-key key-press-handler-fn)
+                                                                   :on-focus #(do
+                                                                                (swap! state assoc :focus true)
+                                                                                (addEventListener))
+                                                                   :value (:input-text @state)
+                                                                   :placeholder placeholder
+                                                                   :class "dropdown-multi"})]
+         [:i.material-icons (stylefy/use-style (merge style/icon {:top "auto"
+                                                                  :bottom 0})) (if (:focus @state) "arrow_drop_up" "arrow_drop_down")]]]
+       [:div (stylefy/use-style (merge style/dropdown-multiple-list {:display (if (:focus @state) "block" "none")})
                                 {:class "dropdown-multi"})
-        (into [:ul (stylefy/use-style {:list-style-type "none"
-                                       :margin 0
-                                       :padding 0}
+        (into [:ul (stylefy/use-style style/dropdown-multiple-list-item
                                       {:class "dropdown-multi"})]
               (mapv #(do
                        (vector list-item {:on-click-fn list-item-selected-fn
