@@ -40,8 +40,8 @@
                                                                                                 :cursor "pointer"}))) icon])]
        (when error-messages
          [:div (stylefy/use-style style/validation-errors)
-          (for [message error-messages]
-            (into ^{:key message} [:p (stylefy/use-sub-style style/validation-errors :p) message]))])])))
+          (doall (for [message error-messages]
+                   (into ^{:key message} [:p (stylefy/use-sub-style style/validation-errors :p) message])))])])))
 
 (defn multiline-field
   ([content]
