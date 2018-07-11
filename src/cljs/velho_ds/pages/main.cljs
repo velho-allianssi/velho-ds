@@ -109,27 +109,9 @@
                    :on-click-fn #(println "Default tab clicked")}]]
 
    [:h2 "Fields"]
-   (let [options ["John" "Sandra" "Matt" "Will" "Kate" "Alex" "Keith" "Melinda"]]
-     [fields/dropdown-multiple {:label "Text"
-                                :selected-fn #(println (str "Selected values: " %))
-                                :options options
-                                :no-selection-text "- No selection -"
-                                :preselected-values ["John"]}])
 
-   [:h3 "Validation"]
-   [fields/input-field {:label "Validation (validation-a)"
-                        :content ""
-                        :validation-fn (fn [input-text]
-                                         (let [validation-message "error message!"]
-                                           (if (= input-text "a")
-                                             validation-message
-                                             nil)))}]
-
-   [:h3 "Keyvalue"]
    [fields/keyvalue {:label "Title"
                      :content "Value"}]
-
-   [:h3 "Input"]
 
    [fields/input-field {:label "Input"
                         :placeholder "Placeholder"
@@ -142,6 +124,10 @@
 
    [fields/input-field {:placeholder "Placeholder"}]
 
+   [fields/input-field {:label "Validation example"
+                        :content "Invalid value"
+                        :error-messages ["Value has to be valid!"]}]
+
    [fields/multiline-field "Textfield"]
 
    (let [values [{:id 1 :value "First"}
@@ -150,6 +136,14 @@
                             :selected-fn #(js/alert (str "Selected value: " %))
                             :options values
                             :no-selection-text "- No selection -"}])
+
+   (let [options ["John" "Sandra" "Matt" "Will" "Kate" "Alex" "Keith" "Melinda"]]
+     [fields/dropdown-multiple {:label "Text"
+                                :selected-fn #(println (str "Selected values: " %))
+                                :options options
+                                :no-selection-text "- No selection -"
+                                :preselected-values ["John"]}])
+
    [:h2 "Loaders"]
    [:div.code-example ($-> [loaders/progress-bar])]
    [:div.code-example ($-> [loaders/progress-bar {:percentage "50%"}])]
