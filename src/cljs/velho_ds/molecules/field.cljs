@@ -22,23 +22,24 @@
         blur (fn []
                (when on-blur-fn (on-blur-fn @input-text)))]
     (fn []
-      [:div
-       [:label (stylefy/use-style style/element)
-        [:input (stylefy/use-style (merge (if error-messages style/input-field-error
-                                                             style/input-field) (when icon {:width "calc(100% - 2.5rem)"
-                                                                                            :padding-right "2.5rem"})) {:required "required"
-                                                                                                                        :on-change #(-> % .-target .-value change)
-                                                                                                                        :on-blur blur
-                                                                                                                        :value @input-text
-                                                                                                                        :placeholder placeholder})]
-        [:span (if error-messages (stylefy/use-style style/input-field-label-error)
-                                  (stylefy/use-style (if (and label placeholder) style/input-field-label-static style/input-field-label))) label]
-        (when icon [:i.material-icons (stylefy/use-style (merge style/icon (when icon-click-fn {:pointer-events "auto"
-                                                                                                :cursor "pointer"}))) icon])]
-       (when error-messages
-         [:div (stylefy/use-style style/validation-errors)
-          (doall (for [message error-messages]
-                   (into ^{:key message} [:p (stylefy/use-sub-style style/validation-errors :p) message])))])])))
+      (let [errors (if error-messages @error-messages [])]
+        [:div
+        [:label (stylefy/use-style style/element)
+         [:input (stylefy/use-style (merge (if (first errors) style/input-field-error
+                                                                      style/input-field) (when icon {:width         "calc(100% - 2.5rem)"
+                                                                                                     :padding-right "2.5rem"})) {:required    "required"
+                                                                                                                                 :on-change   #(-> % .-target .-value change)
+                                                                                                                                 :on-blur     blur
+                                                                                                                                 :value       @input-text
+                                                                                                                                 :placeholder placeholder})]
+         [:span (if (first errors) (stylefy/use-style style/input-field-label-error)
+                                           (stylefy/use-style (if (and label placeholder) style/input-field-label-static style/input-field-label))) label]
+         (when icon [:i.material-icons (stylefy/use-style (merge style/icon (when icon-click-fn {:pointer-events "auto"
+                                                                                                 :cursor         "pointer"}))) icon])]
+        (when errors
+          [:div (stylefy/use-style style/validation-errors)
+           (doall (for [message errors]
+                    (into ^{:key message} [:p (stylefy/use-sub-style style/validation-errors :p) message])))])]))))
 
 (defn multiline-field
   ([content]

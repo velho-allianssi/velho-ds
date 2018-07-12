@@ -7,7 +7,8 @@
             [velho-ds.atoms.loader :as loaders]
             [velho-ds.molecules.notification :as notifications]
             [velho-ds.molecules.tab :as tabs]
-            [velho-ds.atoms.table :as tables]))
+            [velho-ds.atoms.table :as tables]
+            [reagent.core :as r]))
 
 (defn page-content []
   [:div
@@ -113,9 +114,11 @@
    [fields/keyvalue {:label "Title"
                      :content "Value"}]
 
-   [fields/input-field {:label "Input"
+   [fields/input-field {:label "Input with label and icon"
                         :placeholder "Placeholder"
                         :icon "search"
+                        :on-change-fn #(println %)
+                        :on-blur-fn #(println %)
                         :icon-click-fn #(println (str "Icon Clicked"))}]
 
    [fields/input-field {:placeholder "Placeholder"
@@ -126,7 +129,7 @@
 
    [fields/input-field {:label "Validation example"
                         :content "Invalid value"
-                        :error-messages ["Value has to be valid!"]}]
+                        :error-messages (r/atom ["Value has to be valid!"])}]
 
    [fields/multiline-field "Textfield"]
 
@@ -223,6 +226,6 @@
                    :border "1px solid silver"}} [:p "7"]]]])
 
 (defn page [nav]
-  (tpl/default {:navigation nav
+  [tpl/default {:navigation nav
                 :label "Page Name"
-                :main-content (page-content)}))
+                :main-content [page-content]}])
