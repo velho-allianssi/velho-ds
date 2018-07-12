@@ -7,7 +7,8 @@
             [velho-ds.atoms.loader :as loaders]
             [velho-ds.molecules.notification :as notifications]
             [velho-ds.molecules.tab :as tabs]
-            [velho-ds.atoms.table :as tables]))
+            [velho-ds.atoms.table :as tables]
+            [reagent.core :as r]))
 
 (defn page-content []
   [:div
@@ -109,31 +110,15 @@
                    :on-click-fn #(println "Default tab clicked")}]]
 
    [:h2 "Fields"]
-   (let [options ["John" "Sandra" "Matt" "Will" "Kate" "Alex" "Keith" "Melinda"]]
-     [fields/dropdown-multiple {:label "Text"
-                                :selected-fn #(println (str "Selected values: " %))
-                                :options options
-                                :no-selection-text "- No selection -"
-                                :preselected-values ["John"]}])
 
-   [:h3 "Validation"]
-   [fields/input-field {:label "Validation (validation-a)"
-                        :content ""
-                        :validation-fn (fn [input-text]
-                                         (let [validation-message "error message!"]
-                                           (if (= input-text "a")
-                                             validation-message
-                                             nil)))}]
-
-   [:h3 "Keyvalue"]
    [fields/keyvalue {:label "Title"
                      :content "Value"}]
 
-   [:h3 "Input"]
-
-   [fields/input-field {:label "Input"
+   [fields/input-field {:label "Input with label and icon"
                         :placeholder "Placeholder"
                         :icon "search"
+                        :on-change-fn #(println %)
+                        :on-blur-fn #(println %)
                         :icon-click-fn #(println (str "Icon Clicked"))}]
 
    [fields/input-field {:placeholder "Placeholder"
@@ -141,6 +126,10 @@
                         :icon-click-fn #(println (str "Icon Clicked"))}]
 
    [fields/input-field {:placeholder "Placeholder"}]
+
+   [fields/input-field {:label "Validation example"
+                        :content "Invalid value"
+                        :error-messages (r/atom ["Value has to be valid!"])}]
 
    [fields/multiline-field "Textfield"]
 
@@ -150,6 +139,14 @@
                             :selected-fn #(js/alert (str "Selected value: " %))
                             :options values
                             :no-selection-text "- No selection -"}])
+
+   (let [options ["John" "Sandra" "Matt" "Will" "Kate" "Alex" "Keith" "Melinda"]]
+     [fields/dropdown-multiple {:label "Text"
+                                :selected-fn #(println (str "Selected values: " %))
+                                :options options
+                                :no-selection-text "- No selection -"
+                                :preselected-values ["John"]}])
+
    [:h2 "Loaders"]
    [:div.code-example ($-> [loaders/progress-bar])]
    [:div.code-example ($-> [loaders/progress-bar {:percentage "50%"}])]
@@ -229,6 +226,6 @@
                    :border "1px solid silver"}} [:p "7"]]]])
 
 (defn page [nav]
-  (tpl/default {:navigation nav
+  [tpl/default {:navigation nav
                 :label "Page Name"
-                :main-content (page-content)}))
+                :main-content [page-content]}])

@@ -78,11 +78,13 @@
 (def input-field-label-error
   (merge input-field-label {:color color/state-error}))
 
-(def validation-message-error
-  {:bottom "0px"
-   :position "absolute"
-   :font-size "14px"
-   :color "red"})
+(def validation-errors
+  {:font-size font-size/font-size-small
+   :color color/state-error
+   :margin-top "-0.875rem"
+   ::stylefy/sub-styles {:p {:color color/state-error
+                             :font-size font-size/font-size-small
+                             :margin 0}}})
 
 (def dropdown-label
   {:position "absolute"
