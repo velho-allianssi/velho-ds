@@ -122,9 +122,7 @@
                                  (selected-fn (:selected-items @state)))
         selected-list-item-selected-fn #(do
                                           (swap! state update-in [:selected-items] remove-from-vector %)
-                                          (selected-fn (:selected-items @state))
-                                          (println @state)
-                                          (println state))
+                                          (selected-fn (:selected-items @state)))
         selectable-items #(remove-from-vector (:options @state) (:selected-items @state))
         filtered-selections #(into []
                                    (apply sorted-set
