@@ -135,13 +135,13 @@
 
    (let [values [{:id 1 :value "First"}
                  {:id 2 :value "Second"}]]
-     [fields/dropdown-menu {:label "Text"
+     [fields/dropdown-menu {:label "Dropdown"
                             :selected-fn #(js/alert (str "Selected value: " %))
                             :options values
                             :no-selection-text "- No selection -"}])
 
    (let [options ["John" "Sandra" "Matt" "Will" "Kate" "Alex" "Keith" "Melinda"]]
-     [fields/dropdown-multiple {:label "Text"
+     [fields/dropdown-multiple {:label "Multiselect dropdown"
                                 :selected-fn #(println (str "Selected values: " %))
                                 :options options
                                 :no-selection-text "- No selection -"
