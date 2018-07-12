@@ -4,9 +4,9 @@
             [velho-ds.organisms.navigation :as navigation]))
 
 (defn default [content]
-  [:div.grid-layout (use-style grid)
+  [:div.grid-layout
    [:div.page-logo
     [:h2.logo-heading "Reagent DS"]]
-   [:div.page-header (use-style top-right) (heading/main (:heading content))]
-   [:div.page-navigation (use-style bottom-left)#_(navigation/nested-navigation (:navigation content))]
-   [:div.page-content(use-style bottom-right)[:section (:main-content content)]]])
+   [:div.page-header (heading/main (:heading content))]
+   [:div.page-navigation #_(navigation/nested-navigation (:navigation content))]
+   [:div.page-content [:section (:main-content content)]]])
