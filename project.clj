@@ -27,10 +27,10 @@
 
   :min-lein-version "2.5.0"
   :clean-targets ^{:protect false} [:target-path
-                                    [:cljsbuild :builds :dev :compiler :output-dir]
-                                    [:cljsbuild :builds :dev :compiler :output-to]
-                                    [:cljsbuild :builds :test :compiler :output-dir]
-                                    [:cljsbuild :builds :test :compiler :output-to]]
+                                    "public/js/out"
+                                    "public/js/app.js"
+                                    "public/js/test/out"
+                                    "public/js/test/tests.js"]
 
   :resource-paths ["public"]
 
