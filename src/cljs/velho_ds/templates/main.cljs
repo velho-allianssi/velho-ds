@@ -6,7 +6,7 @@
 (defn default [content]
   [:div.grid-layout
    [:div.page-logo
-    [:h2.logo-heading "Reagent DS"]]
+    [:h2.logo-heading "Velho DS"]]
    [:div.page-header (heading/main (:heading content))]
    [:div.page-navigation #_(navigation/nested-navigation (:navigation content))]
    [:div.page-content [:section (:main-content content)]]])
