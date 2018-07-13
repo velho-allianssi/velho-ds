@@ -129,7 +129,7 @@
 
    [fields/input-field {:label "Validation example"
                         :content "Invalid value"
-                        :error-messages (r/atom ["Value has to be valid!"])}]
+                        :error-messages ["Value has to be valid!"]}]
 
    [fields/multiline-field "Textfield"]
 
