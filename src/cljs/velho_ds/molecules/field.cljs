@@ -35,7 +35,7 @@
                                           (stylefy/use-style (if (and label placeholder) style/input-field-label-static style/input-field-label))) label]
         (when icon [:i.material-icons (stylefy/use-style (merge style/icon (when icon-click-fn {:pointer-events "auto"
                                                                                                 :cursor         "pointer"}))) icon])]
-       (when error-messages
+       (when (first error-messages)
          [:div (stylefy/use-style style/validation-errors)
           (doall (for [message error-messages]
                    (into ^{:key message} [:p (stylefy/use-sub-style style/validation-errors :p) message])))])])))
