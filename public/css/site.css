@@ -99,35 +99,34 @@ h4 {
   display: grid;
   grid-template-colums: 1fr;
   grid-template-rows: 1fr;
-  padding: var(--space-x-small) var(--space-base);
  }
 
 .page-navigation-list {
   list-style: none;
-  padding: 0;
+  padding: 0 var(--space-small);
   margin: 0;
-}
-
-.page-navigation-content > ul > li {
-  padding: var(--space-x-small) 0;
-  text-transform: capitalize;
 }
 
 .page-navigation-list-item {
   list-style: none;
-  padding: var(--space-x-small) var(--space-xx-small);
   margin: 0;
+  line-height: var(--space-base);
 }
 
-.page-navigation-list-item {
-  padding: 0 var(--space-xx-small);
+.page-navigation-list-header {
+  line-height: var(--space-base);
 }
 
 .navigation-link {
   display: block;
-  padding: 0 var(--space-xx-small);
   text-decoration: none;
   color: var(--color-neutral-2);
+}
+
+.navigation-link-disabled {
+  display: block;
+  text-decoration: none;
+  color: var(--color-neutral-3);
 }
 
 .code-example {

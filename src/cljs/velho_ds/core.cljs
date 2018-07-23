@@ -1,23 +1,55 @@
 (ns velho-ds.core
-    (:require [reagent.core :as r]
-              [velho-ds.pages.main :as main]
-              [velho-ds.atoms.font :as font]
-              [velho-ds.design-system :as design-system]))
+  (:require [accountant.core :as accountant]
+            [bidi.bidi :as bidi]
+            [reagent.core :as r]
+            [reagent.session :as session]
+            [velho-ds.pages.main :as main]
+            [velho-ds.atoms.font :as font]
+            [velho-ds.design-system :as design-system]
+            [velho-ds.routes :refer [routes]]
+            [clojure.string :as str]))
 
 ;; -------------------------
 ;; Navigation
-(def nav (atom {:atoms {:buttons ["main" "secondary"]}
-                :molecules nil
-                :organisms {:heading nil
-                            :navigation nil}}))
+(defn path-exists? [path]
+  (boolean (bidi/match-route routes path)))
+
+(defn navigate [path]
+  (let [match (bidi/match-route routes path)]
+    (session/put! :route {:current-page (:handler match)
+                          :route-params (:route-params match)})))
+
+(declare navigation)
+(defn subnav [first-item last-item]
+  (let [open (r/atom false)]
+    [:li.page-navigation-list-header
+     [:span.navigation-link-disabled (str/capitalize first-item)]
+     (navigation last-item)]))
+
+(defn navigation [navigation-routes]
+  (into
+    [:ul.page-navigation-list]
+    (for [route navigation-routes]
+      (let [first-item (str/replace (first route) #"/" "")
+            last-item (last route)]
+        (if (map? last-item)
+          [subnav first-item last-item]
+          [:li.page-navigation-list-item
+           [:a.navigation-link
+            {:href (bidi/path-for routes last-item)}
+            (if (= :index last-item)
+              "Home"
+              (str/capitalize (name last-item)))]])))))
 
 ;; -------------------------
 ;; Initialize app
 
 (defn mount-root []
   (font/font-styles)
-  (r/render (main/page nav) (.getElementById js/document "app")))
+  (r/render [main/page (navigation (last routes))] (.getElementById js/document "app")))
 
 (defn init! []
   (design-system/init-ds!)
+  (accountant/configure-navigation! {:nav-handler navigate :path-exists? path-exists?})
+  (accountant/dispatch-current!)
   (mount-root))

@@ -1,6 +1,7 @@
 (ns velho-ds.pages.main
   (:require-macros [velho-ds.macros :refer [$->]])
-  (:require [velho-ds.templates.main :as tpl]
+  (:require [reagent.session :as session]
+            [velho-ds.templates.main :as tpl]
             [velho-ds.atoms.button :as buttons]
             [velho-ds.molecules.field :as fields]
             [velho-ds.organisms.grid :as grid]
@@ -10,7 +11,12 @@
             [velho-ds.atoms.table :as tables]
             [reagent.core :as r]))
 
-(defn page-content []
+(defmulti page-contents identity)
+
+(defmethod page-contents :index []
+  [:div])
+
+(defmethod page-contents :fonts []
   [:div
    [:h1 "Content header"]
    [:p "Page content explained here with MD-file."]
@@ -20,8 +26,11 @@
    [:h3 "Header H3"]
    [:h4 "Header H4"]
    [:p "Paragraph text looks like this."]
-   [:small "Small text is much smaller than a paragraph."]
+   [:small "Small text is much smaller than a paragraph."]])
 
+
+(defmethod page-contents :buttons []
+  [:div
    [:h2 "Buttons"]
    [:h3 "Default size"]
 
@@ -35,6 +44,11 @@
                      :on-click-fn #(println "Default button with icon and text clicked")}]
    [buttons/default {:content "Default"
                      :on-click-fn #(println "Default button with text clicked")}]
+   [:div {:style {:border "1px solid lightgray"
+                  :margin "1rem"}}
+    ($-> [buttons/default {:content "Update"
+                           :icon "autorenew"
+                           :on-click-fn #(println "Default button with icon and text clicked")}])]
 
    [buttons/default {:icon "autorenew"
                      :on-click-fn #(println "Default button with icon clicked")}]
@@ -96,18 +110,6 @@
    [buttons/outline-small {:icon "autorenew"
                            :on-click-fn #(println "Small outline button with icon clicked")}]
 
-   [:h2 "Tabs"]
-
-   [tabs/tabset {:selected-id 1
-                 :style {:margin "0"}}
-    [tabs/default {:tab-id 1
-                   :icon "info"
-                   :label "Info"
-                   :on-click-fn #(println "Default tab clicked")}]
-    [tabs/default {:tab-id 2
-                   :icon "group_work"
-                   :label "Relations"
-                   :on-click-fn #(println "Default tab clicked")}]]
 
    [:h2 "Fields"]
 
@@ -146,19 +148,79 @@
                                 :options options
                                 :no-selection-text "- No selection -"
                                 :preselected-values ["John"]}])
+   ])
 
-   [:h2 "Loaders"]
-   [:div.code-example ($-> [loaders/progress-bar])]
-   [:div.code-example ($-> [loaders/progress-bar {:percentage "50%"}])]
-   [:div.code-example ($-> [loaders/pulse])]
+(defmethod page-contents :fields []
+  [:div
+   [:h2 "Fields"]
 
-   [:h2 "Notification"]
-   [notifications/default {:close-fn #(println "Default notification icon clicked")} [:span "Default notification"]]
-   [notifications/error {:close-fn #(println "Error notification icon clicked")} [:span "Error notification"]]
-   [notifications/warning {:close-fn #(println "Warning notification icon clicked")} [:span "Warning notification"] [:span {:style {:text-decoration "underline"}
-                                                                                                                            :on-click #(js/alert "Alert")} "Warning notification 2"]]
-   [notifications/success {:close-fn #(println "Success notification icon clicked")} [:p {:style {:margin "0"}} "Success notification"]]
+   [fields/keyvalue {:label "Title"
+                     :content "Value"}]
 
+   [fields/input-field {:label "Input with label and icon"
+                        :placeholder "Placeholder"
+                        :icon "search"
+                        :on-change-fn #(println %)
+                        :on-blur-fn #(println %)
+                        :icon-click-fn #(println (str "Icon Clicked"))}]
+
+   [fields/input-field {:placeholder "Placeholder"
+                        :icon "search"
+                        :icon-click-fn #(println (str "Icon Clicked"))}]
+
+   [fields/input-field {:placeholder "Placeholder"}]
+
+   [fields/input-field {:label "Validation example"
+                        :content "Invalid value"
+                        :error-messages ["Value has to be valid!"]}]
+
+   [fields/multiline-field "Textfield"]
+
+   (let [values [{:id 1 :value "First"}
+                 {:id 2 :value "Second"}]]
+     [fields/dropdown-menu {:label "Dropdown"
+                            :selected-fn #(js/alert (str "Selected value: " %))
+                            :options values
+                            :no-selection-text "- No selection -"}])
+
+   (let [options ["John" "Sandra" "Matt" "Will" "Kate" "Alex" "Keith" "Melinda"]]
+     [fields/dropdown-multiple {:label "Multiselect dropdown"
+                                :selected-fn #(println (str "Selected values: " %))
+                                :options options
+                                :no-selection-text "- No selection -"
+                                :preselected-values ["John"]}])])
+
+(defmethod page-contents :grid []
+  [:div
+   [:h2 "Grid"]
+   [grid/grid-wrap {:rows 3
+                    :cols 3}
+    [grid/grid-cell {:col-start 1
+                     :col-end 4
+                     :style {:background-color "whitesmoke"
+                             :text-align "center"
+                             :border "1px solid silver"}} [:p "test"]]
+    [:div {:style {:background-color "whitesmoke"
+                   :text-align "center"
+                   :border "1px solid silver"}} [:p "2"]]
+    [:div {:style {:background-color "whitesmoke"
+                   :text-align "center"
+                   :border "1px solid silver"}} [:p "3"]]
+    [:div {:style {:background-color "whitesmoke"
+                   :text-align "center"
+                   :border "1px solid silver"}} [:p "4"]]
+    [:div {:style {:background-color "whitesmoke"
+                   :text-align "center"
+                   :border "1px solid silver"}} [:p "5"]]
+    [:div {:style {:background-color "whitesmoke"
+                   :text-align "center"
+                   :border "1px solid silver"}} [:p "6"]]
+    [:div {:style {:background-color "whitesmoke"
+                   :text-align "center"
+                   :border "1px solid silver"}} [:p "7"]]]])
+
+(defmethod page-contents :tables []
+  [:div
    [:h2 "Tables"]
    [tables/default {:headers [{:label "Name"
                                :key-path [:name]}
@@ -196,36 +258,40 @@
                                :value nil}
                               {:label "Progress"
                                :value nil}
-                              {:value [loaders/progress-bar {:percentage "58%"}]}]}]
+                              {:value [loaders/progress-bar {:percentage "58%"}]}]}]])
 
-   [:h2 "Grid"]
-   [grid/grid-wrap {:rows 3
-                    :cols 3}
-    [grid/grid-cell {:col-start 1
-                     :col-end 4
-                     :style {:background-color "whitesmoke"
-                             :text-align "center"
-                             :border "1px solid silver"}} [:p "test"]]
-    [:div {:style {:background-color "whitesmoke"
-                   :text-align "center"
-                   :border "1px solid silver"}} [:p "2"]]
-    [:div {:style {:background-color "whitesmoke"
-                   :text-align "center"
-                   :border "1px solid silver"}} [:p "3"]]
-    [:div {:style {:background-color "whitesmoke"
-                   :text-align "center"
-                   :border "1px solid silver"}} [:p "4"]]
-    [:div {:style {:background-color "whitesmoke"
-                   :text-align "center"
-                   :border "1px solid silver"}} [:p "5"]]
-    [:div {:style {:background-color "whitesmoke"
-                   :text-align "center"
-                   :border "1px solid silver"}} [:p "6"]]
-    [:div {:style {:background-color "whitesmoke"
-                   :text-align "center"
-                   :border "1px solid silver"}} [:p "7"]]]])
+(defmethod page-contents :notifications []
+  [:div
+   [:h2 "Notification"]
+   [notifications/default {:close-fn #(println "Default notification icon clicked")} [:span "Default notification"]]
+   [notifications/error {:close-fn #(println "Error notification icon clicked")} [:span "Error notification"]]
+   [notifications/warning {:close-fn #(println "Warning notification icon clicked")} [:span "Warning notification"] [:span {:style {:text-decoration "underline"}
+                                                                                                                            :on-click #(js/alert "Alert")} "Warning notification 2"]]
+   [notifications/success {:close-fn #(println "Success notification icon clicked")} [:p {:style {:margin "0"}} "Success notification"]]])
+
+(defmethod page-contents :loaders []
+  [:div
+   [:h2 "Loaders"]
+   [:div.code-example ($-> [loaders/progress-bar])]
+   [:div.code-example ($-> [loaders/progress-bar {:percentage "50%"}])]
+   [:div.code-example ($-> [loaders/pulse])]])
+
+(defmethod page-contents :tabs []
+  [:div
+   [:h2 "Tabs"]
+
+   [tabs/tabset {:selected-id 1
+                 :style {:margin "0"}}
+    [tabs/default {:tab-id 1
+                   :icon "info"
+                   :label "Info"
+                   :on-click-fn #(println "Default tab clicked")}]
+    [tabs/default {:tab-id 2
+                   :icon "group_work"
+                   :label "Relations"
+                   :on-click-fn #(println "Default tab clicked")}]]])
 
 (defn page [nav]
   [tpl/default {:navigation nav
-                :label "Page Name"
-                :main-content [page-content]}])
+                :heading "Velho Design System"
+                :main-content (page-contents (:current-page (session/get :route)))}])
