@@ -46,6 +46,15 @@ props:
   text-disabled:
     value: "hsla({!black}, 78%, 1)"
     category: color-group-text
+  state-error:
+    value: "hsla(0, 100%, 43%, 1)"
+    category: color-group-text
+  state-warning:
+    value: "hsla(32, 100%, 50%, 1)"
+    category: color-group-text
+  state-success:
+    value: "hsla(120, 100%, 30%, 1)"
+    category: color-group-text
 global:
   type: color
   category: color

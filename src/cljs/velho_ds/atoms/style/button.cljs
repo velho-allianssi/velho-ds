@@ -79,7 +79,7 @@
                             :box-shadow box-shadow/box-shadow-small}
                    :focus {:outline "none"}}})
 (def outline-small
-  (merge small outline {:padding (str "0 calc(0.375rem - "  border/border-default ")")}))
+  (merge small outline {:padding (str "0 calc(0.375rem - " border/border-default ")")}))
 
 (def upper
   {:position "relative"

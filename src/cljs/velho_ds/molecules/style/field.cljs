@@ -1,10 +1,13 @@
 (ns velho-ds.molecules.style.field
-  (:require [velho-ds.tokens.color :as color]
+  (:require [stylefy.core :as stylefy]
+            [velho-ds.tokens.color :as color]
             [velho-ds.tokens.spacing :as spacing]
             [velho-ds.tokens.font-size :as font-size]
+            [velho-ds.tokens.z-index :as z-index]
             [velho-ds.tokens.border :as border]
             [velho-ds.tokens.timing :as timing]
-            [stylefy.core :as stylefy]
+            [velho-ds.tokens.font :as font]
+            [velho-ds.tokens.box-shadow :as box-shadow]
             [velho-ds.tools.measures :as measures]))
 
 
@@ -28,15 +31,12 @@
    :border-left "0"
    :border-right "0"
    :border-bottom (str border/border-default " solid")
-   :border-color color/color-neutral-3
-   ::stylefy/mode {:focus {:border-bottom (str border/border-large " solid")
+   :border-color color/color-neutral-4
+   ::stylefy/mode {:focus {:border-bottom (str border/border-default " solid")
                            :border-color color/color-primary}
-                   :valid {:border-bottom (str border/border-default " solid")
-                           :border-color color/color-neutral-3}
                    :valid+span {:top "0"
                                 :cursor "inherit"
-                                :font-size font-size/font-size-small
-                                :color color/color-neutral-4}
+                                :font-size font-size/font-size-small}
                    :focus+span {:top "0"
                                 :cursor "inherit"
                                 :font-size font-size/font-size-small
@@ -44,12 +44,24 @@
    ::stylefy/vendors ["webkit" "moz" "o"]
    ::stylefy/auto-prefix #{:transition}})
 
+(def input-field-error
+  (merge input-field
+         {::stylefy/mode {:focus {:border-bottom (str border/border-large " solid")
+                                  :border-color color/state-error}
+                          :valid {:border-color color/state-error}
+                          :valid+span {:top "0"
+                                       :cursor "inherit"
+                                       :font-size font-size/font-size-small}
+                          :focus+span {:top "0"
+                                       :cursor "inherit"
+                                       :font-size font-size/font-size-small}}}))
+
 (def text-field
   (merge input-field
          {:overflow-y "scroll"
           :resize "none"}))
 
-(def input-field-heading
+(def input-field-label
   {:position "absolute"
    :display "block"
    :top spacing/space-base-rem
@@ -57,10 +69,27 @@
    :transition (str "all " timing/duration-slow " ease-in-out")
    :width "100%"
    :cursor "text"
+   :color color/color-neutral-4
    ::stylefy/vendors ["webkit" "moz" "o"]
    ::stylefy/auto-prefix #{:transition}})
 
-(def dropdown-heading
+(def input-field-label-static
+  (merge input-field-label
+         {:top "0"
+          :font-size font-size/font-size-small}))
+
+(def input-field-label-error
+  (merge input-field-label {:color color/state-error}))
+
+(def validation-errors
+  {:font-size font-size/font-size-small
+   :color color/state-error
+   :margin-top "-0.875rem"
+   ::stylefy/sub-styles {:p {:color color/state-error
+                             :font-size font-size/font-size-small
+                             :margin 0}}})
+
+(def dropdown-label
   {:position "absolute"
    :display "block"
    :top "0"
@@ -83,7 +112,7 @@
    :border-left "0"
    :border-right "0"
    :border-bottom (str border/border-default " solid")
-   :border-color color/color-neutral-3
+   :border-color color/color-neutral-4
    :border-radius "0"
    :margin-top spacing/space-small-rem
    :font-size font-size/font-size-base
@@ -107,54 +136,39 @@
 (def keyvalue-label
   {:color color/color-neutral-4})
 
-(def dropdown-multiple
-  (merge dropdown 
-   {:display "none"}))
+(def dropdown-multiple-selected-items
+  {:list-style-type "none"
+   :margin 0
+   :padding 0})
 
-(def input-field-multiple
-  (merge input-field
-         {:background "none"
-          :border-bottom "0"
-          :top "0"
-          ::stylefy/sub-styles {:ul {:position "relative"
-                                     :overflow "hidden"
-                                     :margin "0"
-                                     :padding "0"
-                                     :min-height "2rem"}
-                                :li {:display "inline-block"
-                                     :position "relative"
-                                     :margin "0"
-                                     :padding "0 8px 0 0"
-                                     :min-height "2rem"}}}))
+(def dropdown-multiple-input-background
+  {:position "relative"
+   :background-color color/color-neutral-1
+   :border-bottom (str "1px solid " color/color-neutral-4)})
 
-(def input-field-multiple-last
-  (merge input-field-multiple
-         {:position "relative"
-          :display "inline-block"
-          :min-width spacing/space-large
-          :width "auto"
-          :top spacing/space-xx-small-rem}))
+(def dropdown-multiple-input
+  {:background "none"
+   :border 0
+   :box-sizing "border-box"
+   :display "inline-block"
+   :font-family font/font-family-text
+   :font-weight font/font-weight-base
+   :font-size font-size/font-size-base
+   :padding (str spacing/space-x-small-rem " " spacing/space-x-small-rem " " spacing/space-x-small-rem " 0")
+   :width (str "calc(100% - " spacing/space-base-rem ")")
+   ::stylefy/mode {:focus {:outline "none"}}
+   ::stylefy/vendors ["webkit" "moz" "o"]
+   ::stylefy/auto-prefix #{:outline}})
 
-(def input-field-multiple-input
-  (merge input-field
-         {:top "0"
-          :border-bottom "0"
-          ::stylefy/mode {:valid {:border-bottom "0"}}}))
-
-(def droplist
-  {:position "absolute"
-   :top "77%"
-   :z-index "1010"
+(def dropdown-multiple-list
+  {:box-shadow box-shadow/box-shadow-small
+   :max-height (str "calc(4*" font-size/font-size-base " + 8*" spacing/space-x-small-rem " + 4*1px)")
+   :overflow-y "auto"
+   :position "absolute"
    :width "100%"
-   :border "1px solid #aaa"
-   :border-top "0"
-   :background "#fff"
-   :-webkit-box-shadow "0 4px 5px rgba(0, 0, 0, 0.15)"
-   :box-shadow "0 4px 5px rgba(0, 0, 0, 0.15)"
-   ::stylefy/sub-styles {:ul {:margin "0"
-                              :padding "0"}
-                         :li {:list-style "none"
-                              :cursor "pointer"
-                              :padding spacing/space-x-small-rem
-                              ::stylefy/mode {:hover {:background color/color-primary
-                                                      :color color/color-white}}}}})
+   :z-index z-index/z-index-sticky})
+
+(def dropdown-multiple-list-item
+  {:list-style-type "none"
+   :margin 0
+   :padding 0})
