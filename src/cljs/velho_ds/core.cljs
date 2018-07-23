@@ -22,20 +22,20 @@
 (declare navigation)
 (defn subnav [first-item last-item]
   (let [open (r/atom false)]
-    [:li
-     [:span (str/capitalize first-item)]
+    [:li.page-navigation-list-header
+     [:span.navigation-link-disabled (str/capitalize first-item)]
      (navigation last-item)]))
 
 (defn navigation [navigation-routes]
   (into
-    [:ul]
+    [:ul.page-navigation-list]
     (for [route navigation-routes]
       (let [first-item (str/replace (first route) #"/" "")
             last-item (last route)]
         (if (map? last-item)
           [subnav first-item last-item]
-          [:li
-           [:a
+          [:li.page-navigation-list-item
+           [:a.navigation-link
             {:href (bidi/path-for routes last-item)}
             (if (= :index last-item)
               "Home"
