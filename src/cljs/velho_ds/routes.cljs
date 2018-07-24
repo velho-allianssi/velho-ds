@@ -3,12 +3,4 @@
 ; THIS IS GENERATED FILE FOR ROUTES.
 ; CHANGES TO THIS FILE WILL BE OVERWRITTEN!
 
-(def routes ["/" {"" :index,
-                  "atoms/" {"buttons" :buttons,
-                            "fonts" :fonts,
-                            "loaders" :loaders,
-                            "tables" :tables},
-                  "molecules/" {"fields" :fields,
-                                "notifications" :notifications,
-                                "tabs" :tabs},
-                  "organisms/" {"grid" :grid}}])
+(def routes ["/" {"" :index, "molecules/" {"notifications" :notifications, "tabs" :tabs, "fields" :fields}, "atoms/" {"fonts" :fonts, "tables" :tables, "buttons" :buttons, "loaders" :loaders}, "organisms/" {"grid" :grid}}])
