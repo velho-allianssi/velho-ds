@@ -6,6 +6,10 @@
 props:
   opacity-disabled:
     value: "0.5"
+  opacity-light:
+    value: "0.8"
+  opacity-strong:
+    value: "0.2"
 global:
   type: number
   category: opacity

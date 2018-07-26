@@ -6,6 +6,8 @@
             [velho-ds.atoms.loader :as loaders]
             [velho-ds.molecules.notification :as notifications]
             [velho-ds.molecules.tab :as tabs]
+            [velho-ds.molecules.modal :as modals]
+            [velho-ds.molecules.style.modal :as modal-style]
             [velho-ds.atoms.table :as tables]
             [reagent.core :as r]))
 
@@ -286,3 +288,26 @@
                          :icon "group_work"
                          :label "Relations"
                          :on-click-fn #(println "Default tab clicked")}]])]])
+
+(defmethod page-contents :modals []
+  [:div
+   [:div.rds-code-example
+    ($-> [buttons/default {:content "Open modal"
+                           :on-click-fn (fn [] (modals/open [modals/default {:modal-id "modal"
+                                                                             :header "Confirm modal"
+                                                                             :header-buttons [{:icon "more_vert"
+                                                                                               :on-click-fn #(modals/close "modal")}
+                                                                                              {:icon "close"
+                                                                                               :on-click-fn #(modals/close "modal")}]
+                                                                             :content [[fields/input-field {:label "First"
+                                                                                                            :placeholder "Placeholder"}]
+                                                                                       [fields/input-field {:label "Second"
+                                                                                                            :placeholder "Placeholder"}]
+                                                                                       [fields/input-field {:label "Third"
+                                                                                                            :placeholder "Placeholder"}]]
+                                                                             :footer [[buttons/outline {:content "Cancel"
+                                                                                                        :on-click-fn #(modals/close "modal")}]
+                                                                                      [buttons/primary {:content "Confirm"
+                                                                                                        :on-click-fn #(modals/close "modal")
+                                                                                                        :styles {:margin-left "16px"}}]]}]
+                                                            "modal"))}])]])
