@@ -15,7 +15,7 @@
                  ;; Front end
                  [org.clojure/clojurescript "1.10.238"]
                  [reagent "0.8.0"]
-                 [stylefy "1.5.0"]
+                 [stylefy "1.7.0"]
                  [bidi "2.1.3"]
                  [venantius/accountant "0.2.4"]
                  [reagent-utils "0.3.1"]]
