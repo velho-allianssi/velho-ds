@@ -41,7 +41,7 @@
              :ring-handler "velho-ds.server/handler"
              :css-dirs ["public/css"]}
   :cljsbuild {:builds [{:id "dev"
-                            :source-paths ["src/cljs" "env/dev/cljs"]
+                            :source-paths ["src/cljs" "env/dev/clj" "env/dev/cljs"]
                              :compiler {:main "velho-ds.dev"
                                         :output-to "public/js/app.js"
                                         :output-dir "public/js/out"
