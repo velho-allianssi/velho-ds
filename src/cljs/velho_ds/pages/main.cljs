@@ -35,8 +35,7 @@
 
    [:h2.rds-header2 "Default fonts"]
    [:h3.rds-header3 "Example of usage"]
-   [:div.rds-code-example
-    ($-> [:p "This is a paragraph."])]
+   ($-> [:p "This is a paragraph."])
 
    [tables/default {:headers [{:label "Tag"
                                :key-path [:name]}
@@ -62,10 +61,9 @@
    [:p.rds-quote "Buttons express what action will occur when the user clicks or touches it. Buttons are used to initialize an action, either in the background or foreground of an experience."]
    [:h2.rds-header2 "Default buttons"]
    [:h3.rds-header3 "Example of usage"]
-   [:div.rds-code-example
-    ($-> [buttons/default {:content "Alert Button"
+   ($-> [buttons/default {:content "Alert Button"
                            :icon "warning"
-                           :on-click-fn #(js/alert "Default button with icon and text clicked")}])]
+                           :on-click-fn #(js/alert "Default button with icon and text clicked")}])
    [tables/default {:headers [{:label "Name"
                                :key-path [:name]}
                               {:label "Usage"
@@ -103,10 +101,9 @@
                               ]}]
    [:h2.rds-header2 "Small buttons"]
    [:h3.rds-header3 "Example of usage"]
-   [:div.rds-code-example
-    ($-> [buttons/default-small {:content "Small Alert Button"
+   ($-> [buttons/default-small {:content "Small Alert Button"
                                  :icon "warning"
-                                 :on-click-fn #(js/alert "Small default button with icon and text clicked")}])]
+                                 :on-click-fn #(js/alert "Small default button with icon and text clicked")}])
    [tables/default {:headers [{:label "Name"
                                :key-path [:name]}
                               {:label "Usage"
@@ -145,13 +142,12 @@
 
 (defmethod page-contents :fields []
   [:div
-   [:div.rds-code-example
-    ($-> [fields/input-field {:label "Input with label and icon"
+   ($-> [fields/input-field {:label "Input with label and icon"
                               :placeholder "Placeholder"
                               :icon "search"
                               :on-change-fn #(println %)
                               :on-blur-fn #(println %)
-                              :icon-click-fn #(println (str "Icon Clicked"))}])]
+                              :icon-click-fn #(println (str "Icon Clicked"))}])
    [fields/keyvalue {:label "Title"
                      :content "Value"}]
 
@@ -190,8 +186,7 @@
 
 (defmethod page-contents :grid []
   [:div
-   [:div.rds-code-example
-    ($-> [grid/grid-wrap {:rows 3
+   ($-> [grid/grid-wrap {:rows 3
                           :cols 3}
           [grid/grid-cell {:col-start 1
                            :col-end 4
@@ -215,13 +210,11 @@
                          :border "1px solid silver"}} [:p "6"]]
           [:div {:style {:background-color "whitesmoke"
                          :text-align "center"
-                         :border "1px solid silver"}} [:p "7"]]])]
-   ])
+                         :border "1px solid silver"}} [:p "7"]]])])
 
 (defmethod page-contents :tables []
   [:div
-   [:div.rds-code-example
-    ($-> [tables/default {:headers [{:label "Name"
+   ($-> [tables/default {:headers [{:label "Name"
                                      :key-path [:name]}
                                     {:label "Tasks"
                                      :key-path [:tasks 0]}
@@ -257,26 +250,25 @@
                                      :value nil}
                                     {:label "Progress"
                                      :value nil}
-                                    {:value [loaders/progress-bar {:percentage "58%"}]}]}])]])
+                                    {:value [loaders/progress-bar {:percentage "58%"}]}]}])])
 
 (defmethod page-contents :notifications []
   [:div
-   [:div.rds-code-example ($-> [notifications/default {:close-fn #(js/alert "Default notification icon clicked")} [:span "Default notification"]])]
-   [:div.rds-code-example ($-> [notifications/error {:close-fn #(js/alert "Error notification icon clicked")} [:span "Error notification"]])]
-   [:div.rds-code-example ($-> [notifications/warning {:close-fn #(js/alert "Warning notification icon clicked")} [:span "Warning notification"] [:span {:style {:text-decoration "underline"}
-                                                                                                                                                         :on-click #(js/alert "Alert")} "Warning notification 2"]])]
-   [:div.rds-code-example ($-> [notifications/success {:close-fn #(js/alert "Success notification icon clicked")} [:p {:style {:margin "0"}} "Success notification"]])]])
+   ($-> [notifications/default {:close-fn #(js/alert "Default notification icon clicked")} [:span "Default notification"]])
+   ($-> [notifications/error {:close-fn #(js/alert "Error notification icon clicked")} [:span "Error notification"]])
+   ($-> [notifications/warning {:close-fn #(js/alert "Warning notification icon clicked")} [:span "Warning notification"] [:span {:style {:text-decoration "underline"}
+                                                                                                                                  :on-click #(js/alert "Alert")} "Warning notification 2"]])
+   ($-> [notifications/success {:close-fn #(js/alert "Success notification icon clicked")} [:p {:style {:margin "0"}} "Success notification"]])])
 
 (defmethod page-contents :loaders []
   [:div
-   [:div.rds-code-example ($-> [loaders/progress-bar])]
-   [:div.rds-code-example ($-> [loaders/progress-bar {:percentage "50%"}])]
-   [:div.rds-code-example ($-> [loaders/pulse])]])
+   ($-> [loaders/progress-bar])
+   ($-> [loaders/progress-bar {:percentage "50%"}])
+   ($-> [loaders/pulse])])
 
 (defmethod page-contents :tabs []
   [:div
-   [:div.rds-code-example
-    ($-> [tabs/tabset {:selected-id 1
+   ($-> [tabs/tabset {:selected-id 1
                        :style {:margin "0"}}
           [tabs/default {:tab-id 1
                          :icon "info"
@@ -285,4 +277,4 @@
           [tabs/default {:tab-id 2
                          :icon "group_work"
                          :label "Relations"
-                         :on-click-fn #(println "Default tab clicked")}]])]])
+                         :on-click-fn #(println "Default tab clicked")}]])])
