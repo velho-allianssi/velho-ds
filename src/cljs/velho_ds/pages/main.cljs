@@ -6,6 +6,8 @@
             [velho-ds.atoms.loader :as loaders]
             [velho-ds.molecules.notification :as notifications]
             [velho-ds.molecules.tab :as tabs]
+            [velho-ds.molecules.modal :as modals]
+            [velho-ds.molecules.style.modal :as modal-style]
             [velho-ds.atoms.table :as tables]
             [reagent.core :as r]))
 
@@ -62,8 +64,8 @@
    [:h2.rds-header2 "Default buttons"]
    [:h3.rds-header3 "Example of usage"]
    ($-> [buttons/default {:content "Alert Button"
-                           :icon "warning"
-                           :on-click-fn #(js/alert "Default button with icon and text clicked")}])
+                          :icon "warning"
+                          :on-click-fn #(js/alert "Default button with icon and text clicked")}])
    [tables/default {:headers [{:label "Name"
                                :key-path [:name]}
                               {:label "Usage"
@@ -102,8 +104,8 @@
    [:h2.rds-header2 "Small buttons"]
    [:h3.rds-header3 "Example of usage"]
    ($-> [buttons/default-small {:content "Small Alert Button"
-                                 :icon "warning"
-                                 :on-click-fn #(js/alert "Small default button with icon and text clicked")}])
+                                :icon "warning"
+                                :on-click-fn #(js/alert "Small default button with icon and text clicked")}])
    [tables/default {:headers [{:label "Name"
                                :key-path [:name]}
                               {:label "Usage"
@@ -143,11 +145,11 @@
 (defmethod page-contents :fields []
   [:div
    ($-> [fields/input-field {:label "Input with label and icon"
-                              :placeholder "Placeholder"
-                              :icon "search"
-                              :on-change-fn #(println %)
-                              :on-blur-fn #(println %)
-                              :icon-click-fn #(println (str "Icon Clicked"))}])
+                             :placeholder "Placeholder"
+                             :icon "search"
+                             :on-change-fn #(println %)
+                             :on-blur-fn #(println %)
+                             :icon-click-fn #(println (str "Icon Clicked"))}])
    [fields/keyvalue {:label "Title"
                      :content "Value"}]
 
@@ -187,70 +189,70 @@
 (defmethod page-contents :grid []
   [:div
    ($-> [grid/grid-wrap {:rows 3
-                          :cols 3}
-          [grid/grid-cell {:col-start 1
-                           :col-end 4
-                           :style {:background-color "whitesmoke"
-                                   :text-align "center"
-                                   :border "1px solid silver"}} [:p "test"]]
-          [:div {:style {:background-color "whitesmoke"
-                         :text-align "center"
-                         :border "1px solid silver"}} [:p "2"]]
-          [:div {:style {:background-color "whitesmoke"
-                         :text-align "center"
-                         :border "1px solid silver"}} [:p "3"]]
-          [:div {:style {:background-color "whitesmoke"
-                         :text-align "center"
-                         :border "1px solid silver"}} [:p "4"]]
-          [:div {:style {:background-color "whitesmoke"
-                         :text-align "center"
-                         :border "1px solid silver"}} [:p "5"]]
-          [:div {:style {:background-color "whitesmoke"
-                         :text-align "center"
-                         :border "1px solid silver"}} [:p "6"]]
-          [:div {:style {:background-color "whitesmoke"
-                         :text-align "center"
-                         :border "1px solid silver"}} [:p "7"]]])])
+                         :cols 3}
+         [grid/grid-cell {:col-start 1
+                          :col-end 4
+                          :style {:background-color "whitesmoke"
+                                  :text-align "center"
+                                  :border "1px solid silver"}} [:p "test"]]
+         [:div {:style {:background-color "whitesmoke"
+                        :text-align "center"
+                        :border "1px solid silver"}} [:p "2"]]
+         [:div {:style {:background-color "whitesmoke"
+                        :text-align "center"
+                        :border "1px solid silver"}} [:p "3"]]
+         [:div {:style {:background-color "whitesmoke"
+                        :text-align "center"
+                        :border "1px solid silver"}} [:p "4"]]
+         [:div {:style {:background-color "whitesmoke"
+                        :text-align "center"
+                        :border "1px solid silver"}} [:p "5"]]
+         [:div {:style {:background-color "whitesmoke"
+                        :text-align "center"
+                        :border "1px solid silver"}} [:p "6"]]
+         [:div {:style {:background-color "whitesmoke"
+                        :text-align "center"
+                        :border "1px solid silver"}} [:p "7"]]])])
 
 (defmethod page-contents :tables []
   [:div
    ($-> [tables/default {:headers [{:label "Name"
-                                     :key-path [:name]}
-                                    {:label "Tasks"
-                                     :key-path [:tasks 0]}
-                                    {:label "Organization"
-                                     :key-path [:organization 0 :org]}
-                                    {:label "State"
-                                     :key-path [:state]}
-                                    {:label "Progress"
-                                     :key-path [:element]}]
-                          :content [{:id 1
-                                     :name "Example 1"
-                                     :tasks ["Being amazing"]
-                                     :organization [{:org "Amazing Organization"}]
-                                     :state "On going"
-                                     :element [loaders/progress-bar {:percentage "75%"}]}
-                                    {:id 2
-                                     :name "Example 2"
-                                     :tasks ["Cleaning"]
-                                     :organization [{:org "Clean Organization"}]
-                                     :state "Done"
-                                     :element [loaders/progress-bar {:percentage "100%"}]}
-                                    {:id 3
-                                     :name "Example 3"
-                                     :tasks ["Foo"]
-                                     :organization [{:org "Bar Organization"}]
-                                     :state "Starting"
-                                     :element [loaders/progress-bar]}]
-                          :footers [{:label "Name"
-                                     :value "Total"}
-                                    {:label "Tasks"
-                                     :value nil}
-                                    {:label "Organization"
-                                     :value nil}
-                                    {:label "Progress"
-                                     :value nil}
-                                    {:value [loaders/progress-bar {:percentage "58%"}]}]}])])
+                                    :key-path [:name]}
+                                   {:label "Tasks"
+                                    :key-path [:tasks 0]}
+                                   {:label "Organization"
+                                    :key-path [:organization 0 :org]}
+                                   {:label "State"
+                                    :key-path [:state]}
+                                   {:label "Progress"
+                                    :key-path [:element]}]
+                         :content [{:id 1
+                                    :name "Example 1"
+                                    :tasks ["Being amazing"]
+                                    :organization [{:org "Amazing Organization"}]
+                                    :state "On going"
+                                    :element [loaders/progress-bar {:percentage "75%"}]}
+                                   {:id 2
+                                    :name "Example 2"
+                                    :tasks ["Cleaning"]
+                                    :organization [{:org "Clean Organization"}]
+                                    :state "Done"
+                                    :element [loaders/progress-bar {:percentage "100%"}]}
+                                   {:id 3
+                                    :name "Example 3"
+                                    :tasks ["Foo"]
+                                    :organization [{:org "Bar Organization"}]
+                                    :state "Starting"
+                                    :element [loaders/progress-bar]}]
+                         :footers [{:label "Name"
+                                    :value "Total"}
+                                   {:label "Tasks"
+                                    :value nil}
+                                   {:label "Organization"
+                                    :value nil}
+                                   {:label "Progress"
+                                    :value nil}
+                                   {:value [loaders/progress-bar {:percentage "58%"}]}]}])])
 
 (defmethod page-contents :notifications []
   [:div
@@ -269,12 +271,35 @@
 (defmethod page-contents :tabs []
   [:div
    ($-> [tabs/tabset {:selected-id 1
-                       :style {:margin "0"}}
-          [tabs/default {:tab-id 1
-                         :icon "info"
-                         :label "Info"
-                         :on-click-fn #(println "Default tab clicked")}]
-          [tabs/default {:tab-id 2
-                         :icon "group_work"
-                         :label "Relations"
-                         :on-click-fn #(println "Default tab clicked")}]])])
+                      :style {:margin "0"}}
+         [tabs/default {:tab-id 1
+                        :icon "info"
+                        :label "Info"
+                        :on-click-fn #(println "Default tab clicked")}]
+         [tabs/default {:tab-id 2
+                        :icon "group_work"
+                        :label "Relations"
+                        :on-click-fn #(println "Default tab clicked")}]])])
+
+(defmethod page-contents :modals []
+  [:div
+   [:div.rds-code-example
+    ($-> [buttons/default {:content "Open modal"
+                           :on-click-fn (fn [] (modals/open [modals/default {:modal-id "modal"
+                                                                             :header "Confirm modal"
+                                                                             :header-buttons [{:icon "more_vert"
+                                                                                               :on-click-fn #(modals/close "modal")}
+                                                                                              {:icon "close"
+                                                                                               :on-click-fn #(modals/close "modal")}]
+                                                                             :content [[fields/input-field {:label "First"
+                                                                                                            :placeholder "Placeholder"}]
+                                                                                       [fields/input-field {:label "Second"
+                                                                                                            :placeholder "Placeholder"}]
+                                                                                       [fields/input-field {:label "Third"
+                                                                                                            :placeholder "Placeholder"}]]
+                                                                             :footer [[buttons/outline {:content "Cancel"
+                                                                                                        :on-click-fn #(modals/close "modal")}]
+                                                                                      [buttons/primary {:content "Confirm"
+                                                                                                        :on-click-fn #(modals/close "modal")
+                                                                                                        :styles {:margin-left "16px"}}]]}]
+                                                            "modal"))}])]])

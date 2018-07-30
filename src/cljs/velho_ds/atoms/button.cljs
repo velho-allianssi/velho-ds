@@ -8,30 +8,35 @@
     (if icon [:i.material-icons (stylefy/use-sub-style (merge style/button styles) :i) icon])
     (if content [:span (stylefy/use-sub-style (merge style/button styles) :span) content])])
 
+(defn- merge-styles [btn-args & static-styles]
+  (assoc btn-args
+    :styles (reduce merge
+                    (conj (into [] static-styles) (:styles btn-args)))))
+
 (defn primary [{:keys [content icon] :as btn-args}]
   (assert (or content icon))
-  [default (merge {:styles style/primary} btn-args)])
+  [default (merge-styles btn-args style/primary)])
 
 (defn secondary [{:keys [content icon] :as btn-args}]
   (assert (or content icon))
-  [default (merge {:styles style/secondary} btn-args)])
+  [default (merge-styles btn-args style/secondary)])
 
 (defn outline [{:keys [content icon] :as btn-args}]
   (assert (or content icon))
-  [default (merge {:styles style/outline} btn-args)])
+  [default (merge-styles btn-args style/outline)])
 
 (defn default-small [{:keys [content icon] :as btn-args}]
   (assert (or content icon))
-  [default (merge {:styles style/small} btn-args)])
+  [default (merge-styles btn-args style/small)])
 
 (defn primary-small [{:keys [content icon] :as btn-args}]
   (assert (or content icon))
-  [default (merge {:styles (merge style/primary style/small)} btn-args)])
+  [default (merge-styles btn-args style/primary style/small)])
 
 (defn secondary-small [{:keys [content icon] :as btn-args}]
   (assert (or content icon))
-  [default (merge {:styles (merge style/secondary style/small)} btn-args)])
+  [default (merge-styles btn-args style/secondary style/small)])
 
 (defn outline-small [{:keys [content icon] :as btn-args}]
   (assert (or content icon))
-  [default (merge {:styles style/outline-small} btn-args)])
+  [default (merge-styles btn-args style/outline style/outline-small)])
