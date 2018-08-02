@@ -27,6 +27,7 @@
    :margin "0"
    :min-height (measures/rem-times font-size/font-size-base 2)
    :background color/color-neutral-1
+   :box-sizing  "border-box"
    :border-top "0"
    :border-left "0"
    :border-right "0"
@@ -58,7 +59,8 @@
 
 (def text-field
   (merge input-field
-         {:overflow-y "scroll"
+         {:height (measures/rem-times spacing/space-small-rem 2)
+          :overflow-y "scroll"
           :resize "none"}))
 
 (def input-field-label
@@ -103,7 +105,7 @@
 (def dropdown
   {:appearance "none"
    :font-family "inherit"
-   :background-color "transparent"
+   :background-color color/color-neutral-1
    :width "100%"
    :height (measures/rem-times font-size/font-size-base 2)
    :padding (str spacing/space-xx-small-rem " 0")
@@ -143,12 +145,15 @@
 
 (def dropdown-multiple-input-background
   {:position "relative"
+   :height (measures/rem-times spacing/space-small-rem 2)
+   :box-sizing "border-box"
    :background-color color/color-neutral-1
    :border-bottom (str "1px solid " color/color-neutral-4)})
 
 (def dropdown-multiple-input
   {:background "none"
    :border 0
+   :height (measures/rem-times spacing/space-small-rem 2)
    :box-sizing "border-box"
    :display "inline-block"
    :font-family font/font-family-text

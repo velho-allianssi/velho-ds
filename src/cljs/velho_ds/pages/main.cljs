@@ -165,7 +165,6 @@
                         :icon-click-fn #(println (str "Icon Clicked"))}]
 
    [fields/input-field {:placeholder "Placeholder"}]
-
    [fields/input-field {:label "Validation example"
                         :content "Invalid value"
                         :error-messages ["Value has to be valid!"]}]
