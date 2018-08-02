@@ -220,13 +220,14 @@
         add-to-files (fn [filemap item]
                        (assoc filemap ((fnil inc 0) (apply max (map #(js/parseInt %) (keys filemap)))) item))
         get-files (fn [e]
-                    (-> e
-                        .-files
-                        array-seq
-                        (#(map file-to-map %))
-                        (#(reduce add-to-files @files %))
-                        (#(reset! files %))
-                        (apply on-change-fn @files)))
+                    (do
+                      (-> e
+                         .-files
+                         array-seq
+                         (#(map file-to-map %))
+                         (#(reduce add-to-files @files %))
+                         (#(reset! files %)))
+                      (on-change-fn @files)))
         file-metadata-changed (fn [key new-metadata]
                                 (do
                                   (swap! files assoc key (merge (get @files key) new-metadata))
