@@ -25,16 +25,16 @@
       [:div
        [:label (stylefy/use-style style/element)
         [:input (stylefy/use-style (merge (if (first error-messages) style/input-field-error
-                                                                     style/input-field) (when icon {:width         "calc(100% - 2.5rem)"
-                                                                                                    :padding-right "2.5rem"})) {:required    "required"
-                                                                                                                                :on-change   #(-> % .-target .-value change)
-                                                                                                                                :on-blur     blur
-                                                                                                                                :value       @input-text
+                                                                     style/input-field) (when icon {:width "calc(100% - 2.5rem)"
+                                                                                                    :padding-right "2.5rem"})) {:required "required"
+                                                                                                                                :on-change #(-> % .-target .-value change)
+                                                                                                                                :on-blur blur
+                                                                                                                                :value @input-text
                                                                                                                                 :placeholder placeholder})]
         [:span (if (first error-messages) (stylefy/use-style style/input-field-label-error)
                                           (stylefy/use-style (if (and label placeholder) style/input-field-label-static style/input-field-label))) label]
         (when icon [:i.material-icons (stylefy/use-style (merge style/icon (when icon-click-fn {:pointer-events "auto"
-                                                                                                :cursor         "pointer"}))) icon])]
+                                                                                                :cursor "pointer"}))) icon])]
        (when (first error-messages)
          [:div (stylefy/use-style style/validation-errors)
           (doall (for [message error-messages]
@@ -180,3 +180,63 @@
                        (vector list-item {:on-click-fn list-item-selected-fn
                                           :is-selected? (= (:selected-from-filter @state) %)
                                           :content %})) (filtered-selections)))]])))
+
+(defn drag-n-drop [{:keys [label help-text on-change-fn]}]
+  (assert label)
+  (let [files (r/atom {})
+        label-id (r/atom (str label (subs (str (rand)) 2 9)))
+        file-to-map (fn [item]
+                      {:name (.-name item)
+                       :description nil
+                       :file item})
+        allow-drop (fn [e]
+                     (.preventDefault e))
+        add-to-files (fn [filemap item]
+                       (assoc filemap ((fnil inc 0) (apply max (map #(js/parseInt %) (keys filemap)))) item))
+        get-files (fn [e]
+                    (-> e
+                        .-files
+                        array-seq
+                        (#(map file-to-map %))
+                        (#(reduce add-to-files @files %))
+                        (#(reset! files %))
+                        (when on-change-fn (apply on-change-fn @files))))
+        set-description (fn [key description]
+                          (reset! files (assoc-in @files [key :description] description)))
+        toggle-description (fn [key id]
+                             (if (= (.getAttribute (.getElementById js/document (str "description-area-" id "-" key)) "class") (get (stylefy/use-style style/drag-n-drop-item-description-area-hidden) :class))
+                               (.setAttribute (.getElementById js/document (str "description-area-" id "-" key)) "class" (get (stylefy/use-style style/drag-n-drop-item-description-area) :class))
+                               (.setAttribute (.getElementById js/document (str "description-area-" id "-" key)) "class" (get (stylefy/use-style style/drag-n-drop-item-description-area-hidden) :class))))]
+    (fn []
+      [:div
+       [:div (stylefy/use-style style/drag-n-drop-header) label]
+       [:div (merge (stylefy/use-style style/drag-n-drop-content)
+                    {:on-drag-over allow-drop
+                     :on-drag-enter allow-drop
+                     :on-drag-start #(.setData (.-dataTransfer %) "text/plain" "") ;; for Firefox. You MUST set something as data.
+                     :on-drop #(do
+                                 (allow-drop %)
+                                 (get-files (.-dataTransfer %)))})
+        (when (keys @files)
+          (into [:ul (stylefy/use-style style/drag-n-drop-content-ul)]
+                (for [key (sort (keys @files))]
+                  ^{:key key} [:li (stylefy/use-sub-style style/drag-n-drop-content-ul :li)
+                               [:div (stylefy/use-style style/drag-n-drop-item) (get-in @files [key :name])
+                                [:span (stylefy/use-style style/drag-n-drop-item-btn-area)
+                                 [icon/clickable {:name "edit"
+                                                  :on-click-fn #(toggle-description key @label-id)}]
+                                 [icon/clickable {:name "close"
+                                                  :on-click-fn #(reset! files (dissoc @files key))}]]]
+                               [:div (merge (stylefy/use-style style/drag-n-drop-item-description-area-hidden)
+                                            {:id (str "description-area-" @label-id "-" key)})
+                                [input-field {:label "Description"
+                                              :on-change-fn #(set-description key %)}]]])))
+        [:div (merge (stylefy/use-style style/drag-n-drop-helparea)
+                     {:on-click #(.click (.getElementById js/document (str "file-input-" @label-id)))})
+         [:p (stylefy/use-sub-style style/drag-n-drop-helparea :p) help-text]
+         [icon/icon {:name "cloud_upload"}]
+         [:input {:id (str "file-input-" @label-id)
+                  :type "file"
+                  :multiple "multiple"
+                  :on-change #(get-files (.-target %))
+                  :style {:display "none"}}]]]])))

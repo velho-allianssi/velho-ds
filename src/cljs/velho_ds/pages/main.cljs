@@ -184,7 +184,11 @@
                                 :selected-fn #(println (str "Selected values: " %))
                                 :options options
                                 :no-selection-text "- No selection -"
-                                :preselected-values ["John"]}])])
+                                :preselected-values ["John"]}])
+
+   [fields/drag-n-drop {:label "Example"
+                        :help-text "Drag-n-drop files or click here to upload"
+                        :on-change-fn println}]])
 
 (defmethod page-contents :grid []
   [:div

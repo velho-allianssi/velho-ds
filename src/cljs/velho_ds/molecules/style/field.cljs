@@ -172,3 +172,59 @@
   {:list-style-type "none"
    :margin 0
    :padding 0})
+
+(def drag-n-drop-header
+  {:margin "auto"
+   :border (str border/border-default " solid " color/color-neutral-4)
+   :padding-top "6px"
+   :padding-right spacing/space-large
+   :padding-bottom (str "calc(" spacing/space-base " / 4)")
+   :padding-left spacing/space-small
+   :color color/color-white
+   :position "relative"
+   :background-color color/color-neutral-4})
+
+(def drag-n-drop-content
+  {:background color/color-neutral-2
+   :padding spacing/space-x-small-rem
+   :border (str border/border-default " dashed " color/color-neutral-4)})
+
+(def drag-n-drop-content-ul
+  {:margin 0
+   :padding 0
+   ::stylefy/sub-styles {:li {:list-style "none"
+                              :margin-bottom "0.5rem"}}})
+
+(def drag-n-drop-helparea
+  {:text-align "center"
+   :padding (str spacing/space-x-small-rem " 0")
+   :cursor "pointer"
+   :color color/color-neutral-4
+   ::stylefy/sub-styles {:p {:margin 0}}})
+
+(def drag-n-drop-item
+  {:list-style "none"
+   :background "white"
+   :padding-left spacing/space-x-small-rem
+   :box-shadow box-shadow/box-shadow-small
+   :display "flex"
+   :align-items "center"
+   :width (str "calc(100% - " spacing/space-x-small-rem ")")
+   :min-height (measures/rem-times spacing/space-small-rem 2)
+   :justify-content "space-between"})
+
+(def drag-n-drop-item-btn-area
+  {:padding-left spacing/space-base-rem
+   :padding-right spacing/space-xx-small-rem
+   :margin-left "auto"
+   :display "flex"
+   :width "auto"})
+
+(def drag-n-drop-item-description-area
+  {:display "block"
+   :background color/color-white
+   :box-shadow box-shadow/box-shadow-small
+   :padding spacing/space-x-small-rem})
+
+(def drag-n-drop-item-description-area-hidden
+  {:display "none"})
