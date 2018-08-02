@@ -17,8 +17,9 @@
 (defn close [modal-id]
   (.remove (.getElementById js/document modal-id) js/document))
 
-(defn default [{:keys [header header-buttons content footer]}]
-  [:div (stylefy/use-style style/modal-area)
+(defn default [{:keys [header header-buttons content footer is-open]}]
+  [:div (if is-open (stylefy/use-style style/modal-area)
+                    (stylefy/use-style (merge style/modal-area {:display "none"})) )
    [:div (stylefy/use-style style/background)]
    [:div (stylefy/use-style style/modal-box)
     [:header (stylefy/use-style style/modal-header)
