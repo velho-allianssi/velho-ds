@@ -165,12 +165,11 @@
                         :icon-click-fn #(println (str "Icon Clicked"))}]
 
    [fields/input-field {:placeholder "Placeholder"}]
-   [:div {:style {:display "flex"}}
-    [fields/input-field {:label "Validation example"
-                         :content "Invalid value"
-                         :error-messages ["Value has to be valid!"]}]
+   [fields/input-field {:label "Validation example"
+                        :content "Invalid value"
+                        :error-messages ["Value has to be valid!"]}]
 
-    [fields/multiline-field "Textfield"]
+   [fields/multiline-field "Textfield"]
 
    (let [values [{:id 1 :value "First"}
                  {:id 2 :value "Second"}]]
@@ -184,7 +183,7 @@
                                 :selected-fn #(println (str "Selected values: " %))
                                 :options options
                                 :no-selection-text "- No selection -"
-                                :preselected-values ["John"]}])]
+                                :preselected-values ["John"]}])
 
    [fields/drag-n-drop {:label "Example"
                         :help-text "Drag-n-drop files or click here to upload"
