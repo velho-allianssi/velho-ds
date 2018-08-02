@@ -285,7 +285,7 @@
                         :label "Relations"
                         :on-click-fn #(println "Default tab clicked")}]])])
 
-(defmethod page-contents :modals []
+(def modal-example
   (let [modal-open (r/atom false)]
     (fn []
       ($->
@@ -309,3 +309,9 @@
                                                      :styles {:margin-left "16px"}}]]}]
          [buttons/default {:content "Open modal"
                            :on-click-fn #(swap! modal-open not)}]]))))
+
+(defmethod page-contents :modals []
+  [:div
+   [:p.rds-quote "A modal displays content that temporarily blocks interactions with the main view."]
+   [modal-example]
+   ])
