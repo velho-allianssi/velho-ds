@@ -145,7 +145,7 @@
 
 (def dropdown-multiple-input-background
   {:position "relative"
-   :height "2rem"
+   :height (measures/rem-times spacing/space-small-rem 2)
    :box-sizing "border-box"
    :background-color color/color-neutral-1
    :border-bottom (str "1px solid " color/color-neutral-4)})
@@ -153,7 +153,7 @@
 (def dropdown-multiple-input
   {:background "none"
    :border 0
-   :height "2rem"
+   :height (measures/rem-times spacing/space-small-rem 2)
    :box-sizing "border-box"
    :display "inline-block"
    :font-family font/font-family-text
