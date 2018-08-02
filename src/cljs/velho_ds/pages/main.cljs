@@ -286,23 +286,26 @@
                         :on-click-fn #(println "Default tab clicked")}]])])
 
 (defmethod page-contents :modals []
-  [:div
-   [:div.rds-code-example
-    ($-> [buttons/default {:content "Open modal"
-                           :on-click-fn (fn [] (modals/open [modals/default {:header "Confirm modal"
-                                                                             :header-buttons [{:icon "more_vert"
-                                                                                               :on-click-fn #(modals/close "modal")}
-                                                                                              {:icon "close"
-                                                                                               :on-click-fn #(modals/close "modal")}]
-                                                                             :content [[fields/input-field {:label "First"
-                                                                                                            :placeholder "Placeholder"}]
-                                                                                       [fields/input-field {:label "Second"
-                                                                                                            :placeholder "Placeholder"}]
-                                                                                       [fields/input-field {:label "Third"
-                                                                                                            :placeholder "Placeholder"}]]
-                                                                             :footer [[buttons/outline {:content "Cancel"
-                                                                                                        :on-click-fn #(modals/close "modal")}]
-                                                                                      [buttons/primary {:content "Confirm"
-                                                                                                        :on-click-fn #(modals/close "modal")
-                                                                                                        :styles {:margin-left "16px"}}]]}]
-                                                            "modal"))}])]])
+  (let [modal-open (r/atom false)]
+    (fn []
+      ($->
+        [:div
+         [modals/default {:is-open @modal-open
+                          :header "Confirm modal"
+                          :header-buttons [{:icon "more_vert"
+                                            :on-click-fn #(swap! modal-open not)}
+                                           {:icon "close"
+                                            :on-click-fn #(swap! modal-open not)}]
+                          :content [[fields/input-field {:label "First"
+                                                         :placeholder "Placeholder"}]
+                                    [fields/input-field {:label "Second"
+                                                         :placeholder "Placeholder"}]
+                                    [fields/input-field {:label "Third"
+                                                         :placeholder "Placeholder"}]]
+                          :footer [[buttons/outline {:content "Cancel"
+                                                     :on-click-fn #(swap! modal-open not)}]
+                                   [buttons/primary {:content "Confirm"
+                                                     :on-click-fn #(swap! modal-open not)
+                                                     :styles {:margin-left "16px"}}]]}]
+         [buttons/default {:content "Open modal"
+                           :on-click-fn #(swap! modal-open not)}]]))))
