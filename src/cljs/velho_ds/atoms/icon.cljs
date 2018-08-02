@@ -6,7 +6,7 @@
 (defn icon [{:keys [name styles]}]
   [:i.material-icons (use-style (merge style/icon styles)) name])
 
-(defn clickable [{:keys [icon styles on-click-fn]}]
-  (assert icon)
+(defn clickable [{:keys [name styles on-click-fn]}]
+  (assert name)
   [:button (stylefy/use-style (merge style/clickable styles) {:on-click on-click-fn})
-   (if icon [:i.material-icons (stylefy/use-sub-style (merge style/clickable styles) :i) icon])])
+   [:i.material-icons (stylefy/use-sub-style (merge style/clickable styles) :i) name]])

@@ -184,7 +184,7 @@
 (defn drag-n-drop [{:keys [label help-text on-change-fn]}]
   (assert label)
   (let [files (r/atom {})
-        label-id (r/atom label)
+        label-id (r/atom (str label (subs (str (rand)) 2 9)))
         file-to-map (fn [item]
                       {:name (.-name item)
                        :description nil
@@ -200,13 +200,13 @@
                         (#(map file-to-map %))
                         (#(reduce add-to-files @files %))
                         (#(reset! files %))
-                        (when on-change-fn on-change-fn)))
+                        (when on-change-fn (apply on-change-fn @files))))
         set-description (fn [key description]
                           (reset! files (assoc-in @files [key :description] description)))
         toggle-description (fn [key id]
-                             (if (= (.getAttribute (.getElementById js/document (str "description-area-" id "-" key)) "class") (get (stylefy/use-style style/drag-n-drop-description-area-hidden) :class))
-                               (.setAttribute (.getElementById js/document (str "description-area-" id "-" key)) "class" (get (stylefy/use-style style/drag-n-drop-description-area) :class))
-                               (.setAttribute (.getElementById js/document (str "description-area-" id "-" key)) "class" (get (stylefy/use-style style/drag-n-drop-description-area-hidden) :class))))]
+                             (if (= (.getAttribute (.getElementById js/document (str "description-area-" id "-" key)) "class") (get (stylefy/use-style style/drag-n-drop-item-description-area-hidden) :class))
+                               (.setAttribute (.getElementById js/document (str "description-area-" id "-" key)) "class" (get (stylefy/use-style style/drag-n-drop-item-description-area) :class))
+                               (.setAttribute (.getElementById js/document (str "description-area-" id "-" key)) "class" (get (stylefy/use-style style/drag-n-drop-item-description-area-hidden) :class))))]
     (fn []
       [:div
        [:div (stylefy/use-style style/drag-n-drop-header) label]
@@ -222,12 +222,12 @@
                 (for [key (sort (keys @files))]
                   ^{:key key} [:li (stylefy/use-sub-style style/drag-n-drop-content-ul :li)
                                [:div (stylefy/use-style style/drag-n-drop-item) (get-in @files [key :name])
-                                [:span (stylefy/use-style style/drag-n-drop-btn-area)
-                                 [icon/clickable {:icon "edit"
+                                [:span (stylefy/use-style style/drag-n-drop-item-btn-area)
+                                 [icon/clickable {:name "edit"
                                                   :on-click-fn #(toggle-description key @label-id)}]
-                                 [icon/clickable {:icon "close"
+                                 [icon/clickable {:name "close"
                                                   :on-click-fn #(reset! files (dissoc @files key))}]]]
-                               [:div (merge (stylefy/use-style style/drag-n-drop-description-area-hidden)
+                               [:div (merge (stylefy/use-style style/drag-n-drop-item-description-area-hidden)
                                             {:id (str "description-area-" @label-id "-" key)})
                                 [input-field {:label "Description"
                                               :on-change-fn #(set-description key %)}]]])))

@@ -187,7 +187,8 @@
                                 :preselected-values ["John"]}])
 
    [fields/drag-n-drop {:label "Example"
-                        :help-text "Drag-n-drop files or click here to upload"}]])
+                        :help-text "Drag-n-drop files or click here to upload"
+                        :on-change-fn println}]])
 
 (defmethod page-contents :grid []
   [:div

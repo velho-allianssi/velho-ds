@@ -213,18 +213,18 @@
    :min-height (measures/rem-times spacing/space-small-rem 2)
    :justify-content "space-between"})
 
-(def drag-n-drop-btn-area
+(def drag-n-drop-item-btn-area
   {:padding-left spacing/space-base-rem
    :padding-right spacing/space-xx-small-rem
    :margin-left "auto"
    :display "flex"
    :width "auto"})
 
-(def drag-n-drop-description-area
-  {:display "true"
-   :background "white"
+(def drag-n-drop-item-description-area
+  {:display "block"
+   :background color/color-white
    :box-shadow box-shadow/box-shadow-small
-   :padding (str "0 " spacing/space-xx-small-rem)})
+   :padding spacing/space-x-small-rem})
 
-(def drag-n-drop-description-area-hidden
+(def drag-n-drop-item-description-area-hidden
   {:display "none"})
