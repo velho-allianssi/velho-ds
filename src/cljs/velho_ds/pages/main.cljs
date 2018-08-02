@@ -289,8 +289,7 @@
   [:div
    [:div.rds-code-example
     ($-> [buttons/default {:content "Open modal"
-                           :on-click-fn (fn [] (modals/open [modals/default {:modal-id "modal"
-                                                                             :header "Confirm modal"
+                           :on-click-fn (fn [] (modals/open [modals/default {:header "Confirm modal"
                                                                              :header-buttons [{:icon "more_vert"
                                                                                                :on-click-fn #(modals/close "modal")}
                                                                                               {:icon "close"

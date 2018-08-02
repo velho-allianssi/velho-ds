@@ -9,7 +9,7 @@
             [velho-ds.tokens.spacing :as spacing]
             [velho-ds.tokens.opacity :as opacity]))
 
-(def background
+(def modal-area
   {:display "flex"
    :align-items "center"
    :justify-content "center"
@@ -20,12 +20,19 @@
    :width (str "calc(100% - " spacing/space-large-rem ")")
    :height (str "calc(100% - " spacing/space-large-rem ")")
    :z-index z-index/z-index-modal
-   :background-color (clojure.string/replace color/color-neutral-5 "1)" (str opacity/opacity-light")"))
-   :opacity 1
    :visibility "visible"
    :-webkit-backface-visibility "visible"
    :backface-visibility "visible"
    :cursor "default"})
+
+(def background
+  {:background-color color/color-neutral-5
+   :opacity opacity/opacity-light
+   :position "fixed"
+   :top 0
+   :left 0
+   :width "100%"
+   :height "100%"})
 
 (def modal-box
   {:display "block"

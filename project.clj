@@ -15,7 +15,7 @@
                  ;; Front end
                  [org.clojure/clojurescript "1.10.238"]
                  [reagent "0.8.0"]
-                 [stylefy "1.5.0"]
+                 [stylefy "1.7.0"]
                  [bidi "2.1.3"]
                  [venantius/accountant "0.2.4"]
                  [reagent-utils "0.3.1"]]
@@ -39,7 +39,8 @@
 
   :figwheel {:http-server-root "."
              :ring-handler "velho-ds.server/handler"
-             :css-dirs ["public/css"]}
+             :css-dirs ["public/css"]
+             :server-port 3450}
   :cljsbuild {:builds [{:id "dev"
                             :source-paths ["src/cljs" "env/dev/clj" "env/dev/cljs"]
                              :compiler {:main "velho-ds.dev"
@@ -50,7 +51,7 @@
                                         :optimizations :none
                                         :pretty-print true}
                              :figwheel {:on-jsload "velho-ds.core/mount-root"
-                                        :open-urls ["http://localhost:3449"]}}
+                                        :open-urls ["http://localhost:3450"]}}
                        {:id "test"
                               :source-paths ["src/cljs" "env/dev/cljs" "test/cljs"]
                               :compiler {:output-to "public/js/test/tests.js"
