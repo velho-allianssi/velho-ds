@@ -7,7 +7,8 @@
             [stylefy.core :as stylefy]
             [velho-ds.tokens.color :as color]
             [velho-ds.molecules.style.field :as style]
-            [velho-ds.atoms.icon :as icon]))
+            [velho-ds.atoms.icon :as icon]
+            [clojure.string :as str]))
 
 (defn keyvalue [{:keys [content label]}]
   [:div
@@ -181,8 +182,33 @@
                                           :is-selected? (= (:selected-from-filter @state) %)
                                           :content %})) (filtered-selections)))]])))
 
+(defn file-list-item
+  [{:keys [filename metadata on-change-fn delete-fn]}]
+  (let [metafields-visible? (r/atom false)
+        data (r/atom metadata)
+        update-data (fn [k v]
+                      (do
+                        (swap! data assoc k v)
+                        (on-change-fn @data)))]
+    (fn []
+      [:li (stylefy/use-sub-style style/drag-n-drop-content-ul :li)
+       [:div (stylefy/use-style style/drag-n-drop-item) filename
+        [:span (stylefy/use-style style/drag-n-drop-item-btn-area)
+         [icon/clickable {:name        "edit"
+                          :on-click-fn #(swap! metafields-visible? not)}]
+         [icon/clickable {:name        "close"
+                          :on-click-fn delete-fn}]]]
+       (into [:div (if @metafields-visible?
+                     (stylefy/use-style style/drag-n-drop-item-description-area)
+                     (stylefy/use-style style/drag-n-drop-item-description-area-hidden))]
+             (for [meta-key (keys metadata)]
+               ^{:key meta-key}[input-field {:label        (str/capitalize (name meta-key))
+                                             :content      (get metadata meta-key)
+                                             :on-change-fn (partial update-data meta-key)}]))])))
+
 (defn drag-n-drop [{:keys [label help-text on-change-fn]}]
   (assert label)
+  (assert on-change-fn)
   (let [files (r/atom {})
         label-id (r/atom (str label (subs (str (rand)) 2 9)))
         file-to-map (fn [item]
@@ -200,13 +226,14 @@
                         (#(map file-to-map %))
                         (#(reduce add-to-files @files %))
                         (#(reset! files %))
-                        (when on-change-fn (apply on-change-fn @files))))
-        set-description (fn [key description]
-                          (reset! files (assoc-in @files [key :description] description)))
-        toggle-description (fn [key id]
-                             (if (= (.getAttribute (.getElementById js/document (str "description-area-" id "-" key)) "class") (get (stylefy/use-style style/drag-n-drop-item-description-area-hidden) :class))
-                               (.setAttribute (.getElementById js/document (str "description-area-" id "-" key)) "class" (get (stylefy/use-style style/drag-n-drop-item-description-area) :class))
-                               (.setAttribute (.getElementById js/document (str "description-area-" id "-" key)) "class" (get (stylefy/use-style style/drag-n-drop-item-description-area-hidden) :class))))]
+                        (apply on-change-fn @files)))
+        file-metadata-changed (fn [key new-metadata]
+                                (do
+                                  (swap! files assoc key (merge (get @files key) new-metadata))
+                                  (on-change-fn @files)))
+        remove-item #(do
+                       (swap! files dissoc %)
+                       (on-change-fn @files))]
     (fn []
       [:div
        [:div (stylefy/use-style style/drag-n-drop-header) label]
@@ -217,20 +244,15 @@
                      :on-drop #(do
                                  (allow-drop %)
                                  (get-files (.-dataTransfer %)))})
-        (when (keys @files)
+        (when (not (empty? @files))
           (into [:ul (stylefy/use-style style/drag-n-drop-content-ul)]
-                (for [key (sort (keys @files))]
-                  ^{:key key} [:li (stylefy/use-sub-style style/drag-n-drop-content-ul :li)
-                               [:div (stylefy/use-style style/drag-n-drop-item) (get-in @files [key :name])
-                                [:span (stylefy/use-style style/drag-n-drop-item-btn-area)
-                                 [icon/clickable {:name "edit"
-                                                  :on-click-fn #(toggle-description key @label-id)}]
-                                 [icon/clickable {:name "close"
-                                                  :on-click-fn #(reset! files (dissoc @files key))}]]]
-                               [:div (merge (stylefy/use-style style/drag-n-drop-item-description-area-hidden)
-                                            {:id (str "description-area-" @label-id "-" key)})
-                                [input-field {:label "Description"
-                                              :on-change-fn #(set-description key %)}]]])))
+               (for [key (sort (keys @files))]
+                 (let [file-item (get @files key)]
+                   ^{:key key} [file-list-item {:filename     (:name file-item)
+                                                :metadata     {:description (:description file-item)
+                                                               :filename    (:name file-item)}
+                                                :on-change-fn (partial file-metadata-changed key)
+                                                :delete-fn    #(remove-item key)}]))))
         [:div (merge (stylefy/use-style style/drag-n-drop-helparea)
                      {:on-click #(.click (.getElementById js/document (str "file-input-" @label-id)))})
          [:p (stylefy/use-sub-style style/drag-n-drop-helparea :p) help-text]

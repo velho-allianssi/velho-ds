@@ -186,6 +186,12 @@
                                 :no-selection-text "- No selection -"
                                 :preselected-values ["John"]}])
 
+   [fields/file-list-item {:filename "kuva.jpg"
+                           :metadata {:tiedostonimi "kuva.jpg"
+                                      :kuvaus "Default-kuvaus"}
+                           :on-change-fn println
+                           :delete-fn #(println "This item should be removed")}]
+
    [fields/drag-n-drop {:label "Example"
                         :help-text "Drag-n-drop files or click here to upload"
                         :on-change-fn println}]])
