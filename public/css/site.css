@@ -15,7 +15,6 @@ body {
   font-size: 1.125rem;
   font-weight: 400;
   font-style: italic;
-  padding: 0px 0 16px 0;
 }
 
 h1.rds-header1 {
@@ -76,7 +75,7 @@ h4.rds-header4 {
 }
 
 .rds-page-content {
-  padding: var(--space-base);
+  padding: var(--space-base) var(--space-x-large) var(--space-x-large) var(--space-x-large);
   grid-column-start: 2;
   grid-column-end: 3;
   grid-row-start: 2;
@@ -139,8 +138,8 @@ h4.rds-header4 {
 
 .rds-code-example {
  background: var(--color-white);
- border: 1px solid var(--color-neutral-2);
- margin: var(--space-small) 0;
+ border: 1px solid var(--color-neutral-3);
+ margin: var(--space-small) 0 0 0;
  padding: 0;
 }
 
@@ -156,7 +155,118 @@ h4.rds-header4 {
 
 .rds-code-example-content-code > code {
   padding: var(--space-base-rem);
-  background: var(--color-neutral-5);
-  color: var(--color-white);
+  background: var(--color-neutral-2);
+  color: var(--color-neutral-5);
   white-space: pre-wrap;
+}
+
+.rds-props {
+  background: var(--color-neutral-2);
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--color-neutral-3);
+  border-top: 0;
+}
+
+.rds-props > button > h3.rds-header3, .rds-props > button > i {
+  color: var(--color-neutral-5);
+}
+
+.rds-props > button > i {
+  color: var(--color-neutral-5);
+  width: 100%;
+  text-align: right;
+}
+
+.rds-props-table > tbody > tr > td {
+  padding: 0 0 var(--space-base-rem) 0;
+  vertical-align: top;
+}
+
+.rds-props-table > thead > tr > th {
+  padding: var(--space-small-rem) 0;
+  vertical-align: top;
+  font-weight: 400;
+}
+
+.rds-props-table > tbody > tr:not(:last-child) > td, .rds-props-table > thead > tr > th {
+  border-bottom: 1px solid var(--color-neutral-3);
+}
+
+.rds-props-header {
+  height: 48px;
+}
+
+.rds-props-header > th {
+  text-align: left;
+  font-size: 1rem;
+  color: var(--color-neutral-3);
+}
+
+.rds-props-header > th:first-child {
+  min-width: 160px;
+}
+
+.rds-props-header > th:last-child {
+  width: 100%;
+}
+
+.rds-props-item {
+  padding: 0;
+  margin: 0;
+}
+
+.rds-props-table {
+  width: calc(100% - 48px);
+  padding: 0 24px;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.rds-props-item-desc > p {
+  line-height: 1;
+  color: var(--color-neutral-5);
+}
+
+.rds-props-item-desc > small {
+  color: var(--color-neutral-4);
+}
+
+.rds-props-item-vals > p {
+  line-height: 1;
+  font-family: monospace;
+  color: var(--color-neutral-5);
+}
+
+.rds-props > button {
+  width: 100%;
+  padding: 0px 24px;
+  margin: 0px;
+  border: 0;
+  background: var(--color-neutral-2);
+  text-align: left;
+  cursor: pointer;
+  outline: none;
+  color: var(--color-neutral-5);
+  height: 48px;
+}
+
+.rds-props > button > h3 {
+  padding-right: 0.5rem;
+  text-decoration: none;
+  display: table-cell;
+  vertical-align: middle;
+  font-weight: 400;
+}
+
+.rds-props > button > i {
+  position: static;
+  top: 0;
+  font-size: 1.5rem;
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.rds-divider {
+  margin: 1.5rem 0;
 }

@@ -2,4 +2,4 @@
   (:require [stylefy.core :as stylefy]))
 
 (defn init-ds! []
-  (stylefy/init))
+  (stylefy/init {:use-caching? false}))
