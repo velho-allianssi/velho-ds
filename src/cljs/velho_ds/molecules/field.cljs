@@ -189,7 +189,7 @@
                         (on-change-fn @data)))]
     (fn []
       [:li.file-list-item (stylefy/use-sub-style style/drag-n-drop-content-ul :li)
-       [:div.vds (stylefy/use-style style/drag-n-drop-item)
+       [:div (stylefy/use-style style/drag-n-drop-item)
         [:span.vds-filename filename]
         [:span (stylefy/use-style style/drag-n-drop-item-btn-area)
          [icon/clickable {:name        "edit"
