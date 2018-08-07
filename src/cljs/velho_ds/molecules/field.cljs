@@ -1,14 +1,12 @@
 (ns velho-ds.molecules.field
-  (:require-macros [cljs.core.async.macros :as m :refer [go]])
   (:require [clojure.string :as string]
             [clojure.set :as set]
-            [cljs.core.async :refer [chan close!]]
+            [dommy.core :as dommy]
             [reagent.core :as r]
             [stylefy.core :as stylefy]
             [velho-ds.tokens.color :as color]
             [velho-ds.molecules.style.field :as style]
-            [velho-ds.atoms.icon :as icon]
-            [clojure.string :as str]))
+            [velho-ds.atoms.icon :as icon]))
 
 (defn keyvalue [{:keys [content label]}]
   [:div
@@ -23,7 +21,7 @@
         blur (fn []
                (when on-blur-fn (on-blur-fn @input-text)))]
     (fn [{:keys [error-messages]}]
-      [:div
+      [:div.vds-input-field
        [:label (stylefy/use-style style/element)
         [:input (stylefy/use-style (merge (if (first error-messages) style/input-field-error
                                                                      style/input-field) (when icon {:width "calc(100% - 2.5rem)"
@@ -191,20 +189,27 @@
                         (swap! data assoc k v)
                         (on-change-fn @data)))]
     (fn []
-      [:li (stylefy/use-sub-style style/drag-n-drop-content-ul :li)
-       [:div (stylefy/use-style style/drag-n-drop-item) filename
+      [:li.file-list-item (stylefy/use-sub-style style/drag-n-drop-content-ul :li)
+       [:div.vds (stylefy/use-style style/drag-n-drop-item)
+        [:span.vds-filename filename]
         [:span (stylefy/use-style style/drag-n-drop-item-btn-area)
          [icon/clickable {:name        "edit"
                           :on-click-fn #(swap! metafields-visible? not)}]
          [icon/clickable {:name        "close"
                           :on-click-fn delete-fn}]]]
-       (into [:div (if @metafields-visible?
+       (into [:div.vds-metadata-fields (if @metafields-visible?
                      (stylefy/use-style style/drag-n-drop-item-description-area)
                      (stylefy/use-style style/drag-n-drop-item-description-area-hidden))]
              (for [meta-key (keys metadata)]
-               ^{:key meta-key}[input-field {:label        (str/capitalize (name meta-key))
+               ^{:key meta-key}[input-field {:label        (string/capitalize (name meta-key))
                                              :content      (get metadata meta-key)
                                              :on-change-fn (partial update-data meta-key)}]))])))
+
+(defn- add-to-files[filemap item]
+    (assoc filemap
+      (do
+        ((fnil inc 0) (apply max (keys filemap))))
+      item))
 
 (defn drag-n-drop [{:keys [label help-text on-change-fn]}]
   (assert label)
@@ -215,18 +220,14 @@
                       {:name (.-name item)
                        :description nil
                        :file item})
-        allow-drop (fn [e]
-                     (.preventDefault e))
-        add-to-files (fn [filemap item]
-                       (assoc filemap ((fnil inc 0) (apply max (map #(js/parseInt %) (keys filemap)))) item))
         get-files (fn [e]
                     (do
                       (-> e
-                         .-files
-                         array-seq
-                         (#(map file-to-map %))
-                         (#(reduce add-to-files @files %))
-                         (#(reset! files %)))
+                          .-files
+                          array-seq
+                          (#(map file-to-map %))
+                          (#(reduce add-to-files @files %))
+                          (#(reset! files %)))
                       (on-change-fn @files)))
         file-metadata-changed (fn [key new-metadata]
                                 (do
@@ -239,27 +240,29 @@
       [:div
        [:div (stylefy/use-style style/drag-n-drop-header) label]
        [:div (merge (stylefy/use-style style/drag-n-drop-content)
-                    {:on-drag-over allow-drop
-                     :on-drag-enter allow-drop
+                    {:on-drag-over #(.preventDefault %)
+                     :on-drag-enter #(.preventDefault %)
                      :on-drag-start #(.setData (.-dataTransfer %) "text/plain" "") ;; for Firefox. You MUST set something as data.
                      :on-drop #(do
-                                 (allow-drop %)
+                                 (.preventDefault %)
                                  (get-files (.-dataTransfer %)))})
         (when (not (empty? @files))
           (into [:ul (stylefy/use-style style/drag-n-drop-content-ul)]
-               (for [key (sort (keys @files))]
-                 (let [file-item (get @files key)]
-                   ^{:key key} [file-list-item {:filename     (:name file-item)
-                                                :metadata     {:description (:description file-item)
-                                                               :filename    (:name file-item)}
-                                                :on-change-fn (partial file-metadata-changed key)
-                                                :delete-fn    #(remove-item key)}]))))
+                (for [key (sort (keys @files))]
+                  (let [file-item (get @files key)]
+                    ^{:key key} [file-list-item {:filename     (:name file-item)
+                                                 :metadata     {:description (:description file-item)
+                                                                :filename    (:name file-item)}
+                                                 :on-change-fn (partial file-metadata-changed key)
+                                                 :delete-fn    #(remove-item key)}]))))
         [:div (merge (stylefy/use-style style/drag-n-drop-helparea)
-                     {:on-click #(.click (.getElementById js/document (str "file-input-" @label-id)))})
+                     {:on-click #(.click (dommy/sel1 (keyword (str "#file-input-" @label-id))))})
          [:p (stylefy/use-sub-style style/drag-n-drop-helparea :p) help-text]
          [icon/icon {:name "cloud_upload"}]
-         [:input {:id (str "file-input-" @label-id)
-                  :type "file"
-                  :multiple "multiple"
-                  :on-change #(get-files (.-target %))
+         [:input {:id        (str "file-input-" @label-id)
+                  :type      "file"
+                  :multiple  "multiple"
+                  :on-change #(do
+                                (get-files (.-target %))
+                                (set! (-> % .-target .-value) nil))
                   :style {:display "none"}}]]]])))
