@@ -17,7 +17,6 @@
                  [reagent "0.7.0" :exclusions [cljsjs/react]]
                  [cljsjs/react-with-addons "15.6.1-0"]
                  [cljsjs/react-dom "15.6.1-0" :exclusions [cljsjs/react]]
-                 [cljs-react-test "0.1.4-SNAPSHOT"]
                  [stylefy "1.7.0"]
                  [bidi "2.1.3"]
                  [venantius/accountant "0.2.4"]
@@ -63,8 +62,9 @@
                                    :optimizations :whitespace
                                    :pretty-print true}}
                        {:id "release"
-                        :source-paths ["src/cljs" "env/dev/cljs" "test/cljs"]
-                        :compiler {:output-to "target/js/app.js"
+                        :source-paths ["src/cljs" "env/prod/cljs" "test/cljs"]
+                        :compiler {:main "velho-ds.prod"
+                                   :output-to "target/js/app.js"
                                    :optimizations :advanced}}]}
 
   :aliases {"dev" ["do" "clean"
@@ -73,4 +73,6 @@
                     ["cljsbuild" "once" "release"]]}
 
   :profiles {:dev {:dependencies [[binaryage/devtools "0.9.7"]
-                                  [clj-chrome-devtools "20180528" :exclusions [org.clojure/core.async]]]}})
+                                  [cljs-react-test "0.1.4-SNAPSHOT"]
+                                  [clj-chrome-devtools "20180528" :exclusions [org.clojure/core.async]]]}
+             :release {}})
