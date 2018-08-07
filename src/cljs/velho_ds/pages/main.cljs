@@ -7,7 +7,7 @@
             [velho-ds.molecules.notification :as notifications]
             [velho-ds.molecules.tab :as tabs]
             [velho-ds.molecules.modal :as modals]
-            [velho-ds.molecules.style.modal :as modal-style]
+            [velho-ds.atoms.divider :as dividers]
             [velho-ds.atoms.table :as tables]
             [reagent.core :as r]))
 
@@ -314,3 +314,8 @@
    [:p.rds-quote "A modal displays content that temporarily blocks interactions with the main view."]
    [modal-example]
    ])
+
+(defmethod page-contents :dividers []
+  [:div
+   [:p.rds-quote "Dividers divide sections of content."]
+   ($-> [dividers/default])])
