@@ -1,6 +1,5 @@
 (ns velho-ds.testutils
   (:require [dommy.core :as dommy]
-            [reagent.dom :as dom]
             [reagent.interop :refer [$]]
             [cljs-react-test.utils :as tu]))
 
