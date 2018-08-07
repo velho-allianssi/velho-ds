@@ -7,7 +7,7 @@
             [velho-ds.molecules.notification :as notifications]
             [velho-ds.molecules.tab :as tabs]
             [velho-ds.molecules.modal :as modals]
-            [velho-ds.molecules.style.modal :as modal-style]
+            [velho-ds.atoms.divider :as dividers]
             [velho-ds.atoms.table :as tables]
             [velho-ds.tokens.font-size :as font-size]
             [velho-ds.tokens.font :as font]
