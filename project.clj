@@ -14,11 +14,15 @@
 
                  ;; Front end
                  [org.clojure/clojurescript "1.10.238"]
-                 [reagent "0.8.0"]
+                 [reagent "0.7.0" :exclusions [cljsjs/react]]
+                 [cljsjs/react-with-addons "15.6.1-0"]
+                 [cljsjs/react-dom "15.6.1-0" :exclusions [cljsjs/react]]
+                 [cljs-react-test "0.1.4-SNAPSHOT"]
                  [stylefy "1.7.0"]
                  [bidi "2.1.3"]
                  [venantius/accountant "0.2.4"]
-                 [reagent-utils "0.3.1"]]
+                 [reagent-utils "0.3.1"]
+                 [prismatic/dommy "1.1.0"]]
 
   :plugins [[lein-cljsbuild "1.1.5" :exclusions [[org.clojure/clojure]]]
             [lein-figwheel "0.5.15"]]
@@ -42,26 +46,26 @@
              :css-dirs ["public/css"]
              :server-port 3450}
   :cljsbuild {:builds [{:id "dev"
-                            :source-paths ["src/cljs" "env/dev/clj" "env/dev/cljs"]
-                             :compiler {:main "velho-ds.dev"
-                                        :output-to "public/js/app.js"
-                                        :output-dir "public/js/out"
-                                        :asset-path "/js/out"
-                                        :source-map true
-                                        :optimizations :none
-                                        :pretty-print true}
-                             :figwheel {:on-jsload "velho-ds.core/mount-root"
-                                        :open-urls ["http://localhost:3450"]}}
+                        :source-paths ["src/cljs" "env/dev/clj" "env/dev/cljs"]
+                        :compiler {:main "velho-ds.dev"
+                                   :output-to "public/js/app.js"
+                                   :output-dir "public/js/out"
+                                   :asset-path "/js/out"
+                                   :source-map true
+                                   :optimizations :none
+                                   :pretty-print true}
+                        :figwheel {:on-jsload "velho-ds.core/mount-root"
+                                   :open-urls ["http://localhost:3450"]}}
                        {:id "test"
-                              :source-paths ["src/cljs" "env/dev/cljs" "test/cljs"]
-                              :compiler {:output-to "public/js/test/tests.js"
-                                         :output-dir "public/js/test/out"
-                                         :optimizations :whitespace
-                                         :pretty-print true}}
+                        :source-paths ["src/cljs" "env/dev/cljs" "test/cljs"]
+                        :compiler {:output-to "public/js/test/tests.js"
+                                   :output-dir "public/js/test/out"
+                                   :optimizations :whitespace
+                                   :pretty-print true}}
                        {:id "release"
-                                 :source-paths ["src/cljs" "env/dev/cljs" "test/cljs"]
-                                 :compiler {:output-to "target/js/app.js"
-                                            :optimizations :advanced}}]}
+                        :source-paths ["src/cljs" "env/dev/cljs" "test/cljs"]
+                        :compiler {:output-to "target/js/app.js"
+                                   :optimizations :advanced}}]}
 
   :aliases {"dev" ["do" "clean"
                    ["figwheel"]]
@@ -69,4 +73,4 @@
                     ["cljsbuild" "once" "release"]]}
 
   :profiles {:dev {:dependencies [[binaryage/devtools "0.9.7"]
-                                  [clj-chrome-devtools "20180528"]]}})
+                                  [clj-chrome-devtools "20180528" :exclusions [org.clojure/core.async]]]}})
