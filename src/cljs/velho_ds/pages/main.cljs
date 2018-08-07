@@ -43,17 +43,29 @@
   [:div
    [:h2.rds-header2 "Design System"]
    [:p "A design system is set of interconnected patterns and shared practices coherently organised to archive the purpose of digital products. Patterns are the repeating elements that we combine to create an interface: things like user flows, interactions, buttons, text fields, icons, colors, typography, microcopy, Practices are how we choose to create, capture, share and use those patterns, particularly when working in a team. - Design Systems, Alla Kholmatova"]
+   [dividers/default {:styles {:margin-top "2rem"
+                               :margin-bottom "2rem"}}]
    [:h2.rds-header2 "Design tokens"]
    [:p "Tokens are base of design system. They can be descriptions of size, color, time or anything specific with name and value pair (e.g. &ldquo;primary-color: rgb(30,120,200)&rdquo;). By itself, it doesn&rsquo;t create anything, but you can use it to describe everything in design system, for example atoms."]
    [:p "Tokens can be described for example with markup language, such as .YML. They can be converted then to any format you desire, thus making it possible to use same tokens with different programming languages, platforms, projects and design tools."]
+   [dividers/default {:styles {:margin-top "2rem"
+                               :margin-bottom "2rem"}}]
    [:h2.rds-header2 "Atoms"]
    [:p "Atoms are basic building blocks that can be constructed using design tokens. Atoms are the smallest functional unit, but not generally useful on their own. You can combine atoms to construct molecules."]
+   [dividers/default {:styles {:margin-top "2rem"
+                               :margin-bottom "2rem"}}]
    [:h2.rds-header2 "Molecules"]
    [:p "Molecules are groups of atoms bonded together and are the smallest fundamental unit of a compound. These molecules take on their own properties and serve as backbone of design systems. Molecules should be build from simple combinations of atoms for reuse. Molecules can be combined to form organisms."]
+   [dividers/default {:styles {:margin-top "2rem"
+                               :margin-bottom "2rem"}}]
    [:h2.rds-header2 "Organisms"]
    [:p "Organisms are groups of molecules joined together to form a relatively complex, distinct section of an interface. Organisms can consist of similar and/or different molecule types. Building up from molecules to organisms encourages creating standalone, portable, reusable components. By combining organisms (and sometimes molecules), you can construct templates."]
+   [dividers/default {:styles {:margin-top "2rem"
+                               :margin-bottom "2rem"}}]
    [:h2.rds-header2 "Templates"]
    [:p "Templates are groups of organisms (and sometimes molecules). Templates provide context to relatively abstract molecules and organisms. Templates are used to create specific instances of templates, pages."]
+   [dividers/default {:styles {:margin-top "2rem"
+                               :margin-bottom "2rem"}}]
    [:h2.rds-header2 "Pages"]
    [:p "Pages are specific instances of templates. In pages, template content is replaced with real representative content to give an accurate depiction of what a user will ultimately see. Pages are essential as it&rsquo;s where effectiveness of the design system can be tested."]])
 
@@ -62,6 +74,8 @@
 (defmethod page-contents :buttons []
   [:div
    [:p.rds-quote "Buttons express what action will occur when the user clicks or touches it. Buttons are used to initialize an action, either in the background or foreground of an experience."]
+   [dividers/default {:styles {:margin-top "2rem"
+                               :margin-bottom "2rem"}}]
    [:h2.rds-header2 "Default buttons"]
    [tables/default {:headers [{:label "Name"
                                :key-path [:name]}
@@ -113,6 +127,8 @@
                  {:name "styles"
                   :desc "map"
                   :example "{:styles {:margin \"1rem\"}}"}]]
+   [dividers/default {:styles {:margin-top "2rem"
+                               :margin-bottom "2rem"}}]
    [:h2.rds-header2 "Small buttons"]
    [tables/default {:headers [{:label "Name"
                                :key-path [:name]}
@@ -165,12 +181,25 @@
                   :desc "map"
                   :example "{:styles {:margin \"1rem\"}}"}]]
    ])
+
+(defmethod page-contents :dividers []
+  [:div
+   [:p.rds-quote "Dividers divide sections of content."]
+   [dividers/default {:styles {:margin-top "2rem"
+                               :margin-bottom "2rem"}}]
+   [:h2.rds-header2 "Default divider"]
+   ($-> [dividers/default {:styles {:margin-top "2rem"
+                               :margin-bottom "2rem"}}])
+   [props-table [{:name "styles"
+                  :desc "map"
+                  :example "{:styles {:margin \"1rem\"}}"}]]])
+
 (defmethod page-contents :fonts []
   [:div
    [:p.rds-quote "Fonts create hierarcies and purposeful alignments that guide users through the product and experience."]
+   [dividers/default {:styles {:margin-top "2rem"
+                               :margin-bottom "2rem"}}]
    [:h2.rds-header2 "Default fonts"]
-   [:h3.rds-header3 "Example of usage"]
-   ($-> [:p "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin eget urna egestas, convallis dui vel, egestas mauris. Nam interdum odio enim. Fusce dolor quam, dictum nec quam et, malesuada mattis nisl. Nam sodales dignissim velit ut congue. Duis imperdiet urna in consectetur tristique. Pellentesque sem sapien, malesuada quis vehicula et, pulvinar a purus. Nulla rhoncus nunc vel sapien venenatis maximus. Nunc pulvinar cursus vehicula. Etiam et mi tempus, vestibulum diam ac, semper eros. Integer porttitor vitae neque at luctus. Phasellus sed tincidunt magna. Aenean et enim ultricies, finibus nibh vitae, fermentum lorem. Nunc congue non lacus vitae molestie.\n\nVivamus quis dictum enim. Praesent ac iaculis mi. Sed hendrerit, mi vestibulum lobortis lacinia, turpis mauris imperdiet magna, rutrum aliquam turpis nunc in leo. Curabitur ligula tortor, malesuada ac leo volutpat, tempor viverra justo. Nulla ut magna quis erat dapibus egestas. Praesent pellentesque diam quis eros porttitor iaculis sit amet non justo. Morbi consectetur orci et felis dignissim faucibus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Integer et magna porttitor, scelerisque diam sed, molestie ligula. Proin facilisis semper purus, eu rutrum ipsum finibus quis. In eleifend ipsum purus, vitae venenatis turpis dignissim ut."])
    [tables/default {:headers [{:label "Tag"
                                :key-path [:name]}
                               {:label "Example"
@@ -203,11 +232,14 @@
                                :example [:small "Small paragraph"]
                                :font-family font/font-family-text
                                :font-size font-size/font-size-small}
-                              ]}]])
+                              ]}]
+   ($-> [:p "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin eget urna egestas, convallis dui vel, egestas mauris. Nam interdum odio enim. Fusce dolor quam, dictum nec quam et, malesuada mattis nisl. Nam sodales dignissim velit ut congue. Duis imperdiet urna in consectetur tristique. Pellentesque sem sapien, malesuada quis vehicula et, pulvinar a purus. Nulla rhoncus nunc vel sapien venenatis maximus. Nunc pulvinar cursus vehicula. Etiam et mi tempus, vestibulum diam ac, semper eros. Integer porttitor vitae neque at luctus. Phasellus sed tincidunt magna. Aenean et enim ultricies, finibus nibh vitae, fermentum lorem. Nunc congue non lacus vitae molestie.\n\nVivamus quis dictum enim. Praesent ac iaculis mi. Sed hendrerit, mi vestibulum lobortis lacinia, turpis mauris imperdiet magna, rutrum aliquam turpis nunc in leo. Curabitur ligula tortor, malesuada ac leo volutpat, tempor viverra justo. Nulla ut magna quis erat dapibus egestas. Praesent pellentesque diam quis eros porttitor iaculis sit amet non justo. Morbi consectetur orci et felis dignissim faucibus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Integer et magna porttitor, scelerisque diam sed, molestie ligula. Proin facilisis semper purus, eu rutrum ipsum finibus quis. In eleifend ipsum purus, vitae venenatis turpis dignissim ut."])])
 
 (defmethod page-contents :loaders []
   [:div
    [:p.rds-quote "Loaders express actions being processed."]
+   [dividers/default {:styles {:margin-top "2rem"
+                               :margin-bottom "2rem"}}]
    [:h2.rds-header2 "Progress bar"]
    ($-> [loaders/progress-bar])
    [props-table [{:name "percentage"
@@ -223,6 +255,8 @@
                  {:name "styles"
                   :desc "map"
                   :example "{:styles {:margin \"1rem\"}}"}]]
+   [dividers/default {:styles {:margin-top "2rem"
+                               :margin-bottom "2rem"}}]
    [:h2.rds-header2 "Pulse"]
    ($-> [loaders/pulse])
    [props-table [{:name "styles"
@@ -232,6 +266,8 @@
 (defmethod page-contents :tables []
   [:div
    [:p.rds-quote "Tables provide good way to present a large amount of data. A table should be used when multiple metrics and categories need to presented together."]
+   [dividers/default {:styles {:margin-top "2rem"
+                               :margin-bottom "2rem"}}]
    [:h2.rds-header2 "Default Table"]
    ($-> [tables/default {:headers [{:label "Name"
                                     :key-path [:name]}
@@ -288,6 +324,8 @@
 (defmethod page-contents :fields []
   [:div
    [:p.rds-quote "Fields provide a ways of input and output. Input, such as typing, selecting or dragging and dropping can be used to provide several formats of information."]
+   [dividers/default {:styles {:margin-top "2rem"
+                               :margin-bottom "2rem"}}]
    [:h2.rds-header2 "Output"]
    [:h3.rds-header3 "Keyvalue"]
    ($-> [fields/keyvalue {:label "Title"
@@ -298,6 +336,8 @@
                  {:name "content"
                   :desc "string"
                   :example "{:content \"Value\"}"}]]
+   [dividers/default {:styles {:margin-top "2rem"
+                               :margin-bottom "2rem"}}]
    [:h2.rds-header2 "Input"]
    [:h3.rds-header3 "Input-field"]
    [tables/default {:headers [{:label "Name"
@@ -444,8 +484,10 @@
 (defmethod page-contents :modals []
   [:div
    [:p.rds-quote "A modal displays content that temporarily blocks interactions with the main view."]
+   [dividers/default {:styles {:margin-top "2rem"
+                               :margin-bottom "2rem"}}]
    [:h2.rds-header2 "Default modal"]
-   [(let [modal-open (r/atom false)]
+   (let [modal-open (r/atom false)]
      (fn []
        ($->
          [:div
@@ -536,6 +578,8 @@
 (defmethod page-contents :tabs []
   [:div
    [:p.rds-quote "Tabs are used to alternate related views within the same context."]
+   [dividers/default {:styles {:margin-top "2rem"
+                               :margin-bottom "2rem"}}]
    [:h2.rds-header2 "Single tab"]
    ($-> [tabs/default {:tab-id 1
                        :icon "info"
@@ -556,6 +600,8 @@
                  {:name "styles"
                   :desc "map"
                   :example "{:styles {:margin \"1rem\"}}"}]]
+   [dividers/default {:styles {:margin-top "2rem"
+                               :margin-bottom "2rem"}}]
    [:h2.rds-header2 "Default tabset"]
    ($-> [tabs/tabset {:selected-id 1
                       :style {:margin "0"}}
@@ -582,6 +628,8 @@
 (defmethod page-contents :grid []
   [:div
    [:p.rds-quote "Grids are used to create context layout on a page."]
+   [dividers/default {:styles {:margin-top "2rem"
+                               :margin-bottom "2rem"}}]
    [:h2.rds-header2 "Grid-cell"]
    ($-> [grid/grid-cell {:col-start 1
                          :col-end 4
@@ -606,6 +654,8 @@
                  {:name "content"
                   :desc "components"
                   :example "[:p \"Content text\"]"}]]
+   [dividers/default {:styles {:margin-top "2rem"
+                               :margin-bottom "2rem"}}]
    [:h2.rds-header2 "Grid-wrap"]
    ($-> [grid/grid-wrap {:rows 3
                          :cols 3}
