@@ -18,7 +18,7 @@
    [:div.rds-page-header [:header.rds-header-style
                       [:h1.rds-header1.rds-heading-style (:heading content)]]]
    [:div.rds-page-navigation (:navigation content)]
-   [:div.rds-page-content [:section (:main-content content)]]])
+   [:div.rds-page-content ^{:key content}[:section (:main-content content)]]])
 
 (defn page [nav]
   [page-layout {:navigation nav
