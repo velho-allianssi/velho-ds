@@ -404,6 +404,9 @@ return iter__4292__auto__.call(null,cljs.core.keys.call(null,metadata));
 velho_ds.molecules.field.add_to_files = (function velho_ds$molecules$field$add_to_files(filemap,item){
 return cljs.core.assoc.call(null,filemap,cljs.core.fnil.call(null,cljs.core.inc,(0)).call(null,cljs.core.apply.call(null,cljs.core.max,cljs.core.keys.call(null,filemap))),item);
 });
+velho_ds.molecules.field.sanitize_id = (function velho_ds$molecules$field$sanitize_id(str){
+return clojure.string.replace.call(null,clojure.string.replace.call(null,clojure.string.replace.call(null,clojure.string.replace.call(null,clojure.string.replace.call(null,clojure.string.replace.call(null,clojure.string.replace.call(null,str,/ /,"-"),/Ä/,"A"),/ä/,"a"),/Ö/,"O"),/ö/,"o"),/Å/,"a"),/å/,"a");
+});
 velho_ds.molecules.field.drag_n_drop = (function velho_ds$molecules$field$drag_n_drop(p__42993){
 var map__42994 = p__42993;
 var map__42994__$1 = ((((!((map__42994 == null)))?(((((map__42994.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__42994.cljs$core$ISeq$))))?true:false):false))?cljs.core.apply.call(null,cljs.core.hash_map,map__42994):map__42994);
@@ -421,7 +424,7 @@ throw (new Error("Assert failed: on-change-fn"));
 }
 
 var files = reagent.core.atom.call(null,cljs.core.PersistentArrayMap.EMPTY);
-var label_id = reagent.core.atom.call(null,[cljs.core.str.cljs$core$IFn$_invoke$arity$1(label),cljs.core.str.cljs$core$IFn$_invoke$arity$1(cljs.core.subs.call(null,[cljs.core.str.cljs$core$IFn$_invoke$arity$1(cljs.core.rand.call(null))].join(''),(2),(9)))].join(''));
+var label_id = reagent.core.atom.call(null,velho_ds.molecules.field.sanitize_id.call(null,[cljs.core.str.cljs$core$IFn$_invoke$arity$1(label),cljs.core.str.cljs$core$IFn$_invoke$arity$1(cljs.core.subs.call(null,[cljs.core.str.cljs$core$IFn$_invoke$arity$1(cljs.core.rand.call(null))].join(''),(2),(9)))].join('')));
 var file_to_map = ((function (files,label_id,map__42994,map__42994__$1,label,help_text,on_change_fn){
 return (function (item){
 return new cljs.core.PersistentArrayMap(null, 3, [new cljs.core.Keyword(null,"name","name",1843675177),item.name,new cljs.core.Keyword(null,"description","description",-1428560544),null,new cljs.core.Keyword(null,"file","file",-1269645878),item], null);
