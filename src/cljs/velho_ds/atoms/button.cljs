@@ -1,12 +1,14 @@
 (ns velho-ds.atoms.button
   (:require [velho-ds.atoms.style.button :as style]
+            [velho-ds.atoms.icon :as icons]
             [velho-ds.tools.style :as tools-style]
             [stylefy.core :as stylefy]))
 
 (defn default [{:keys [content icon styles on-click-fn]}]
   (assert (or content icon))
    [:button (stylefy/use-style (merge style/button styles) {:on-click on-click-fn})
-    (if icon [:i.material-icons (stylefy/use-sub-style (merge style/button styles) :i) icon])
+    (if icon [icons/icon {:name icon
+                         :styles style/button-icon}])
     (if content [:span (stylefy/use-sub-style (merge style/button styles) :span) content])])
 
 (defn primary [{:keys [content icon] :as btn-args}]

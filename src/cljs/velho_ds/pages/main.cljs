@@ -263,6 +263,96 @@
                   :desc "map"
                   :example "{:styles {:background \"color/color-primary\"}}"}]]])
 
+(defmethod page-contents :icons[]
+  [:div
+   [:p.rds-quote "Icons communicate a message and should be distinct and informative. Icons should be used sparingly throughout the product to provide clarity and reduce cognitive load on users."]
+   [:span.rds-quote "Velho Design Systems uses "][:a.rds-quote {:style {:display "inline"}
+                  :href "//material.io/tools/icons/"} "Material Design Icons."]
+   [dividers/default {:styles {:margin-top "2rem"
+                               :margin-bottom "2rem"}}]
+   [:h2.rds-header2 "Default icon"]
+   ($-> [icons/icon {:name "autorenew"}])
+   [props-table [{:name "name"
+                  :desc "string"
+                  :example "{:name \"autorenew\"}"}
+                 {:name "styles"
+                  :desc "map"
+                  :example "{:styles {:margin \"1rem\"}}"}]]
+   [:h2.rds-header2 "Clickable icon"]
+   ($-> [icons/clickable {:name "autorenew"
+                          :on-click-fn #(println "Icon clicked")}])
+   [props-table [{:name "name"
+                  :desc "string"
+                  :example "{:name \"autorenew\"}"}
+                 {:name "on-click-fn"
+                  :desc "function"
+                  :example "#(println \"Icon clicked\")"}
+                 {:name "styles"
+                  :desc "map"
+                  :example "{:styles {:margin \"1rem\"}}"}]]
+   [dividers/default {:styles {:margin-top "2rem"
+                               :margin-bottom "2rem"}}]
+   [:h2.rds-header2 "Icons"]
+   [tables/default {:headers [{:label "Icon"
+                               :key-path [:name]}
+                              {:label "Example"
+                               :key-path [:icon]}]
+                    :content [{:name "add"
+                               :icon [icons/icon {:name "add"}]}
+                              {:name "arrow_drop_down"
+                               :icon [icons/icon {:name "arrow_drop_down"}]}
+                              {:name "arrow_drop_up"
+                               :icon [icons/icon {:name "arrow_drop_up"}]}
+                              {:name "check_box"
+                               :icon [icons/icon {:name "check_box"}]}
+                              {:name "check_box_outline_blank"
+                               :icon [icons/icon {:name "check_box_outline_blank"}]}
+                              {:name "close"
+                               :icon [icons/icon {:name "close"}]}
+                              {:name "cloud_upload"
+                               :icon [icons/icon {:name "cloud_upload"}]}
+                              {:name "comment"
+                               :icon [icons/icon {:name "comment"}]}
+                              {:name "create"
+                               :icon [icons/icon {:name "create"}]}
+                              {:name "date_range"
+                               :icon [icons/icon {:name "date_range"}]}
+                              {:name "favorite"
+                               :icon [icons/icon {:name "favorite"}]}
+                              {:name "file_download"
+                               :icon [icons/icon {:name "file_download"}]}
+                              {:name "file_upload"
+                               :icon [icons/icon {:name "file_upload"}]}
+                              {:name "fullscreen"
+                               :icon [icons/icon {:name "fullscreen"}]}
+                              {:name "fullscreen_exit"
+                               :icon [icons/icon {:name "fullscreen_exit"}]}
+                              {:name "group_work"
+                               :icon [icons/icon {:name "group_work"}]}
+                              {:name "info"
+                               :icon [icons/icon {:name "info"}]}
+                              {:name "insert_drive_file"
+                               :icon [icons/icon {:name "insert_drive_file"}]}
+                              {:name "layers"
+                               :icon [icons/icon {:name "layers"}]}
+                              {:name "more_vert"
+                               :icon [icons/icon {:name "more_vert"}]}
+                              {:name "radio_button_checked"
+                               :icon [icons/icon {:name "radio_button_checked"}]}
+                              {:name "radio_button_unchecked"
+                               :icon [icons/icon {:name "radio_button_unchecked"}]}
+                              {:name "remove"
+                               :icon [icons/icon {:name "remove"}]}
+                              {:name "save"
+                               :icon [icons/icon {:name "save"}]}
+                              {:name "search"
+                               :icon [icons/icon {:name "search"}]}
+                              {:name "share"
+                               :icon [icons/icon {:name "share"}]}
+                              {:name "timelapse"
+                               :icon [icons/icon {:name "timelapse"}]}]}]
+   ])
+
 (defmethod page-contents :tables []
   [:div
    [:p.rds-quote "Tables provide good way to present a large amount of data. A table should be used when multiple metrics and categories need to presented together."]
