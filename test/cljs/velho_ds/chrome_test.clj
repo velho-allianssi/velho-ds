@@ -4,6 +4,7 @@
 
 (deftest run-chrome-tests
   (try (build-and-test "test"
-                       '[velho-ds.atoms.button-test])
+                       '[velho-ds.atoms.button-test
+                         velho-ds.molecules.field-test])
        (catch AssertionError e
          (is false "Front-end tests failed."))))

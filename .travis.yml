@@ -9,7 +9,12 @@ jdk:
 before_install:
   - chmod +x .travis/push.sh
 
-script: lein do clean, deps, compile, test, uberjar, cljsbuild once release
+jobs:
+  include:
+    - stage: unit tests
+      script: lein with-profile dev do clean, deps, compile, test
+    - stage: release
+      script: lein with-profile release do clean, deps, compile, uberjar, cljsbuild once release
 
 after_success:
 - ".travis/push.sh"
