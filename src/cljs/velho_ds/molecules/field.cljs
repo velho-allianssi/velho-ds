@@ -210,11 +210,21 @@
         ((fnil inc 0) (apply max (keys filemap))))
       item))
 
+(defn sanitize-id [str]
+  (-> str
+      (string/replace #" " "-")
+      (string/replace #"Ä" "A")
+      (string/replace #"ä" "a")
+      (string/replace #"Ö" "O")
+      (string/replace #"ö" "o")
+      (string/replace #"Å" "a")
+      (string/replace #"å" "a")))
+
 (defn drag-n-drop [{:keys [label help-text on-change-fn]}]
   (assert label)
   (assert on-change-fn)
   (let [files (r/atom {})
-        label-id (r/atom (str label (subs (str (rand)) 2 9)))
+        label-id (r/atom (sanitize-id (str label (subs (str (rand)) 2 9))))
         file-to-map (fn [item]
                       {:name (.-name item)
                        :description nil
