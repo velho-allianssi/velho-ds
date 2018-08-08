@@ -43,6 +43,11 @@
    ::stylefy/vendors ["webkit" "moz" "o"]
    ::stylefy/auto-prefix #{:transition :box-sizing}})
 
+(def button-icon
+  {:font-size font-size/font-size-xx-large
+   :display "table-cell"
+   :vertical-align "middle"})
+
 (def small
   {:height (measures/rem-times spacing/space-small-rem 2)
    :padding "0 0.375rem"

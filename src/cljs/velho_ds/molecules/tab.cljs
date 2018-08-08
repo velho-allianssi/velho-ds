@@ -1,7 +1,7 @@
 (ns velho-ds.molecules.tab
   (:require [reagent.core :as r]
             [stylefy.core :as stylefy]
-            [velho-ds.atoms.icon :as icon]
+            [velho-ds.atoms.icon :as icons]
             [velho-ds.molecules.style.tab :as style]))
 
 (def selected-tab (r/atom nil))
@@ -15,7 +15,9 @@
     (fn []
       [:li (stylefy/use-style (if (= @selected-tab tab-id) (merge style/tab-active styles)
                                                            (merge style/tab styles)) {:on-click onclick-action})
-       (when icon [icon/icon {:styles {:padding-right "8px"}
+       (when icon [icons/icon {:styles {:top "6px"
+                                       :position "relative"
+                                       :padding-right "8px"}
                               :name icon}])
        (when label [:a (stylefy/use-sub-style style/tab :a) label])])))
 

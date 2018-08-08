@@ -6,7 +6,7 @@
             [stylefy.core :as stylefy]
             [velho-ds.tokens.color :as color]
             [velho-ds.molecules.style.field :as style]
-            [velho-ds.atoms.icon :as icon]))
+            [velho-ds.atoms.icon :as icons]))
 
 (defn keyvalue [{:keys [content label]}]
   [:div
@@ -31,8 +31,11 @@
                                                                                                                                 :placeholder placeholder})]
         [:span (if (first error-messages) (stylefy/use-style style/input-field-label-error)
                                           (stylefy/use-style (if (and label placeholder) style/input-field-label-static style/input-field-label))) label]
-        (when icon [:i.material-icons (stylefy/use-style (merge style/icon (when icon-click-fn {:pointer-events "auto"
-                                                                                                :cursor "pointer"}))) icon])]
+        (when icon (if icon-click-fn [icons/clickable {:name icon
+                                                      :styles style/icon
+                                                      :on-click-fn icon-click-fn}]
+                                     [icons/icon {:name icon
+                                                 :styles style/icon}]))]
        (when (first error-messages)
          [:div (stylefy/use-style style/validation-errors)
           (doall (for [message error-messages]
@@ -62,7 +65,8 @@
                                           {:selected "selected"}))
                          (:value %)) options))
     [:span (stylefy/use-style style/dropdown-label) label]
-    [:i.material-icons (stylefy/use-style style/icon) "arrow_drop_down"]]])
+    [icons/icon {:name "arrow_drop_down"
+                :styles style/icon}]]])
 
 (defn- list-item [{:keys [on-click-fn content is-selected?]}]
   [:li (stylefy/use-style {:background-color (if is-selected? color/color-primary color/color-neutral-1)
@@ -87,8 +91,9 @@
                            :key content
                            :class "dropdown-multi"})
    [:span (stylefy/use-style {:margin-right "0.5rem"}) content]
-   [icon/icon {:name "cancel"
-               :styles {:top "3px"
+   [icons/icon {:name "cancel"
+               :styles {:top "2px"
+                        :position "relative"
                         :font-size "1rem"}}]])
 
 (defn- search-in-list [collection search-word]
@@ -168,8 +173,9 @@
                                                                    :value (:input-text @state)
                                                                    :placeholder placeholder
                                                                    :class "dropdown-multi"})]
-         [:i.material-icons (stylefy/use-style (merge style/icon {:top "auto"
-                                                                  :bottom 0})) (if (:focus @state) "arrow_drop_up" "arrow_drop_down")]]]
+         [icons/icon {:name (if (:focus @state) "arrow_drop_up" "arrow_drop_down")
+                     :styles (merge style/icon {:top "auto"
+                                                :bottom 0})}]]]
        [:div (stylefy/use-style (merge style/dropdown-multiple-list {:display (if (:focus @state) "block" "none")})
                                 {:class "dropdown-multi"})
         (into [:ul (stylefy/use-style style/dropdown-multiple-list-item
@@ -192,23 +198,23 @@
        [:div (stylefy/use-style style/drag-n-drop-item)
         [:span.vds-filename filename]
         [:span (stylefy/use-style style/drag-n-drop-item-btn-area)
-         [icon/clickable {:name        "edit"
+         [icons/clickable {:name "edit"
                           :on-click-fn #(swap! metafields-visible? not)}]
-         [icon/clickable {:name        "close"
+         [icons/clickable {:name "close"
                           :on-click-fn delete-fn}]]]
        (into [:div.vds-metadata-fields (if @metafields-visible?
-                     (stylefy/use-style style/drag-n-drop-item-description-area)
-                     (stylefy/use-style style/drag-n-drop-item-description-area-hidden))]
+                                         (stylefy/use-style style/drag-n-drop-item-description-area)
+                                         (stylefy/use-style style/drag-n-drop-item-description-area-hidden))]
              (for [meta-key (keys metadata)]
-               ^{:key meta-key}[input-field {:label        (string/capitalize (name meta-key))
-                                             :content      (get metadata meta-key)
-                                             :on-change-fn (partial update-data meta-key)}]))])))
+               ^{:key meta-key} [input-field {:label (string/capitalize (name meta-key))
+                                              :content (get metadata meta-key)
+                                              :on-change-fn (partial update-data meta-key)}]))])))
 
-(defn- add-to-files[filemap item]
-    (assoc filemap
-      (do
-        ((fnil inc 0) (apply max (keys filemap))))
-      item))
+(defn- add-to-files [filemap item]
+  (assoc filemap
+    (do
+      ((fnil inc 0) (apply max (keys filemap))))
+    item))
 
 (defn drag-n-drop [{:keys [label help-text on-change-fn]}]
   (assert label)
@@ -249,18 +255,18 @@
           (into [:ul (stylefy/use-style style/drag-n-drop-content-ul)]
                 (for [key (sort (keys @files))]
                   (let [file-item (get @files key)]
-                    ^{:key key} [file-list-item {:filename     (:name file-item)
-                                                 :metadata     {:description (:description file-item)
-                                                                :filename    (:name file-item)}
+                    ^{:key key} [file-list-item {:filename (:name file-item)
+                                                 :metadata {:description (:description file-item)
+                                                            :filename (:name file-item)}
                                                  :on-change-fn (partial file-metadata-changed key)
-                                                 :delete-fn    #(remove-item key)}]))))
+                                                 :delete-fn #(remove-item key)}]))))
         [:div (merge (stylefy/use-style style/drag-n-drop-helparea)
                      {:on-click #(.click (dommy/sel1 (keyword (str "#file-input-" @label-id))))})
          [:p (stylefy/use-sub-style style/drag-n-drop-helparea :p) help-text]
-         [icon/icon {:name "cloud_upload"}]
-         [:input {:id        (str "file-input-" @label-id)
-                  :type      "file"
-                  :multiple  "multiple"
+         [icons/icon {:name "cloud_upload"}]
+         [:input {:id (str "file-input-" @label-id)
+                  :type "file"
+                  :multiple "multiple"
                   :on-change #(do
                                 (get-files (.-target %))
                                 (set! (-> % .-target .-value) nil))

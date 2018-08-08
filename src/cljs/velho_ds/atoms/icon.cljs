@@ -4,7 +4,8 @@
             [stylefy.core :as stylefy]))
 
 (defn icon [{:keys [name styles]}]
-  [:i.material-icons (use-style (merge style/icon styles)) name])
+  [:i.material-icons (if styles (use-style styles)
+                                (use-style style/icon)) name])
 
 (defn clickable [{:keys [name styles on-click-fn]}]
   (assert name)
