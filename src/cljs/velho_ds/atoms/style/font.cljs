@@ -11,6 +11,8 @@
    :line-height line-height/line-height-base
    :white-space "pre-line"})
 
+(def span p)
+
 (def small
   {:font-family font/font-family-text
    :font-size font-size/font-size-small
@@ -49,3 +51,8 @@
 
 (def td
   p)
+
+(def li
+  {:font-family font/font-family-text
+   :font-size font-size/font-size-base
+   :font-weight font/font-weight-base})

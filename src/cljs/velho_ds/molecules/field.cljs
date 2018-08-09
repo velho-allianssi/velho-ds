@@ -53,6 +53,7 @@
 (defn dropdown-menu [{:keys [label selected-fn options default-value no-selection-text]}]
   [:div
    [:label (stylefy/use-style style/element)
+    [:span (stylefy/use-style style/dropdown-label) label]
     (into [:select (stylefy/use-style style/dropdown {:defaultValue "value"
                                                       :on-change #(-> % .-target .-value selected-fn)})
            (when (not default-value)
@@ -64,7 +65,6 @@
                                         (when (= default-value %)
                                           {:selected "selected"}))
                          (:value %)) options))
-    [:span (stylefy/use-style style/dropdown-label) label]
     [icons/icon {:name "arrow_drop_down"
                 :styles style/icon}]]])
 
@@ -253,7 +253,8 @@
                        (on-change-fn @files))]
     (fn []
       [:div
-       [:div (stylefy/use-style style/drag-n-drop-header) label]
+       [:div (stylefy/use-style style/drag-n-drop-header)
+        [:span label]]
        [:div (merge (stylefy/use-style style/drag-n-drop-content)
                     {:on-drag-over #(.preventDefault %)
                      :on-drag-enter #(.preventDefault %)

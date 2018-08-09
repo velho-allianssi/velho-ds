@@ -65,6 +65,7 @@
 
 (def input-field-label
   {:position "absolute"
+   :line-height "1"
    :display "block"
    :top spacing/space-base-rem
    :font-size font-size/font-size-base
@@ -92,9 +93,7 @@
                              :margin 0}}})
 
 (def dropdown-label
-  {:position "absolute"
-   :display "block"
-   :top "0"
+  {:display "block"
    :font-size font-size/font-size-small
    :cursor "inherit"
    :transition (str "all " timing/duration-slow " ease-in-out")
@@ -104,7 +103,6 @@
 
 (def dropdown
   {:appearance "none"
-   :font-family "inherit"
    :background-color color/color-neutral-1
    :width "100%"
    :height (measures/rem-times font-size/font-size-base 2)
@@ -116,7 +114,6 @@
    :border-bottom (str border/border-default " solid")
    :border-color color/color-neutral-4
    :border-radius "0"
-   :margin-top spacing/space-small-rem
    :font-size font-size/font-size-base
    ::stylefy/mode {:focus {:outline "none"}}
    ::stylefy/vendors ["webkit" "moz" "o"]
