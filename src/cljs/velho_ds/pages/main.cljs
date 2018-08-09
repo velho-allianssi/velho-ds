@@ -42,11 +42,11 @@
 (defmethod page-contents :index []
   [:div
    [:h2.rds-header2 "Design System"]
-   [:p "A design system is set of interconnected patterns and shared practices coherently organised to archive the purpose of digital products. Patterns are the repeating elements that we combine to create an interface: things like user flows, interactions, buttons, text fields, icons, colors, typography, microcopy, Practices are how we choose to create, capture, share and use those patterns, particularly when working in a team. - Design Systems, Alla Kholmatova"]
+   [:p "\"A design system is set of interconnected patterns and shared practices coherently organised to archive the purpose of digital products. Patterns are the repeating elements that we combine to create an interface: things like user flows, interactions, buttons, text fields, icons, colors, typography, microcopy, Practices are how we choose to create, capture, share and use those patterns, particularly when working in a team.\" - Design Systems, Alla Kholmatova"]
    [dividers/default {:styles {:margin-top "2rem"
                                :margin-bottom "2rem"}}]
    [:h2.rds-header2 "Design tokens"]
-   [:p "Tokens are base of design system. They can be descriptions of size, color, time or anything specific with name and value pair (e.g. &ldquo;primary-color: rgb(30,120,200)&rdquo;). By itself, it doesn&rsquo;t create anything, but you can use it to describe everything in design system, for example atoms."]
+   [:p "Tokens are base of design system. They can be descriptions of size, color, time or anything specific with name and value pair (e.g. \"primary-color: rgb(30,120,200)\"). By itself, it doesn't create anything, but you can use it to describe everything in design system, for example atoms."]
    [:p "Tokens can be described for example with markup language, such as .YML. They can be converted then to any format you desire, thus making it possible to use same tokens with different programming languages, platforms, projects and design tools."]
    [dividers/default {:styles {:margin-top "2rem"
                                :margin-bottom "2rem"}}]
@@ -67,7 +67,7 @@
    [dividers/default {:styles {:margin-top "2rem"
                                :margin-bottom "2rem"}}]
    [:h2.rds-header2 "Pages"]
-   [:p "Pages are specific instances of templates. In pages, template content is replaced with real representative content to give an accurate depiction of what a user will ultimately see. Pages are essential as it&rsquo;s where effectiveness of the design system can be tested."]])
+   [:p "Pages are specific instances of templates. In pages, template content is replaced with real representative content to give an accurate depiction of what a user will ultimately see. Pages are essential as it's where effectiveness of the design system can be tested."]])
 
 ;; ATOMS
 
@@ -577,29 +577,7 @@
    [dividers/default {:styles {:margin-top "2rem"
                                :margin-bottom "2rem"}}]
    [:h2.rds-header2 "Default modal"]
-   (let [modal-open (r/atom false)]
-     (fn []
-       ($->
-         [:div
-          [modals/default {:is-open @modal-open
-                           :header "Confirm modal"
-                           :header-buttons [{:icon "more_vert"
-                                             :on-click-fn #(swap! modal-open not)}
-                                            {:icon "close"
-                                             :on-click-fn #(swap! modal-open not)}]
-                           :content [[fields/input-field {:label "First"
-                                                          :placeholder "Placeholder"}]
-                                     [fields/input-field {:label "Second"
-                                                          :placeholder "Placeholder"}]
-                                     [fields/input-field {:label "Third"
-                                                          :placeholder "Placeholder"}]]
-                           :footer [[buttons/outline {:content "Cancel"
-                                                      :on-click-fn #(swap! modal-open not)}]
-                                    [buttons/primary {:content "Confirm"
-                                                      :on-click-fn #(swap! modal-open not)
-                                                      :styles {:margin-left "16px"}}]]}]
-          [buttons/default {:content "Open modal"
-                            :on-click-fn #(swap! modal-open not)}]])))
+   [modal-example]
    [props-table [{:name "header"
                   :desc "string"
                   :example "{:header \"Confirm modal\"}"}
