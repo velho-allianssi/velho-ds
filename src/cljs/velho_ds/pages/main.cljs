@@ -807,16 +807,4 @@
                   :example "{:actions [[icons/clickable {:name \"edit\"\n:styles {:padding-left \"0.5rem\"\n:font-size \"2rem\"}}]\n[icons/clickable {:name \"share\"\n:styles {:padding-left \"0.5rem\"\n:font-size \"2rem\"}}]\n[icons/clickable {:name \"favorite\"\n:styles {:padding-left \"0.5rem\"\n:font-size \"2rem\"}}]]}"}
                  {:name "footer"
                   :desc "vector"
-                  :example "{:footer [[buttons/primary-small {:content \"Item\"}]\n[buttons/primary-small {:content \"Another Item\"}]\n[buttons/primary-small {:content \"Last Item\"}]]}"}]]
-
-   #_[tabs/tabset {:selected-id 1
-                   :styles {:padding "0 24px"
-                            :background "white"}}
-      [tabs/default {:tab-id 1
-                     :icon "info"
-                     :label "Info"
-                     :on-click-fn #(println "Default tab clicked")}]
-      [tabs/default {:tab-id 2
-                     :icon "group_work"
-                     :label "Relations"
-                     :on-click-fn #(println "Default tab clicked")}]]])
+                  :example "{:footer [[buttons/primary-small {:content \"Item\"}]\n[buttons/primary-small {:content \"Another Item\"}]\n[buttons/primary-small {:content \"Last Item\"}]]}"}]]])
