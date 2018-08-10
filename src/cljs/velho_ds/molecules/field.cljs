@@ -8,11 +8,19 @@
             [velho-ds.molecules.style.field :as style]
             [velho-ds.atoms.icon :as icons]))
 
+;; OUTPUTS
 (defn keyvalue [{:keys [content label]}]
   [:div
    [:small (stylefy/use-style style/keyvalue-label) label]
    [:p (stylefy/use-style style/keyvalue-content) content]])
 
+(defn iconvalue [{:keys [icon content]}]
+  [:div (stylefy/use-style style/iconvalue)
+   [icons/icon {:name icon
+               :styles style/iconvalue-icon}]
+   [:span (stylefy/use-style style/iconvalue-value) content]])
+
+;; INPUTS
 (defn input-field [{:keys [label content placeholder icon icon-click-fn on-change-fn on-blur-fn]}]
   (let [input-text (r/atom content)
         change (fn [val]
