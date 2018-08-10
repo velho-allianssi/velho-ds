@@ -12,6 +12,7 @@
             [velho-ds.tokens.font-size :as font-size]
             [velho-ds.tokens.font :as font]
             [velho-ds.atoms.icon :as icons]
+            [velho-ds.organisms.heading :as headings]
             [reagent.core :as r]))
 
 (defn props-table [content]
@@ -189,7 +190,7 @@
                                :margin-bottom "2rem"}}]
    [:h2.rds-header2 "Default divider"]
    ($-> [dividers/default {:styles {:margin-top "2rem"
-                               :margin-bottom "2rem"}}])
+                                    :margin-bottom "2rem"}}])
    [props-table [{:name "styles"
                   :desc "map"
                   :example "{:styles {:margin \"1rem\"}}"}]]])
@@ -263,11 +264,11 @@
                   :desc "map"
                   :example "{:styles {:background \"color/color-primary\"}}"}]]])
 
-(defmethod page-contents :icons[]
+(defmethod page-contents :icons []
   [:div
    [:p.rds-quote "Icons communicate a message and should be distinct and informative. Icons should be used sparingly throughout the product to provide clarity and reduce cognitive load on users."]
-   [:span.rds-quote "Velho Design Systems uses "][:a.rds-quote {:style {:display "inline"}
-                  :href "//material.io/tools/icons/"} "Material Design Icons."]
+   [:span.rds-quote "Velho Design Systems uses "] [:a.rds-quote {:style {:display "inline"}
+                                                                 :href "//material.io/tools/icons/"} "Material Design Icons."]
    [dividers/default {:styles {:margin-top "2rem"
                                :margin-bottom "2rem"}}]
    [:h2.rds-header2 "Default icon"]
@@ -426,6 +427,17 @@
                  {:name "content"
                   :desc "string"
                   :example "{:content \"Value\"}"}]]
+
+   [:h3.rds-header3 "Iconvalue"]
+   ($-> [fields/iconvalue {:icon "date_range"
+                           :content "29.09.2017 - 01.12.2022"}])
+   [props-table [{:name "icon"
+                  :desc "string"
+                  :example "{:icon \"date_range\"}"}
+                 {:name "content"
+                  :desc "string"
+                  :example "{:content \"29.09.2017 - 01.12.2022\"}"}]]
+
    [dividers/default {:styles {:margin-top "2rem"
                                :margin-bottom "2rem"}}]
    [:h2.rds-header2 "Input"]
@@ -671,8 +683,7 @@
    [dividers/default {:styles {:margin-top "2rem"
                                :margin-bottom "2rem"}}]
    [:h2.rds-header2 "Default tabset"]
-   ($-> [tabs/tabset {:selected-id 1
-                      :style {:margin "0"}}
+   ($-> [tabs/tabset {:selected-id 1}
          [tabs/default {:tab-id 1
                         :icon "info"
                         :label "Info"
@@ -762,3 +773,50 @@
                  {:name "content"
                   :desc "components"
                   :example "[grid/grid-cell {:col-start 1\n:col-end 4\n:style {:background-color \"whitesmoke\"\n:text-align \"center\"\n:border \"1px solid silver\"}} [:p \"test\"]]"}]]])
+
+(defmethod page-contents :headings []
+  [:div
+   ($-> [headings/content-heading {:status [[fields/iconvalue {:icon "date_range"
+                                                               :content "29.09.2017 - 01.12.2022"}]
+                                            [fields/iconvalue {:icon "timelapse"
+                                                               :content "On hold"}]]
+                                   :info {:type "Project"
+                                          :name "Flying squirrel investigation"
+                                          :footnote "Related Organization, Another Organization"}
+                                   :actions [[icons/clickable {:name "edit"
+                                                               :styles {:padding-left "0.5rem"
+                                                                        :font-size "2rem"}}]
+                                             [icons/clickable {:name "share"
+                                                               :styles {:padding-left "0.5rem"
+                                                                        :font-size "2rem"}}]
+                                             [icons/clickable {:name "favorite"
+                                                               :styles {:padding-left "0.5rem"
+                                                                        :font-size "2rem"}}]]
+                                   :footer [[buttons/primary-small {:content "Item"}]
+                                            [buttons/primary-small {:content "Another Item"}]
+                                            [buttons/primary-small {:content "Last Item"}]]
+                                   }])
+   [props-table [{:name "status"
+                  :desc "vector"
+                  :example "{:status [[fields/iconvalue {:icon \"date_range\"\n:content \"29.09.2017 - 01.12.2022\"}]\n[fields/iconvalue {:icon \"timelapse\"\n:content \"On hold\"}]]}"}
+                 {:name "info"
+                  :desc "map"
+                  :example "{:info {:type \"Project\"\n:name \"Flying squirrel investigation\"\n:footnote \"Related Organization, Another Organization\"}}"}
+                 {:name "actions"
+                  :desc "vector"
+                  :example "{:actions [[icons/clickable {:name \"edit\"\n:styles {:padding-left \"0.5rem\"\n:font-size \"2rem\"}}]\n[icons/clickable {:name \"share\"\n:styles {:padding-left \"0.5rem\"\n:font-size \"2rem\"}}]\n[icons/clickable {:name \"favorite\"\n:styles {:padding-left \"0.5rem\"\n:font-size \"2rem\"}}]]}"}
+                 {:name "footer"
+                  :desc "vector"
+                  :example "{:footer [[buttons/primary-small {:content \"Item\"}]\n[buttons/primary-small {:content \"Another Item\"}]\n[buttons/primary-small {:content \"Last Item\"}]]}"}]]
+
+   #_[tabs/tabset {:selected-id 1
+                   :styles {:padding "0 24px"
+                            :background "white"}}
+      [tabs/default {:tab-id 1
+                     :icon "info"
+                     :label "Info"
+                     :on-click-fn #(println "Default tab clicked")}]
+      [tabs/default {:tab-id 2
+                     :icon "group_work"
+                     :label "Relations"
+                     :on-click-fn #(println "Default tab clicked")}]]])

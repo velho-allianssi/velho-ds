@@ -18,10 +18,11 @@
    :border "none"
    :color color/color-neutral-5
    :display "inline-table"
+   :font-size font-size/font-size-xx-large
    :line-height font-size/font-size-xx-large
    ::stylefy/mode {:hover {:color color/color-primary}
                    :active {:outline "none"}
                    :focus {:outline "none"}}
-   ::stylefy/sub-styles {:i {:font-size font-size/font-size-xx-large
+   ::stylefy/sub-styles {:i {:font-size "inherit"
                              :display "table-cell"
                              :vertical-align "middle"}}})
