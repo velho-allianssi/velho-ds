@@ -135,6 +135,20 @@
 (def keyvalue-label
   {:color color/color-neutral-4})
 
+(def iconvalue
+  {:padding-right spacing/space-small-rem
+   :display "inline-block"})
+
+(def iconvalue-icon
+  {:position "relative"
+   :top "6px"
+   :font-size font-size/font-size-xx-large
+   :white-space "nowrap"})
+
+(def iconvalue-value
+  {:padding-left "6px"
+   :white-space "nowrap"})
+
 (def dropdown-multiple-selected-items
   {:list-style-type "none"
    :margin 0
