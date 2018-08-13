@@ -15,10 +15,7 @@
     (fn []
       [:li (stylefy/use-style (if (= @selected-tab tab-id) (merge style/tab-active styles)
                                                            (merge style/tab styles)) {:on-click onclick-action})
-       (when icon [icons/icon {:styles {:top "6px"
-                                       :position "relative"
-                                       :padding-right "8px"}
-                              :name icon}])
+       (when icon [icons/icon {:name icon}])
        (when label [:a (stylefy/use-sub-style style/tab :a) label])])))
 
 (defn tabset [{:keys [selected-id styles]} & content]
