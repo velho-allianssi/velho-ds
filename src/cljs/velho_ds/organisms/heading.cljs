@@ -1,8 +1,10 @@
 (ns velho-ds.organisms.heading
   (:require [stylefy.core :refer [use-style]]
             [stylefy.core :as stylefy]
-            [velho-ds.atoms.icon :as icon]
-            [velho-ds.atoms.button :as button]
+            [velho-ds.tokens.font :as fonts]
+            [velho-ds.tokens.font-size :as font-sizes]
+            [velho-ds.atoms.icon :as icons]
+            [velho-ds.molecules.field :as fields]
             [velho-ds.organisms.grid :as grid]))
 
 (defn main [content]
@@ -37,3 +39,37 @@
             (for [item footer] ^{:key item} [:li (use-style {:display "inline-block"
                                                              :padding "0 0.25rem 0.25rem 0"})
                                              item])))]])
+
+(defn page-heading [{:keys [current-page parent-pages search-fn]}]
+  [:header
+   [grid/grid-wrap {:rows 1
+                    :cols 4
+                    :styles {:padding 0
+                             :margin 0}}
+    [grid/grid-cell {:col-start 1
+                     :col-end 3
+                     :styles {:align-self "center"
+                              :line-height "1rem"
+                              :position "relative"}}
+     [:h2 {:style {:margin 0
+                   :color "blue"
+                   :display "inline-block"
+                   :padding-right "8px"}} "Seppio"]
+     [:h2 {:style {:margin 0
+                   :display "inline-block"
+                   :padding-right "8px"}} "/"]
+     [:h2 {:style {:margin 0
+                   :display "inline-block"
+                   :padding-right "0"}} "Scrumbread"]
+     [icons/clickable {:name "arrow_drop_down"
+                       :styles {:position "relative"
+                               :top "5px"}}]
+     #_[fields/dropdown-menu {:default-value "Flying squirrel investigation"
+                            :options [{:id 1 :value "Flying squirrel investigation"}
+                                      {:id 2 :value "Regular squirrel investigation"}]}]]
+    [grid/grid-cell {:col-start 4
+                     :col-end 4
+                     :styles {:align-self "center"}}
+     [fields/input-field {:placeholder "Search"
+                          :icon "search"
+                          :styles {:min-width "128px"}}]]]])

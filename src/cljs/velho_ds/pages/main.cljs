@@ -807,4 +807,5 @@
                   :example "{:actions [[icons/clickable {:name \"edit\"\n:styles {:padding-left \"0.5rem\"\n:font-size \"2rem\"}}]\n[icons/clickable {:name \"share\"\n:styles {:padding-left \"0.5rem\"\n:font-size \"2rem\"}}]\n[icons/clickable {:name \"favorite\"\n:styles {:padding-left \"0.5rem\"\n:font-size \"2rem\"}}]]}"}
                  {:name "footer"
                   :desc "vector"
-                  :example "{:footer [[buttons/primary-small {:content \"Item\"}]\n[buttons/primary-small {:content \"Another Item\"}]\n[buttons/primary-small {:content \"Last Item\"}]]}"}]]])
+                  :example "{:footer [[buttons/primary-small {:content \"Item\"}]\n[buttons/primary-small {:content \"Another Item\"}]\n[buttons/primary-small {:content \"Last Item\"}]]}"}]]
+   [headings/page-heading]])
