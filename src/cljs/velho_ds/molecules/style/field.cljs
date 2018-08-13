@@ -23,22 +23,22 @@
    :font-size font-size/font-size-base
    :transition (str "border-color " timing/duration-slow " ease-in-out")
    :outline "none"
-   :padding "0"
-   :margin "0"
+   :padding 0
+   :margin 0
    :min-height (measures/rem-times font-size/font-size-base 2)
    :background color/color-neutral-1
    :box-sizing  "border-box"
-   :border-top "0"
-   :border-left "0"
-   :border-right "0"
+   :border-top 0
+   :border-left 0
+   :border-right 0
    :border-bottom (str border/border-default " solid")
    :border-color color/color-neutral-4
    ::stylefy/mode {:focus {:border-bottom (str border/border-default " solid")
                            :border-color color/color-primary}
-                   :valid+span {:top "0"
+                   :valid+span {:top 0
                                 :cursor "inherit"
                                 :font-size font-size/font-size-small}
-                   :focus+span {:top "0"
+                   :focus+span {:top 0
                                 :cursor "inherit"
                                 :font-size font-size/font-size-small
                                 :color color/color-primary}}
@@ -50,10 +50,10 @@
          {::stylefy/mode {:focus {:border-bottom (str border/border-large " solid")
                                   :border-color color/state-error}
                           :valid {:border-color color/state-error}
-                          :valid+span {:top "0"
+                          :valid+span {:top 0
                                        :cursor "inherit"
                                        :font-size font-size/font-size-small}
-                          :focus+span {:top "0"
+                          :focus+span {:top 0
                                        :cursor "inherit"
                                        :font-size font-size/font-size-small}}}))
 
@@ -78,7 +78,7 @@
 
 (def input-field-label-static
   (merge input-field-label
-         {:top "0"
+         {:top 0
           :font-size font-size/font-size-small}))
 
 (def input-field-label-error
@@ -108,12 +108,12 @@
    :height (measures/rem-times font-size/font-size-base 2)
    :padding (str spacing/space-xx-small-rem " 0")
    :color color/text-default
-   :border-top "0"
-   :border-left "0"
-   :border-right "0"
+   :border-top 0
+   :border-left 0
+   :border-right 0
    :border-bottom (str border/border-default " solid")
    :border-color color/color-neutral-4
-   :border-radius "0"
+   :border-radius 0
    :font-size font-size/font-size-base
    ::stylefy/mode {:focus {:outline "none"}}
    ::stylefy/vendors ["webkit" "moz" "o"]
@@ -121,15 +121,22 @@
 
 (def icon
   {:position "absolute"
-   :padding spacing/space-xx-small-rem
-   :top spacing/space-small-rem
-   :right spacing/space-xx-small-rem
-   :pointer-events "none"})
+   ; :padding spacing/space-xx-small-rem
+   :top (str "calc("spacing/space-small-rem " + " spacing/space-xx-small-rem ")")
+   :right spacing/space-xx-small-rem})
+
+(def dropdown-icon
+  (merge icon
+         {:top spacing/space-base-rem}))
+
+(def dropdown-multiple-icon
+  (merge icon
+         {:top spacing/space-xx-small-rem}))
 
 (def keyvalue-content
   {:width "100%"
-   :padding "0"
-   :margin "0"
+   :padding 0
+   :margin 0
    :line-height font-size/font-size-base})
 
 (def keyvalue-label
@@ -141,7 +148,7 @@
 
 (def iconvalue-icon
   {:position "relative"
-   :top "6px"
+   :top "5px"
    :font-size font-size/font-size-xx-large
    :white-space "nowrap"})
 

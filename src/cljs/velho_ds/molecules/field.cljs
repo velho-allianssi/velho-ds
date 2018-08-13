@@ -17,7 +17,7 @@
 (defn iconvalue [{:keys [icon content]}]
   [:div (stylefy/use-style style/iconvalue)
    [icons/icon {:name icon
-               :styles style/iconvalue-icon}]
+                :styles style/iconvalue-icon}]
    [:span (stylefy/use-style style/iconvalue-value) content]])
 
 ;; INPUTS
@@ -32,18 +32,16 @@
       [:div.vds-input-field (stylefy/use-style styles)
        [:label (stylefy/use-style style/element)
         [:input (stylefy/use-style (merge (if (first error-messages) style/input-field-error
-                                                                     style/input-field) (when icon {:padding-right "2.5rem"})) {:required "required"
-                                                                                                                                :on-change #(-> % .-target .-value change)
-                                                                                                                                :on-blur blur
-                                                                                                                                :value @input-text
-                                                                                                                                :placeholder placeholder})]
+                                                                     style/input-field) (when icon {:padding-right "2rem"})) {:required "required"
+                                                                                                                              :on-change #(-> % .-target .-value change)
+                                                                                                                              :on-blur blur
+                                                                                                                              :value @input-text
+                                                                                                                              :placeholder placeholder})]
         [:span (if (first error-messages) (stylefy/use-style style/input-field-label-error)
                                           (stylefy/use-style (if (and label placeholder) style/input-field-label-static style/input-field-label))) label]
-        (when icon (if icon-click-fn [icons/clickable {:name icon
-                                                      :styles style/icon
-                                                      :on-click-fn icon-click-fn}]
-                                     [icons/icon {:name icon
-                                                 :styles style/icon}]))]
+        (when icon [icons/clickable (merge (when icon-click-fn {:on-click-fn icon-click-fn})
+                                           {:name icon
+                                            :styles style/icon})])]
        (when (first error-messages)
          [:div (stylefy/use-style style/validation-errors)
           (doall (for [message error-messages]
@@ -73,8 +71,8 @@
                                         (when (= default-value %)
                                           {:selected "selected"}))
                          (:value %)) options))
-    [icons/icon {:name "arrow_drop_down"
-                :styles style/icon}]]])
+    [icons/clickable {:name "arrow_drop_down"
+                      :styles style/dropdown-icon}]]])
 
 (defn- list-item [{:keys [on-click-fn content is-selected?]}]
   [:li (stylefy/use-style {:background-color (if is-selected? color/color-primary color/color-neutral-1)
@@ -99,10 +97,11 @@
                            :key content
                            :class "dropdown-multi"})
    [:span (stylefy/use-style {:margin-right "0.5rem"}) content]
-   [icons/icon {:name "cancel"
-               :styles {:top "2px"
-                        :position "relative"
-                        :font-size "1rem"}}]])
+   [icons/clickable {:name "cancel"
+                     :styles {:top "3px"
+                              :position "relative"
+                              :font-size "1rem"
+                              :color "inherit"}}]])
 
 (defn- search-in-list [collection search-word]
   (filter #(string/includes? (string/lower-case %) search-word) collection))
@@ -181,9 +180,8 @@
                                                                    :value (:input-text @state)
                                                                    :placeholder placeholder
                                                                    :class "dropdown-multi"})]
-         [icons/icon {:name (if (:focus @state) "arrow_drop_up" "arrow_drop_down")
-                     :styles (merge style/icon {:top "auto"
-                                                :bottom 0})}]]]
+         [icons/clickable {:name (if (:focus @state) "arrow_drop_up" "arrow_drop_down")
+                           :styles style/dropdown-multiple-icon}]]]
        [:div (stylefy/use-style (merge style/dropdown-multiple-list {:display (if (:focus @state) "block" "none")})
                                 {:class "dropdown-multi"})
         (into [:ul (stylefy/use-style style/dropdown-multiple-list-item
@@ -207,9 +205,9 @@
         [:span.vds-filename filename]
         [:span (stylefy/use-style style/drag-n-drop-item-btn-area)
          [icons/clickable {:name "edit"
-                          :on-click-fn #(swap! metafields-visible? not)}]
+                           :on-click-fn #(swap! metafields-visible? not)}]
          [icons/clickable {:name "close"
-                          :on-click-fn delete-fn}]]]
+                           :on-click-fn delete-fn}]]]
        (into [:div.vds-metadata-fields (if @metafields-visible?
                                          (stylefy/use-style style/drag-n-drop-item-description-area)
                                          (stylefy/use-style style/drag-n-drop-item-description-area-hidden))]

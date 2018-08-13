@@ -1,28 +1,26 @@
 (ns velho-ds.atoms.style.icon
   (:require [velho-ds.tokens.font-size :as font-size]
+            [velho-ds.tokens.line-height :as line-height]
             [velho-ds.tokens.color :as color]
             [stylefy.core :as stylefy]))
 
 
 (def icon
   {:position "relative"
-   :top "7px"
+   :top "5px"
    :font-size font-size/font-size-xx-large})
 
 (def clickable
   {:cursor "pointer"
    :background "transparent"
    :user-select "none"
-   :padding 0
    :box-sizing "border-box"
    :border "none"
+   :padding 0
+   :line-height line-height/line-height-heading
    :color color/color-neutral-5
-   :display "inline-table"
    :font-size font-size/font-size-xx-large
-   :line-height font-size/font-size-xx-large
    ::stylefy/mode {:hover {:color color/color-primary}
                    :active {:outline "none"}
                    :focus {:outline "none"}}
-   ::stylefy/sub-styles {:i {:font-size "inherit"
-                             :display "table-cell"
-                             :vertical-align "middle"}}})
+   ::stylefy/sub-styles {:i {:font-size "inherit"}}})

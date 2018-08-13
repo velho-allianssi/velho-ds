@@ -50,7 +50,7 @@
 
 (def small
   {:height (measures/rem-times spacing/space-small-rem 2)
-   :padding "0 0.375rem"
+   :padding "0 0.25rem"
    :display "inline-table"
    :line-height font-size/font-size-x-large
    ::stylefy/sub-styles {:i {:font-size font-size/font-size-x-large
@@ -84,7 +84,7 @@
                             :box-shadow box-shadow/box-shadow-small}
                    :focus {:outline "none"}}})
 (def outline-small
-  (merge small outline {:padding (str "0 calc(0.375rem - " border/border-default ")")}))
+  (merge small outline {:padding (str "0 calc(0.25rem - " border/border-default ")")}))
 
 (def upper
   {:position "relative"
