@@ -32,11 +32,11 @@
       [:div.vds-input-field
        [:label (stylefy/use-style style/element)
         [:input (stylefy/use-style (merge (if (first error-messages) style/input-field-error
-                                                                     style/input-field) (when icon {:padding-right "2.5rem"})) {:required "required"
-                                                                                                                                :on-change #(-> % .-target .-value change)
-                                                                                                                                :on-blur blur
-                                                                                                                                :value @input-text
-                                                                                                                                :placeholder placeholder})]
+                                                                     style/input-field) (when icon {:padding-right "2rem"})) {:required "required"
+                                                                                                                              :on-change #(-> % .-target .-value change)
+                                                                                                                              :on-blur blur
+                                                                                                                              :value @input-text
+                                                                                                                              :placeholder placeholder})]
         [:span (if (first error-messages) (stylefy/use-style style/input-field-label-error)
                                           (stylefy/use-style (if (and label placeholder) style/input-field-label-static style/input-field-label))) label]
         (when icon [icons/clickable (merge (when icon-click-fn {:on-click-fn icon-click-fn})
@@ -99,8 +99,8 @@
    [:span (stylefy/use-style {:margin-right "0.5rem"}) content]
    [icons/clickable {:name "cancel"
                      :styles {:top "3px"
-                             :position "relative"
-                             :font-size "1rem"
+                              :position "relative"
+                              :font-size "1rem"
                               :color "inherit"}}]])
 
 (defn- search-in-list [collection search-word]

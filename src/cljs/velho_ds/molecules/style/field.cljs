@@ -123,8 +123,7 @@
   {:position "absolute"
    ; :padding spacing/space-xx-small-rem
    :top (str "calc("spacing/space-small-rem " + " spacing/space-xx-small-rem ")")
-   :right spacing/space-xx-small-rem
-   :pointer-events "none"})
+   :right spacing/space-xx-small-rem})
 
 (def dropdown-icon
   (merge icon
