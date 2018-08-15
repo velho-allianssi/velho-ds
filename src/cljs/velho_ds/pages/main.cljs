@@ -774,6 +774,23 @@
                   :desc "components"
                   :example "[grid/grid-cell {:col-start 1\n:col-end 4\n:style {:background-color \"whitesmoke\"\n:text-align \"center\"\n:border \"1px solid silver\"}} [:p \"test\"]]"}]]])
 
+(def search-results (r/atom {}))
+(defn search []
+  (reset! search-results [{:section "Projects"
+                           :items [{:label "Project 001"}
+                                   {:label "Project 002"}
+                                   {:label "Project 003"}
+                                   {:label "Project 004"}
+                                   {:label "Project 005"}]}
+                          {:section "Sub-projects"
+                           :items [{:label "Sub-project 001"}
+                                   {:label "Sub-project 002"}]}
+                          {:section "Files"
+                           :items [{:label "File 1"}
+                                   {:label "File 2"}
+                                   {:label "File 3"}]}]
+          ))
+
 (defmethod page-contents :headings []
   [:div
    ($-> [headings/content-heading {:status [[fields/iconvalue {:icon "date_range"
@@ -808,4 +825,38 @@
                  {:name "footer"
                   :desc "vector"
                   :example "{:footer [[buttons/primary-small {:content \"Item\"}]\n[buttons/primary-small {:content \"Another Item\"}]\n[buttons/primary-small {:content \"Last Item\"}]]}"}]]
-   [headings/page-heading]])
+
+   ($-> [headings/page-heading {:current-page {:label "X-Files"
+                                               :child {:label "Animals"
+                                                       :child {:label "Flying squirrel investigation"
+                                                               :child nil}}}
+                                :search-fn search
+                                :search-results search-results
+                                :search-results-show 4
+                                :search-result-clicked-fn #(println %)
+                                :search-header-fn #(println %)
+                                :sub-content [[:p "Given content"]]}])
+   [props-table [{:name "current-page"
+                  :desc "map"
+                  :example "{:current-page {:label \"X-Files\"\n:child {:label \"Animals\"\n:child {:label \"Flying squirrel investigation\"\n                                                               :child nil}}}}"}
+                 {:name "search-input"
+                  :desc "string"
+                  :example "{:search-input \"X-Files\"}"}
+                 {:name "search-fn"
+                  :desc "function"
+                  :example "{:search-fn search}"}
+                 {:name "search-results"
+                  :desc "vector (r/atom)"
+                  :example "{:search-results [{:section \"Projects\"\n:items [{:label \"Project 001\"}\n{:label \"Project 002\"}\n{:label \"Project 003\"}\n{:label \"Project 004\"}\n{:label \"Project 005\"}]}\n{:section \"Sub-projects\"\n:items [{:label \"Sub-project 001\"}\n{:label \"Sub-project 002\"}]}\n{:section \"Files\"\n:items [{:label \"File 1\"}\n{:label \"File 2\"}\n{:label \"File 3\"}]}]}"}
+                 {:name "search-results-show"
+                  :desc "int"
+                  :example "{:search-results-show 4}"}
+                 {:name "search-result-clicked-fn"
+                  :desc "function"
+                  :example "{:search-result-clicked-fn #(println %)}"}
+                 {:name "search-header-fn"
+                  :desc "function"
+                  :example "{:search-header-fn #(println %)}"}
+                 {:name "sub-content"
+                  :desc "vector"
+                  :example "{:sub-content [[:p \"Given content\"]]}"}]]])
