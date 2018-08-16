@@ -1,6 +1,7 @@
 (ns velho-ds.molecules.notification
   (:require [reagent.core :as r]
             [stylefy.core :as stylefy]
+            [velho-ds.tools.style :as tools-style]
             [velho-ds.atoms.icon :as icon]
             [velho-ds.molecules.style.notification :as style]
             [velho-ds.tokens.color :as color]))
@@ -20,10 +21,10 @@
                     (for [item content] ^{:key item} [:div item]))))])
 
 (defn error [{:keys [icon-fn styles] :as args} & content]
-  [default (merge {:styles style/error} args) content])
+  [default (tools-style/merge-styles args style/error) content])
 
 (defn warning [{:keys [icon-fn styles] :as args} & content]
-  [default (merge {:styles style/warning} args) content])
+  [default (tools-style/merge-styles args style/warning) content])
 
 (defn success [{:keys [icon-fn styles] :as args} & content]
-  [default (merge {:styles style/success} args) content])
+  [default (tools-style/merge-styles args style/success) content])
