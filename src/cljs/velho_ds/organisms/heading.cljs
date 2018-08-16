@@ -1,5 +1,6 @@
 (ns velho-ds.organisms.heading
   (:require [stylefy.core :as stylefy]
+            [clojure.string :as string]
             [velho-ds.organisms.style.heading :as style]
             [velho-ds.tokens.font :as fonts]
             [velho-ds.tokens.font-size :as font-sizes]
@@ -31,14 +32,20 @@
       (into [:ul (stylefy/use-style style/content-heading-footer)]
             (for [item footer] ^{:key item} [:li (stylefy/use-sub-style style/content-heading-footer :li) item])))]])
 
-(defn page-heading [{:keys [current-page search-input search-fn search-results search-results-show search-result-clicked-fn search-header-fn sub-content]}]
+(defn- search-in-list [collection search-word]
+  (filter #(string/includes? (string/lower-case %) search-word) collection))
+
+(defn page-heading [{:keys [placeholder current-page search-input search-fn search-results search-results-show search-result-clicked-fn search-results-msg search-heading-fn sub-content]}]
   (let [search-text (r/atom search-input)
-        siblings-open? (r/atom (if @search-text true false))
+        siblings-open? (r/atom false)
+        search-open? (r/atom false)
         search (fn [val]
                  (reset! search-text val)
+                 (reset! search-open? (not (nil? @search-text)))
                  (when search-fn (search-fn @search-text)))
-        empty (fn []
-                (reset! search-text ""))
+        empty (fn [e]
+                (reset! search-text nil)
+                (set! (-> e .-target .-parentElement .-parentElement .-firstChild .-value) nil))
         result-select (fn [item]
                         (when search-result-clicked-fn (search-result-clicked-fn item)))
         pages (r/atom [])
@@ -48,7 +55,11 @@
                         (swap! pages conj (:label page))
                         (recur (:child page)))))
         search-header-clicked (fn [header]
-                                (when search-header-fn (search-header-fn header)))]
+                                (when search-heading-fn (search-heading-fn header)))
+        global-click-handler #(let [target (.-target %)]
+                                (if (and (empty? (search-in-list (string/split (-> target .-className) #" ") "search-dropdown")) (not= (-> target .-placeholder) placeholder))
+                                  (reset! search-open? false)))
+        addEventListener #(.addEventListener (.getElementById js/document "app") "click" global-click-handler)]
     (get-pages current-page)
     (search search-input)
     (fn []
@@ -72,28 +83,35 @@
                                      :on-click-fn #(swap! siblings-open? not)}]])))
         [grid/grid-cell {:col-start 4
                          :col-end 4}
-         [fields/input-field {:placeholder "Search"
-                              :icon "search"
+         [:div {:class "search-dropdown"}
+         [fields/input-field {:placeholder placeholder
+                              :icon (if @search-text "close" "search")
                               :content @search-text
                               :on-change-fn search
-                              :icon-click-fn empty}]]]
+                              :icon-click-fn #(empty %)
+                              :on-focus-fn #(do
+                                              (addEventListener)
+                                              (reset! search-open? (not (nil? @search-text))))
+                              #_#_:on-blur-fn #(reset! search-open? false)}]]]]
        [:div {:style {:position "relative"
                       :display "flex"
                       :justify-content "flex-end"}}
         (into [:div (stylefy/use-style (merge style/page-heading-container-info
-                                              {:display (if (or (nil? @search-text) (= @search-text "")) "none" "block")}))]
+                                              {:display (if @search-open? "block" "none")}))
+               (when (< (count @search-results) 1) [:p search-results-msg])]
               (for [section @search-results]
-                (into [:ul (stylefy/use-style style/search-results)
-                       [:div
-                        [:p (stylefy/use-style style/search-results-header) (str (get section :section) " (" (count (get section :items)) ")")]
+                (into [:ul (stylefy/use-style style/search-results {:class "search-dropdown"})
+                       [:div {:class "search-dropdown"}
+                        [:p (stylefy/use-style style/search-results-header {:class "search-dropdown"}) (str (get section :section) " (" (count (get section :items)) ")")]
                         [icons/clickable {:name "chevron_right"
                                           :on-click-fn search-header-clicked
                                           :styles {:display "inline-block"
                                                    :top "6px"
                                                    :position "relative"}}]]]
                       (for [item (if (nil? search-results-show) (get section :items) (take search-results-show (get section :items)))]
-                        ^{:key item} [:li (merge (stylefy/use-style style/search-results-item) {:on-click #(result-select %)})
-                                      [:span (stylefy/use-sub-style style/search-results-item :span) (get item :label)]]))))]
+                        ^{:key item} [:li (stylefy/use-style style/search-results-item {:on-click #(result-select %)
+                                                                                        :class "search-dropdown"})
+                                      [:span (stylefy/use-sub-style style/search-results-item :span {:class "search-dropdown"}) (get item :label)]]))))]
        (into [:div (stylefy/use-style (merge style/page-heading-container
                                              {:display (if @siblings-open? "block" "none")}))]
              (for [item sub-content] ^{:key item} item))])))

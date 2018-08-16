@@ -788,8 +788,7 @@
                           {:section "Files"
                            :items [{:label "File 1"}
                                    {:label "File 2"}
-                                   {:label "File 3"}]}]
-          ))
+                                   {:label "File 3"}]}]))
 
 (defmethod page-contents :headings []
   [:div
@@ -811,8 +810,7 @@
                                                                         :font-size "2rem"}}]]
                                    :footer [[buttons/primary-small {:content "Item"}]
                                             [buttons/primary-small {:content "Another Item"}]
-                                            [buttons/primary-small {:content "Last Item"}]]
-                                   }])
+                                            [buttons/primary-small {:content "Last Item"}]]}])
    [props-table [{:name "status"
                   :desc "vector"
                   :example "{:status [[fields/iconvalue {:icon \"date_range\"\n:content \"29.09.2017 - 01.12.2022\"}]\n[fields/iconvalue {:icon \"timelapse\"\n:content \"On hold\"}]]}"}
@@ -830,15 +828,20 @@
                                                :child {:label "Animals"
                                                        :child {:label "Flying squirrel investigation"
                                                                :child nil}}}
+                                :placeholder "Search"
                                 :search-fn search
                                 :search-results search-results
                                 :search-results-show 4
                                 :search-result-clicked-fn #(println %)
-                                :search-header-fn #(println %)
+                                :search-heading-fn #(println %)
+                                :search-results-msg "No results, sorry"
                                 :sub-content [[:p "Given content"]]}])
    [props-table [{:name "current-page"
                   :desc "map"
-                  :example "{:current-page {:label \"X-Files\"\n:child {:label \"Animals\"\n:child {:label \"Flying squirrel investigation\"\n                                                               :child nil}}}}"}
+                  :example "{:current-page {:label \"X-Files\"\n:child {:label \"Animals\"\n:child {:label \"Flying squirrel investigation\"\n:child nil}}}}"}
+                 {:name "placeholder"
+                  :desc "string"
+                  :example "{:placeholder \"Search\"}"}
                  {:name "search-input"
                   :desc "string"
                   :example "{:search-input \"X-Files\"}"}
@@ -851,12 +854,15 @@
                  {:name "search-results-show"
                   :desc "int"
                   :example "{:search-results-show 4}"}
+                 {:name "search-results-msg"
+                  :desc "str"
+                  :example "{:search-results-msg \"No results, sorry\"}"}
                  {:name "search-result-clicked-fn"
                   :desc "function"
                   :example "{:search-result-clicked-fn #(println %)}"}
-                 {:name "search-header-fn"
+                 {:name "search-heading-fn"
                   :desc "function"
-                  :example "{:search-header-fn #(println %)}"}
+                  :example "{:search-heading-fn #(println %)}"}
                  {:name "sub-content"
                   :desc "vector"
                   :example "{:sub-content [[:p \"Given content\"]]}"}]]])
