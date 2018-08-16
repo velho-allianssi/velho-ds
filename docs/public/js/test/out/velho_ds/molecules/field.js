@@ -29,13 +29,12 @@ var map__42945__$1 = ((((!((map__42945 == null)))?(((((map__42945.cljs$lang$prot
 var label = cljs.core.get.call(null,map__42945__$1,new cljs.core.Keyword(null,"label","label",1718410804));
 var content = cljs.core.get.call(null,map__42945__$1,new cljs.core.Keyword(null,"content","content",15833224));
 var placeholder = cljs.core.get.call(null,map__42945__$1,new cljs.core.Keyword(null,"placeholder","placeholder",-104873083));
+var icon = cljs.core.get.call(null,map__42945__$1,new cljs.core.Keyword(null,"icon","icon",1679606541));
 var icon_click_fn = cljs.core.get.call(null,map__42945__$1,new cljs.core.Keyword(null,"icon-click-fn","icon-click-fn",1693089025));
 var on_change_fn = cljs.core.get.call(null,map__42945__$1,new cljs.core.Keyword(null,"on-change-fn","on-change-fn",-1237394275));
 var on_blur_fn = cljs.core.get.call(null,map__42945__$1,new cljs.core.Keyword(null,"on-blur-fn","on-blur-fn",1587769433));
-var on_focus_fn = cljs.core.get.call(null,map__42945__$1,new cljs.core.Keyword(null,"on-focus-fn","on-focus-fn",-570630384));
-var styles = cljs.core.get.call(null,map__42945__$1,new cljs.core.Keyword(null,"styles","styles",1954480375));
 var input_text = reagent.core.atom.call(null,content);
-var change = ((function (input_text,map__42945,map__42945__$1,label,content,placeholder,icon_click_fn,on_change_fn,on_blur_fn,on_focus_fn,styles){
+var change = ((function (input_text,map__42945,map__42945__$1,label,content,placeholder,icon,icon_click_fn,on_change_fn,on_blur_fn){
 return (function (val){
 cljs.core.reset_BANG_.call(null,input_text,val);
 
@@ -44,45 +43,35 @@ return on_change_fn.call(null,cljs.core.deref.call(null,input_text));
 } else {
 return null;
 }
-});})(input_text,map__42945,map__42945__$1,label,content,placeholder,icon_click_fn,on_change_fn,on_blur_fn,on_focus_fn,styles))
+});})(input_text,map__42945,map__42945__$1,label,content,placeholder,icon,icon_click_fn,on_change_fn,on_blur_fn))
 ;
-var blur = ((function (input_text,change,map__42945,map__42945__$1,label,content,placeholder,icon_click_fn,on_change_fn,on_blur_fn,on_focus_fn,styles){
+var blur = ((function (input_text,change,map__42945,map__42945__$1,label,content,placeholder,icon,icon_click_fn,on_change_fn,on_blur_fn){
 return (function (){
 if(cljs.core.truth_(on_blur_fn)){
 return on_blur_fn.call(null,cljs.core.deref.call(null,input_text));
 } else {
 return null;
 }
-});})(input_text,change,map__42945,map__42945__$1,label,content,placeholder,icon_click_fn,on_change_fn,on_blur_fn,on_focus_fn,styles))
+});})(input_text,change,map__42945,map__42945__$1,label,content,placeholder,icon,icon_click_fn,on_change_fn,on_blur_fn))
 ;
-var focus = ((function (input_text,change,blur,map__42945,map__42945__$1,label,content,placeholder,icon_click_fn,on_change_fn,on_blur_fn,on_focus_fn,styles){
-return (function (){
-if(cljs.core.truth_(on_focus_fn)){
-return on_focus_fn.call(null,cljs.core.deref.call(null,input_text));
-} else {
-return null;
-}
-});})(input_text,change,blur,map__42945,map__42945__$1,label,content,placeholder,icon_click_fn,on_change_fn,on_blur_fn,on_focus_fn,styles))
-;
-return ((function (input_text,change,blur,focus,map__42945,map__42945__$1,label,content,placeholder,icon_click_fn,on_change_fn,on_blur_fn,on_focus_fn,styles){
+return ((function (input_text,change,blur,map__42945,map__42945__$1,label,content,placeholder,icon,icon_click_fn,on_change_fn,on_blur_fn){
 return (function (p__42947){
 var map__42948 = p__42947;
 var map__42948__$1 = ((((!((map__42948 == null)))?(((((map__42948.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__42948.cljs$core$ISeq$))))?true:false):false))?cljs.core.apply.call(null,cljs.core.hash_map,map__42948):map__42948);
-var icon = cljs.core.get.call(null,map__42948__$1,new cljs.core.Keyword(null,"icon","icon",1679606541));
 var error_messages = cljs.core.get.call(null,map__42948__$1,new cljs.core.Keyword(null,"error-messages","error-messages",2083896366));
-return new cljs.core.PersistentVector(null, 4, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"div.vds-input-field","div.vds-input-field",353231436),stylefy.core.use_style.call(null,styles),new cljs.core.PersistentVector(null, 5, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"label","label",1718410804),stylefy.core.use_style.call(null,velho_ds.molecules.style.field.element),new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"input","input",556931961),stylefy.core.use_style.call(null,cljs.core.merge.call(null,(cljs.core.truth_(cljs.core.first.call(null,error_messages))?velho_ds.molecules.style.field.input_field_error:velho_ds.molecules.style.field.input_field),(cljs.core.truth_(icon)?new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"padding-right","padding-right",-1250249681),"2rem"], null):null)),new cljs.core.PersistentArrayMap(null, 6, [new cljs.core.Keyword(null,"required","required",1807647006),"required",new cljs.core.Keyword(null,"on-change","on-change",-732046149),((function (map__42948,map__42948__$1,icon,error_messages,input_text,change,blur,focus,map__42945,map__42945__$1,label,content,placeholder,icon_click_fn,on_change_fn,on_blur_fn,on_focus_fn,styles){
+return new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"div.vds-input-field","div.vds-input-field",353231436),new cljs.core.PersistentVector(null, 5, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"label","label",1718410804),stylefy.core.use_style.call(null,velho_ds.molecules.style.field.element),new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"input","input",556931961),stylefy.core.use_style.call(null,cljs.core.merge.call(null,(cljs.core.truth_(cljs.core.first.call(null,error_messages))?velho_ds.molecules.style.field.input_field_error:velho_ds.molecules.style.field.input_field),(cljs.core.truth_(icon)?new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"padding-right","padding-right",-1250249681),"2rem"], null):null)),new cljs.core.PersistentArrayMap(null, 5, [new cljs.core.Keyword(null,"required","required",1807647006),"required",new cljs.core.Keyword(null,"on-change","on-change",-732046149),((function (map__42948,map__42948__$1,error_messages,input_text,change,blur,map__42945,map__42945__$1,label,content,placeholder,icon,icon_click_fn,on_change_fn,on_blur_fn){
 return (function (p1__42943_SHARP_){
 return change.call(null,p1__42943_SHARP_.target.value);
-});})(map__42948,map__42948__$1,icon,error_messages,input_text,change,blur,focus,map__42945,map__42945__$1,label,content,placeholder,icon_click_fn,on_change_fn,on_blur_fn,on_focus_fn,styles))
-,new cljs.core.Keyword(null,"on-blur","on-blur",814300747),blur,new cljs.core.Keyword(null,"on-focus","on-focus",-13737624),focus,new cljs.core.Keyword(null,"value","value",305978217),cljs.core.deref.call(null,input_text),new cljs.core.Keyword(null,"placeholder","placeholder",-104873083),placeholder], null))], null),new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"span","span",1394872991),(cljs.core.truth_(cljs.core.first.call(null,error_messages))?stylefy.core.use_style.call(null,velho_ds.molecules.style.field.input_field_label_error):stylefy.core.use_style.call(null,(cljs.core.truth_((function (){var and__3911__auto__ = label;
+});})(map__42948,map__42948__$1,error_messages,input_text,change,blur,map__42945,map__42945__$1,label,content,placeholder,icon,icon_click_fn,on_change_fn,on_blur_fn))
+,new cljs.core.Keyword(null,"on-blur","on-blur",814300747),blur,new cljs.core.Keyword(null,"value","value",305978217),cljs.core.deref.call(null,input_text),new cljs.core.Keyword(null,"placeholder","placeholder",-104873083),placeholder], null))], null),new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"span","span",1394872991),(cljs.core.truth_(cljs.core.first.call(null,error_messages))?stylefy.core.use_style.call(null,velho_ds.molecules.style.field.input_field_label_error):stylefy.core.use_style.call(null,(cljs.core.truth_((function (){var and__3911__auto__ = label;
 if(cljs.core.truth_(and__3911__auto__)){
 return placeholder;
 } else {
 return and__3911__auto__;
 }
-})())?velho_ds.molecules.style.field.input_field_label_static:velho_ds.molecules.style.field.input_field_label))),label], null),(cljs.core.truth_(icon)?new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [velho_ds.atoms.icon.clickable,cljs.core.merge.call(null,(cljs.core.truth_(icon_click_fn)?new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"on-click-fn","on-click-fn",739785852),icon_click_fn], null):null),new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null,"name","name",1843675177),icon,new cljs.core.Keyword(null,"styles","styles",1954480375),velho_ds.molecules.style.field.icon], null))], null):null)], null),(cljs.core.truth_(cljs.core.first.call(null,error_messages))?new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"div","div",1057191632),stylefy.core.use_style.call(null,velho_ds.molecules.style.field.validation_errors),cljs.core.doall.call(null,(function (){var iter__4292__auto__ = ((function (map__42948,map__42948__$1,icon,error_messages,input_text,change,blur,focus,map__42945,map__42945__$1,label,content,placeholder,icon_click_fn,on_change_fn,on_blur_fn,on_focus_fn,styles){
+})())?velho_ds.molecules.style.field.input_field_label_static:velho_ds.molecules.style.field.input_field_label))),label], null),(cljs.core.truth_(icon)?new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [velho_ds.atoms.icon.clickable,cljs.core.merge.call(null,(cljs.core.truth_(icon_click_fn)?new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"on-click-fn","on-click-fn",739785852),icon_click_fn], null):null),new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null,"name","name",1843675177),icon,new cljs.core.Keyword(null,"styles","styles",1954480375),velho_ds.molecules.style.field.icon], null))], null):null)], null),(cljs.core.truth_(cljs.core.first.call(null,error_messages))?new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"div","div",1057191632),stylefy.core.use_style.call(null,velho_ds.molecules.style.field.validation_errors),cljs.core.doall.call(null,(function (){var iter__4292__auto__ = ((function (map__42948,map__42948__$1,error_messages,input_text,change,blur,map__42945,map__42945__$1,label,content,placeholder,icon,icon_click_fn,on_change_fn,on_blur_fn){
 return (function velho_ds$molecules$field$input_field_$_iter__42950(s__42951){
-return (new cljs.core.LazySeq(null,((function (map__42948,map__42948__$1,icon,error_messages,input_text,change,blur,focus,map__42945,map__42945__$1,label,content,placeholder,icon_click_fn,on_change_fn,on_blur_fn,on_focus_fn,styles){
+return (new cljs.core.LazySeq(null,((function (map__42948,map__42948__$1,error_messages,input_text,change,blur,map__42945,map__42945__$1,label,content,placeholder,icon,icon_click_fn,on_change_fn,on_blur_fn){
 return (function (){
 var s__42951__$1 = s__42951;
 while(true){
@@ -121,14 +110,14 @@ return null;
 }
 break;
 }
-});})(map__42948,map__42948__$1,icon,error_messages,input_text,change,blur,focus,map__42945,map__42945__$1,label,content,placeholder,icon_click_fn,on_change_fn,on_blur_fn,on_focus_fn,styles))
+});})(map__42948,map__42948__$1,error_messages,input_text,change,blur,map__42945,map__42945__$1,label,content,placeholder,icon,icon_click_fn,on_change_fn,on_blur_fn))
 ,null,null));
-});})(map__42948,map__42948__$1,icon,error_messages,input_text,change,blur,focus,map__42945,map__42945__$1,label,content,placeholder,icon_click_fn,on_change_fn,on_blur_fn,on_focus_fn,styles))
+});})(map__42948,map__42948__$1,error_messages,input_text,change,blur,map__42945,map__42945__$1,label,content,placeholder,icon,icon_click_fn,on_change_fn,on_blur_fn))
 ;
 return iter__4292__auto__.call(null,error_messages);
 })())], null):null)], null);
 });
-;})(input_text,change,blur,focus,map__42945,map__42945__$1,label,content,placeholder,icon_click_fn,on_change_fn,on_blur_fn,on_focus_fn,styles))
+;})(input_text,change,blur,map__42945,map__42945__$1,label,content,placeholder,icon,icon_click_fn,on_change_fn,on_blur_fn))
 });
 velho_ds.molecules.field.multiline_field = (function velho_ds$molecules$field$multiline_field(var_args){
 var G__42956 = arguments.length;
@@ -165,15 +154,14 @@ var selected_fn = cljs.core.get.call(null,map__42961__$1,new cljs.core.Keyword(n
 var options = cljs.core.get.call(null,map__42961__$1,new cljs.core.Keyword(null,"options","options",99638489));
 var default_value = cljs.core.get.call(null,map__42961__$1,new cljs.core.Keyword(null,"default-value","default-value",232220170));
 var no_selection_text = cljs.core.get.call(null,map__42961__$1,new cljs.core.Keyword(null,"no-selection-text","no-selection-text",629753203));
-var styles = cljs.core.get.call(null,map__42961__$1,new cljs.core.Keyword(null,"styles","styles",1954480375));
-return new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"div","div",1057191632),stylefy.core.use_style.call(null,styles),new cljs.core.PersistentVector(null, 5, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"label","label",1718410804),stylefy.core.use_style.call(null,velho_ds.molecules.style.field.element),new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"span","span",1394872991),stylefy.core.use_style.call(null,velho_ds.molecules.style.field.dropdown_label),label], null),cljs.core.into.call(null,new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"select","select",1147833503),stylefy.core.use_style.call(null,velho_ds.molecules.style.field.dropdown,new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null,"defaultValue","defaultValue",-586131910),"value",new cljs.core.Keyword(null,"on-change","on-change",-732046149),((function (map__42961,map__42961__$1,label,selected_fn,options,default_value,no_selection_text,styles){
+return new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"div","div",1057191632),new cljs.core.PersistentVector(null, 5, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"label","label",1718410804),stylefy.core.use_style.call(null,velho_ds.molecules.style.field.element),new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"span","span",1394872991),stylefy.core.use_style.call(null,velho_ds.molecules.style.field.dropdown_label),label], null),cljs.core.into.call(null,new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"select","select",1147833503),stylefy.core.use_style.call(null,velho_ds.molecules.style.field.dropdown,new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null,"defaultValue","defaultValue",-586131910),"value",new cljs.core.Keyword(null,"on-change","on-change",-732046149),((function (map__42961,map__42961__$1,label,selected_fn,options,default_value,no_selection_text){
 return (function (p1__42958_SHARP_){
 return selected_fn.call(null,p1__42958_SHARP_.target.value);
-});})(map__42961,map__42961__$1,label,selected_fn,options,default_value,no_selection_text,styles))
-], null)),((cljs.core.not.call(null,default_value))?new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"option","option",65132272),new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null,"value","value",305978217),"value",new cljs.core.Keyword(null,"disabled","disabled",-1529784218),"disabled"], null),no_selection_text], null):null)], null),cljs.core.mapv.call(null,((function (map__42961,map__42961__$1,label,selected_fn,options,default_value,no_selection_text,styles){
+});})(map__42961,map__42961__$1,label,selected_fn,options,default_value,no_selection_text))
+], null)),((cljs.core.not.call(null,default_value))?new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"option","option",65132272),new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null,"value","value",305978217),"value",new cljs.core.Keyword(null,"disabled","disabled",-1529784218),"disabled"], null),no_selection_text], null):null)], null),cljs.core.mapv.call(null,((function (map__42961,map__42961__$1,label,selected_fn,options,default_value,no_selection_text){
 return (function (p1__42959_SHARP_){
 return (new cljs.core.PersistentVector(null,3,(5),cljs.core.PersistentVector.EMPTY_NODE,[new cljs.core.Keyword(null,"option","option",65132272),cljs.core.merge.call(null,new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"value","value",305978217),new cljs.core.Keyword(null,"id","id",-1388402092).cljs$core$IFn$_invoke$arity$1(p1__42959_SHARP_)], null),((cljs.core._EQ_.call(null,default_value,p1__42959_SHARP_))?new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"selected","selected",574897764),"selected"], null):null)),new cljs.core.Keyword(null,"value","value",305978217).cljs$core$IFn$_invoke$arity$1(p1__42959_SHARP_)],null));
-});})(map__42961,map__42961__$1,label,selected_fn,options,default_value,no_selection_text,styles))
+});})(map__42961,map__42961__$1,label,selected_fn,options,default_value,no_selection_text))
 ,options)),new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [velho_ds.atoms.icon.clickable,new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null,"name","name",1843675177),"arrow_drop_down",new cljs.core.Keyword(null,"styles","styles",1954480375),velho_ds.molecules.style.field.dropdown_icon], null)], null)], null)], null);
 });
 velho_ds.molecules.field.list_item = (function velho_ds$molecules$field$list_item(p__42963){
