@@ -14,6 +14,7 @@
 (def breadcrumb
   {:text-decoration "none"
    :margin 0
+   :cursor "pointer"
    :color color/color-primary-dark
    :display "inline-block"
    :font-family font/font-family-heading
@@ -21,7 +22,7 @@
    :font-weight font/font-weight-light
    :line-height line-height/line-height-heading})
 
-(def breadcrumb-braker
+(def breadcrumb-breaker
   {:margin 0
    :display "inline-block"
    :padding (str "0 " spacing/space-x-small-rem)
@@ -89,17 +90,27 @@
 
 (def search-results
   {:padding 0
-   :margin(str "0 0 " spacing/space-x-small-rem " 0")})
-
-(def search-results-header
-  {:margin (str spacing/space-xx-small " 0")
-   :display "inline-block"
-   :padding (str "0 " spacing/space-xx-small " 0 0")})
-
+   :margin (str "0 0 " spacing/space-x-small-rem " 0")})
 
 (def search-results-item
   {:list-style "none"
    :padding (str spacing/space-xx-small " 0")
    :cursor "pointer"
+   :color color/color-primary
    ::stylefy/sub-styles {:span {:text-decoration "none"
                                 :color color/color-primary}}})
+
+(def search-results-header
+  (merge search-results-item
+         {:color color/color-neutral-5
+          ::stylefy/mode {:hover {:color color/color-primary-dark}}}))
+
+(def search-results-header-item
+  {:margin (str spacing/space-xx-small " 0")
+   :display "inline-block"
+   :cursor "pointer"
+   :padding (str "0 " spacing/space-xx-small " 0 0")
+   :color "inherit"
+   ::stylefy/mode {:hover {:color "inherit"}}})
+
+

@@ -832,9 +832,10 @@
                                 :search-fn search
                                 :search-results search-results
                                 :search-results-show 4
-                                :search-result-clicked-fn #(println %)
+                                :search-result-clicked-fn #(println %1 %2)
                                 :search-heading-fn #(println %)
-                                :search-results-msg "No results, sorry"
+                                :breadcrumb-click-fn #(println %)
+                                :search-no-results-msg "No results, sorry"
                                 :sub-content [[:p "Given content"]]}])
    [props-table [{:name "current-page"
                   :desc "map"
