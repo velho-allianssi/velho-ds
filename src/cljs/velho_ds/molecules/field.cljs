@@ -31,20 +31,20 @@
     (fn [{:keys [error-messages]}]
       [:div.vds-input-field
        [:label (stylefy/use-style style/element)
-        [:input (stylefy/use-style (merge (if (first error-messages) style/input-field-error
+        [:input (stylefy/use-style (merge (if (first (when error-messages @error-messages)) style/input-field-error
                                                                      style/input-field) (when icon {:padding-right "2rem"})) {:required "required"
                                                                                                                               :on-change #(-> % .-target .-value change)
                                                                                                                               :on-blur blur
                                                                                                                               :value @input-text
                                                                                                                               :placeholder placeholder})]
-        [:span (if (first error-messages) (stylefy/use-style style/input-field-label-error)
+        [:span (if (first (when error-messages @error-messages)) (stylefy/use-style style/input-field-label-error)
                                           (stylefy/use-style (if (and label placeholder) style/input-field-label-static style/input-field-label))) label]
         (when icon [icons/clickable (merge (when icon-click-fn {:on-click-fn icon-click-fn})
                                            {:name icon
                                             :styles style/icon})])]
-       (when (first error-messages)
+       (when (first (when error-messages @error-messages))
          [:div (stylefy/use-style style/validation-errors)
-          (doall (for [message error-messages]
+          (doall (for [message (when error-messages @error-messages)]
                    (into ^{:key message} [:p (stylefy/use-sub-style style/validation-errors :p) message])))])])))
 
 (defn multiline-field
