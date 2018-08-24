@@ -27,7 +27,7 @@
    :margin 0
    :min-height (measures/rem-times font-size/font-size-base 2)
    :background color/color-neutral-1
-   :box-sizing  "border-box"
+   :box-sizing "border-box"
    :border-top 0
    :border-left 0
    :border-right 0
@@ -122,7 +122,7 @@
 (def icon
   {:position "absolute"
    ; :padding spacing/space-xx-small-rem
-   :top (str "calc("spacing/space-small-rem " + " spacing/space-xx-small-rem ")")
+   :top (str "calc(" spacing/space-small-rem " + " spacing/space-xx-small-rem ")")
    :right spacing/space-xx-small-rem})
 
 (def dropdown-icon
@@ -251,3 +251,48 @@
 
 (def drag-n-drop-item-description-area-hidden
   {:display "none"})
+
+(def dropdown-list
+  {:z-index 9999
+   :padding 0
+   :margin (str spacing/space-xx-small-rem " 0")})
+
+(def dropdown-list-item
+  {:list-style "none"
+   :padding (str spacing/space-xx-small-rem " " spacing/space-x-small-rem)
+   :cursor "pointer"
+   :color color/color-neutral-5
+   ::stylefy/sub-styles {:span {:text-decoration "none"
+                                :color "inherit"}}})
+
+(def dropdown-list-item-selected
+  (merge dropdown-list-item
+         {:color color/color-white
+          :background color/color-primary
+          ::stylefy/mode {:hover {:background color/color-primary}}}))
+
+(def dropdown-list-header
+  (merge dropdown-list-item
+         {:padding (str spacing/space-xx-small-rem " " spacing/space-x-small-rem " 0")
+          :color color/color-neutral-4
+          :font-family font/font-family-heading
+          ::stylefy/mode {:hover {:color color/color-neutral-4}}}))
+
+(def dropdown-list-header-item
+  {:margin 0
+   :display "inline-block"
+   :cursor "pointer"
+   :padding 0
+   :color "inherit"
+   ::stylefy/mode {:hover {:color "inherit"}}})
+
+(def dropdown-list-container
+  {:max-height (measures/rem-times spacing/space-large-rem 8)
+   :overflow-y "scroll"
+   :padding 0
+   :margin 0
+   :background "white"
+   :box-shadow box-shadow/box-shadow-small
+   :position "absolute"
+   :top "3rem"
+   :width "100%"})

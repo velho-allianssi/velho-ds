@@ -411,6 +411,25 @@
                   :example "{:styles {:margin \"1rem\"}}"}]]])
 
 ;; MOLECULES
+(def example-data (r/atom [{:section "Projects"
+                            :items [{:label "Project 001"}
+                                    {:label "Project 002"}
+                                    {:label "Project 003"}
+                                    {:label "Project 004"}
+                                    {:label "Project 005"}]}
+                           {:section "Sub-projects"
+                            :items [{:label "Sub-project 001"}
+                                    {:label "Sub-project 002"}]}
+                           {:section "Files"
+                            :items [{:label "File 1"}
+                                    {:label "File 2"}
+                                    {:label "File 3"}]}]))
+(defn search [val]
+  (println val)
+  (reset! example-data [{:section "Files"
+                         :items [{:label "File 1"}
+                                 {:label "File 2"}
+                                 {:label "File 3"}]}]))
 
 (defmethod page-contents :fields []
   [:div
@@ -495,18 +514,31 @@
                  {:name "on-blur-fn"
                   :desc "function"
                   :example "{:on-blur-fn \"#(println (str \"Focus lost!\"))\"}"}]]
+
    [:h3.rds-header3 "Multiline-field"]
    ($-> [fields/multiline-field "Textfield"])
    [props-table [{:name "content"
                   :desc "string"
                   :example "{:content \"Content\"}"}]]
    [:h3.rds-header3 "Dropdown-menu"]
+   ($-> [fields/dropdown-menu {:label "Dropdown menu"
+                               :placeholder "Select"
+                               :item-list example-data
+                               :on-change-fn #(println %)
+                               :on-blur-fn #(println "On blur")
+                               :on-focus-fn #(println "On focus")
+                               :on-item-select-fn #(println "Item selected: " %1 %2)
+                               :selected-item [{:label "File 1"}]}])
+   [props-table [{:name "label"
+                  :desc "string"
+                  :example "{:title \"Dropdown menu\"}"}]]
+   
    ($-> (let [values [{:id 1 :value "First"}
                       {:id 2 :value "Second"}]]
-          [fields/dropdown-menu {:label "Dropdown"
-                                 :selected-fn #(js/alert (str "Selected value: " %))
-                                 :options values
-                                 :no-selection-text "- No selection -"}]))
+          [fields/dropdown-menu-simple {:label "Dropdown, simple"
+                                        :selected-fn #(js/alert (str "Selected value: " %))
+                                        :options values
+                                        :no-selection-text "- No selection -"}]))
    [props-table [{:name "label"
                   :desc "string"
                   :example "{:label \"Label\"}"}
@@ -774,22 +806,6 @@
                   :desc "components"
                   :example "[grid/grid-cell {:col-start 1\n:col-end 4\n:style {:background-color \"whitesmoke\"\n:text-align \"center\"\n:border \"1px solid silver\"}} [:p \"test\"]]"}]]])
 
-(def search-results (r/atom {}))
-(defn search []
-  (reset! search-results [{:section "Projects"
-                           :items [{:label "Project 001"}
-                                   {:label "Project 002"}
-                                   {:label "Project 003"}
-                                   {:label "Project 004"}
-                                   {:label "Project 005"}]}
-                          {:section "Sub-projects"
-                           :items [{:label "Sub-project 001"}
-                                   {:label "Sub-project 002"}]}
-                          {:section "Files"
-                           :items [{:label "File 1"}
-                                   {:label "File 2"}
-                                   {:label "File 3"}]}]))
-
 (defmethod page-contents :headings []
   [:div
    ($-> [headings/content-heading {:status [[fields/iconvalue {:icon "date_range"
@@ -828,15 +844,13 @@
                                                :child {:label "Animals"
                                                        :child {:label "Flying squirrel investigation"
                                                                :child nil}}}
-                                :placeholder "Search"
-                                :search-fn search
-                                :search-results search-results
-                                :search-results-show 4
-                                :search-result-clicked-fn #(println %1 %2)
-                                :search-heading-fn #(println %)
+
                                 :breadcrumb-click-fn #(println %)
-                                :search-no-results-msg "No results, sorry"
-                                :sub-content [[:p "Given content"]]}])
+                                :sub-content [[:p "Given content"]]
+                                :search-placeholder "Search"
+                                :search-results example-data
+                                :search-result-clicked-fn #(println "Item selected: " %1 %2)
+                                :search-fn #(println "Search-fn: " %)}])
    [props-table [{:name "current-page"
                   :desc "map"
                   :example "{:current-page {:label \"X-Files\"\n:child {:label \"Animals\"\n:child {:label \"Flying squirrel investigation\"\n:child nil}}}}"}

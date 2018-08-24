@@ -14,3 +14,4 @@
 (def color-neutral-1 "hsla(0, 0%, 98%, 1)")
 (def state-error "hsla(0, 100%, 43%, 1)")
 (def color-neutral-2 "hsla(0, 0%, 96%, 1)")
+(def color-primary-light "hsla(210, 100%, 96%, 1)")

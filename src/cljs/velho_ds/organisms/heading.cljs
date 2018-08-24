@@ -35,28 +35,20 @@
 (defn- search-in-list [collection search-word]
   (filter #(string/includes? (string/lower-case %) search-word) collection))
 
-(defn page-heading [{:keys [placeholder
-                            current-page
-                            search-initial-input
+(defn page-heading [{:keys [current-page
+                            search-placeholder
+                            search-initial-select
                             search-fn
                             search-results
-                            search-results-show
                             search-result-clicked-fn
-                            search-no-results-msg
                             sub-content
                             breadcrumb-click-fn]}]
-  (let [search-text (r/atom search-initial-input)
+  (let [search-selected-item (r/atom [])
+        search-text (r/atom nil)
         sub-content-open? (r/atom false)
-        search-open? (r/atom false)
-        search (fn [val]
-                 (reset! search-text val)
-                 (reset! search-open? (not (nil? @search-text)))
-                 (when search-fn (search-fn @search-text)))
-        empty (fn [e]
+        empty (fn []
                 (reset! search-text nil)
-                (set! (-> e .-target .-parentElement .-parentElement .-firstChild .-value) nil))
-        search-result-clicked (fn [section item]
-                                (when search-result-clicked-fn (search-result-clicked-fn section item)))
+                (reset! search-selected-item []))
         breadcrumb-clicked (fn [page]
                              (when breadcrumb-click-fn (breadcrumb-click-fn page)))
         pages (r/atom [])
@@ -64,14 +56,9 @@
                     (loop [page map]
                       (when (:label page)
                         (swap! pages conj page)
-                        (recur (:child page)))))
-        global-click-handler #(let [target (.-target %)]
-                                (when (and (empty? (search-in-list (string/split (-> target .-className) #" ") "search-dropdown"))
-                                           (not= (-> target .-placeholder) placeholder))
-                                  (reset! search-open? false)))
-        addEventListener #(.addEventListener (.getElementById js/document "app") "click" global-click-handler)]
+                        (recur (:child page)))))]
     (get-pages current-page)
-    (search search-initial-input)
+    (println (type search-text))
     (fn []
       [:header
        [grid/grid-wrap {:rows 1
@@ -93,7 +80,16 @@
                                      :on-click-fn #(swap! sub-content-open? not)}]])))
         [grid/grid-cell {:col-start 4
                          :col-end 4}
-         [:div {:class "search-dropdown"}
+         [fields/dropdown-menu {:placeholder search-placeholder
+                                :icon (if @search-text "close" "search")
+                                :item-list search-results
+                                :on-item-select-fn search-result-clicked-fn
+                                :on-change-fn #(do (search-fn %)
+                                                   (reset! search-text %))
+                                :on-blur-fn #(reset! search-text nil)
+                                :selected-item @search-selected-item
+                                :icon-click-fn empty}]
+         #_[:div {:class "search-dropdown"}
           [fields/input-field {:placeholder placeholder
                                :icon (if @search-text "close" "search")
                                :content @search-text
@@ -102,7 +98,7 @@
                                :on-focus-fn #(do
                                                (addEventListener)
                                                (reset! search-open? (not (nil? @search-text))))}]]]]
-       [:div {:style {:position "relative"
+       #_[:div {:style {:position "relative"
                       :display "flex"
                       :justify-content "flex-end"}}
         (into [:div (stylefy/use-style (merge style/page-heading-container-info
