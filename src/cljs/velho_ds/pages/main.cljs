@@ -411,6 +411,7 @@
                   :example "{:styles {:margin \"1rem\"}}"}]]])
 
 ;; MOLECULES
+(def errors (r/atom ["Error"]))
 
 (defmethod page-contents :fields []
   [:div
@@ -467,13 +468,14 @@
                                                              :placeholder "Placeholder"
                                                              :icon "search"
                                                              :content "Invalid value"
-                                                             :error-messages ["Value has to be valid!"]}]}]}]
+                                                             :error-messages errors}]}]}]
    ($-> [fields/input-field {:label "Input with label and icon"
                              :placeholder "Placeholder"
                              :icon "search"
-                             :on-change-fn #(println %)
+                             :on-change-fn #(reset! errors [%])
                              :on-blur-fn #(println %)
-                             :icon-click-fn #(println (str "Icon Clicked"))}])
+                             :icon-click-fn #(println (str "Icon Clicked"))
+                             :error-messages errors}])
    [props-table [{:name "label"
                   :desc "string"
                   :example "{:label \"Label\"}"}
@@ -494,7 +496,10 @@
                   :example "{:on-change-fn \"#(println (str \"Value has changed!\"))\"}"}
                  {:name "on-blur-fn"
                   :desc "function"
-                  :example "{:on-blur-fn \"#(println (str \"Focus lost!\"))\"}"}]]
+                  :example "{:on-blur-fn \"#(println (str \"Focus lost!\"))\"}"}
+                 {:name "error-messages"
+                  :desc "vector (r/atom)"
+                  :example "{:error-messages [\"Error\"]}"}]]
    [:h3.rds-header3 "Multiline-field"]
    ($-> [fields/multiline-field "Textfield"])
    [props-table [{:name "content"
