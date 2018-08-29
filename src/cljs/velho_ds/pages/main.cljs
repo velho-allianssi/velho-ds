@@ -883,7 +883,7 @@
                                 :breadcrumb-click-fn #(println %)
                                 :sub-content [[:p "Given content"]]
                                 :search-placeholder "Search"
-                                :search-results data-example
+                                :search-results @data-example
                                 :search-result-clicked-fn #(println "Item selected: " %1 %2)
                                 :search-fn #(println "Search-fn: " %)}])
    [props-table [{:name "current-page"
