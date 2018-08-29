@@ -21,22 +21,26 @@
    [:span (stylefy/use-style style/iconvalue-value) content]])
 
 ;; INPUTS
-(defn input-field [{:keys [label content placeholder icon icon-click-fn on-change-fn on-blur-fn]}]
+(defn input-field [{:keys [label content placeholder icon-click-fn on-change-fn on-blur-fn on-focus-fn styles]}]
   (let [input-text (r/atom content)
         change (fn [val]
                  (reset! input-text val)
                  (when on-change-fn (on-change-fn @input-text)))
         blur (fn []
-               (when on-blur-fn (on-blur-fn @input-text)))]
-    (fn [{:keys [error-messages]}]
-      [:div.vds-input-field
+               (when on-blur-fn (on-blur-fn @input-text)))
+        focus (fn []
+                (when on-focus-fn (on-focus-fn @input-text)))]
+    (fn [{:keys [icon error-messages]}]
+      [:div.vds-input-field (stylefy/use-style styles)
        [:label (stylefy/use-style style/element)
         [:input (stylefy/use-style (merge (if (first error-messages) style/input-field-error
-                                                                     style/input-field) (when icon {:padding-right "2rem"})) {:required "required"
-                                                                                                                              :on-change #(-> % .-target .-value change)
-                                                                                                                              :on-blur blur
-                                                                                                                              :value @input-text
-                                                                                                                              :placeholder placeholder})]
+                                                                     style/input-field) (when icon {:padding-right "2rem"}))
+                                   {:required "required"
+                                    :on-change #(-> % .-target .-value change)
+                                    :on-blur blur
+                                    :on-focus focus
+                                    :value @input-text
+                                    :placeholder placeholder})]
         [:span (if (first error-messages) (stylefy/use-style style/input-field-label-error)
                                           (stylefy/use-style (if (and label placeholder) style/input-field-label-static style/input-field-label))) label]
         (when icon [icons/clickable (merge (when icon-click-fn {:on-click-fn icon-click-fn})
@@ -56,8 +60,8 @@
      [:textarea (stylefy/use-style style/text-field {:required "required"})]
      [:span (stylefy/use-style style/input-field-label) content]]]))
 
-(defn dropdown-menu [{:keys [label selected-fn options default-value no-selection-text]}]
-  [:div
+(defn dropdown-menu [{:keys [label selected-fn options default-value no-selection-text styles]}]
+  [:div (stylefy/use-style styles)
    [:label (stylefy/use-style style/element)
     [:span (stylefy/use-style style/dropdown-label) label]
     (into [:select (stylefy/use-style style/dropdown {:defaultValue "value"
