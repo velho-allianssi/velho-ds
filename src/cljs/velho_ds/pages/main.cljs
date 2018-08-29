@@ -411,7 +411,8 @@
                   :example "{:styles {:margin \"1rem\"}}"}]]])
 
 ;; MOLECULES
-(def example-data (r/atom [{:section "Projects"
+
+(def data-example (r/atom [{:section "Projects"
                             :items [{:label "Project 001"}
                                     {:label "Project 002"}
                                     {:label "Project 003"}
@@ -424,171 +425,205 @@
                             :items [{:label "File 1"}
                                     {:label "File 2"}
                                     {:label "File 3"}]}]))
-(defn search [val]
-  (println val)
-  (reset! example-data [{:section "Files"
-                         :items [{:label "File 1"}
-                                 {:label "File 2"}
-                                 {:label "File 3"}]}]))
-
 (defmethod page-contents :fields []
-  [:div
-   [:p.rds-quote "Fields provide a ways of input and output. Input, such as typing, selecting or dragging and dropping can be used to provide several formats of information."]
-   [dividers/default {:styles {:margin-top "2rem"
-                               :margin-bottom "2rem"}}]
-   [:h2.rds-header2 "Output"]
-   [:h3.rds-header3 "Keyvalue"]
-   ($-> [fields/keyvalue {:label "Title"
-                          :content "Value"}])
-   [props-table [{:name "label"
-                  :desc "string"
-                  :example "{:title \"Title\"}"}
-                 {:name "content"
-                  :desc "string"
-                  :example "{:content \"Value\"}"}]]
+  (let [example-data (r/atom @data-example)
+        example-search-fn #(reset! example-data [{:section "Sub-projects"
+                                                  :items [{:label "Sub-project 001"}
+                                                          {:label "Sub-project 002"}]}])]
+    (fn []
+      [:div
+       [:p.rds-quote "Fields provide a ways of input and output. Input, such as typing, selecting or dragging and dropping can be used to provide several formats of information."]
+       [dividers/default {:styles {:margin-top "2rem"
+                                   :margin-bottom "2rem"}}]
+       [:h2.rds-header2 "Output"]
+       [:h3.rds-header3 "Keyvalue"]
+       ($-> [fields/keyvalue {:label "Title"
+                              :content "Value"}])
+       [props-table [{:name "label"
+                      :desc "string"
+                      :example "{:title \"Title\"}"}
+                     {:name "content"
+                      :desc "string"
+                      :example "{:content \"Value\"}"}]]
 
-   [:h3.rds-header3 "Iconvalue"]
-   ($-> [fields/iconvalue {:icon "date_range"
-                           :content "29.09.2017 - 01.12.2022"}])
-   [props-table [{:name "icon"
-                  :desc "string"
-                  :example "{:icon \"date_range\"}"}
-                 {:name "content"
-                  :desc "string"
-                  :example "{:content \"29.09.2017 - 01.12.2022\"}"}]]
+       [:h3.rds-header3 "Iconvalue"]
+       ($-> [fields/iconvalue {:icon "date_range"
+                               :content "29.09.2017 - 01.12.2022"}])
+       [props-table [{:name "icon"
+                      :desc "string"
+                      :example "{:icon \"date_range\"}"}
+                     {:name "content"
+                      :desc "string"
+                      :example "{:content \"29.09.2017 - 01.12.2022\"}"}]]
 
-   [dividers/default {:styles {:margin-top "2rem"
-                               :margin-bottom "2rem"}}]
-   [:h2.rds-header2 "Input"]
-   [:h3.rds-header3 "Input-field"]
-   [tables/default {:headers [{:label "Name"
-                               :key-path [:name]}
-                              {:label "Example"
-                               :key-path [:example]}]
-                    :content [{:name "Default"
-                               :example [fields/input-field]}
-                              {:name "With label"
-                               :example [fields/input-field {:label "Label"}]}
-                              {:name "With label and placeholder"
-                               :example [fields/input-field {:label "Label"
-                                                             :placeholder "Placeholder"}]}
-                              {:name "With label, placeholder and icon"
-                               :example [fields/input-field {:label "Label"
-                                                             :placeholder "Placeholder"
-                                                             :icon "search"}]}
-                              {:name "With label, placeholder, icon and content"
-                               :example [fields/input-field {:label "Label"
-                                                             :placeholder "Placeholder"
-                                                             :icon "search"
-                                                             :content "Content"}]}
-                              {:name "Invalid value"
-                               :example [fields/input-field {:label "Label"
-                                                             :placeholder "Placeholder"
-                                                             :icon "search"
-                                                             :content "Invalid value"
-                                                             :error-messages ["Value has to be valid!"]}]}]}]
-   ($-> [fields/input-field {:label "Input with label and icon"
-                             :placeholder "Placeholder"
-                             :icon "search"
-                             :on-change-fn #(println %)
-                             :on-blur-fn #(println %)
-                             :icon-click-fn #(println (str "Icon Clicked"))}])
-   [props-table [{:name "label"
-                  :desc "string"
-                  :example "{:label \"Label\"}"}
-                 {:name "content"
-                  :desc "string"
-                  :example "{:content \"Content\"}"}
-                 {:name "placeholder"
-                  :desc "string"
-                  :example "{:placeholder \"Placeholder\"}"}
-                 {:name "icon"
-                  :desc "string"
-                  :example "{:icon \"search\"}"}
-                 {:name "icon-click-fn"
-                  :desc "function"
-                  :example "{:icon-click-fn \"#(println (str \"Icon Clicked\"))\"}"}
-                 {:name "on-change-fn"
-                  :desc "function"
-                  :example "{:on-change-fn \"#(println (str \"Value has changed!\"))\"}"}
-                 {:name "on-blur-fn"
-                  :desc "function"
-                  :example "{:on-blur-fn \"#(println (str \"Focus lost!\"))\"}"}]]
+       [dividers/default {:styles {:margin-top "2rem"
+                                   :margin-bottom "2rem"}}]
+       [:h2.rds-header2 "Input"]
+       [:h3.rds-header3 "Input-field"]
+       [tables/default {:headers [{:label "Name"
+                                   :key-path [:name]}
+                                  {:label "Example"
+                                   :key-path [:example]}]
+                        :content [{:name "Default"
+                                   :example [fields/input-field]}
+                                  {:name "With label"
+                                   :example [fields/input-field {:label "Label"}]}
+                                  {:name "With label and placeholder"
+                                   :example [fields/input-field {:label "Label"
+                                                                 :placeholder "Placeholder"}]}
+                                  {:name "With label, placeholder and icon"
+                                   :example [fields/input-field {:label "Label"
+                                                                 :placeholder "Placeholder"
+                                                                 :icon "search"}]}
+                                  {:name "With label, placeholder, icon and content"
+                                   :example [fields/input-field {:label "Label"
+                                                                 :placeholder "Placeholder"
+                                                                 :icon "search"
+                                                                 :content "Content"}]}
+                                  {:name "Invalid value"
+                                   :example [fields/input-field {:label "Label"
+                                                                 :placeholder "Placeholder"
+                                                                 :icon "search"
+                                                                 :content "Invalid value"
+                                                                 :error-messages ["Value has to be valid!"]}]}]}]
+       ($-> [fields/input-field {:label "Input with label and icon"
+                                 :placeholder "Placeholder"
+                                 :icon "search"
+                                 :on-change-fn #(println %)
+                                 :on-blur-fn #(println %)
+                                 :icon-click-fn #(println (str "Icon Clicked"))}])
+       [props-table [{:name "label"
+                      :desc "string"
+                      :example "{:label \"Label\"}"}
+                     {:name "content"
+                      :desc "string"
+                      :example "{:content \"Content\"}"}
+                     {:name "placeholder"
+                      :desc "string"
+                      :example "{:placeholder \"Placeholder\"}"}
+                     {:name "icon"
+                      :desc "string"
+                      :example "{:icon \"search\"}"}
+                     {:name "icon-click-fn"
+                      :desc "function"
+                      :example "{:icon-click-fn \"#(println (str \"Icon Clicked\"))\"}"}
+                     {:name "on-change-fn"
+                      :desc "function"
+                      :example "{:on-change-fn \"#(println (str \"Value has changed!\"))\"}"}
+                     {:name "on-blur-fn"
+                      :desc "function"
+                      :example "{:on-blur-fn \"#(println (str \"Focus lost!\"))\"}"}]]
 
-   [:h3.rds-header3 "Multiline-field"]
-   ($-> [fields/multiline-field "Textfield"])
-   [props-table [{:name "content"
-                  :desc "string"
-                  :example "{:content \"Content\"}"}]]
-   [:h3.rds-header3 "Dropdown-menu"]
-   ($-> [fields/dropdown-menu {:label "Dropdown menu"
-                               :placeholder "Select"
-                               :item-list example-data
-                               :on-change-fn #(println %)
-                               :on-blur-fn #(println "On blur")
-                               :on-focus-fn #(println "On focus")
-                               :on-item-select-fn #(println "Item selected: " %1 %2)
-                               :selected-item [{:label "File 1"}]}])
-   [props-table [{:name "label"
-                  :desc "string"
-                  :example "{:title \"Dropdown menu\"}"}]]
-   
-   ($-> (let [values [{:id 1 :value "First"}
-                      {:id 2 :value "Second"}]]
-          [fields/dropdown-menu-simple {:label "Dropdown, simple"
-                                        :selected-fn #(js/alert (str "Selected value: " %))
-                                        :options values
-                                        :no-selection-text "- No selection -"}]))
-   [props-table [{:name "label"
-                  :desc "string"
-                  :example "{:label \"Label\"}"}
-                 {:name "selected-fn"
-                  :desc "function"
-                  :example "{:selected-fn #(println (str \"Selected value\"))}"}
-                 {:name "options"
-                  :desc "vector"
-                  :example "{:options [{:id 1 :value \"First\"}\n{:id 2 :value \"Second\"}]}"}
-                 {:name "default-value"
-                  :desc "string"
-                  :example "{:default-value \"First\"}"}
-                 {:name "no-selection-text"
-                  :desc "string"
-                  :example "{:no-selection-text \"- No selection -\"}"}]]
-   [:h3.rds-header3 "Dropdown-multiple"]
-   ($-> (let [options ["John" "Sandra" "Matt" "Will" "Kate" "Alex" "Keith" "Melinda"]]
-          [fields/dropdown-multiple {:label "Multiselect dropdown"
-                                     :selected-fn #(println (str "Selected values: " %))
-                                     :options options
-                                     :no-selection-text "- No selection -"
-                                     :preselected-values ["John"]}]))
-   [props-table [{:name "label"
-                  :desc "string"
-                  :example "{:label \"Label\"}"}
-                 {:name "placeholder"
-                  :desc "string"
-                  :example "{:placeholder \"Placeholder\"}"}
-                 {:name "selected-fn"
-                  :desc "function"
-                  :example "{:selected-fn #(println (str \"Selected value\"))}"}
-                 {:name "options"
-                  :desc "vector"
-                  :example "{:options [{:id 1 :value \"First\"}\n{:id 2 :value \"Second\"}]}"}
-                 {:name "preselected-values"
-                  :desc "vector"
-                  :example "{:preselected-values [\"First\"]}"}]]
-   [:h3.rds-header3 "Drag-n-drop"]
-   ($-> [fields/drag-n-drop {:label "Example"
-                             :help-text "Drag-n-drop files or click here to upload"
-                             :on-change-fn println}])
-   [props-table [{:name "label"
-                  :desc "string"
-                  :example "{:label \"Label\"}"}
-                 {:name "help-text"
-                  :desc "string"
-                  :example "{:help-text \"Drag-n-drop files or click here to upload\"}"}
-                 {:name "on-change-fn"
-                  :desc "function"
-                  :example "{:selected-fn #(println (str \"Filelist changed!\"))}"}]]])
+       [:h3.rds-header3 "Multiline-field"]
+       ($-> [fields/multiline-field "Textfield"])
+       [props-table [{:name "content"
+                      :desc "string"
+                      :example "{:content \"Content\"}"}]]
+       [:h3.rds-header3 "Dropdown-menu"]
+       ($-> [fields/dropdown-menu {:label "Dropdown menu"
+                                   :placeholder "Select"
+                                   :item-list @example-data
+                                   :on-change-fn example-search-fn
+                                   :on-blur-fn #(println "On blur: " %)
+                                   :on-focus-fn #(println "On focus: " %)
+                                   :on-item-select-fn #(println "Item selected: " %1 %2)
+                                   :selected-item {:label "File 1"}}])
+       [props-table [{:name "label"
+                      :desc "string"
+                      :example "{:title \"Dropdown menu\"}"}
+                     {:name "placeholder"
+                      :desc "string"
+                      :example "{:placeholder \"Select\"}"}
+                     {:name "item-list"
+                      :desc "vector"
+                      :example "{:item-list [{:section \"Sub-projects\"\n:items [{:label \"Sub-project 001\"}\n{:label \"Sub-project 002\"}]}]}"}
+                     {:name "on-change-fn"
+                      :desc "function"
+                      :example "{:on-change-fn #(sort-fn %)}"}
+                     {:name "on-blur-fn"
+                      :desc "function"
+                      :example "{:on-blur-fn #(println \"On blur: \" %)}"}
+                     {:name "on-focus-fn"
+                      :desc "function"
+                      :example "{:on-focus-fn #(println \"On focus: \" %)}"}
+                     {:name "on-item-select-fn"
+                      :desc "function"
+                      :example "{:on-item-select-fn #(println \"Item selected: \" %1 %2)}"}
+                     {:name "selected-item"
+                      :desc "map"
+                      :example "{:selected-item {:label \"Sub-project 002\"}}"}
+                     {:name "icon-click-fn"
+                      :desc "function"
+                      :example "{:icon-click-fn clear-sort-fn}"}
+                     {:name "icon"
+                      :desc "string"
+                      :example "{:icon \"close\"}"}
+                     {:name "error-messages"
+                      :desc "vector"
+                      :example "{:error-messages [\"Value has to be valid!\"]}"}
+                     {:name "disabled"
+                      :desc "boolean"
+                      :example "{:disabled true}"}
+                     {:name "styles"
+                      :desc "map"
+                      :example "{:styles {:margin 0}}"}]]
+       [:h3.rds-header3 "Dropdown-menu-simple"]
+       ($-> (let [values [{:id 1 :value "First"}
+                          {:id 2 :value "Second"}]]
+              [fields/dropdown-menu-simple {:label "Dropdown, simple"
+                                            :selected-fn #(js/alert (str "Selected value: " %))
+                                            :options values
+                                            :no-selection-text "- No selection -"}]))
+       [props-table [{:name "label"
+                      :desc "string"
+                      :example "{:label \"Label\"}"}
+                     {:name "selected-fn"
+                      :desc "function"
+                      :example "{:selected-fn #(println (str \"Selected value\"))}"}
+                     {:name "options"
+                      :desc "vector"
+                      :example "{:options [{:id 1 :value \"First\"}\n{:id 2 :value \"Second\"}]}"}
+                     {:name "default-value"
+                      :desc "string"
+                      :example "{:default-value \"First\"}"}
+                     {:name "no-selection-text"
+                      :desc "string"
+                      :example "{:no-selection-text \"- No selection -\"}"}]]
+       [:h3.rds-header3 "Dropdown-multiple"]
+       ($-> (let [options ["John" "Sandra" "Matt" "Will" "Kate" "Alex" "Keith" "Melinda"]]
+              [fields/dropdown-multiple {:label "Multiselect dropdown"
+                                         :selected-fn #(println (str "Selected values: " %))
+                                         :options options
+                                         :no-selection-text "- No selection -"
+                                         :preselected-values ["John"]}]))
+       [props-table [{:name "label"
+                      :desc "string"
+                      :example "{:label \"Label\"}"}
+                     {:name "placeholder"
+                      :desc "string"
+                      :example "{:placeholder \"Placeholder\"}"}
+                     {:name "selected-fn"
+                      :desc "function"
+                      :example "{:selected-fn #(println (str \"Selected value\"))}"}
+                     {:name "options"
+                      :desc "vector"
+                      :example "{:options [{:id 1 :value \"First\"}\n{:id 2 :value \"Second\"}]}"}
+                     {:name "preselected-values"
+                      :desc "vector"
+                      :example "{:preselected-values [\"First\"]}"}]]
+       [:h3.rds-header3 "Drag-n-drop"]
+       ($-> [fields/drag-n-drop {:label "Example"
+                                 :help-text "Drag-n-drop files or click here to upload"
+                                 :on-change-fn println}])
+       [props-table [{:name "label"
+                      :desc "string"
+                      :example "{:label \"Label\"}"}
+                     {:name "help-text"
+                      :desc "string"
+                      :example "{:help-text \"Drag-n-drop files or click here to upload\"}"}
+                     {:name "on-change-fn"
+                      :desc "function"
+                      :example "{:selected-fn #(println (str \"Filelist changed!\"))}"}]]])))
 
 (def modal-example
   (let [modal-open (r/atom false)]
@@ -848,7 +883,7 @@
                                 :breadcrumb-click-fn #(println %)
                                 :sub-content [[:p "Given content"]]
                                 :search-placeholder "Search"
-                                :search-results example-data
+                                :search-results data-example
                                 :search-result-clicked-fn #(println "Item selected: " %1 %2)
                                 :search-fn #(println "Search-fn: " %)}])
    [props-table [{:name "current-page"

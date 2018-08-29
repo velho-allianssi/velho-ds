@@ -295,4 +295,5 @@
    :box-shadow box-shadow/box-shadow-small
    :position "absolute"
    :top "3rem"
-   :width "100%"})
+   :width "100%"
+   :z-index 9999})
