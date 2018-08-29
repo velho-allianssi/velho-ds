@@ -16,11 +16,10 @@ var map__41559__$1 = ((((!((map__41559 == null)))?(((((map__41559.cljs$lang$prot
 var name = cljs.core.get.call(null,map__41559__$1,new cljs.core.Keyword(null,"name","name",1843675177));
 var styles = cljs.core.get.call(null,map__41559__$1,new cljs.core.Keyword(null,"styles","styles",1954480375));
 var on_click_fn = cljs.core.get.call(null,map__41559__$1,new cljs.core.Keyword(null,"on-click-fn","on-click-fn",739785852));
-var disabled = cljs.core.get.call(null,map__41559__$1,new cljs.core.Keyword(null,"disabled","disabled",-1529784218));
 if(cljs.core.truth_(name)){
 } else {
 throw (new Error("Assert failed: name"));
 }
 
-return new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"button","button",1456579943),stylefy.core.use_style.call(null,cljs.core.merge.call(null,(cljs.core.truth_(disabled)?velho_ds.atoms.style.icon.clickable_disabled:velho_ds.atoms.style.icon.clickable),styles),new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null,"disabled","disabled",-1529784218),(cljs.core.truth_(disabled)?disabled:false),new cljs.core.Keyword(null,"on-click","on-click",1632826543),on_click_fn], null)),new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"i.material-icons","i.material-icons",740058269),stylefy.core.use_sub_style.call(null,cljs.core.merge.call(null,velho_ds.atoms.style.icon.clickable,styles),new cljs.core.Keyword(null,"i","i",-1386841315)),name], null)], null);
+return new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"button","button",1456579943),stylefy.core.use_style.call(null,cljs.core.merge.call(null,velho_ds.atoms.style.icon.clickable,styles),new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"on-click","on-click",1632826543),on_click_fn], null)),new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"i.material-icons","i.material-icons",740058269),stylefy.core.use_sub_style.call(null,cljs.core.merge.call(null,velho_ds.atoms.style.icon.clickable,styles),new cljs.core.Keyword(null,"i","i",-1386841315)),name], null)], null);
 });

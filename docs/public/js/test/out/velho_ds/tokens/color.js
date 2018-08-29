@@ -15,4 +15,3 @@ velho_ds.tokens.color.color_neutral_4 = "hsla(0, 0%, 39%, 1)";
 velho_ds.tokens.color.color_neutral_1 = "hsla(0, 0%, 98%, 1)";
 velho_ds.tokens.color.state_error = "hsla(0, 100%, 43%, 1)";
 velho_ds.tokens.color.color_neutral_2 = "hsla(0, 0%, 96%, 1)";
-velho_ds.tokens.color.color_primary_light = "hsla(210, 100%, 96%, 1)";
