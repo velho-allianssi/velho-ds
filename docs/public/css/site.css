@@ -204,7 +204,7 @@ h4.rds-header4 {
 }
 
 .rds-props-header > th:first-child {
-  min-width: 160px;
+  min-width: 200px;
 }
 
 .rds-props-header > th:last-child {
