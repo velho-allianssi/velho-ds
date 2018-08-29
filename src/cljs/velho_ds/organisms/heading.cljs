@@ -58,7 +58,6 @@
                         (swap! pages conj page)
                         (recur (:child page)))))]
     (get-pages current-page)
-    (println (type search-text))
     (fn []
       [:header
        [grid/grid-wrap {:rows 1
@@ -88,37 +87,7 @@
                                                    (reset! search-text %))
                                 :on-blur-fn #(reset! search-text nil)
                                 :selected-item @search-selected-item
-                                :icon-click-fn empty}]
-         #_[:div {:class "search-dropdown"}
-          [fields/input-field {:placeholder placeholder
-                               :icon (if @search-text "close" "search")
-                               :content @search-text
-                               :on-change-fn search
-                               :icon-click-fn #(empty %)
-                               :on-focus-fn #(do
-                                               (addEventListener)
-                                               (reset! search-open? (not (nil? @search-text))))}]]]]
-       #_[:div {:style {:position "relative"
-                      :display "flex"
-                      :justify-content "flex-end"}}
-        (into [:div (stylefy/use-style (merge style/page-heading-container-info
-                                              {:display (if @search-open? "block" "none")}))
-               (when (< (count @search-results) 1) [:p search-no-results-msg])]
-              (for [section @search-results]
-                (into [:ul (stylefy/use-style style/search-results {:class "search-dropdown"})
-                       [:li (stylefy/use-style style/search-results-header {:class "search-dropdown"
-                                                                            :on-click #(search-result-clicked section {:search-text @search-text})})
-                        [:p (stylefy/use-style style/search-results-header-item {:class "search-dropdown"}) (str (get section :section) " (" (count (get section :items)) ")")]
-                        [icons/clickable {:name "arrow_forward"
-                                          :on-click-fn #(search-result-clicked section @search-text)
-                                          :styles {:display "inline-block"
-                                                   :top "6px"
-                                                   :position "relative"
-                                                   :color "inherit"}}]]
-                       (doall (for [item (if (nil? search-results-show) (get section :items) (take search-results-show (get section :items)))]
-                                ^{:key item} [:li (stylefy/use-style style/search-results-item {:on-click #(search-result-clicked section item)
-                                                                                                :class "search-dropdown"})
-                                              [:span (stylefy/use-sub-style style/search-results-item :span {:class "search-dropdown"}) (get item :label)]]))])))]
+                                :icon-click-fn empty}]]]
        (into [:div (stylefy/use-style (merge style/page-heading-container
                                              {:display (if @sub-content-open? "block" "none")}))]
              (for [item sub-content] ^{:key item} item))])))
