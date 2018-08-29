@@ -24,3 +24,13 @@
                    :active {:outline "none"}
                    :focus {:outline "none"}}
    ::stylefy/sub-styles {:i {:font-size "inherit"}}})
+
+(def clickable-disabled
+  (merge clickable
+         {:cursor "default"
+          :color color/color-neutral-3
+          :font-size font-size/font-size-xx-large
+          ::stylefy/mode {:hover {:color color/color-neutral-3}
+                          :active {:outline "none"}
+                          :focus {:outline "none"}}
+          ::stylefy/sub-styles {:i {:font-size "inherit"}}}))

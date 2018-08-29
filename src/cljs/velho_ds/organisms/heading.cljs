@@ -35,28 +35,20 @@
 (defn- search-in-list [collection search-word]
   (filter #(string/includes? (string/lower-case %) search-word) collection))
 
-(defn page-heading [{:keys [placeholder
-                            current-page
-                            search-initial-input
+(defn page-heading [{:keys [current-page
+                            search-placeholder
+                            search-initial-select
                             search-fn
                             search-results
-                            search-results-show
                             search-result-clicked-fn
-                            search-no-results-msg
                             sub-content
                             breadcrumb-click-fn]}]
-  (let [search-text (r/atom search-initial-input)
+  (let [search-selected-item (r/atom [])
+        search-text (r/atom nil)
         sub-content-open? (r/atom false)
-        search-open? (r/atom false)
-        search (fn [val]
-                 (reset! search-text val)
-                 (reset! search-open? (not (nil? @search-text)))
-                 (when search-fn (search-fn @search-text)))
-        empty (fn [e]
+        empty (fn []
                 (reset! search-text nil)
-                (set! (-> e .-target .-parentElement .-parentElement .-firstChild .-value) nil))
-        search-result-clicked (fn [section item]
-                                (when search-result-clicked-fn (search-result-clicked-fn section item)))
+                (reset! search-selected-item []))
         breadcrumb-clicked (fn [page]
                              (when breadcrumb-click-fn (breadcrumb-click-fn page)))
         pages (r/atom [])
@@ -64,14 +56,8 @@
                     (loop [page map]
                       (when (:label page)
                         (swap! pages conj page)
-                        (recur (:child page)))))
-        global-click-handler #(let [target (.-target %)]
-                                (when (and (empty? (search-in-list (string/split (-> target .-className) #" ") "search-dropdown"))
-                                           (not= (-> target .-placeholder) placeholder))
-                                  (reset! search-open? false)))
-        addEventListener #(.addEventListener (.getElementById js/document "app") "click" global-click-handler)]
+                        (recur (:child page)))))]
     (get-pages current-page)
-    (search search-initial-input)
     (fn []
       [:header
        [grid/grid-wrap {:rows 1
@@ -93,36 +79,15 @@
                                      :on-click-fn #(swap! sub-content-open? not)}]])))
         [grid/grid-cell {:col-start 4
                          :col-end 4}
-         [:div {:class "search-dropdown"}
-          [fields/input-field {:placeholder placeholder
-                               :icon (if @search-text "close" "search")
-                               :content @search-text
-                               :on-change-fn search
-                               :icon-click-fn #(empty %)
-                               :on-focus-fn #(do
-                                               (addEventListener)
-                                               (reset! search-open? (not (nil? @search-text))))}]]]]
-       [:div {:style {:position "relative"
-                      :display "flex"
-                      :justify-content "flex-end"}}
-        (into [:div (stylefy/use-style (merge style/page-heading-container-info
-                                              {:display (if @search-open? "block" "none")}))
-               (when (< (count @search-results) 1) [:p search-no-results-msg])]
-              (for [section @search-results]
-                (into [:ul (stylefy/use-style style/search-results {:class "search-dropdown"})
-                       [:li (stylefy/use-style style/search-results-header {:class "search-dropdown"
-                                                                            :on-click #(search-result-clicked section {:search-text @search-text})})
-                        [:p (stylefy/use-style style/search-results-header-item {:class "search-dropdown"}) (str (get section :section) " (" (count (get section :items)) ")")]
-                        [icons/clickable {:name "arrow_forward"
-                                          :on-click-fn #(search-result-clicked section @search-text)
-                                          :styles {:display "inline-block"
-                                                   :top "6px"
-                                                   :position "relative"
-                                                   :color "inherit"}}]]
-                       (doall (for [item (if (nil? search-results-show) (get section :items) (take search-results-show (get section :items)))]
-                                ^{:key item} [:li (stylefy/use-style style/search-results-item {:on-click #(search-result-clicked section item)
-                                                                                                :class "search-dropdown"})
-                                              [:span (stylefy/use-sub-style style/search-results-item :span {:class "search-dropdown"}) (get item :label)]]))])))]
+         [fields/dropdown-menu {:placeholder search-placeholder
+                                :icon (if @search-text "close" "search")
+                                :item-list search-results
+                                :on-item-select-fn search-result-clicked-fn
+                                :on-change-fn #(do (search-fn %)
+                                                   (reset! search-text %))
+                                :on-blur-fn #(reset! search-text nil)
+                                :selected-item @search-selected-item
+                                :icon-click-fn empty}]]]
        (into [:div (stylefy/use-style (merge style/page-heading-container
                                              {:display (if @sub-content-open? "block" "none")}))]
              (for [item sub-content] ^{:key item} item))])))
