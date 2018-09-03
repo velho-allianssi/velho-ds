@@ -11,9 +11,11 @@
             [velho-ds.atoms.table :as tables]
             [velho-ds.tokens.font-size :as font-size]
             [velho-ds.tokens.font :as font]
+            [velho-ds.tokens.z-index :as z-index]
             [velho-ds.atoms.icon :as icons]
             [velho-ds.organisms.heading :as headings]
             [reagent.core :as r]))
+
 
 (defn props-table [content]
   (let [open (r/atom false)]
@@ -111,8 +113,8 @@
                                :contenticon [buttons/outline {:content "Outline"
                                                               :icon "autorenew"}]
                                :contentonly [buttons/outline {:content "Outline"}]
-                               :icononly [buttons/outline {:icon "autorenew"}]}
-                              ]}]
+                               :icononly [buttons/outline {:icon "autorenew"}]}]}]
+
    ($-> [buttons/default {:content "Alert Button"
                           :icon "warning"
                           :on-click-fn #(js/alert "Default button with icon and text clicked")}])
@@ -164,8 +166,8 @@
                                :contenticon [buttons/outline-small {:content "Outline"
                                                                     :icon "autorenew"}]
                                :contentonly [buttons/outline-small {:content "Outline"}]
-                               :icononly [buttons/outline-small {:icon "autorenew"}]}
-                              ]}]
+                               :icononly [buttons/outline-small {:icon "autorenew"}]}]}]
+
    ($-> [buttons/default-small {:content "Small Alert Button"
                                 :icon "warning"
                                 :on-click-fn #(js/alert "Small default button with icon and text clicked")}])
@@ -180,8 +182,8 @@
                   :example "{:on-click-fn #(js/alert \"Pressed!\")}"}
                  {:name "styles"
                   :desc "map"
-                  :example "{:styles {:margin \"1rem\"}}"}]]
-   ])
+                  :example "{:styles {:margin \"1rem\"}}"}]]])
+
 
 (defmethod page-contents :dividers []
   [:div
@@ -232,8 +234,8 @@
                               {:name "small"
                                :example [:small "Small paragraph"]
                                :font-family font/font-family-text
-                               :font-size font-size/font-size-small}
-                              ]}]
+                               :font-size font-size/font-size-small}]}]
+
    ($-> [:p "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin eget urna egestas, convallis dui vel, egestas mauris. Nam interdum odio enim. Fusce dolor quam, dictum nec quam et, malesuada mattis nisl. Nam sodales dignissim velit ut congue. Duis imperdiet urna in consectetur tristique. Pellentesque sem sapien, malesuada quis vehicula et, pulvinar a purus. Nulla rhoncus nunc vel sapien venenatis maximus. Nunc pulvinar cursus vehicula. Etiam et mi tempus, vestibulum diam ac, semper eros. Integer porttitor vitae neque at luctus. Phasellus sed tincidunt magna. Aenean et enim ultricies, finibus nibh vitae, fermentum lorem. Nunc congue non lacus vitae molestie.\n\nVivamus quis dictum enim. Praesent ac iaculis mi. Sed hendrerit, mi vestibulum lobortis lacinia, turpis mauris imperdiet magna, rutrum aliquam turpis nunc in leo. Curabitur ligula tortor, malesuada ac leo volutpat, tempor viverra justo. Nulla ut magna quis erat dapibus egestas. Praesent pellentesque diam quis eros porttitor iaculis sit amet non justo. Morbi consectetur orci et felis dignissim faucibus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Integer et magna porttitor, scelerisque diam sed, molestie ligula. Proin facilisis semper purus, eu rutrum ipsum finibus quis. In eleifend ipsum purus, vitae venenatis turpis dignissim ut."])])
 
 (defmethod page-contents :loaders []
@@ -351,8 +353,8 @@
                               {:name "share"
                                :icon [icons/icon {:name "share"}]}
                               {:name "timelapse"
-                               :icon [icons/icon {:name "timelapse"}]}]}]
-   ])
+                               :icon [icons/icon {:name "timelapse"}]}]}]])
+
 
 (defmethod page-contents :tables []
   [:div
@@ -879,19 +881,19 @@
                                                :child {:label "Animals"
                                                        :child {:label "Flying squirrel investigation"
                                                                :child nil}}}
-
                                 :breadcrumb-click-fn #(println %)
                                 :sub-content [[:p "Given content"]]
                                 :search-placeholder "Search"
                                 :search-results @data-example
                                 :search-result-clicked-fn #(println "Item selected: " %1 %2)
-                                :search-fn #(println "Search-fn: " %)}])
+                                :search-fn #(println "Search-fn: " %)
+                                :styles {:z-index z-index/z-index-docked}}])
    [props-table [{:name "current-page"
                   :desc "map"
                   :example "{:current-page {:label \"X-Files\"\n:child {:label \"Animals\"\n:child {:label \"Flying squirrel investigation\"\n:child nil}}}}"}
-                 {:name "placeholder"
+                 {:name "search-placeholder"
                   :desc "string"
-                  :example "{:placeholder \"Search\"}"}
+                  :example "{:search-placeholder \"Search\"}"}
                  {:name "search-input"
                   :desc "string"
                   :example "{:search-input \"X-Files\"}"}
@@ -915,4 +917,7 @@
                   :example "{:search-heading-fn #(println %)}"}
                  {:name "sub-content"
                   :desc "vector"
-                  :example "{:sub-content [[:p \"Given content\"]]}"}]]])
+                  :example "{:sub-content [[:p \"Given content\"]]}"}
+                 {:name "styles"
+                  :desc "map"
+                  :example "{:styles {:z-index \"4\"}}"}]]])

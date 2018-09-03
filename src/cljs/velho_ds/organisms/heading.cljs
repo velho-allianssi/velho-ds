@@ -42,7 +42,8 @@
                             search-results
                             search-result-clicked-fn
                             sub-content
-                            breadcrumb-click-fn]}]
+                            breadcrumb-click-fn
+                            styles]}]
   (let [search-selected-item (r/atom [])
         search-text (r/atom nil)
         sub-content-open? (r/atom false)
@@ -59,7 +60,7 @@
                         (recur (:child page)))))]
     (get-pages current-page)
     (fn []
-      [:header
+      [:header (stylefy/use-style styles)
        [grid/grid-wrap {:rows 1
                         :cols 4
                         :styles style/page-heading}
