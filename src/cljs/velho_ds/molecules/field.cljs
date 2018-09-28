@@ -66,8 +66,8 @@
                               :color "inherit"}}]])
 
 ;; OUTPUTS
-(defn keyvalue [{:keys [content label]}]
-  [:div
+(defn keyvalue [{:keys [label content styles]}]
+  [:div (stylefy/use-style styles)
    [:small (stylefy/use-style style/keyvalue-label) label]
    [:p (stylefy/use-style style/keyvalue-content) content]])
 

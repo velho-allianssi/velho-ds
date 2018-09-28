@@ -13,7 +13,9 @@
             [velho-ds.tokens.font :as font]
             [velho-ds.tokens.z-index :as z-index]
             [velho-ds.atoms.icon :as icons]
+            [velho-ds.atoms.area :as areas]
             [velho-ds.organisms.heading :as headings]
+            [velho-ds.tokens.color :as color]
             [reagent.core :as r]))
 
 
@@ -845,79 +847,108 @@
 
 (defmethod page-contents :headings []
   [:div
-   ($-> [headings/content-heading {:status [[fields/iconvalue {:icon "date_range"
-                                                               :content "29.09.2017 - 01.12.2022"}]
-                                            [fields/iconvalue {:icon "timelapse"
-                                                               :content "On hold"}]]
-                                   :info {:type "Project"
-                                          :name "Flying squirrel investigation"
-                                          :footnote "Related Organization, Another Organization"}
-                                   :actions [[icons/clickable {:name "edit"
-                                                               :styles {:padding-left "0.5rem"
-                                                                        :font-size "2rem"}}]
-                                             [icons/clickable {:name "share"
-                                                               :styles {:padding-left "0.5rem"
-                                                                        :font-size "2rem"}}]
-                                             [icons/clickable {:name "favorite"
-                                                               :styles {:padding-left "0.5rem"
-                                                                        :font-size "2rem"}}]]
-                                   :footer [[buttons/primary-small {:content "Item"}]
-                                            [buttons/primary-small {:content "Another Item"}]
-                                            [buttons/primary-small {:content "Last Item"}]]}])
-   [props-table [{:name "status"
-                  :desc "vector"
-                  :example "{:status [[fields/iconvalue {:icon \"date_range\"\n:content \"29.09.2017 - 01.12.2022\"}]\n[fields/iconvalue {:icon \"timelapse\"\n:content \"On hold\"}]]}"}
-                 {:name "info"
-                  :desc "map"
-                  :example "{:info {:type \"Project\"\n:name \"Flying squirrel investigation\"\n:footnote \"Related Organization, Another Organization\"}}"}
-                 {:name "actions"
-                  :desc "vector"
-                  :example "{:actions [[icons/clickable {:name \"edit\"\n:styles {:padding-left \"0.5rem\"\n:font-size \"2rem\"}}]\n[icons/clickable {:name \"share\"\n:styles {:padding-left \"0.5rem\"\n:font-size \"2rem\"}}]\n[icons/clickable {:name \"favorite\"\n:styles {:padding-left \"0.5rem\"\n:font-size \"2rem\"}}]]}"}
-                 {:name "footer"
-                  :desc "vector"
-                  :example "{:footer [[buttons/primary-small {:content \"Item\"}]\n[buttons/primary-small {:content \"Another Item\"}]\n[buttons/primary-small {:content \"Last Item\"}]]}"}]]
-
    ($-> [headings/page-heading {:current-page {:label "X-Files"
-                                               :child {:label "Animals"
-                                                       :child {:label "Flying squirrel investigation"
-                                                               :child nil}}}
-                                :breadcrumb-click-fn #(println %)
-                                :sub-content [[:p "Given content"]]
-                                :search-placeholder "Search"
-                                :search-results @data-example
-                                :search-result-clicked-fn #(println "Item selected: " %1 %2)
-                                :search-fn #(println "Search-fn: " %)
-                                :styles {:z-index z-index/z-index-docked}}])
+                                                 :child {:label "Animals"
+                                                         :child {:label "Flying squirrel investigation"
+                                                                 :child nil}}}
+                                  :breadcrumb-click-fn #(println %)
+                                  :sub-content [[:p "Given content"]]
+                                  :search-placeholder "Search"
+                                  :search-results @data-example
+                                  :search-result-clicked-fn #(println "Item selected: " %1 %2)
+                                  :search-fn #(println "Search-fn: " %)
+                                  :styles {:z-index z-index/z-index-docked}}])
    [props-table [{:name "current-page"
-                  :desc "map"
-                  :example "{:current-page {:label \"X-Files\"\n:child {:label \"Animals\"\n:child {:label \"Flying squirrel investigation\"\n:child nil}}}}"}
-                 {:name "search-placeholder"
-                  :desc "string"
-                  :example "{:search-placeholder \"Search\"}"}
-                 {:name "search-input"
-                  :desc "string"
-                  :example "{:search-input \"X-Files\"}"}
-                 {:name "search-fn"
-                  :desc "function"
-                  :example "{:search-fn search}"}
-                 {:name "search-results"
-                  :desc "vector (r/atom)"
-                  :example "{:search-results [{:section \"Projects\"\n:items [{:label \"Project 001\"}\n{:label \"Project 002\"}\n{:label \"Project 003\"}\n{:label \"Project 004\"}\n{:label \"Project 005\"}]}\n{:section \"Sub-projects\"\n:items [{:label \"Sub-project 001\"}\n{:label \"Sub-project 002\"}]}\n{:section \"Files\"\n:items [{:label \"File 1\"}\n{:label \"File 2\"}\n{:label \"File 3\"}]}]}"}
-                 {:name "search-results-show"
-                  :desc "int"
-                  :example "{:search-results-show 4}"}
-                 {:name "search-results-msg"
-                  :desc "str"
-                  :example "{:search-results-msg \"No results, sorry\"}"}
-                 {:name "search-result-clicked-fn"
-                  :desc "function"
-                  :example "{:search-result-clicked-fn #(println %)}"}
-                 {:name "search-heading-fn"
-                  :desc "function"
-                  :example "{:search-heading-fn #(println %)}"}
-                 {:name "sub-content"
-                  :desc "vector"
-                  :example "{:sub-content [[:p \"Given content\"]]}"}
-                 {:name "styles"
-                  :desc "map"
-                  :example "{:styles {:z-index \"4\"}}"}]]])
+                    :desc "map"
+                    :example "{:current-page {:label \"X-Files\"\n:child {:label \"Animals\"\n:child {:label \"Flying squirrel investigation\"\n:child nil}}}}"}
+                   {:name "search-placeholder"
+                    :desc "string"
+                    :example "{:search-placeholder \"Search\"}"}
+                   {:name "search-input"
+                    :desc "string"
+                    :example "{:search-input \"X-Files\"}"}
+                   {:name "search-fn"
+                    :desc "function"
+                    :example "{:search-fn search}"}
+                   {:name "search-results"
+                    :desc "vector (r/atom)"
+                    :example "{:search-results [{:section \"Projects\"\n:items [{:label \"Project 001\"}\n{:label \"Project 002\"}\n{:label \"Project 003\"}\n{:label \"Project 004\"}\n{:label \"Project 005\"}]}\n{:section \"Sub-projects\"\n:items [{:label \"Sub-project 001\"}\n{:label \"Sub-project 002\"}]}\n{:section \"Files\"\n:items [{:label \"File 1\"}\n{:label \"File 2\"}\n{:label \"File 3\"}]}]}"}
+                   {:name "search-results-show"
+                    :desc "int"
+                    :example "{:search-results-show 4}"}
+                   {:name "search-results-msg"
+                    :desc "str"
+                    :example "{:search-results-msg \"No results, sorry\"}"}
+                   {:name "search-result-clicked-fn"
+                    :desc "function"
+                    :example "{:search-result-clicked-fn #(println %)}"}
+                   {:name "search-heading-fn"
+                    :desc "function"
+                    :example "{:search-heading-fn #(println %)}"}
+                   {:name "sub-content"
+                    :desc "vector"
+                    :example "{:sub-content [[:p \"Given content\"]]}"}
+                   {:name "styles"
+                    :desc "map"
+                    :example "{:styles {:z-index \"4\"}}"}]]
+
+   ($-> [headings/content-header
+         [headings/content-info {:breadcrumb {:label "X-Files"
+                                              :child {:label "Animals"
+                                                      :child {:label "Flying squirrel investigation"}}}
+                                 :footnote "Related Organization, Another Organization"
+                                 :meta [[buttons/primary-small {:content "Item"}]
+                                        [buttons/primary-small {:content "Another Item"}]
+                                        [buttons/primary-small {:content "Last Item"}]]
+                                 :navigation [[buttons/icon-link {:icon "info"
+                                                                  :label "Info"
+                                                                  :active true
+                                                                  :on-click-fn #(println "Default icon-link clicked")}]
+                                              [buttons/icon-link {:icon "insert_drive_file"
+                                                                  :label "Documents"
+                                                                  :on-click-fn #(println "Default icon-link clicked")}]]
+                                 :bar-color color/color-pacific}]
+         [areas/info
+          [icons/type-icon-circle {:color color/color-pacific}]
+          [fields/keyvalue {:label "Type"
+                            :content "Project"}]
+          [fields/keyvalue {:label "Schedule"
+                            :content "29.09.2017 - 01.01.2021"}]
+          [fields/keyvalue {:label "State"
+                            :content "In Progress"}]]])
+   #_[props-table [{:name "status"
+                    :desc "vector"
+                    :example "{:status [[fields/iconvalue {:icon \"date_range\"\n:content \"29.09.2017 - 01.12.2022\"}]\n[fields/iconvalue {:icon \"timelapse\"\n:content \"On hold\"}]]}"}
+                   {:name "info"
+                    :desc "map"
+                    :example "{:info {:type \"Project\"\n:name \"Flying squirrel investigation\"\n:footnote \"Related Organization, Another Organization\"}}"}
+                   {:name "actions"
+                    :desc "vector"
+                    :example "{:actions [[icons/clickable {:name \"edit\"\n:styles {:padding-left \"0.5rem\"\n:font-size \"2rem\"}}]\n[icons/clickable {:name \"share\"\n:styles {:padding-left \"0.5rem\"\n:font-size \"2rem\"}}]\n[icons/clickable {:name \"favorite\"\n:styles {:padding-left \"0.5rem\"\n:font-size \"2rem\"}}]]}"}
+                   {:name "footer"
+                    :desc "vector"
+                    :example "{:footer [[buttons/primary-small {:content \"Item\"}]\n[buttons/primary-small {:content \"Another Item\"}]\n[buttons/primary-small {:content \"Last Item\"}]]}"}]]
+
+   ($-> [headings/content-header-default {:breadcrumb {:label "X-Files"
+                                                       :child {:label "Animals"
+                                                               :child {:label "Flying squirrel investigation"
+                                                                       :child nil}}}
+                                          :footnote "Related Organization, Another Organization"
+                                          :meta [{:content "Item"
+                                                  :on-click-fn #(println %)}
+                                                 {:content "Another Item"}
+                                                 {:content "Last Item"}]
+                                          :navigation [{:icon "info"
+                                                        :label "Info"
+                                                        :active true
+                                                        :on-click-fn #(println "Default icon-link clicked")}
+                                                       {:icon "insert_drive_file"
+                                                        :label "Documents"
+                                                        :on-click-fn #(println "Default icon-link clicked")}]
+                                          :theme-color color/color-pacific
+                                          :info-keyvalues [{:label "Type"
+                                                            :content "Project"}
+                                                           {:label "Schedule"
+                                                            :content "29.09.2017 - 01.01.2021"}
+                                                           {:label "State"
+                                                            :content "In Progress"}]}])])

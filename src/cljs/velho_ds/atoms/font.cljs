@@ -8,6 +8,7 @@
                                                                       (.setAttribute "href" "https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i|Roboto:300,300i,400,400i,500,500i,700,700i")
                                                                       (.setAttribute "rel" "stylesheet")))
   (stylefy/tag "p" style/p)
+  (stylefy/tag "a" style/a)
   (stylefy/tag "span" style/span)
   (stylefy/tag "small" style/small)
   (stylefy/tag "h1" style/h1)
