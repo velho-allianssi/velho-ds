@@ -6,6 +6,3 @@
 (def info-area
   {:background color/color-white
    :padding (str spacing/space-small-rem " " spacing/space-base-rem)})
-
-(def info-area-center
-  {:text-align "center"})

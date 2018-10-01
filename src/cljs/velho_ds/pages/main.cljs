@@ -88,14 +88,6 @@
                   :example "{:styles {:font-size \"1.25rem\"}}"}
                  {:name "content"
                   :desc "components"
-                  :example "[:p \"This is a info area\"]"}]]
-   [:h2.rds-header2 "Info-area-centered"]
-   ($-> [areas/info-center {:styles {:font-size "1.25rem"}} [:p "This is a info area with centered content."]])
-   [props-table [{:name "styles"
-                  :desc "map"
-                  :example "{:styles {:font-size \"1.25rem\"}}"}
-                 {:name "content"
-                  :desc "components"
                   :example "[:p \"This is a info area\"]"}]]])
 
 (defmethod page-contents :buttons []
@@ -927,10 +919,10 @@
                                  :navigation [[buttons/icon-link {:icon "info"
                                                                   :label "Info"
                                                                   :active true
-                                                                  :on-click-fn #(println "Default icon-link clicked")}]
+                                                                  :on-click-fn #(println "Info")}]
                                               [buttons/icon-link {:icon "insert_drive_file"
                                                                   :label "Documents"
-                                                                  :on-click-fn #(println "Default icon-link clicked")}]]
+                                                                  :on-click-fn #(println "Documents")}]]
                                  :bar-color color/color-pacific}]
          [areas/info
           [icons/type-icon-circle {:color color/color-pacific}]
@@ -966,6 +958,7 @@
                                                         :label "Documents"
                                                         :on-click-fn #(println "Default icon-link clicked")}]
                                           :theme-color color/color-pacific
+                                          :info-icon [icons/type-icon-circle]
                                           :info-keyvalues [{:label "Type"
                                                             :content "Project"}
                                                            {:label "Schedule"

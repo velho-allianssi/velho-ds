@@ -38,23 +38,22 @@
        [grid/grid-wrap {:rows 3
                         :styles style/content-info}
         [grid/grid-cell {:styles style/content-info-items}
-         (for [page @pages]
-           (if (not= page (last @pages))
-             ^{:key page} [:a {:on-click #(breadcrumb-clicked page)} (:label page)
-                           [:p {:style {:display "inline-block"
-                                        :color color/color-primary
-                                        :padding "0 0.25rem"
-                                        :margin 0
-                                        :cursor "pointer"}} "/"]]
-             [:h1 (stylefy/use-style style/content-info-item) (:label page)]))
+         (doall (for [page @pages]
+                  (if (not= page (last @pages))
+                    ^{:key page} [:a {:on-click #(breadcrumb-clicked page)} (:label page)
+                                  [:p {:style {:display "inline-block"
+                                               :color color/color-primary
+                                               :padding "0 0.25rem"
+                                               :margin 0
+                                               :cursor "pointer"}} "/"]]
+                    ^{:key page} [:h1 (stylefy/use-style style/content-info-item) (:label page)])))
          [:h2 (stylefy/use-style style/content-info-item) footnote]]
         [grid/grid-cell {:styles {:grid-row "2 / 2"}}
          (when meta
            (into [:ul (stylefy/use-style style/content-info-footer)]
                  (for [item meta] ^{:key item} [:li (stylefy/use-sub-style style/content-info-footer :li) item])))]
         [grid/grid-cell {:styles {:grid-row "3 / 3"}}
-         (for [item navigation]
-           ^{:key item} item)]]])))
+         (map-indexed #(with-meta %2 {:key %1}) navigation)]]])))
 
 (defn- search-in-list [collection search-word]
   (filter #(string/includes? (string/lower-case %) search-word) collection))
@@ -132,6 +131,7 @@
                                       meta
                                       navigation
                                       theme-color
+                                      info-icon
                                       info-keyvalues
                                       styles]}]
   [content-header (tools-style/merge-styles styles {:background color/color-white
@@ -148,9 +148,11 @@
                                                                 :active (:active nav)
                                                                 :on-click-fn (:on-click-fn nav)}])
                   :bar-color theme-color}]
-   [areas/info-center {:styles {:margin "8px 0"
-                                :border-left (str "1px solid " color/color-neutral-2)}}
-    [icons/type-icon-circle {:color theme-color}]
+   [areas/info {:styles {:text-align "center"
+                         :margin "8px 0"
+                         :border-left (str "1px solid " color/color-neutral-2)}}
+
+    (conj info-icon {:color theme-color})
     (for [keyvalue info-keyvalues]
       ^{:key keyvalue} [fields/keyvalue {:label (:label keyvalue)
                                          :content (:content keyvalue)

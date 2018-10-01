@@ -10,6 +10,3 @@
     [:div (stylefy/use-style style/info-area)
      options
      (map-indexed #(with-meta %2 {:key %1}) content)]))
-
-(defn info-center [{:keys [styles] :as options} & content]
-  [info (tools-style/merge-styles options style/info-area-center) content])
