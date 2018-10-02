@@ -7,26 +7,26 @@ if((children.length === (0))){
 return e;
 } else {
 return cljs.core.into.call(null,new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [e], null),(function (){var iter__4292__auto__ = ((function (children){
-return (function cljs_react_test$utils$get_dom_tree_$_iter__43488(s__43489){
+return (function cljs_react_test$utils$get_dom_tree_$_iter__43485(s__43486){
 return (new cljs.core.LazySeq(null,((function (children){
 return (function (){
-var s__43489__$1 = s__43489;
+var s__43486__$1 = s__43486;
 while(true){
-var temp__5457__auto__ = cljs.core.seq.call(null,s__43489__$1);
+var temp__5457__auto__ = cljs.core.seq.call(null,s__43486__$1);
 if(temp__5457__auto__){
-var s__43489__$2 = temp__5457__auto__;
-if(cljs.core.chunked_seq_QMARK_.call(null,s__43489__$2)){
-var c__4290__auto__ = cljs.core.chunk_first.call(null,s__43489__$2);
+var s__43486__$2 = temp__5457__auto__;
+if(cljs.core.chunked_seq_QMARK_.call(null,s__43486__$2)){
+var c__4290__auto__ = cljs.core.chunk_first.call(null,s__43486__$2);
 var size__4291__auto__ = cljs.core.count.call(null,c__4290__auto__);
-var b__43491 = cljs.core.chunk_buffer.call(null,size__4291__auto__);
-if((function (){var i__43490 = (0);
+var b__43488 = cljs.core.chunk_buffer.call(null,size__4291__auto__);
+if((function (){var i__43487 = (0);
 while(true){
-if((i__43490 < size__4291__auto__)){
-var i = cljs.core._nth.call(null,c__4290__auto__,i__43490);
-cljs.core.chunk_append.call(null,b__43491,cljs_react_test.utils.get_dom_tree.call(null,(children[i])));
+if((i__43487 < size__4291__auto__)){
+var i = cljs.core._nth.call(null,c__4290__auto__,i__43487);
+cljs.core.chunk_append.call(null,b__43488,cljs_react_test.utils.get_dom_tree.call(null,(children[i])));
 
-var G__43492 = (i__43490 + (1));
-i__43490 = G__43492;
+var G__43489 = (i__43487 + (1));
+i__43487 = G__43489;
 continue;
 } else {
 return true;
@@ -34,13 +34,13 @@ return true;
 break;
 }
 })()){
-return cljs.core.chunk_cons.call(null,cljs.core.chunk.call(null,b__43491),cljs_react_test$utils$get_dom_tree_$_iter__43488.call(null,cljs.core.chunk_rest.call(null,s__43489__$2)));
+return cljs.core.chunk_cons.call(null,cljs.core.chunk.call(null,b__43488),cljs_react_test$utils$get_dom_tree_$_iter__43485.call(null,cljs.core.chunk_rest.call(null,s__43486__$2)));
 } else {
-return cljs.core.chunk_cons.call(null,cljs.core.chunk.call(null,b__43491),null);
+return cljs.core.chunk_cons.call(null,cljs.core.chunk.call(null,b__43488),null);
 }
 } else {
-var i = cljs.core.first.call(null,s__43489__$2);
-return cljs.core.cons.call(null,cljs_react_test.utils.get_dom_tree.call(null,(children[i])),cljs_react_test$utils$get_dom_tree_$_iter__43488.call(null,cljs.core.rest.call(null,s__43489__$2)));
+var i = cljs.core.first.call(null,s__43486__$2);
+return cljs.core.cons.call(null,cljs_react_test.utils.get_dom_tree.call(null,(children[i])),cljs_react_test$utils$get_dom_tree_$_iter__43485.call(null,cljs.core.rest.call(null,s__43486__$2)));
 }
 } else {
 return null;
@@ -72,9 +72,9 @@ cljs_react_test.utils.insert_container_BANG_ = (function cljs_react_test$utils$i
 return document.body.appendChild(container);
 });
 cljs_react_test.utils.new_container_BANG_ = (function cljs_react_test$utils$new_container_BANG_(){
-var vec__43493 = cljs_react_test.utils.container_div.call(null);
-var n = cljs.core.nth.call(null,vec__43493,(0),null);
-var s = cljs.core.nth.call(null,vec__43493,(1),null);
+var vec__43490 = cljs_react_test.utils.container_div.call(null);
+var n = cljs.core.nth.call(null,vec__43490,(0),null);
+var s = cljs.core.nth.call(null,vec__43490,(1),null);
 cljs_react_test.utils.insert_container_BANG_.call(null,n);
 
 return document.getElementById(s);
