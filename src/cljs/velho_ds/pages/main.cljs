@@ -78,17 +78,17 @@
 
 (defmethod page-contents :areas []
   [:div
-   [:p.rds-quote "Areas are pre-styled content holders. You can add any content to them."]
+   [:p.rds-quote "Areas provide default style for content holders. You can add any content to them."]
    [dividers/default {:styles {:margin-top "2rem"
                                :margin-bottom "2rem"}}]
    [:h2.rds-header2 "Info-area"]
-   ($-> [areas/info {:styles {:font-size "1.25rem"}} [:p "This is a info area"]])
+   ($-> [areas/info {:styles {:font-size "1.25rem"}} [:p "This is an info area"]])
    [props-table [{:name "styles"
                   :desc "map"
                   :example "{:styles {:font-size \"1.25rem\"}}"}
                  {:name "content"
                   :desc "components"
-                  :example "[:p \"This is a info area\"]"}]]])
+                  :example "[:p \"This is an info area\"]"}]]])
 
 (defmethod page-contents :buttons []
   [:div
@@ -913,9 +913,9 @@
                                               :child {:label "Animals"
                                                       :child {:label "Flying squirrel investigation"}}}
                                  :footnote "Related Organization, Another Organization"
-                                 :meta [[buttons/primary-small {:content "Item"}]
-                                        [buttons/primary-small {:content "Another Item"}]
-                                        [buttons/primary-small {:content "Last Item"}]]
+                                 :features [[buttons/primary-small {:content "Item"}]
+                                            [buttons/primary-small {:content "Another Item"}]
+                                            [buttons/primary-small {:content "Last Item"}]]
                                  :navigation [[buttons/icon-link {:icon "info"
                                                                   :label "Info"
                                                                   :active true
@@ -946,10 +946,10 @@
                                                                :child {:label "Flying squirrel investigation"
                                                                        :child nil}}}
                                           :footnote "Related Organization, Another Organization"
-                                          :meta [{:content "Item"
-                                                  :on-click-fn #(println %)}
-                                                 {:content "Another Item"}
-                                                 {:content "Last Item"}]
+                                          :features [{:content "Item"
+                                                      :on-click-fn #(println %)}
+                                                     {:content "Another Item"}
+                                                     {:content "Last Item"}]
                                           :navigation [{:icon "info"
                                                         :label "Info"
                                                         :active true
@@ -967,20 +967,20 @@
                                                             :content "In Progress"}]}])
    [props-table [{:name "breadcrumb"
                   :desc "map"
-                  :example " {:breadcrumb {:label \"X-Files\"\n                                                       :child {:label \"Animals\"\n                                                               :child {:label \"Flying squirrel investigation\"\n                                                                       :child nil}}}}"}
+                  :example " {:breadcrumb {:label \"X-Files\"\n:child {:label \"Animals\"\n:child {:label \"Flying squirrel investigation\"\n:child nil}}}}"}
                  {:name "footnote"
                   :desc "string"
                   :example "{:footnote \"Related Organization, Another Organization\"}"}
-                 {:name "meta"
+                 {:name "features"
                   :desc "vector of button-parameters"
-                  :example "{:meta [{:content \"Item\"\n                                                  :on-click-fn #(println %)}\n                                                 {:content \"Another Item\"}\n                                                 {:content \"Last Item\"}]}"}
+                  :example "{:meta [{:content \"Item\"\n:on-click-fn #(println %)}\n{:content \"Another Item\"}\n{:content \"Last Item\"}]}"}
                  {:name "navigation"
                   :desc "vector"
-                  :example "{:navigation [{:icon \"info\"\n                                                        :label \"Info\"\n                                                        :active true\n                                                        :on-click-fn #(println \"Default icon-link clicked\")}\n                                                       {:icon \"insert_drive_file\"\n                                                        :label \"Documents\"\n                                                        :on-click-fn #(println \"Default icon-link clicked\")}]}"}
+                  :example "{:navigation [{:icon \"info\"\n:label \"Info\"\n:active true\n:on-click-fn #(println \"Default icon-link clicked\")}\n{:icon \"insert_drive_file\"\n:label \"Documents\"\n:on-click-fn #(println \"Default icon-link clicked\")}]}"}
                  {:name "theme-color"
                   :desc "color"
                   :example "{:theme-color color/color-pacific}"}
                  {:name "info-keyvalues"
                   :desc "vector"
-                  :example "{:info-keyvalues [{:label \"Type\"\n                                                            :content \"Project\"}\n                                                           {:label \"Schedule\"\n                                                            :content \"29.09.2017 - 01.01.2021\"}\n                                                           {:label \"State\"\n                                                            :content \"In Progress\"}]}"}]]
+                  :example "{:info-keyvalues [{:label \"Type\"\n:content \"Project\"}\n{:label \"Schedule\"\n:content \"29.09.2017 - 01.01.2021\"}\n{:label \"State\"\n:content \"In Progress\"}]}"}]]
    ])

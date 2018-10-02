@@ -19,7 +19,7 @@
    [:h2.heading-style content]])
 
 
-(defn content-info [{:keys [breadcrumb footnote meta navigation bar-color breadcrumb-click-fn styles]}]
+(defn content-info [{:keys [breadcrumb footnote features navigation bar-color breadcrumb-click-fn styles]}]
   (let [breadcrumb-clicked (fn [page]
                              (when breadcrumb-click-fn (breadcrumb-click-fn page)))
         pages (r/atom [])
@@ -49,9 +49,9 @@
                     ^{:key page} [:h1 (stylefy/use-style style/content-info-item) (:label page)])))
          [:h2 (stylefy/use-style style/content-info-item) footnote]]
         [grid/grid-cell {:styles {:grid-row "2 / 2"}}
-         (when meta
+         (when features
            (into [:ul (stylefy/use-style style/content-info-footer)]
-                 (for [item meta] ^{:key item} [:li (stylefy/use-sub-style style/content-info-footer :li) item])))]
+                 (for [item features] ^{:key item} [:li (stylefy/use-sub-style style/content-info-footer :li) item])))]
         [grid/grid-cell {:styles {:grid-row "3 / 3"}}
          (map-indexed #(with-meta %2 {:key %1}) navigation)]]])))
 
@@ -121,39 +121,42 @@
     [grid/grid-wrap {:rows 1, :cols (count content), :styles styles}
      (for [item content]
        ^{:key item} [grid/grid-cell {:styles {:display "grid"}} item])]
-    [grid/grid-wrap {:rows 1, :cols (+ 1 (count content))}
+    [grid/grid-wrap {:rows 1, :cols (inc (count content))}
      [grid/grid-cell {:styles {:display "grid"}} options]
      (for [item content]
        ^{:key item} [grid/grid-cell {:styles {:display "grid"}} item])]))
 
 (defn content-header-default [{:keys [breadcrumb
                                       footnote
-                                      meta
+                                      features
                                       navigation
                                       theme-color
                                       info-icon
                                       info-keyvalues
                                       styles]}]
-  [content-header (tools-style/merge-styles styles {:background color/color-white
-                                                    :grid-template-columns "1fr minmax(12rem, 25%)"})
-   [content-info {:breadcrumb breadcrumb
-                  :footnote footnote
-                  :meta (for [button meta]
-                          ^{:key button} [buttons/primary-small {:content (:content button)
-                                                                 :icon (:icon button)
-                                                                 :on-click-fn (:on-click-fn button)}])
-                  :navigation (for [nav navigation]
-                                ^{:key nav} [buttons/icon-link {:icon (:icon nav)
-                                                                :label (:label nav)
-                                                                :active (:active nav)
-                                                                :on-click-fn (:on-click-fn nav)}])
-                  :bar-color theme-color}]
-   [areas/info {:styles {:text-align "center"
-                         :margin "8px 0"
-                         :border-left (str "1px solid " color/color-neutral-2)}}
+  (let [theme-color (if theme-color
+                      theme-color
+                      color/color-neutral-4)]
+    [content-header (tools-style/merge-styles styles {:background color/color-white
+                                                      :grid-template-columns "1fr minmax(12rem, 25%)"})
+     [content-info {:breadcrumb breadcrumb
+                    :footnote footnote
+                    :features (for [feature features]
+                                ^{:key feature} [buttons/primary-small {:content (:content feature)
+                                                                        :icon (:icon feature)
+                                                                        :on-click-fn (:on-click-fn feature)}])
+                    :navigation (for [nav navigation]
+                                  ^{:key nav} [buttons/icon-link {:icon (:icon nav)
+                                                                  :label (:label nav)
+                                                                  :active (:active nav)
+                                                                  :on-click-fn (:on-click-fn nav)}])
+                    :bar-color theme-color}]
+     [areas/info {:styles {:text-align "center"
+                           :margin "8px 0"
+                           :border-left (str "1px solid " color/color-neutral-2)}}
 
-    (conj info-icon {:color theme-color})
-    (for [keyvalue info-keyvalues]
-      ^{:key keyvalue} [fields/keyvalue {:label (:label keyvalue)
-                                         :content (:content keyvalue)
-                                         :styles {:padding "0.25rem 0 0 0"}}])]])
+      (conj info-icon {:color theme-color})
+      (for [keyvalue info-keyvalues]
+        ^{:key keyvalue} [fields/keyvalue {:label (:label keyvalue)
+                                           :content (:content keyvalue)
+                                           :styles {:padding "0.25rem 0 0 0"}}])]]))

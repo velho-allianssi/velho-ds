@@ -23,9 +23,7 @@
           c-e (when col-end {:grid-column-end col-end})
           grid-spans (merge r-s r-e c-s c-e)]
       [:div (stylefy/use-style (merge grid-spans styles))
-       (map-indexed #(with-meta %2 {:key %1}) content)      ;; add key metadata to each child -> https://github.com/reagent-project/reagent/issues/68
-       ])
+       (map-indexed #(with-meta %2 {:key %1}) content)])     ;; add key metadata to each child -> https://github.com/reagent-project/reagent/issues/68
     [:div
      options
-     (map-indexed #(with-meta %2 {:key %1}) content)        ;; add key metadata to each child -> https://github.com/reagent-project/reagent/issues/68
-     ]))
+     (map-indexed #(with-meta %2 {:key %1}) content)]))        ;; add key metadata to each child -> https://github.com/reagent-project/reagent/issues/68
