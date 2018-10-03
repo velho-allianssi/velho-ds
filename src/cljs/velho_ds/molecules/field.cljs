@@ -9,8 +9,11 @@
             [velho-ds.atoms.icon :as icons]
             [velho-ds.design-system :as ds]))
 
-(defn- add-event-listener [event func]
-  (dommy/listen! @ds/root-element event func))
+(defn- add-event-listener
+  ([event func]
+   (add-event-listener @ds/root-element event func))
+  ([element event func]
+   (dommy/listen! element event func)))
 
 (defn- remove-event-listener [event func]
   (dommy/unlisten! @ds/root-element event func))
@@ -311,34 +314,38 @@
         global-click-handler #(let [target (.-target %)]
                                 (when-not (click-in-dropdown? target @dropdown-id)
                                   (swap! state assoc :focus false)))]
-    (fn []
-      (if (:focus @state)
-        (add-event-listener :click global-click-handler)
-        (remove-event-listener :click global-click-handler))
-      [:div (stylefy/use-style {:position "relative"}
-                               {:id @dropdown-id})
-       [:div (stylefy/use-style {:padding-top "1rem"})
-        [:span (stylefy/use-style style/dropdown-label) label]
-        [:div
-         (into [:ul (stylefy/use-style style/dropdown-multiple-selected-items)]
-               (mapv #(vector selected-list-items {:on-click-fn selected-list-item-selected-fn
-                                                   :content %}) (:selected-items @state)))]
-        [:div (stylefy/use-style style/dropdown-multiple-input-background)
-         [:input (stylefy/use-style style/dropdown-multiple-input {:type "text"
-                                                                   :on-change #(-> % .-target .-value input-value-changed-fn)
-                                                                   :on-key-down #(-> % .-key key-press-handler-fn)
-                                                                   :on-focus #(swap! state assoc :focus true)
-                                                                   :value (:input-text @state)
-                                                                   :placeholder placeholder})]
-         [icons/clickable {:name (if (:focus @state) "arrow_drop_up" "arrow_drop_down")
-                           :styles style/dropdown-multiple-icon
-                           :on-click-fn #(swap! state update-in [:focus] not)}]]]
-       [:div (stylefy/use-style (merge style/dropdown-multiple-list {:display (if (:focus @state) "block" "none")}))
-        (into [:ul (stylefy/use-style style/dropdown-multiple-list-item)]
-              (mapv #(do
-                       (vector list-item {:on-click-fn list-item-selected-fn
-                                          :is-selected? (= (:selected-from-filter @state) %)
-                                          :content %})) (filtered-selections)))]])))
+    (r/create-class
+      {:display-name "dropdown-multiple"
+       :component-did-mount (fn [this]
+                              (add-event-listener (dommy/sel1 (r/dom-node this) :input) :focus #(swap! state assoc :focus true)))
+       :reagent-render (fn []
+                         (if (:focus @state)
+                           (add-event-listener :click global-click-handler)
+                           (remove-event-listener :click global-click-handler))
+                         [:div (stylefy/use-style {:position "relative"}
+                                                  {:id @dropdown-id})
+                          [:div (stylefy/use-style {:padding-top "1rem"})
+                           [:span (stylefy/use-style style/dropdown-label) label]
+                           [:div
+                            (into [:ul (stylefy/use-style style/dropdown-multiple-selected-items)]
+                                  (mapv #(vector selected-list-items {:on-click-fn selected-list-item-selected-fn
+                                                                      :content %}) (:selected-items @state)))]
+                           [:div (stylefy/use-style style/dropdown-multiple-input-background)
+                            [:input (stylefy/use-style style/dropdown-multiple-input {:type "text"
+                                                                                      :on-change #(-> % .-target .-value input-value-changed-fn)
+                                                                                      :on-key-down #(-> % .-key key-press-handler-fn)
+                                                                                      :on-focus #(swap! state assoc :focus true)
+                                                                                      :value (:input-text @state)
+                                                                                      :placeholder placeholder})]
+                            [icons/clickable {:name (if (:focus @state) "arrow_drop_up" "arrow_drop_down")
+                                              :styles style/dropdown-multiple-icon
+                                              :on-click-fn #(swap! state update-in [:focus] not)}]]]
+                          [:div (stylefy/use-style (merge style/dropdown-multiple-list {:display (if (:focus @state) "block" "none")}))
+                           (into [:ul (stylefy/use-style style/dropdown-multiple-list-item)]
+                                 (mapv #(do
+                                          (vector list-item {:on-click-fn list-item-selected-fn
+                                                             :is-selected? (= (:selected-from-filter @state) %)
+                                                             :content %})) (filtered-selections)))]])})))
 
 (defn file-list-item
   [{:keys [filename metadata on-change-fn delete-fn]}]
