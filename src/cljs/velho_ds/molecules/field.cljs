@@ -15,8 +15,11 @@
   ([element event func]
    (dommy/listen! element event func)))
 
-(defn- remove-event-listener [event func]
-  (dommy/unlisten! @ds/root-element event func))
+(defn- remove-event-listener
+  ([event func]
+   (remove-event-listener @ds/root-element event func))
+  ([element event func]
+   (dommy/unlisten! element event func)))
 
 (defn- search-in-list [collection search-word]
   (filter #(string/includes? (string/lower-case %) search-word) collection))

@@ -1,4 +1,4 @@
-(defproject velho-ds "0.0.0.22"
+(defproject velho-ds "0.0.0.22-jaakko"
   :description "Velho Allianssi Design System"
   :url "https://github.com/trinne/velho-ds"
   :license {:name "Eclipse Public License"
@@ -17,7 +17,7 @@
                  [reagent "0.7.0" :exclusions [cljsjs/react]]
                  [cljsjs/react-with-addons "15.6.1-0"]
                  [cljsjs/react-dom "15.6.1-0" :exclusions [cljsjs/react]]
-                 [stylefy "1.7.0"]
+                 [stylefy "1.9.0"]
                  [bidi "2.1.3"]
                  [venantius/accountant "0.2.4"]
                  [reagent-utils "0.3.1"]
