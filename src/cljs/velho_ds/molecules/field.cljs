@@ -336,7 +336,6 @@
                             [:input (stylefy/use-style style/dropdown-multiple-input {:type "text"
                                                                                       :on-change #(-> % .-target .-value input-value-changed-fn)
                                                                                       :on-key-down #(-> % .-key key-press-handler-fn)
-                                                                                      :on-focus #(swap! state assoc :focus true)
                                                                                       :value (:input-text @state)
                                                                                       :placeholder placeholder})]
                             [icons/clickable {:name (if (:focus @state) "arrow_drop_up" "arrow_drop_down")
