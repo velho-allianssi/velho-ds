@@ -191,7 +191,7 @@
     (fn [{:keys [item-list icon error-messages]}]
       (reset! item-list-keys (create-keys item-list))
       [:div.vds-input-field (stylefy/use-style styles {:class (str "dropdown-menu-" (:id @state))})
-       [:label.seppio (stylefy/use-style style/element {:class (str "dropdown-menu-" (:id @state))})
+       [:label (stylefy/use-style style/element {:class (str "dropdown-menu-" (:id @state))})
         (into [:div (stylefy/use-style (merge style/dropdown-list-container
                                               {:display (if (:focus @state) "block" "none")})
                                        {:class (str "dropdown-menu-" (:id @state))})]
