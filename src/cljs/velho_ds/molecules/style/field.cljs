@@ -13,8 +13,7 @@
 
 (def element
   {:position "relative"
-   :display "block"
-   #_#_:min-height spacing/space-x-large})
+   :display "block"})
 
 (def input-field
   {:top spacing/space-small-rem
