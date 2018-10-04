@@ -20,7 +20,9 @@ goog.require('stylefy.impl.dom');
  * 
  * The given 'style' parameter is a map which contains CSS style properties
  * (as supported by Garden library). There can also be special namespaced keywords
- * along with the style definitions:
+ * along with the style definitions.
+ * 
+ * Core features:
  * 
  * ::sub-styles        Makes it possible to define a named style map inside of the main style map.
  *                     The contents of ::sub-styles should be a map,
@@ -39,6 +41,12 @@ goog.require('stylefy.impl.dom');
  * ::with-classes      A collection of additional class names that should always be used with
  *                     this style definition.
  * 
+ * Additional features:
+ * 
+ * ::class-prefix      Custom prefix for generated class names. If not given, the default prefix will be used.
+ *                     Custom prefix can be used for debugging and automatic software testing purposes.
+ *                     Note that you need to set custom class prefixes on in the init function.
+ * 
  * Options is an optional map, which contains HTML attributes (:class, :href, :src etc.).
  * It can also contain the the following features:
  * 
@@ -47,8 +55,8 @@ goog.require('stylefy.impl.dom');
  *                      any HTML attributes. Thus, you can just use :class instead of ::with-classes.
  */
 stylefy.core.use_style = (function stylefy$core$use_style(var_args){
-var G__41527 = arguments.length;
-switch (G__41527) {
+var G__41542 = arguments.length;
+switch (G__41542) {
 case 1:
 return stylefy.core.use_style.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
 
@@ -93,8 +101,8 @@ stylefy.core.use_style.cljs$lang$maxFixedArity = 2;
  * take a look at sub-style function.
  */
 stylefy.core.use_sub_style = (function stylefy$core$use_sub_style(var_args){
-var G__41530 = arguments.length;
-switch (G__41530) {
+var G__41545 = arguments.length;
+switch (G__41545) {
 case 2:
 return stylefy.core.use_sub_style.cljs$core$IFn$_invoke$arity$2((arguments[(0)]),(arguments[(1)]));
 
@@ -134,14 +142,14 @@ stylefy.core.use_sub_style.cljs$lang$maxFixedArity = 3;
  */
 stylefy.core.sub_style = (function stylefy$core$sub_style(var_args){
 var args__4502__auto__ = [];
-var len__4499__auto___41534 = arguments.length;
-var i__4500__auto___41535 = (0);
+var len__4499__auto___41549 = arguments.length;
+var i__4500__auto___41550 = (0);
 while(true){
-if((i__4500__auto___41535 < len__4499__auto___41534)){
-args__4502__auto__.push((arguments[i__4500__auto___41535]));
+if((i__4500__auto___41550 < len__4499__auto___41549)){
+args__4502__auto__.push((arguments[i__4500__auto___41550]));
 
-var G__41536 = (i__4500__auto___41535 + (1));
-i__4500__auto___41535 = G__41536;
+var G__41551 = (i__4500__auto___41550 + (1));
+i__4500__auto___41550 = G__41551;
 continue;
 } else {
 }
@@ -164,35 +172,44 @@ return cljs.core.apply.call(null,stylefy.impl.styles.sub_style,cljs.core.apply.c
 stylefy.core.sub_style.cljs$lang$maxFixedArity = (1);
 
 /** @this {Function} */
-stylefy.core.sub_style.cljs$lang$applyTo = (function (seq41532){
-var G__41533 = cljs.core.first.call(null,seq41532);
-var seq41532__$1 = cljs.core.next.call(null,seq41532);
+stylefy.core.sub_style.cljs$lang$applyTo = (function (seq41547){
+var G__41548 = cljs.core.first.call(null,seq41547);
+var seq41547__$1 = cljs.core.next.call(null,seq41547);
 var self__4486__auto__ = this;
-return self__4486__auto__.cljs$core$IFn$_invoke$arity$variadic(G__41533,seq41532__$1);
+return self__4486__auto__.cljs$core$IFn$_invoke$arity$variadic(G__41548,seq41547__$1);
 });
 
 /**
  * Initialises stylefy.
  * 
- *   Internally checks cache once and starts checking if new styles need to be added into
- *   the DOM as CSS classes.
- * 
  *   The following options are supported:
- *  use-caching?              If true, caches the generated CSS code using localstorage
+ *  :use-caching?             If true, caches the generated CSS code using localstorage
  *                            so that future page loads work faster. Defaults to false.
  *                            Also check :cache-options.
- *  cache-options             A map which can contain the following keywords:
- *    expires                 Number of seconds after the cache is cleared automatically.
+ *  :cache-options            A map which can contain the following keywords:
+ *    :expires                Number of seconds after the cache is cleared automatically.
  *                            For example, value 604800 clears the cache after one week.
  *                            By default, the cache is never cleared automatically.
  *                            You can also clear the cache manually by calling stylefy.cache/clear.
- *  global-vendor-prefixes    A map containing a set of ::stylefy/vendors and
+ *  :global-vendor-prefixes   A map containing a set of ::stylefy/vendors and
  *                            ::stylefy/auto-prefix properties.
  *                            These properties are globally prefixed in all CSS code.
+ *  :use-custom-class-prefix? If set to true, custom class prefix is used if the style map contains it.
+ *                            By default, this is set to false.
+ *                            It is recommended to set this to true only in development / test environment.
+ *  :multi-instance           Provides support for multiple stylefy instances.
+ *                            This can be used if you need to run multiple SPA applications
+ *                            on the same page and at least two of them are using stylefy.
+ *    :base-node              Base node where this instance's <style> tags are queried. Not required.
+ *    :instance-id            Unique string (for example app name). This is used as suffix for stylefy's <style> tags
+ *                            so make sure you name each instance's <style> tags correctly. For example:
+ *                            <style id="_stylefy-styles_myapp">
+ *                            <style id="_stylefy-constant-styles_myapp">
+ *                            This value is also used as suffix in caching.
  */
 stylefy.core.init = (function stylefy$core$init(var_args){
-var G__41538 = arguments.length;
-switch (G__41538) {
+var G__41553 = arguments.length;
+switch (G__41553) {
 case 0:
 return stylefy.core.init.cljs$core$IFn$_invoke$arity$0();
 
@@ -212,11 +229,17 @@ return stylefy.core.init.call(null,cljs.core.PersistentArrayMap.EMPTY);
 });
 
 stylefy.core.init.cljs$core$IFn$_invoke$arity$1 = (function (options){
+stylefy.impl.styles.init_custom_class_prefix.call(null,options);
+
+stylefy.impl.dom.init_multi_instance.call(null,options);
+
 stylefy.impl.dom.init_cache.call(null,options);
 
 stylefy.impl.styles.init_global_vendor_prefixes.call(null,options);
 
-return cljs.core.reset_BANG_.call(null,stylefy.impl.dom.stylefy_initialised_QMARK_,true);
+cljs.core.reset_BANG_.call(null,stylefy.impl.dom.stylefy_initialised_QMARK_,true);
+
+return stylefy.impl.dom.update_dom.call(null);
 });
 
 stylefy.core.init.cljs$lang$maxFixedArity = 1;
@@ -235,14 +258,14 @@ stylefy.core.init.cljs$lang$maxFixedArity = 1;
  */
 stylefy.core.keyframes = (function stylefy$core$keyframes(var_args){
 var args__4502__auto__ = [];
-var len__4499__auto___41542 = arguments.length;
-var i__4500__auto___41543 = (0);
+var len__4499__auto___41557 = arguments.length;
+var i__4500__auto___41558 = (0);
 while(true){
-if((i__4500__auto___41543 < len__4499__auto___41542)){
-args__4502__auto__.push((arguments[i__4500__auto___41543]));
+if((i__4500__auto___41558 < len__4499__auto___41557)){
+args__4502__auto__.push((arguments[i__4500__auto___41558]));
 
-var G__41544 = (i__4500__auto___41543 + (1));
-i__4500__auto___41543 = G__41544;
+var G__41559 = (i__4500__auto___41558 + (1));
+i__4500__auto___41558 = G__41559;
 continue;
 } else {
 }
@@ -265,11 +288,11 @@ return cljs.core.apply.call(null,stylefy.impl.dom.add_keyframes,identifier,frame
 stylefy.core.keyframes.cljs$lang$maxFixedArity = (1);
 
 /** @this {Function} */
-stylefy.core.keyframes.cljs$lang$applyTo = (function (seq41540){
-var G__41541 = cljs.core.first.call(null,seq41540);
-var seq41540__$1 = cljs.core.next.call(null,seq41540);
+stylefy.core.keyframes.cljs$lang$applyTo = (function (seq41555){
+var G__41556 = cljs.core.first.call(null,seq41555);
+var seq41555__$1 = cljs.core.next.call(null,seq41555);
 var self__4486__auto__ = this;
-return self__4486__auto__.cljs$core$IFn$_invoke$arity$variadic(G__41541,seq41540__$1);
+return self__4486__auto__.cljs$core$IFn$_invoke$arity$variadic(G__41556,seq41555__$1);
 });
 
 /**
