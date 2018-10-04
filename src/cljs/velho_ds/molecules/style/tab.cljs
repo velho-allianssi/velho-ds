@@ -15,18 +15,16 @@
    :display "inline-block"
    :white-space "nowrap"
    :user-select "none"
-   ::stylefy/sub-styles {:a {:padding (str "0 " spacing/space-small-rem " 0 " spacing/space-x-small-rem)}}
-   ::stylefy/mode {:hover {:color color/color-primary-dark}
-                   :active {:border-bottom (str border/border-large " solid " color/color-primary-dark)}}})
+   ::stylefy/sub-styles {:a {:padding (str "0 " spacing/space-small-rem " 0 " spacing/space-x-small-rem)
+                             :color "inherit"}}
+   ::stylefy/mode {:hover {:color color/color-primary-dark}}})
 
 (def tab-active
   (merge tab
          {:margin 0
           :color color/color-neutral-5
-          :border-bottom (str border/border-large " solid " color/color-neutral-5)
           ::stylefy/sub-styles {:a {:padding (str "0 0 0 " spacing/space-x-small-rem)}}
-          ::stylefy/mode {:hover {:color color/color-neutral-5}
-                          :active {:border-bottom (str border/border-large " solid " color/color-neutral-5)}}}))
+          ::stylefy/mode {:hover {:color color/color-neutral-5}}}))
 
 (def tabset
   {:margin 0

@@ -13,7 +13,9 @@
             [velho-ds.tokens.font :as font]
             [velho-ds.tokens.z-index :as z-index]
             [velho-ds.atoms.icon :as icons]
+            [velho-ds.atoms.area :as areas]
             [velho-ds.organisms.heading :as headings]
+            [velho-ds.tokens.color :as color]
             [reagent.core :as r]))
 
 
@@ -73,6 +75,20 @@
    [:p "Pages are specific instances of templates. In pages, template content is replaced with real representative content to give an accurate depiction of what a user will ultimately see. Pages are essential as it's where effectiveness of the design system can be tested."]])
 
 ;; ATOMS
+
+(defmethod page-contents :areas []
+  [:div
+   [:p.rds-quote "Areas provide default style for content holders. You can add any content to them."]
+   [dividers/default {:styles {:margin-top "2rem"
+                               :margin-bottom "2rem"}}]
+   [:h2.rds-header2 "Info-area"]
+   ($-> [areas/info {:styles {:font-size "1.25rem"}} [:p "This is an info area"]])
+   [props-table [{:name "styles"
+                  :desc "map"
+                  :example "{:styles {:font-size \"1.25rem\"}}"}
+                 {:name "content"
+                  :desc "components"
+                  :example "[:p \"This is an info area\"]"}]]])
 
 (defmethod page-contents :buttons []
   [:div
@@ -845,38 +861,6 @@
 
 (defmethod page-contents :headings []
   [:div
-   ($-> [headings/content-heading {:status [[fields/iconvalue {:icon "date_range"
-                                                               :content "29.09.2017 - 01.12.2022"}]
-                                            [fields/iconvalue {:icon "timelapse"
-                                                               :content "On hold"}]]
-                                   :info {:type "Project"
-                                          :name "Flying squirrel investigation"
-                                          :footnote "Related Organization, Another Organization"}
-                                   :actions [[icons/clickable {:name "edit"
-                                                               :styles {:padding-left "0.5rem"
-                                                                        :font-size "2rem"}}]
-                                             [icons/clickable {:name "share"
-                                                               :styles {:padding-left "0.5rem"
-                                                                        :font-size "2rem"}}]
-                                             [icons/clickable {:name "favorite"
-                                                               :styles {:padding-left "0.5rem"
-                                                                        :font-size "2rem"}}]]
-                                   :footer [[buttons/primary-small {:content "Item"}]
-                                            [buttons/primary-small {:content "Another Item"}]
-                                            [buttons/primary-small {:content "Last Item"}]]}])
-   [props-table [{:name "status"
-                  :desc "vector"
-                  :example "{:status [[fields/iconvalue {:icon \"date_range\"\n:content \"29.09.2017 - 01.12.2022\"}]\n[fields/iconvalue {:icon \"timelapse\"\n:content \"On hold\"}]]}"}
-                 {:name "info"
-                  :desc "map"
-                  :example "{:info {:type \"Project\"\n:name \"Flying squirrel investigation\"\n:footnote \"Related Organization, Another Organization\"}}"}
-                 {:name "actions"
-                  :desc "vector"
-                  :example "{:actions [[icons/clickable {:name \"edit\"\n:styles {:padding-left \"0.5rem\"\n:font-size \"2rem\"}}]\n[icons/clickable {:name \"share\"\n:styles {:padding-left \"0.5rem\"\n:font-size \"2rem\"}}]\n[icons/clickable {:name \"favorite\"\n:styles {:padding-left \"0.5rem\"\n:font-size \"2rem\"}}]]}"}
-                 {:name "footer"
-                  :desc "vector"
-                  :example "{:footer [[buttons/primary-small {:content \"Item\"}]\n[buttons/primary-small {:content \"Another Item\"}]\n[buttons/primary-small {:content \"Last Item\"}]]}"}]]
-
    ($-> [headings/page-heading {:current-page {:label "X-Files"
                                                :child {:label "Animals"
                                                        :child {:label "Flying squirrel investigation"
@@ -920,4 +904,83 @@
                   :example "{:sub-content [[:p \"Given content\"]]}"}
                  {:name "styles"
                   :desc "map"
-                  :example "{:styles {:z-index \"4\"}}"}]]])
+                  :example "{:styles {:z-index \"4\"}}"}]]
+
+   [:h2.rds-header2 "Content-header"]
+   [:p "Used to build header for content."]
+   ($-> [headings/content-header
+         [headings/content-info {:breadcrumb {:label "X-Files"
+                                              :child {:label "Animals"
+                                                      :child {:label "Flying squirrel investigation"}}}
+                                 :footnote "Related Organization, Another Organization"
+                                 :features [[buttons/primary-small {:content "Item"}]
+                                            [buttons/primary-small {:content "Another Item"}]
+                                            [buttons/primary-small {:content "Last Item"}]]
+                                 :navigation [[buttons/icon-link {:icon "info"
+                                                                  :label "Info"
+                                                                  :active true
+                                                                  :on-click-fn #(println "Info")}]
+                                              [buttons/icon-link {:icon "insert_drive_file"
+                                                                  :label "Documents"
+                                                                  :on-click-fn #(println "Documents")}]]
+                                 :bar-color color/color-pacific}]
+         [areas/info
+          [icons/type-icon-circle {:color color/color-pacific}]
+          [fields/keyvalue {:label "Type"
+                            :content "Project"}]
+          [fields/keyvalue {:label "Schedule"
+                            :content "29.09.2017 - 01.01.2021"}]
+          [fields/keyvalue {:label "State"
+                            :content "In Progress"}]]])
+   [props-table [{:name "styles"
+                  :desc "map"
+                  :example "{:styles {:padding \"2px\"}"}
+                 {:name "content"
+                  :desc "components"
+                  :example "[areas/info\n[icons/type-icon-circle {:color color/color-pacific}]\n[fields/keyvalue {:label \"Type\"\n:content \"Project\"}]\n[fields/keyvalue {:label \"Schedule\"\n:content \"29.09.2017 - 01.01.2021\"}]\n[fields/keyvalue {:label \"State\"\n:content \"In Progress\"}]]"}]]
+
+   [:h2.rds-header2 "Content-header-default"]
+   [:p "Default structure of content-header. Parameters can be used to change values, but the styles are strict."]
+   ($-> [headings/content-header-default {:breadcrumb {:label "X-Files"
+                                                       :child {:label "Animals"
+                                                               :child {:label "Flying squirrel investigation"
+                                                                       :child nil}}}
+                                          :footnote "Related Organization, Another Organization"
+                                          :features [{:content "Item"
+                                                      :on-click-fn #(println %)}
+                                                     {:content "Another Item"}
+                                                     {:content "Last Item"}]
+                                          :navigation [{:icon "info"
+                                                        :label "Info"
+                                                        :active true
+                                                        :on-click-fn #(println "Default icon-link clicked")}
+                                                       {:icon "insert_drive_file"
+                                                        :label "Documents"
+                                                        :on-click-fn #(println "Default icon-link clicked")}]
+                                          :theme-color color/color-pacific
+                                          :info-icon [icons/type-icon-circle]
+                                          :info-keyvalues [{:label "Type"
+                                                            :content "Project"}
+                                                           {:label "Schedule"
+                                                            :content "29.09.2017 - 01.01.2021"}
+                                                           {:label "State"
+                                                            :content "In Progress"}]}])
+   [props-table [{:name "breadcrumb"
+                  :desc "map"
+                  :example " {:breadcrumb {:label \"X-Files\"\n:child {:label \"Animals\"\n:child {:label \"Flying squirrel investigation\"\n:child nil}}}}"}
+                 {:name "footnote"
+                  :desc "string"
+                  :example "{:footnote \"Related Organization, Another Organization\"}"}
+                 {:name "features"
+                  :desc "vector of button-parameters"
+                  :example "{:meta [{:content \"Item\"\n:on-click-fn #(println %)}\n{:content \"Another Item\"}\n{:content \"Last Item\"}]}"}
+                 {:name "navigation"
+                  :desc "vector"
+                  :example "{:navigation [{:icon \"info\"\n:label \"Info\"\n:active true\n:on-click-fn #(println \"Default icon-link clicked\")}\n{:icon \"insert_drive_file\"\n:label \"Documents\"\n:on-click-fn #(println \"Default icon-link clicked\")}]}"}
+                 {:name "theme-color"
+                  :desc "color"
+                  :example "{:theme-color color/color-pacific}"}
+                 {:name "info-keyvalues"
+                  :desc "vector"
+                  :example "{:info-keyvalues [{:label \"Type\"\n:content \"Project\"}\n{:label \"Schedule\"\n:content \"29.09.2017 - 01.01.2021\"}\n{:label \"State\"\n:content \"In Progress\"}]}"}]]
+   ])

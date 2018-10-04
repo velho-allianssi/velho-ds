@@ -38,3 +38,11 @@
 (defn outline-small [{:keys [content icon] :as btn-args}]
   (assert (or content icon))
   [outline (tools-style/merge-styles btn-args style/outline-small)])
+
+(defn icon-link [{:keys [icon label active on-click-fn]}]
+  [:a (stylefy/use-style (if active
+                             style/icon-link-active
+                             style/icon-link) {:on-click on-click-fn})
+   [icons/icon {:name icon
+                :styles style/icon-link-icon}]
+   [:span (stylefy/use-style style/icon-link-value) label]])
