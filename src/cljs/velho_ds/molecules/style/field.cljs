@@ -14,11 +14,10 @@
 (def element
   {:position "relative"
    :display "block"
-   :min-height spacing/space-x-large})
+   #_#_:min-height spacing/space-x-large})
 
 (def input-field
-  {:position "absolute"
-   :top spacing/space-small-rem
+  {:top spacing/space-small-rem
    :width "100%"
    :font-size font-size/font-size-base
    :transition (str "border-color " timing/duration-slow " ease-in-out")
@@ -26,7 +25,7 @@
    :padding 0
    :margin 0
    :min-height (measures/rem-times font-size/font-size-base 2)
-   :background color/color-neutral-1
+   :background color/color-white
    :box-sizing "border-box"
    :border-top 0
    :border-left 0
@@ -34,14 +33,7 @@
    :border-bottom (str border/border-default " solid")
    :border-color color/color-neutral-4
    ::stylefy/mode {:focus {:border-bottom (str border/border-default " solid")
-                           :border-color color/color-primary}
-                   :valid+span {:top 0
-                                :cursor "inherit"
-                                :font-size font-size/font-size-small}
-                   :focus+span {:top 0
-                                :cursor "inherit"
-                                :font-size font-size/font-size-small
-                                :color color/color-primary}}
+                           :border-color color/color-primary}}
    ::stylefy/vendors ["webkit" "moz" "o"]
    ::stylefy/auto-prefix #{:transition}})
 
@@ -49,13 +41,7 @@
   (merge input-field
          {::stylefy/mode {:focus {:border-bottom (str border/border-large " solid")
                                   :border-color color/state-error}
-                          :valid {:border-color color/state-error}
-                          :valid+span {:top 0
-                                       :cursor "inherit"
-                                       :font-size font-size/font-size-small}
-                          :focus+span {:top 0
-                                       :cursor "inherit"
-                                       :font-size font-size/font-size-small}}}))
+                          :valid {:border-color color/state-error}}}))
 
 (def text-field
   (merge input-field
@@ -64,9 +50,8 @@
           :resize "none"}))
 
 (def input-field-label
-  {:position "absolute"
-   :line-height "1"
-   :display "block"
+  {:line-height "1"
+   :position "relative"
    :top spacing/space-base-rem
    :font-size font-size/font-size-base
    :transition (str "all " timing/duration-slow " ease-in-out")
@@ -87,7 +72,6 @@
 (def validation-errors
   {:font-size font-size/font-size-small
    :color color/state-error
-   :margin-top "-0.875rem"
    ::stylefy/sub-styles {:p {:color color/state-error
                              :font-size font-size/font-size-small
                              :margin 0}}})
