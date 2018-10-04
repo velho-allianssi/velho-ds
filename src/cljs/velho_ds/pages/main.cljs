@@ -436,7 +436,6 @@
                                                           {:label "Sub-project 002"}]}])]
     (fn []
       [:div
-
        [:p.rds-quote "Fields provide a ways of input and output. Input, such as typing, selecting or dragging and dropping can be used to provide several formats of information."]
        [dividers/default {:styles {:margin-top "2rem"
                                    :margin-bottom "2rem"}}]
