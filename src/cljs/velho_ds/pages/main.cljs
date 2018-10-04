@@ -437,37 +437,6 @@
     (fn []
       [:div
 
-       [grid/grid-wrap {:cols 2
-                        :styles {:grid-template-columns "1fr 2fr"
-                                 ::stylefy/media {{:max-width "720px"}
-                                                  {:grid-template-columns "1fr"}}}}
-        [grid/grid-cell {}
-         [:p (stylefy/use-style {:color color/color-neutral-4
-                                 :margin "8px 0 0 0"
-                                 ::stylefy/media {{:max-width "720px"}
-                                                  {:margin 0
-                                                   :line-height velho-ds.tokens.line-height/line-height-small
-                                                   :font-size font-size/font-size-small}}}) "Label"]]
-        [grid/grid-cell {}
-         [:p (stylefy/use-style {:margin "8px 0 0 0"
-                                 ::stylefy/media {{:max-width "720px"}
-                                                  {:line-height velho-ds.tokens.line-height/line-height-small
-                                                   :margin 0}}}) "Value"]]]
-
-       [grid/grid-wrap {:cols 2
-                        :styles {:grid-template-columns "1fr 2fr"
-                                 ::stylefy/media {{:max-width "720px"}
-                                                  {:grid-template-columns "1fr"}}}}
-        [grid/grid-cell {}
-         [:p (stylefy/use-style {:color color/color-neutral-4
-                                 :margin "8px 0 0 0"
-                                 ::stylefy/media {{:max-width "720px"}
-                                                  {:margin 0
-                                                   :font-size font-size/font-size-small}}}) "Label"]]
-        [grid/grid-cell {}
-         [fields/input-field {:placeholder "Value" :styles {::stylefy/media {{:max-width "720px"}
-                                                                             {:margin 0}}}}]]]
-
        [:p.rds-quote "Fields provide a ways of input and output. Input, such as typing, selecting or dragging and dropping can be used to provide several formats of information."]
        [dividers/default {:styles {:margin-top "2rem"
                                    :margin-bottom "2rem"}}]
