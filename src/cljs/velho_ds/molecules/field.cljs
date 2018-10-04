@@ -263,13 +263,6 @@
     [icons/clickable {:name "arrow_drop_down"
                       :styles style/dropdown-icon}]]])
 
-(defn- click-in-dropdown? [element id]
-  (if (nil? element)
-    false
-    (if (= id (.-id element))
-        true
-        (click-in-dropdown? (.-parentElement element) id))))
-
 (defn dropdown-multiple [{:keys [label placeholder selected-fn options preselected-values]}]
   (assert (fn? selected-fn) ":selected-fn function is required for dropdown-multiple")
   (assert (vector? options) ":options vector is required for dropdown-multiple")
@@ -314,6 +307,12 @@
                                  (swap! state assoc :selected-from-filter ""))
                                (when (= key "Tab")
                                  (swap! state assoc :focus false)))
+        click-in-dropdown? (fn click-in-dropdown? [element id]
+                             (if (nil? element)
+                               false
+                               (if (= id (.-id element))
+                                 true
+                                 (click-in-dropdown? (.-parentElement element) id))))
         global-click-handler #(let [target (.-target %)]
                                 (when-not (click-in-dropdown? target @dropdown-id)
                                   (swap! state assoc :focus false)))]
