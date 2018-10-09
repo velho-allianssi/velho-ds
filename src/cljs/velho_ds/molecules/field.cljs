@@ -107,7 +107,7 @@
                 (swap! state assoc :is-focused true)
                 (when on-focus-fn (on-focus-fn @input-text)))]
     (fn [{:keys [icon error-messages]}]
-      [:div (stylefy/use-style styles)
+      [:div.vds-input-field (stylefy/use-style styles)
        [:label (stylefy/use-style style/element)
         (when label [:span (label-styles error-messages @state placeholder label) label])
         [input-type (stylefy/use-style (merge (if (first error-messages)
