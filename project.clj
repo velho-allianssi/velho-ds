@@ -62,7 +62,7 @@
                                    :optimizations :whitespace
                                    :pretty-print true}}
                        {:id "release"
-                        :source-paths ["src/cljs" "env/prod/cljs" "test/cljs"]
+                        :source-paths ["src/cljs" "env/prod/cljs"]
                         :compiler {:main "velho-ds.prod"
                                    :output-to "target/js/app.js"
                                    :optimizations :advanced}}]}
