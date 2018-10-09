@@ -5,6 +5,7 @@
             [velho-ds.tokens.color :as color]
             [velho-ds.tokens.font :as fonts]
             [velho-ds.tokens.font-size :as font-sizes]
+            [velho-ds.tokens.box-shadow :as box-shadow]
             [velho-ds.atoms.icon :as icons]
             [velho-ds.atoms.area :as areas]
             [velho-ds.atoms.button :as buttons]
@@ -137,7 +138,8 @@
   (let [theme-color (if theme-color
                       theme-color
                       color/color-neutral-4)]
-    [content-header (tools-style/merge-styles styles {:background color/color-white
+    [content-header (tools-style/merge-styles styles {:box-shadow box-shadow/box-shadow
+                                                      :background color/color-white
                                                       :grid-template-columns "1fr minmax(12rem, 25%)"})
      [content-info {:breadcrumb breadcrumb
                     :footnote footnote
