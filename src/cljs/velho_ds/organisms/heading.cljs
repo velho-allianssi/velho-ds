@@ -129,6 +129,7 @@
        ^{:key item} [grid/grid-cell {:styles {:display "grid"}} item])]))
 
 (defn content-header-default [{:keys [breadcrumb
+                                      breadcrumb-click-fn
                                       footnote
                                       features
                                       navigation
@@ -143,6 +144,7 @@
                                                       :background color/color-white
                                                       :grid-template-columns "1fr minmax(12rem, 25%)"}} styles)
      [content-info {:breadcrumb breadcrumb
+                    :breadcrumb-click-fn breadcrumb-click-fn
                     :footnote footnote
                     :features (for [feature features]
                                 ^{:key feature} [buttons/primary-small {:content (:content feature)
