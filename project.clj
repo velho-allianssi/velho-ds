@@ -1,4 +1,4 @@
-(defproject velho-ds "0.0.0.24"
+(defproject velho-ds "0.0.0.25"
   :description "Velho Allianssi Design System"
   :url "https://github.com/trinne/velho-ds"
   :license {:name "Eclipse Public License"
@@ -62,7 +62,7 @@
                                    :optimizations :whitespace
                                    :pretty-print true}}
                        {:id "release"
-                        :source-paths ["src/cljs" "env/prod/cljs" "test/cljs"]
+                        :source-paths ["src/cljs" "env/prod/cljs"]
                         :compiler {:main "velho-ds.prod"
                                    :output-to "target/js/app.js"
                                    :optimizations :advanced}}]}
