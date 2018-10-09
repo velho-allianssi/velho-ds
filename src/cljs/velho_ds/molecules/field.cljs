@@ -224,6 +224,8 @@
                                                                       :key (:key item)
                                                                       :id (str "list-item-" (:id @state) "-" (:key item))
                                                                       :class "dropdown-multi"}) (:label item)]))])))
+        [:span (if (first error-messages) (stylefy/use-style style/input-field-label-error) ;TODO check if label/placeholder works
+                                          (stylefy/use-style (if (and label placeholder) style/input-field-label-static style/input-field-label))) label]
         [:input (stylefy/use-style (merge (if (first error-messages)
                                             style/input-field-error
                                             style/input-field)
@@ -243,8 +245,6 @@
                                                  (when on-focus-fn (on-focus-fn (:input-text @state))))
                                     :value (:input-text @state)
                                     :placeholder placeholder})]
-        [:span (if (first error-messages) (stylefy/use-style style/input-field-label-error) ;TODO check if label/placeholder works
-                                          (stylefy/use-style (if (and label placeholder) style/input-field-label-static style/input-field-label))) label]
         [icons/clickable {:on-click-fn (if icon-click-fn #(icon-click-fn)
                                                          (if (:focus @state)
                                                            #(swap! state assoc :focus false)
