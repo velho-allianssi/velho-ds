@@ -1,4 +1,4 @@
-(defproject velho-ds "0.0.0.25"
+(defproject velho-ds "0.0.0.26"
   :description "Velho Allianssi Design System"
   :url "https://github.com/trinne/velho-ds"
   :license {:name "Eclipse Public License"

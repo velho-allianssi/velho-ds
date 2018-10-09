@@ -105,7 +105,6 @@
 
 (def icon
   {:position "absolute"
-   ; :padding spacing/space-xx-small-rem
    :top (str "calc(" spacing/space-small-rem " + " spacing/space-xx-small-rem ")")
    :right spacing/space-xx-small-rem})
 
@@ -278,6 +277,6 @@
    :background "white"
    :box-shadow box-shadow/box-shadow-small
    :position "absolute"
-   :top "3rem"
+   :top (str "calc(" spacing/space-large-rem " + " border/border-large ")")
    :width "100%"
    :z-index 9999})

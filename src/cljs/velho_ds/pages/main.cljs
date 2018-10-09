@@ -967,6 +967,7 @@
                                                        :child {:label "Animals"
                                                                :child {:label "Flying squirrel investigation"
                                                                        :child nil}}}
+                                          :breadcrumb-click-fn #(println %1 %2)
                                           :footnote "Related Organization, Another Organization"
                                           :features [{:content "Item"
                                                       :on-click-fn #(println %)}
@@ -990,6 +991,9 @@
    [props-table [{:name "breadcrumb"
                   :desc "map"
                   :example " {:breadcrumb {:label \"X-Files\"\n:child {:label \"Animals\"\n:child {:label \"Flying squirrel investigation\"\n:child nil}}}}"}
+                 {:name "breadcrumb-click-fn"
+                  :desc "map"
+                  :example "{:breadcrumb-click-fn #(println %1 %2)"}
                  {:name "footnote"
                   :desc "string"
                   :example "{:footnote \"Related Organization, Another Organization\"}"}

@@ -103,7 +103,8 @@
                                               :top "5px"}
                                      :on-click-fn #(swap! sub-content-open? not)}]])))
         [grid/grid-cell {:col-start 4
-                         :col-end 4}
+                         :col-end 4
+                         :styles {:align-self "center"}}
          [fields/dropdown-menu {:placeholder search-placeholder
                                 :icon (if @search-text "close" "search")
                                 :item-list search-results
@@ -128,6 +129,7 @@
        ^{:key item} [grid/grid-cell {:styles {:display "grid"}} item])]))
 
 (defn content-header-default [{:keys [breadcrumb
+                                      breadcrumb-click-fn
                                       footnote
                                       features
                                       navigation
@@ -142,6 +144,7 @@
                                                       :background color/color-white
                                                       :grid-template-columns "1fr minmax(12rem, 25%)"}} styles)
      [content-info {:breadcrumb breadcrumb
+                    :breadcrumb-click-fn breadcrumb-click-fn
                     :footnote footnote
                     :features (for [feature features]
                                 ^{:key feature} [buttons/primary-small {:content (:content feature)
