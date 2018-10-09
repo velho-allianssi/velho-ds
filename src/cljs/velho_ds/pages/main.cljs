@@ -11,11 +11,12 @@
             [velho-ds.atoms.table :as tables]
             [velho-ds.tokens.font-size :as font-size]
             [velho-ds.tokens.font :as font]
+            [velho-ds.tokens.color :as color]
             [velho-ds.tokens.z-index :as z-index]
             [velho-ds.atoms.icon :as icons]
             [velho-ds.atoms.area :as areas]
             [velho-ds.organisms.heading :as headings]
-            [velho-ds.tokens.color :as color]
+            [stylefy.core :as stylefy]
             [reagent.core :as r]))
 
 
@@ -533,10 +534,31 @@
                       :example "{:on-blur-fn \"#(println (str \"Focus lost!\"))\"}"}]]
 
        [:h3.rds-header3 "Multiline-field"]
-       ($-> [fields/multiline-field "Textfield"])
-       [props-table [{:name "content"
+       ($-> [fields/multiline-field {:label "Multiline-field"
+                                     :on-change-fn #(println %)
+                                     :on-blur-fn #(println %)
+                                     :icon-click-fn #(println (str "Icon Clicked"))}])
+       [props-table [{:name "label"
                       :desc "string"
-                      :example "{:content \"Content\"}"}]]
+                      :example "{:label \"Label\"}"}
+                     {:name "content"
+                      :desc "string"
+                      :example "{:content \"Content\"}"}
+                     {:name "placeholder"
+                      :desc "string"
+                      :example "{:placeholder \"Placeholder\"}"}
+                     {:name "icon"
+                      :desc "string"
+                      :example "{:icon \"search\"}"}
+                     {:name "icon-click-fn"
+                      :desc "function"
+                      :example "{:icon-click-fn \"#(println (str \"Icon Clicked\"))\"}"}
+                     {:name "on-change-fn"
+                      :desc "function"
+                      :example "{:on-change-fn \"#(println (str \"Value has changed!\"))\"}"}
+                     {:name "on-blur-fn"
+                      :desc "function"
+                      :example "{:on-blur-fn \"#(println (str \"Focus lost!\"))\"}"}]]
        [:h3.rds-header3 "Dropdown-menu"]
        ($-> [fields/dropdown-menu {:label "Dropdown menu"
                                    :placeholder "Select"
