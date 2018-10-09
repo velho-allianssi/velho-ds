@@ -138,9 +138,9 @@
   (let [theme-color (if theme-color
                       theme-color
                       color/color-neutral-4)]
-    [content-header (tools-style/merge-styles styles {:box-shadow box-shadow/box-shadow
+    [content-header (tools-style/merge-styles {:styles {:box-shadow box-shadow/box-shadow
                                                       :background color/color-white
-                                                      :grid-template-columns "1fr minmax(12rem, 25%)"})
+                                                      :grid-template-columns "1fr minmax(12rem, 25%)"}} styles)
      [content-info {:breadcrumb breadcrumb
                     :footnote footnote
                     :features (for [feature features]
