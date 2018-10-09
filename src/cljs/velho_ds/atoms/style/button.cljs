@@ -105,3 +105,31 @@
                    :focus {:outline "none"}}
    ::stylefy/vendors ["webkit" "moz" "o"]
    ::stylefy/auto-prefix #{:transition}})
+
+(def icon-link
+  {:margin 0
+   :white-space "nowrap"
+   :color color/color-primary
+   :user-select "none"
+   :cursor "pointer"
+   :padding "0.5rem 1rem 0.5rem 0"
+   :display "inline-block"
+   :transition (str "all " timing/duration-slow " ease-in-out")
+   ::stylefy/mode {:hover {:color color/color-primary-dark}
+                   :active {:color color/color-primary-light}}
+   ::stylefy/auto-prefix #{:transition :color}})
+
+(def icon-link-active
+  (merge icon-link {:color color/color-neutral-5}))
+
+(def icon-link-icon
+  {:color "inherit"
+   :position "relative"
+   :top "6px"
+   :font-size font-size/font-size-xx-large
+   :white-space "nowrap"})
+
+(def icon-link-value
+  {:color "inherit"
+   :padding-left "6px"
+   :white-space "nowrap"})

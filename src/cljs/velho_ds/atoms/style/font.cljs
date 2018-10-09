@@ -1,6 +1,7 @@
 (ns velho-ds.atoms.style.font
   (:require [velho-ds.tokens.font-size :as font-size]
             [velho-ds.tokens.font :as font]
+            [velho-ds.tokens.color :as color]
             [velho-ds.tokens.line-height :as line-height]))
 
 
@@ -10,6 +11,10 @@
    :font-weight font/font-weight-base
    :line-height line-height/line-height-base
    :white-space "pre-line"})
+
+(def a
+  (merge p
+         {:color color/color-primary}))
 
 (def span p)
 

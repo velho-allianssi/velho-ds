@@ -67,7 +67,7 @@
   (r/render [page [navigation (last routes)]] (.getElementById js/document "app")))
 
 (defn init! []
-  (design-system/init-ds!)
+  (design-system/init-ds! (.getElementById js/document "app"))
   (accountant/configure-navigation! {:nav-handler navigate :path-exists? path-exists?})
   (accountant/dispatch-current!)
   (mount-root))

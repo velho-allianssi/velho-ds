@@ -34,25 +34,29 @@
    :padding-right "0"
    :line-height spacing/space-base-rem})
 
-(def content-heading
-  {:padding (str spacing/space-x-small-rem " " spacing/space-base-rem)
+(def content-info
+  {:padding (str "0 0 0 " spacing/space-small-rem )
    :background "white"
-   :grid-template-columns "1fr 1fr 1fr 25%"
-   :grid-template-rows "0fr"})
+   :height "100%"
+   :grid-template-rows "auto 1fr"
+   :flex-grow 1})
 
-(def content-heading-info
-  {:line-height spacing/space-base-rem
-   :padding (str spacing/space-small-rem " 0")})
+(def content-info-items
+  {:line-height (str "calc(" spacing/space-base-rem " + " spacing/space-xx-small-rem ")")
+   :padding (str spacing/space-small-rem " 0 " spacing/space-x-small-rem " 0")
+   :grid-column "1 / 1"
+   :grid-row "1 / 1"})
 
-(def content-heading-info-item
+(def content-info-item
   {:margin 0
+   :padding "2px 0 0 0"
    :line-height "inherit"})
 
-(def content-heading-actions
+(def content-actions
   {:align-self "center"
    :justify-self "right"})
 
-(def content-heading-footer
+(def content-info-footer
   {:padding 0
    :margin 0
    :list-style "none"
