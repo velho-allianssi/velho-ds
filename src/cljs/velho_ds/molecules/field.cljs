@@ -66,6 +66,19 @@
                               :font-size "1rem"
                               :color "inherit"}}]])
 
+(defn- label-styles [error-messages state placeholder label]
+  (if (first error-messages) (stylefy/use-style (merge style/input-field-label-error
+                                                       (when (or (:is-focused state) placeholder) {:top 0
+                                                                                                   :font-size font-size/font-size-small})))
+                             (stylefy/use-style (merge (if (and label placeholder)
+                                                         style/input-field-label-static
+                                                         style/input-field-label)
+                                                       (when (or (:is-focused state) (:has-value state) placeholder)
+                                                         {:top 0
+                                                          :font-size font-size/font-size-small})
+                                                       (when (:is-focused state)
+                                                         {:color color/color-primary})))))
+
 ;; OUTPUTS
 (defn keyvalue [{:keys [content label]}]
   [:div
@@ -79,7 +92,7 @@
    [:span (stylefy/use-style style/iconvalue-value) content]])
 
 ;; INPUTS
-(defn input-field [{:keys [label content placeholder icon-click-fn on-change-fn on-blur-fn on-focus-fn styles]}]
+(defn- create-input-field [{:keys [label content placeholder icon-click-fn on-change-fn on-blur-fn on-focus-fn styles]} input-type]
   (let [input-text (r/atom content)
         state (r/atom {:is-focused false
                        :has-value (not (nil? @input-text))})
@@ -96,28 +109,18 @@
     (fn [{:keys [icon error-messages]}]
       [:div (stylefy/use-style styles)
        [:label (stylefy/use-style style/element)
-        (when label [:span (if (first error-messages) (stylefy/use-style (merge style/input-field-label-error
-                                                                                (when (or (:is-focused @state) placeholder) {:top 0
-                                                                                                                             :font-size font-size/font-size-small})))
-                                                      (stylefy/use-style (merge (if (and label placeholder)
-                                                                                  style/input-field-label-static
-                                                                                  style/input-field-label)
-                                                                                (when (or (:is-focused @state) (:has-value @state) placeholder)
-                                                                                  {:top 0
-                                                                                   :font-size font-size/font-size-small})
-                                                                                (when (:is-focused @state)
-                                                                                  {:color color/color-primary})))) label])
-        [:input (stylefy/use-style (merge (if (first error-messages)
-                                            style/input-field-error
-                                            style/input-field)
-                                          (when icon {:padding-right "2rem"})
-                                          (when (not label) {:top 0}))
-                                   {:required "required"
-                                    :on-change #(-> % .-target .-value change)
-                                    :on-blur blur
-                                    :on-focus focus
-                                    :value @input-text
-                                    :placeholder placeholder})]
+        (when label [:span (label-styles error-messages @state placeholder label) label])
+        [input-type (stylefy/use-style (merge (if (first error-messages)
+                                                style/input-field-error
+                                                style/input-field)
+                                              (when icon {:padding-right "2rem"})
+                                              (when (not label) {:top 0}))
+                                       {:required "required"
+                                        :on-change #(-> % .-target .-value change)
+                                        :on-blur blur
+                                        :on-focus focus
+                                        :value @input-text
+                                        :placeholder placeholder})]
         (when icon [icons/clickable (merge (when icon-click-fn {:on-click-fn icon-click-fn})
                                            {:name icon
                                             :styles style/icon})])]
@@ -126,14 +129,12 @@
           (doall (for [message error-messages]
                    (into ^{:key message} [:p (stylefy/use-sub-style style/validation-errors :p) message])))])])))
 
-(defn multiline-field
-  ([content]
-   (multiline-field content nil))
-  ([content args]
-   [:div
-    [:label (stylefy/use-style style/element)
-     [:textarea (stylefy/use-style style/text-field {:required "required"})]
-     [:span (stylefy/use-style style/input-field-label) content]]]))
+(defn input-field [properties]
+  (create-input-field properties :input))
+
+(defn multiline-field [properties]
+  (create-input-field properties :textarea))
+
 
 (defn dropdown-menu [{:keys [label
                              placeholder

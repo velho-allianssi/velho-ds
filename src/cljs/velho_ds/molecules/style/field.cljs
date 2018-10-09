@@ -31,6 +31,7 @@
    :border-right 0
    :border-bottom (str border/border-default " solid")
    :border-color color/color-neutral-4
+   :resize "vertical"
    ::stylefy/mode {:focus {:border-bottom (str border/border-default " solid")
                            :border-color color/color-primary}}
    ::stylefy/vendors ["webkit" "moz" "o"]
