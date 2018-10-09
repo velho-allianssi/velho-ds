@@ -10,6 +10,12 @@
 aliases:
   primary:
     value: "210, 100%"
+  pacific:
+    value: "185, 100%"
+  pinky:
+    value: "314, 100%"
+  greeny:
+    value: "164, 100%"
   black:
     value: "0, 0%"
 props:
@@ -37,12 +43,39 @@ props:
   color-neutral-5:
     value: "hsla({!black}, 20%, 1)"
     category: color-group-2
+  color-pacific:
+    value: "hsla({!pacific}, 37%, 1)"
+    category: color-group-3
+  color-pacific-dark:
+    value: "hsla({!pacific}, 33%, 1)"
+    category: color-group-3
+  color-pacific-light:
+    value: "hsla({!pacific}, 43%, 1)"
+    category: color-group-3
+  color-pinky:
+    value: "hsla({!pinky}, 43%, 1)"
+    category: color-group-3
+  color-pinky-dark:
+    value: "hsla({!pinky}, 37%, 1)"
+    category: color-group-3
+  color-pinky-light:
+    value: "hsla({!pinky}, 47%, 1)"
+    category: color-group-3
+  color-greeny:
+    value: "hsla({!greeny}, 37%, 1)"
+    category: color-group-3
+  color-greeny-dark:
+    value: "hsla({!greeny}, 33%, 1)"
+    category: color-group-3
+  color-greeny-light:
+    value: "hsla({!greeny}, 43%, 1)"
+    category: color-group-3
   color-black:
     value: "hsla({!black}, 0%, 1)"
-    category: color-group-3
+    category: color-group-4
   color-white:
     value: "hsla({!black}, 100%, 1)"
-    category: color-group-3
+    category: color-group-4
   text-default:
     value: "hsla({!black}, 20%, 1)"
     category: color-group-text

@@ -19,7 +19,7 @@
 
 (defn default [{:keys [header header-buttons content footer is-open]}]
   [:div (if is-open (stylefy/use-style style/modal-area)
-                    (stylefy/use-style (merge style/modal-area {:display "none"})) )
+                    (stylefy/use-style (merge style/modal-area {:display "none"})))
    [:div (stylefy/use-style style/background)]
    [:div (stylefy/use-style style/modal-box)
     [:header (stylefy/use-style style/modal-header)
