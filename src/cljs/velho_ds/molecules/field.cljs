@@ -5,6 +5,7 @@
             [reagent.core :as r]
             [stylefy.core :as stylefy]
             [velho-ds.tokens.color :as color]
+            [velho-ds.tokens.spacing :as spacing]
             [velho-ds.tokens.font-size :as font-size]
             [velho-ds.molecules.style.field :as style]
             [velho-ds.atoms.icon :as icons]
@@ -212,6 +213,7 @@
       [:div.vds-input-field (stylefy/use-style styles {:class (str "dropdown-menu-" (:id @state))})
        [:label (stylefy/use-style style/element {:class (str "dropdown-menu-" (:id @state))})
         (into [:div (stylefy/use-style (merge style/dropdown-list-container
+                                              (when (nil? label) {:top (str "calc(" spacing/space-large-rem " - " spacing/space-small-rem ")")})
                                               {:display (if (:focus @state) "block" "none")})
                                        {:class (str "dropdown-menu-" (:id @state))})]
               (for [section @item-list-keys]
@@ -258,7 +260,7 @@
                                                            #(swap! state assoc :focus true)))
                           :disabled (:disabled @state)
                           :name (if (nil? icon) (if (:focus @state) "arrow_drop_up" "arrow_drop_down") icon)
-                          :styles style/icon}]]
+                          :styles (merge style/icon (when (nil? label) {:top spacing/space-xx-small-rem}))}]]
        (when (first error-messages)
          [:div (stylefy/use-style style/validation-errors)
           (doall (for [message error-messages]

@@ -103,7 +103,8 @@
                                               :top "5px"}
                                      :on-click-fn #(swap! sub-content-open? not)}]])))
         [grid/grid-cell {:col-start 4
-                         :col-end 4}
+                         :col-end 4
+                         :styles {:align-self "center"}}
          [fields/dropdown-menu {:placeholder search-placeholder
                                 :icon (if @search-text "close" "search")
                                 :item-list search-results
