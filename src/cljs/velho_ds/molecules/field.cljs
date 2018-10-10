@@ -456,7 +456,7 @@
                                                  :on-change-fn (partial file-metadata-changed key)
                                                  :delete-fn #(remove-item key)}]))))
         [:div (merge (stylefy/use-style style/drag-n-drop-helparea)
-                     {:on-click #(.click (dommy/sel1 (keyword (str "#file-input-" @label-id))))})
+                     {:on-click #(.click (dommy/sel1 @ds/root-element (keyword (str "#file-input-" @label-id))))})
          [:p (stylefy/use-sub-style style/drag-n-drop-helparea :p) help-text]
          [icons/icon {:name "cloud_upload"}]
          [:input {:id (str "file-input-" @label-id)
