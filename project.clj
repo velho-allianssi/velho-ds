@@ -12,6 +12,8 @@
                  ;; Yaml
                  [io.forward/yaml "1.0.8"]
 
+                 [zprint "0.4.9"]
+
                  ;; Front end
                  [org.clojure/clojurescript "1.10.238"]
                  [reagent "0.7.0" :exclusions [cljsjs/react]]
@@ -24,9 +26,9 @@
                  [prismatic/dommy "1.1.0"]]
 
   :plugins [[lein-cljsbuild "1.1.5" :exclusions [[org.clojure/clojure]]]
-            [lein-figwheel "0.5.15"]]
+            [lein-figwheel "0.5.16"]]
 
-  :source-paths ["src/clj" "src/cljs"]
+  :source-paths ["src/clj" "src/cljc" "src/cljs"]
   :test-paths ["test/clj" "test/cljs"]
 
   :main ^:skip-aot velho-ds.main
@@ -45,7 +47,7 @@
              :css-dirs ["public/css"]
              :server-port 3450}
   :cljsbuild {:builds [{:id "dev"
-                        :source-paths ["src/cljs" "env/dev/clj" "env/dev/cljs"]
+                        :source-paths ["src/cljs" "src/cljc" "env/dev/clj" "env/dev/cljs"]
                         :compiler {:main "velho-ds.dev"
                                    :output-to "public/js/app.js"
                                    :output-dir "public/js/out"

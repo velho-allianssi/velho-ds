@@ -1,6 +1,6 @@
 (ns velho-ds.pages.main
-  (:require-macros [velho-ds.macros :refer [$->]])
-  (:require [velho-ds.atoms.button :as buttons]
+  (:require [velho-ds.macros :refer-macros [$->]]
+            [velho-ds.atoms.button :as buttons]
             [velho-ds.molecules.field :as fields]
             [velho-ds.organisms.grid :as grid]
             [velho-ds.atoms.loader :as loaders]
