@@ -123,8 +123,7 @@
                                                 style/input-field)
                                               (when icon {:padding-right "2rem"})
                                               (when (not label) {:top 0}))
-                                       {:required "required"
-                                        :on-change #(-> % .-target .-value change)
+                                       {:on-change #(-> % .-target .-value change)
                                         :on-blur blur
                                         :on-focus focus
                                         :value @input-text
@@ -244,7 +243,6 @@
                                    {:class (str "dropdown-menu-" (:id @state))
                                     :id (str "input-dropdown-menu-" (:id @state))
                                     :on-key-down #(-> % .-key key-press-handler-fn)
-                                    :required "required"
                                     :disabled (:disabled @state)
                                     :on-change #(-> % .-target .-value change)
                                     :on-click #(swap! state assoc :focus (not (:focus @state)))
@@ -282,7 +280,7 @@
                                           {:selected "selected"}))
                          (:value %)) options))
     [icons/clickable {:name "arrow_drop_down"
-                      :styles style/dropdown-icon}]]])
+                      :styles (merge style/icon (when (nil? label) {:top spacing/space-xx-small-rem}))}]]])
 
 (defn dropdown-multiple [{:keys [label placeholder selected-fn options preselected-values]}]
   (assert (fn? selected-fn) ":selected-fn function is required for dropdown-multiple")

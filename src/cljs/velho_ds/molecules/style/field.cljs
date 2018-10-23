@@ -87,7 +87,7 @@
 
 (def dropdown
   {:appearance "none"
-   :background-color color/color-neutral-1
+   :background-color color/color-white
    :width "100%"
    :height (measures/rem-times font-size/font-size-base 2)
    :padding (str spacing/space-xx-small-rem " 0")
@@ -148,7 +148,7 @@
   {:position "relative"
    :height (measures/rem-times spacing/space-small-rem 2)
    :box-sizing "border-box"
-   :background-color color/color-neutral-1
+   :background-color color/color-white
    :border-bottom (str "1px solid " color/color-neutral-4)})
 
 (def dropdown-multiple-input
