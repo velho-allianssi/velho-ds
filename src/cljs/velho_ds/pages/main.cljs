@@ -681,12 +681,19 @@
                                     [fields/input-field {:label "Second"
                                                          :placeholder "Placeholder"}]
                                     [fields/input-field {:label "Third"
+                                                         :placeholder "Placeholder"}]
+                                    [fields/input-field {:label "Fourth"
+                                                         :placeholder "Placeholder"}]
+                                    [fields/input-field {:label "Fifth"
+                                                         :placeholder "Placeholder"}]
+                                    [fields/input-field {:label "Sixth"
                                                          :placeholder "Placeholder"}]]
                           :footer [[buttons/outline {:content "Cancel"
                                                      :on-click-fn #(swap! modal-open not)}]
                                    [buttons/primary {:content "Confirm"
                                                      :on-click-fn #(swap! modal-open not)
-                                                     :styles {:margin-left "16px"}}]]}]
+                                                     :styles {:margin-left "16px"}}]]
+                          :styles {:max-width "640px"}}]
          [buttons/default {:content "Open modal"
                            :on-click-fn #(swap! modal-open not)}]]))))
 
@@ -711,7 +718,10 @@
                   :example "{:footer\n[[buttons/outline {:content \"Cancel\"\n:on-click-fn #(swap! modal-open not)}]\n[buttons/primary {:content \"Confirm\"\n:on-click-fn #(swap! modal-open not)\n:styles {:margin-left \"16px\"}}]]}"}
                  {:name "is-open"
                   :desc "boolean"
-                  :example "{:is-open false}"}]]])
+                  :example "{:is-open false}"}
+                 {:name "styles"
+                  :desc "vector"
+                  :example "{:styles {:max-width \"640px\"}}"}]]])
 
 (defmethod page-contents :notifications []
   [:div

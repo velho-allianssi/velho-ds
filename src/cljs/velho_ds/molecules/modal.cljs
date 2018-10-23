@@ -17,18 +17,18 @@
 (defn close [modal-id]
   (.remove (.getElementById js/document modal-id) js/document))
 
-(defn default [{:keys [header header-buttons content footer is-open]}]
+(defn default [{:keys [header header-buttons content footer is-open styles]}]
   [:div (if is-open (stylefy/use-style style/modal-area)
                     (stylefy/use-style (merge style/modal-area {:display "none"})))
-   [:div (stylefy/use-style style/background)]
-   [:div (stylefy/use-style style/modal-box)
-    [:header (stylefy/use-style style/modal-header)
-     [:h2 (stylefy/use-sub-style style/modal-header :h2) header]
-     (into [:div (stylefy/use-style style/modal-header-btn-area)]
-           (for [item header-buttons] ^{:key item} [button/default (tools-style/merge-styles item style/modal-header-btn)]))]
-    (when content
-      (into [:div (stylefy/use-style style/modal-content)]
-            (for [item content] ^{:key item} item)))
-    (when footer
-      (into [:footer (stylefy/use-style style/modal-footer)]
-            (for [item footer] ^{:key item} item)))]])
+   [:div (stylefy/use-style (merge style/modal-dialog styles))
+    [:div (stylefy/use-style style/modal-box)
+     [:header (stylefy/use-style style/modal-header)
+      [:h2 (stylefy/use-sub-style style/modal-header :h2) header]
+      (into [:div (stylefy/use-style style/modal-header-btn-area)]
+            (for [item header-buttons] ^{:key item} [button/default (tools-style/merge-styles item style/modal-header-btn)]))]
+     (when content
+       (into [:div (stylefy/use-style style/modal-content)]
+             (for [item content] ^{:key item} item)))
+     (when footer
+       (into [:footer (stylefy/use-style style/modal-footer)]
+             (for [item footer] ^{:key item} item)))]]])
