@@ -83,8 +83,6 @@ var color = cljs.core.get.call(null,map__41590__$1,new cljs.core.Keyword(null,"c
 var inner_color = cljs.core.get.call(null,map__41590__$1,new cljs.core.Keyword(null,"inner-color","inner-color",703605972));
 var width = cljs.core.get.call(null,map__41590__$1,new cljs.core.Keyword(null,"width","width",-384071477));
 var height = cljs.core.get.call(null,map__41590__$1,new cljs.core.Keyword(null,"height","height",1025178622));
-cljs.core.println.call(null,icon_args);
-
 return new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [velho_ds.atoms.icon.circle,cljs.core.merge.call(null,icon_args,new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"color","color",1011675173),(cljs.core.truth_(color)?color:velho_ds.tokens.color.color_pacific)], null)),new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"path","path",-188191168),new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null,"fill","fill",883462889),velho_ds.tokens.color.color_white,new cljs.core.Keyword(null,"d","d",1972142424),"M16,9.3c-3.7,0-6.7,3-6.7,6.7s3,6.7,6.7,6.7s6.7-3,6.7-6.7S19.7,9.3,16,9.3L16,9.3z M13.3,19.7  c-0.9,0-1.7-0.7-1.7-1.7s0.7-1.7,1.7-1.7c0.9,0,1.7,0.7,1.7,1.7S14.3,19.7,13.3,19.7L13.3,19.7z M14.3,13.3c0-0.9,0.7-1.7,1.7-1.7  s1.7,0.7,1.7,1.7c0,0.9-0.7,1.7-1.7,1.7S14.3,14.3,14.3,13.3L14.3,13.3z M18.7,19.7c-0.9,0-1.7-0.7-1.7-1.7s0.7-1.7,1.7-1.7  c0.9,0,1.7,0.7,1.7,1.7S19.6,19.7,18.7,19.7L18.7,19.7z"], null)], null)], null);
 });
 velho_ds.atoms.icon.circle_group = (function velho_ds$atoms$icon$circle_group(p__41592){
