@@ -312,6 +312,48 @@
                   :example "{:styles {:margin \"1rem\"}}"}]]
    [dividers/default {:styles {:margin-top "2rem"
                                :margin-bottom "2rem"}}]
+   [:h2.rds-header2 "Custom icons"]
+   ($-> [icons/circle-single])
+   [props-table [{:name "color"
+                  :desc "color"
+                  :example "{:color color/color-pacific}"}
+                 {:name "inner-color"
+                  :desc "color"
+                  :example "{:inner-color color/color-neutral-3}"}
+                 {:name "height"
+                  :desc "height units"
+                  :example "{:height \"2rem\"}"}
+                 {:name "width"
+                  :desc "width units"
+                  :example "{:width \"2rem\"}"}]]
+   ($-> [icons/circle-halfgroup])
+   [props-table [{:name "color"
+                  :desc "color"
+                  :example "{:color color/color-pacific}"}
+                 {:name "inner-color"
+                  :desc "color"
+                  :example "{:inner-color color/color-neutral-3}"}
+                 {:name "height"
+                  :desc "height units"
+                  :example "{:height \"2rem\"}"}
+                 {:name "width"
+                  :desc "width units"
+                  :example "{:width \"2rem\"}"}]]
+   ($-> [icons/circle-group])
+   [props-table [{:name "color"
+                  :desc "color"
+                  :example "{:color color/color-pacific}"}
+                 {:name "inner-color"
+                  :desc "color"
+                  :example "{:inner-color color/color-neutral-3}"}
+                 {:name "height"
+                  :desc "height units"
+                  :example "{:height \"2rem\"}"}
+                 {:name "width"
+                  :desc "width units"
+                  :example "{:width \"2rem\"}"}]]
+   [dividers/default {:styles {:margin-top "2rem"
+                               :margin-bottom "2rem"}}]
    [:h2.rds-header2 "Icons"]
    [tables/default {:headers [{:label "Icon"
                                :key-path [:name]}
@@ -957,7 +999,7 @@
                                                                   :on-click-fn #(println "Documents")}]]
                                  :bar-color color/color-pacific}]
          [areas/info
-          [icons/type-icon-circle {:color color/color-pacific}]
+          [icons/circle-single {:color color/color-pacific}]
           [fields/keyvalue {:label "Type"
                             :content "Project"}]
           [fields/keyvalue {:label "Schedule"
@@ -969,7 +1011,7 @@
                   :example "{:styles {:padding \"2px\"}"}
                  {:name "content"
                   :desc "components"
-                  :example "[areas/info\n[icons/type-icon-circle {:color color/color-pacific}]\n[fields/keyvalue {:label \"Type\"\n:content \"Project\"}]\n[fields/keyvalue {:label \"Schedule\"\n:content \"29.09.2017 - 01.01.2021\"}]\n[fields/keyvalue {:label \"State\"\n:content \"In Progress\"}]]"}]]
+                  :example "[areas/info\n[icons/circle-single {:color color/color-pacific}]\n[fields/keyvalue {:label \"Type\"\n:content \"Project\"}]\n[fields/keyvalue {:label \"Schedule\"\n:content \"29.09.2017 - 01.01.2021\"}]\n[fields/keyvalue {:label \"State\"\n:content \"In Progress\"}]]"}]]
 
    [:h2.rds-header2 "Content-header-default"]
    [:p "Default structure of content-header. Parameters can be used to change values, but the styles are strict."]
@@ -991,7 +1033,7 @@
                                                         :label "Documents"
                                                         :on-click-fn #(println "Default icon-link clicked")}]
                                           :theme-color color/color-pacific
-                                          :info-icon [icons/type-icon-circle]
+                                          :info-icon [icons/circle-single]
                                           :info-keyvalues [{:label "Type"
                                                             :content "Project"}
                                                            {:label "Schedule"
