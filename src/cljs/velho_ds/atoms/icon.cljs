@@ -29,13 +29,12 @@
                :stroke color/color-white
                :stroke-miterlimit 10
                :stroke-width "2px"}]
-   content
-   ])
+   content])
+
 (defn circle-single [{:keys [color inner-color width height] :as icon-args}]
   [circle (merge icon-args {:color (if color color color/color-pacific-light)})])
 
 (defn circle-halfgroup [{:keys [color inner-color width height] :as icon-args}]
-  (println icon-args)
   [circle (merge icon-args {:color (if color color color/color-pacific)})
    [:path
     {:fill color/color-white

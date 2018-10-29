@@ -83,7 +83,15 @@
                         (swap! pages conj page)
                         (recur (:child page)))))]
     (get-pages current-page)
-    (fn []
+    (fn [{:keys [current-page
+                 search-placeholder
+                 search-initial-select
+                 search-fn
+                 search-results
+                 search-result-clicked-fn
+                 sub-content
+                 breadcrumb-click-fn
+                 styles]}]
       [:header (stylefy/use-style styles)
        [grid/grid-wrap {:rows 1
                         :cols 4
