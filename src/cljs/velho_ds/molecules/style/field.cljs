@@ -35,7 +35,8 @@
    :border-color color/color-neutral-4
    :resize "vertical"
    ::stylefy/mode {:focus {:border-bottom (str border/border-default " solid")
-                           :border-color color/color-primary}}
+                           :border-color color/color-primary}
+                   "::-ms-clear" {:display "none"}}
    ::stylefy/vendors ["webkit" "moz" "o"]
    ::stylefy/auto-prefix #{:transition}})
 
