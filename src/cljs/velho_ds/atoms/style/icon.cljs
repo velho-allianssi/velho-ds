@@ -17,6 +17,7 @@
    :box-sizing "border-box"
    :border "none"
    :padding 0
+   :outline "none"
    :line-height line-height/line-height-heading
    :color color/color-neutral-5
    :font-size font-size/font-size-xx-large
