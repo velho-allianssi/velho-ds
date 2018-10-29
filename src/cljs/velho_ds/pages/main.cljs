@@ -248,6 +248,10 @@
                                :example [:p "Paragraph"]
                                :font-family font/font-family-heading
                                :font-size font-size/font-size-base}
+                              {:name "a"
+                               :example [:a "Link"]
+                               :font-family font/font-family-heading
+                               :font-size font-size/font-size-base}
                               {:name "small"
                                :example [:small "Small paragraph"]
                                :font-family font/font-family-text

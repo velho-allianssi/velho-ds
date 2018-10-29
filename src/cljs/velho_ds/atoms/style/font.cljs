@@ -14,7 +14,8 @@
 
 (def a
   (merge p
-         {:color color/color-primary}))
+         {:cursor "pointer"
+          :color color/color-primary}))
 
 (def span p)
 
