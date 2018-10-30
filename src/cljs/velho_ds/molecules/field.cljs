@@ -9,7 +9,10 @@
             [velho-ds.tokens.font-size :as font-size]
             [velho-ds.molecules.style.field :as style]
             [velho-ds.atoms.icon :as icons]
-            [velho-ds.design-system :as ds]))
+            [velho-ds.design-system :as ds]
+            [velho-ds.atoms.area :as areas]
+            [velho-ds.organisms.grid :as grid]
+            [velho-ds.atoms.divider :as dividers]))
 
 (defn- add-event-listener
   ([event func]
@@ -517,44 +520,44 @@
                                (set! (-> % .-target .-value) nil))
                  :style {:display "none"}}]]])))
 
-(defn item-list [{:keys [help-text data on-change-fn]}]
-  (assert on-change-fn)
-  (let [files (r/atom {1 {:name "seppio.jpeg", :description "asd", :file nil, :filename "seppio.jpeg"}
-                       2 {:name "teppio.jpeg", :description nil, :file nil, :filename "seppio.jpeg"}})
-        label-id (r/atom (sanitize-id (str (subs (str (rand)) 2 9))))
-        file-to-map (fn [item]
-                      {:name (.-name item)
-                       :description nil
-                       :file item})
-        get-files (fn [e]
-                    (do
-                      (-> e
-                          .-files
-                          array-seq
-                          (#(map file-to-map %))
-                          (#(reduce add-to-files @files %))
-                          (#(reset! files %)))
-                      (on-change-fn @files)))
-        file-metadata-changed (fn [key new-metadata]
-                                (do
-                                  (swap! files assoc key (merge (get @files key) new-metadata))
-                                  (on-change-fn @files)))
-        remove-item #(do
-                       (swap! files dissoc %)
-                       (on-change-fn @files))]
+(defn list-element [{:keys [label desc info sub-content buttons]}]
+  (let [state (r/atom {:expanded false})]
     (fn []
-      [:div {:on-drag-over #(.preventDefault %)
-             :on-drag-enter #(.preventDefault %)
-             :on-drag-start #(.setData (.-dataTransfer %) "text/plain" "") ;; for Firefox. You MUST set something as data.
-             :on-drop #(do
-                         (.preventDefault %)
-                         (get-files (.-dataTransfer %)))}
-       (when (not (empty? @files))
-         (into [:ul (stylefy/use-style style/drag-n-drop-content-ul)]
-               (for [key (sort (keys @files))]
-                 (let [file-item (get @files key)]
-                   ^{:key key} [file-list-item {:filename (:name file-item)
-                                                :metadata {:description (:description file-item)
-                                                           :filename (:name file-item)}
-                                                :on-change-fn (partial file-metadata-changed key)
-                                                :delete-fn #(remove-item key)}]))))])))
+      [areas/shadow-area {:styles {:margin "0 0 0.5rem 0"}}
+       [grid/grid-wrap {:rows 1
+                        :cols 2
+                        :styles {:padding "0 8px"
+                                 :grid-template-columns "auto minmax(64px, 33%)"}}
+        [grid/grid-cell {:col-start 1
+                         :col-end 1
+                         :styles {:align-self "center"}}
+         [:small {:style {:margin 0
+                          :font-weight 600
+                          :display "block"
+                          :line-height 1.25}} label]
+         (when desc
+           [:small {:style {:line-height 1.25
+                            :display "block"
+                            :margin 0}} desc])
+         (when info
+           [:small {:style {:line-height 1
+                            :display "block"
+                            :margin 0
+                            :color color/color-neutral-4}} info])]
+        [grid/grid-cell {:col-start 2
+                         :col-end 2
+                         :styles {:align-self "center"
+                                  :justify-self "right"}}
+         (map-indexed #(with-meta %2 {:key %1})
+                      (if sub-content
+                        (conj buttons [icons/clickable {:name (if (:expanded @state) "expand_less" "expand_more")
+                                                        :styles {:padding "0 0 0 8px"}
+                                                        :on-click-fn #(swap! state assoc :expanded (not (:expanded @state)))}])
+                        buttons))]]
+       (when sub-content
+         [:div {:style {:padding "0 8px"
+                        :display (if (:expanded @state) "block" "none")}}
+          [dividers/default]
+          (map-indexed #(with-meta %2 {:key %1}) sub-content)])])))
+
+
