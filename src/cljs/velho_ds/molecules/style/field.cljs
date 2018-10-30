@@ -2,6 +2,7 @@
   (:require [stylefy.core :as stylefy]
             [velho-ds.tokens.color :as color]
             [velho-ds.tokens.spacing :as spacing]
+            [velho-ds.tokens.line-height :as line-height]
             [velho-ds.tokens.font-size :as font-size]
             [velho-ds.tokens.z-index :as z-index]
             [velho-ds.tokens.border :as border]
@@ -12,7 +13,8 @@
 
 
 (def element
-  {:position "relative"
+  {:line-height line-height/line-height-heading
+   :position "relative"
    :display "block"})
 
 (def input-field

@@ -134,7 +134,7 @@
 
    ($-> [buttons/default {:content "Alert Button"
                           :icon "warning"
-                          :on-click-fn #(js/alert "Default button with icon and text clicked")}])
+                          :on-click-fn (fn [] (js/alert "Default button with icon and text clicked"))}])
    [props-table [{:name "content"
                   :desc "string"
                   :example "{:content \"Text\"}"}
@@ -143,7 +143,7 @@
                   :example "{:icon \"autorenew\"}"}
                  {:name "on-click-fn"
                   :desc "function"
-                  :example "{:on-click-fn #(js/alert \"Pressed!\")}"}
+                  :example "{:on-click-fn (fn [] (js/alert \"Default button with icon and text clicked\"))}"}
                  {:name "styles"
                   :desc "map"
                   :example "{:styles {:margin \"1rem\"}}"}]]
@@ -187,7 +187,7 @@
 
    ($-> [buttons/default-small {:content "Small Alert Button"
                                 :icon "warning"
-                                :on-click-fn #(js/alert "Small default button with icon and text clicked")}])
+                                :on-click-fn (fn [] (js/alert "Small default button with icon and text clicked"))}])
    [props-table [{:name "content"
                   :desc "string"
                   :example "{:content \"Text\"}"}
@@ -196,7 +196,7 @@
                   :example "{:icon \"autorenew\"}"}
                  {:name "on-click-fn"
                   :desc "function"
-                  :example "{:on-click-fn #(js/alert \"Pressed!\")}"}
+                  :example "{:on-click-fn (fn [] (js/alert \"Pressed!\"))}"}
                  {:name "styles"
                   :desc "map"
                   :example "{:styles {:margin \"1rem\"}}"}]]])
@@ -246,6 +246,10 @@
                                :font-size font-size/font-size-base}
                               {:name "p"
                                :example [:p "Paragraph"]
+                               :font-family font/font-family-heading
+                               :font-size font-size/font-size-base}
+                              {:name "a"
+                               :example [:a "Link"]
                                :font-family font/font-family-heading
                                :font-size font-size/font-size-base}
                               {:name "small"
@@ -300,16 +304,58 @@
                   :example "{:styles {:margin \"1rem\"}}"}]]
    [:h2.rds-header2 "Clickable icon"]
    ($-> [icons/clickable {:name "autorenew"
-                          :on-click-fn #(println "Icon clicked")}])
+                          :on-click-fn (fn [] (println "Icon clicked"))}])
    [props-table [{:name "name"
                   :desc "string"
                   :example "{:name \"autorenew\"}"}
                  {:name "on-click-fn"
                   :desc "function"
-                  :example "#(println \"Icon clicked\")"}
+                  :example "{:on-click-fn (fn [] (println \"Icon clicked\"))}"}
                  {:name "styles"
                   :desc "map"
                   :example "{:styles {:margin \"1rem\"}}"}]]
+   [dividers/default {:styles {:margin-top "2rem"
+                               :margin-bottom "2rem"}}]
+   [:h2.rds-header2 "Custom icons"]
+   ($-> [icons/circle-single])
+   [props-table [{:name "color"
+                  :desc "color"
+                  :example "{:color color/color-pacific}"}
+                 {:name "inner-color"
+                  :desc "color"
+                  :example "{:inner-color color/color-neutral-3}"}
+                 {:name "height"
+                  :desc "height units"
+                  :example "{:height \"2rem\"}"}
+                 {:name "width"
+                  :desc "width units"
+                  :example "{:width \"2rem\"}"}]]
+   ($-> [icons/circle-halfgroup])
+   [props-table [{:name "color"
+                  :desc "color"
+                  :example "{:color color/color-pacific}"}
+                 {:name "inner-color"
+                  :desc "color"
+                  :example "{:inner-color color/color-neutral-3}"}
+                 {:name "height"
+                  :desc "height units"
+                  :example "{:height \"2rem\"}"}
+                 {:name "width"
+                  :desc "width units"
+                  :example "{:width \"2rem\"}"}]]
+   ($-> [icons/circle-group])
+   [props-table [{:name "color"
+                  :desc "color"
+                  :example "{:color color/color-pacific}"}
+                 {:name "inner-color"
+                  :desc "color"
+                  :example "{:inner-color color/color-neutral-3}"}
+                 {:name "height"
+                  :desc "height units"
+                  :example "{:height \"2rem\"}"}
+                 {:name "width"
+                  :desc "width units"
+                  :example "{:width \"2rem\"}"}]]
    [dividers/default {:styles {:margin-top "2rem"
                                :margin-bottom "2rem"}}]
    [:h2.rds-header2 "Icons"]
@@ -572,9 +618,9 @@
        ($-> [fields/input-field {:label "Input with label and icon"
                                  :placeholder "Placeholder"
                                  :icon "search"
-                                 :on-change-fn #(println %)
-                                 :on-blur-fn #(println %)
-                                 :icon-click-fn #(println (str "Icon Clicked"))}])
+                                 :on-change-fn (fn [e] (println e))
+                                 :on-blur-fn (fn [e] (println e))
+                                 :icon-click-fn (fn [] (println (str "Icon Clicked")))}])
        [props-table [{:name "label"
                       :desc "string"
                       :example "{:label \"Label\"}"}
@@ -589,19 +635,19 @@
                       :example "{:icon \"search\"}"}
                      {:name "icon-click-fn"
                       :desc "function"
-                      :example "{:icon-click-fn \"#(println (str \"Icon Clicked\"))\"}"}
+                      :example "{:icon-click-fn (fn [] (println (str \"Icon Clicked\")))}"}
                      {:name "on-change-fn"
                       :desc "function"
-                      :example "{:on-change-fn \"#(println (str \"Value has changed!\"))\"}"}
+                      :example "{:on-blur-fn (fn [e] (println e))}"}
                      {:name "on-blur-fn"
                       :desc "function"
-                      :example "{:on-blur-fn \"#(println (str \"Focus lost!\"))\"}"}]]
+                      :example "{:on-blur-fn (fn [e] (println e))}"}]]
 
        [:h3.rds-header3 "Multiline-field"]
        ($-> [fields/multiline-field {:label "Multiline-field"
-                                     :on-change-fn #(println %)
-                                     :on-blur-fn #(println %)
-                                     :icon-click-fn #(println (str "Icon Clicked"))}])
+                                     :on-change-fn  (fn [e] (println e))
+                                     :on-blur-fn  (fn [e] (println e))
+                                     :icon-click-fn (fn [] (println (str "Icon Clicked")))}])
        [props-table [{:name "label"
                       :desc "string"
                       :example "{:label \"Label\"}"}
@@ -616,21 +662,21 @@
                       :example "{:icon \"search\"}"}
                      {:name "icon-click-fn"
                       :desc "function"
-                      :example "{:icon-click-fn \"#(println (str \"Icon Clicked\"))\"}"}
+                      :example "{:icon-click-fn (fn [] (println (str \"Icon Clicked\")))}"}
                      {:name "on-change-fn"
                       :desc "function"
-                      :example "{:on-change-fn \"#(println (str \"Value has changed!\"))\"}"}
+                      :example "{:on-blur-fn (fn [e] (println e))}"}
                      {:name "on-blur-fn"
                       :desc "function"
-                      :example "{:on-blur-fn \"#(println (str \"Focus lost!\"))\"}"}]]
+                      :example "{:on-blur-fn (fn [e] (println e))}"}]]
        [:h3.rds-header3 "Dropdown-menu"]
        ($-> [fields/dropdown-menu {:label "Dropdown menu"
                                    :placeholder "Select"
                                    :item-list @example-data
                                    :on-change-fn example-search-fn
-                                   :on-blur-fn #(println "On blur: " %)
-                                   :on-focus-fn #(println "On focus: " %)
-                                   :on-item-select-fn #(println "Item selected: " %1 %2)
+                                   :on-blur-fn (fn [e] (println "On blur: " e))
+                                   :on-focus-fn (fn [e] (println "On focus: " e))
+                                   :on-item-select-fn (fn [first second] (println "Item selected: " first second))
                                    :selected-item {:label "File 1"}}])
        [props-table [{:name "label"
                       :desc "string"
@@ -643,16 +689,16 @@
                       :example "{:item-list [{:section \"Sub-projects\"\n:items [{:label \"Sub-project 001\"}\n{:label \"Sub-project 002\"}]}]}"}
                      {:name "on-change-fn"
                       :desc "function"
-                      :example "{:on-change-fn #(sort-fn %)}"}
+                      :example "{:on-change-fn (fn [e] (sort-fn e)}"}
                      {:name "on-blur-fn"
                       :desc "function"
-                      :example "{:on-blur-fn #(println \"On blur: \" %)}"}
+                      :example "{:on-blur-fn (fn [e] (println \"On blur: \" e))}"}
                      {:name "on-focus-fn"
                       :desc "function"
-                      :example "{:on-focus-fn #(println \"On focus: \" %)}"}
+                      :example "{:on-focus-fn (fn [e] (println \"On focus: \" e))}"}
                      {:name "on-item-select-fn"
                       :desc "function"
-                      :example "{:on-item-select-fn #(println \"Item selected: \" %1 %2)}"}
+                      :example "{:on-item-select-fn (fn [first second] (println \"Item selected: \" first second))}"}
                      {:name "selected-item"
                       :desc "map"
                       :example "{:selected-item {:label \"Sub-project 002\"}}"}
@@ -675,7 +721,7 @@
        ($-> (let [values [{:id 1 :value "First"}
                           {:id 2 :value "Second"}]]
               [fields/dropdown-menu-simple {:label "Dropdown, simple"
-                                            :selected-fn #(js/alert (str "Selected value: " %))
+                                            :selected-fn (fn [e] (js/alert (str "Selected value: " e)))
                                             :options values
                                             :no-selection-text "- No selection -"}]))
        [props-table [{:name "label"
@@ -683,7 +729,7 @@
                       :example "{:label \"Label\"}"}
                      {:name "selected-fn"
                       :desc "function"
-                      :example "{:selected-fn #(println (str \"Selected value\"))}"}
+                      :example "{:selected-fn (fn [e] (js/alert (str \"Selected value: \" e)))}"}
                      {:name "options"
                       :desc "vector"
                       :example "{:options [{:id 1 :value \"First\"}\n{:id 2 :value \"Second\"}]}"}
@@ -696,7 +742,7 @@
        [:h3.rds-header3 "Dropdown-multiple"]
        ($-> (let [options ["John" "Sandra" "Matt" "Will" "Kate" "Alex" "Keith" "Melinda"]]
               [fields/dropdown-multiple {:label "Multiselect dropdown"
-                                         :selected-fn #(println (str "Selected values: " %))
+                                         :selected-fn (fn [e] (println (str "Selected values: " e)))
                                          :options options
                                          :no-selection-text "- No selection -"
                                          :preselected-values ["John"]}]))
@@ -708,7 +754,7 @@
                       :example "{:placeholder \"Placeholder\"}"}
                      {:name "selected-fn"
                       :desc "function"
-                      :example "{:selected-fn #(println (str \"Selected value\"))}"}
+                      :example "{:selected-fn (fn [e] (println (str \"Selected values: \" e)))}"}
                      {:name "options"
                       :desc "vector"
                       :example "{:options [{:id 1 :value \"First\"}\n{:id 2 :value \"Second\"}]}"}
@@ -718,7 +764,7 @@
        [:h3.rds-header3 "Drag-n-drop"]
        ($-> [fields/drag-n-drop {:label "Example"
                                  :help-text "Drag-n-drop files or click here to upload"
-                                 :on-change-fn println}])
+                                 :on-change-fn (fn [e] (println e))}])
        [props-table [{:name "label"
                       :desc "string"
                       :example "{:label \"Label\"}"}
@@ -727,7 +773,7 @@
                       :example "{:help-text \"Drag-n-drop files or click here to upload\"}"}
                      {:name "on-change-fn"
                       :desc "function"
-                      :example "{:selected-fn #(println (str \"Filelist changed!\"))}"}]]])))
+                      :example "{:on-change-fn (fn [e] (println e))}"}]]])))
 
 (def modal-example
   (let [modal-open (r/atom false)]
@@ -737,9 +783,9 @@
          [modals/default {:is-open @modal-open
                           :header "Confirm modal"
                           :header-buttons [{:icon "more_vert"
-                                            :on-click-fn #(swap! modal-open not)}
+                                            :on-click-fn (fn [] (swap! modal-open not))}
                                            {:icon "close"
-                                            :on-click-fn #(swap! modal-open not)}]
+                                            :on-click-fn (fn [] (swap! modal-open not))}]
                           :content [[fields/input-field {:label "First"
                                                          :placeholder "Placeholder"}]
                                     [fields/input-field {:label "Second"
@@ -753,13 +799,13 @@
                                     [fields/input-field {:label "Sixth"
                                                          :placeholder "Placeholder"}]]
                           :footer [[buttons/outline {:content "Cancel"
-                                                     :on-click-fn #(swap! modal-open not)}]
+                                                     :on-click-fn (fn [] (swap! modal-open not))}]
                                    [buttons/primary {:content "Confirm"
-                                                     :on-click-fn #(swap! modal-open not)
+                                                     :on-click-fn (fn [] (swap! modal-open not))
                                                      :styles {:margin-left "16px"}}]]
                           :styles {:max-width "640px"}}]
          [buttons/default {:content "Open modal"
-                           :on-click-fn #(swap! modal-open not)}]]))))
+                           :on-click-fn (fn [] (swap! modal-open not))}]]))))
 
 (defmethod page-contents :modals []
   [:div
@@ -779,7 +825,7 @@
                   :example "{:content\n[[fields/input-field {:label \"First\"\n:placeholder \"Placeholder\"}]\n[fields/input-field {:label \"Second\"\n:placeholder \"Placeholder\"}]\n[fields/input-field {:label \"Third\"\n:placeholder \"Placeholder\"}]]}"}
                  {:name "footer"
                   :desc "vector"
-                  :example "{:footer\n[[buttons/outline {:content \"Cancel\"\n:on-click-fn #(swap! modal-open not)}]\n[buttons/primary {:content \"Confirm\"\n:on-click-fn #(swap! modal-open not)\n:styles {:margin-left \"16px\"}}]]}"}
+                  :example "{:footer\n[[buttons/outline {:content \"Cancel\"\n:on-click-fn (fn [] (swap! modal-open not))}]\n[buttons/primary {:content \"Confirm\"\n:on-click-fn (fn [] (swap! modal-open not))\n:styles {:margin-left \"16px\"}}]]}"}
                  {:name "is-open"
                   :desc "boolean"
                   :example "{:is-open false}"}
@@ -791,50 +837,50 @@
   [:div
    [:p.rds-quote "Notifications are used to inform users about imminent exceptions, errors, warnings, messages or other high-priority information. Notifications should be clearly written and informative for users. They can include actions such as 'retry', 'reload', 'try again', 'confirm'."]
    [:h3.rds-header3 "Default"]
-   ($-> [notifications/default {:close-fn #(js/alert "Default notification icon clicked")} [:span "Default notification"]])
+   ($-> [notifications/default {:close-fn (fn [] (js/alert "Default notification icon clicked"))} [:span "Default notification"]])
    [props-table [{:name "close-fn"
                   :desc "function"
-                  :example "{:close-fn #(js/alert \"Success notification icon clicked\"}"}
+                  :example "{:close-fn (fn [] (js/alert \"Default notification icon clicked\"))}"}
                  {:name "styles"
                   :desc "map"
                   :example "{:styles {:margin \"1rem\"}}"}
                  {:name "content"
                   :desc "components"
-                  :example "[:span \"Warning notification\"] [:span {:style {:text-decoration \"underline\"}\n:on-click #(js/alert \"Alert\")} \"Warning notification 2\"]"}]]
+                  :example "[:span \"Warning notification\"] [:span {:style {:text-decoration \"underline\"}\n:on-click (fn (js/alert \"Alert\"))} \"Warning notification 2\"]"}]]
    [:h3.rds-header3 "Error"]
-   ($-> [notifications/error {:close-fn #(js/alert "Error notification icon clicked")} [:span "Error notification"]])
+   ($-> [notifications/error {:close-fn (fn [] (js/alert "Error notification icon clicked"))} [:span "Error notification"]])
    [props-table [{:name "close-fn"
                   :desc "function"
-                  :example "{:close-fn #(js/alert \"Success notification icon clicked\"}"}
+                  :example "{:close-fn (fn [] (js/alert \"Error notification icon clicked\"))}"}
                  {:name "styles"
                   :desc "map"
                   :example "{:styles {:margin \"1rem\"}}"}
                  {:name "content"
                   :desc "components"
-                  :example "[:span \"Warning notification\"] [:span {:style {:text-decoration \"underline\"}\n:on-click #(js/alert \"Alert\")} \"Warning notification 2\"]"}]]
+                  :example "[:span \"Warning notification\"] [:span {:style {:text-decoration \"underline\"}\n:on-click (fn (js/alert \"Alert\"))} \"Warning notification 2\"]"}]]
    [:h3.rds-header3 "Warning"]
-   ($-> [notifications/warning {:close-fn #(js/alert "Warning notification icon clicked")} [:span "Warning notification"] [:span {:style {:text-decoration "underline"}
-                                                                                                                                  :on-click #(js/alert "Alert")} "Warning notification 2"]])
+   ($-> [notifications/warning {:close-fn (fn [] (js/alert "Warning notification icon clicked"))} [:span "Warning notification"] [:span {:style {:text-decoration "underline"}
+                                                                                                                                  :on-click (fn [] (js/alert "Alert"))} "Warning notification 2"]])
    [props-table [{:name "close-fn"
                   :desc "function"
-                  :example "{:close-fn #(js/alert \"Success notification icon clicked\"}"}
+                  :example "{:close-fn (fn [] (js/alert \"Warning notification icon clicked\"))}"}
                  {:name "styles"
                   :desc "map"
                   :example "{:styles {:margin \"1rem\"}}"}
                  {:name "content"
                   :desc "components"
-                  :example "[:span \"Warning notification\"] [:span {:style {:text-decoration \"underline\"}\n:on-click #(js/alert \"Alert\")} \"Warning notification 2\"]"}]]
+                  :example "[:span \"Warning notification\"] [:span {:style {:text-decoration \"underline\"}\n:on-click (fn [] (js/alert \"Alert\"))} \"Warning notification 2\"]"}]]
    [:h3.rds-header3 "Success"]
-   ($-> [notifications/success {:close-fn #(js/alert "Success notification icon clicked")} [:p {:style {:margin "0"}} "Success notification"]])
+   ($-> [notifications/success {:close-fn (fn [] (js/alert "Success notification icon clicked"))} [:p {:style {:margin "0"}} "Success notification"]])
    [props-table [{:name "close-fn"
                   :desc "function"
-                  :example "{:close-fn #(js/alert \"Success notification icon clicked\"}"}
+                  :example "{:close-fn (fn [] (js/alert \"Default notification icon clicked\"))}"}
                  {:name "styles"
                   :desc "map"
                   :example "{:styles {:margin \"1rem\"}}"}
                  {:name "content"
                   :desc "components"
-                  :example "[:span \"Warning notification\"] [:span {:style {:text-decoration \"underline\"}\n:on-click #(js/alert \"Alert\")} \"Warning notification 2\"]"}]]])
+                  :example "[:span \"Warning notification\"] [:span {:style {:text-decoration \"underline\"}\n:on-click (fn [] (js/alert \"Alert\"))} \"Warning notification 2\"]"}]]])
 
 (defmethod page-contents :tabs []
   [:div
@@ -845,7 +891,7 @@
    ($-> [tabs/default {:tab-id 1
                        :icon "info"
                        :label "Info"
-                       :on-click-fn #(println "Default tab clicked")}])
+                       :on-click-fn (fn [] (println "Default tab clicked"))}])
    [props-table [{:name "tab-id"
                   :desc "int"
                   :example "{:tab-id 1}"}
@@ -857,7 +903,7 @@
                   :example "{:label \"Info\"}"}
                  {:name "on-click-fn"
                   :desc "function"
-                  :example "{:on-click-fn #(println \"Default tab clicked\")}"}
+                  :example "{:on-click-fn (fn [] (println \"Default tab clicked\"))}"}
                  {:name "styles"
                   :desc "map"
                   :example "{:styles {:margin \"1rem\"}}"}]]
@@ -868,11 +914,11 @@
          [tabs/default {:tab-id 1
                         :icon "info"
                         :label "Info"
-                        :on-click-fn #(println "Default tab clicked")}]
+                        :on-click-fn (fn [] (println "Default tab clicked"))}]
          [tabs/default {:tab-id 2
                         :icon "group_work"
                         :label "Relations"
-                        :on-click-fn #(println "Default tab clicked")}]])
+                        :on-click-fn (fn [] (println "Default tab clicked"))}]])
    [props-table [{:name "selected-id"
                   :desc "int"
                   :example "{:selected-id 1}"}
@@ -881,7 +927,7 @@
                   :example "{:styles {:margin \"1rem\"}}"}
                  {:name "content"
                   :desc "components"
-                  :example "[tabs/default {:tab-id 1\n:icon \"info\"\n:label \"Info\"\n:on-click-fn #(println \"Default tab clicked\")}]\n[tabs/default {:tab-id 2\n:icon \"group_work\"\n:label \"Relations\"\n:on-click-fn #(println \"Default tab clicked\")}]"}]]])
+                  :example "[tabs/default {:tab-id 1\n:icon \"info\"\n:label \"Info\"\n:on-click-fn (fn [] (println \"Default tab clicked\"))}]\n[tabs/default {:tab-id 2\n:icon \"group_work\"\n:label \"Relations\"\n:on-click-fn (fn [] (println \"Default tab clicked\"))}]"}]]])
 
 ;; ORGANISMS
 
@@ -961,12 +1007,12 @@
                                                :child {:label "Animals"
                                                        :child {:label "Flying squirrel investigation"
                                                                :child nil}}}
-                                :breadcrumb-click-fn #(println %)
+                                :breadcrumb-click-fn (fn [e] (println e))
                                 :sub-content [[:p "Given content"]]
                                 :search-placeholder "Search"
                                 :search-results @data-example
-                                :search-result-clicked-fn #(println "Item selected: " %1 %2)
-                                :search-fn #(println "Search-fn: " %)
+                                :search-result-clicked-fn (fn [first second] (println "Item selected: " first second))
+                                :search-fn (fn [e] (println "Search-fn: " e))
                                 :styles {:z-index z-index/z-index-docked}}])
    [props-table [{:name "current-page"
                   :desc "map"
@@ -991,10 +1037,10 @@
                   :example "{:search-results-msg \"No results, sorry\"}"}
                  {:name "search-result-clicked-fn"
                   :desc "function"
-                  :example "{:search-result-clicked-fn #(println %)}"}
+                  :example "{:search-result-clicked-fn (fn [e] (println e))}"}
                  {:name "search-heading-fn"
                   :desc "function"
-                  :example "{:search-heading-fn #(println %)}"}
+                  :example "{:search-heading-fn (fn [e] (println e))}"}
                  {:name "sub-content"
                   :desc "vector"
                   :example "{:sub-content [[:p \"Given content\"]]}"}
@@ -1015,13 +1061,13 @@
                                  :navigation [[buttons/icon-link {:icon "info"
                                                                   :label "Info"
                                                                   :active true
-                                                                  :on-click-fn #(println "Info")}]
+                                                                  :on-click-fn (fn [] (println "Info"))}]
                                               [buttons/icon-link {:icon "insert_drive_file"
                                                                   :label "Documents"
-                                                                  :on-click-fn #(println "Documents")}]]
+                                                                  :on-click-fn (fn [] (println "Documents"))}]]
                                  :bar-color color/color-pacific}]
          [areas/info
-          [icons/type-icon-circle {:color color/color-pacific}]
+          [icons/circle-single {:color color/color-pacific}]
           [fields/keyvalue {:label "Type"
                             :content "Project"}]
           [fields/keyvalue {:label "Schedule"
@@ -1033,7 +1079,7 @@
                   :example "{:styles {:padding \"2px\"}"}
                  {:name "content"
                   :desc "components"
-                  :example "[areas/info\n[icons/type-icon-circle {:color color/color-pacific}]\n[fields/keyvalue {:label \"Type\"\n:content \"Project\"}]\n[fields/keyvalue {:label \"Schedule\"\n:content \"29.09.2017 - 01.01.2021\"}]\n[fields/keyvalue {:label \"State\"\n:content \"In Progress\"}]]"}]]
+                  :example "[areas/info\n[icons/circle-single {:color color/color-pacific}]\n[fields/keyvalue {:label \"Type\"\n:content \"Project\"}]\n[fields/keyvalue {:label \"Schedule\"\n:content \"29.09.2017 - 01.01.2021\"}]\n[fields/keyvalue {:label \"State\"\n:content \"In Progress\"}]]"}]]
 
    [:h2.rds-header2 "Content-header-default"]
    [:p "Default structure of content-header. Parameters can be used to change values, but the styles are strict."]
@@ -1041,21 +1087,21 @@
                                                        :child {:label "Animals"
                                                                :child {:label "Flying squirrel investigation"
                                                                        :child nil}}}
-                                          :breadcrumb-click-fn #(println %1 %2)
+                                          :breadcrumb-click-fn (fn [first second] (println first second))
                                           :footnote "Related Organization, Another Organization"
                                           :features [{:content "Item"
-                                                      :on-click-fn #(println %)}
+                                                      :on-click-fn (fn [e] (println e))}
                                                      {:content "Another Item"}
                                                      {:content "Last Item"}]
                                           :navigation [{:icon "info"
                                                         :label "Info"
                                                         :active true
-                                                        :on-click-fn #(println "Default icon-link clicked")}
+                                                        :on-click-fn (fn [] (println "Default icon-link clicked"))}
                                                        {:icon "insert_drive_file"
                                                         :label "Documents"
-                                                        :on-click-fn #(println "Default icon-link clicked")}]
+                                                        :on-click-fn (fn [] (println "Default icon-link clicked"))}]
                                           :theme-color color/color-pacific
-                                          :info-icon [icons/type-icon-circle]
+                                          :info-icon [icons/circle-single]
                                           :info-keyvalues [{:label "Type"
                                                             :content "Project"}
                                                            {:label "Schedule"
@@ -1067,16 +1113,16 @@
                   :example " {:breadcrumb {:label \"X-Files\"\n:child {:label \"Animals\"\n:child {:label \"Flying squirrel investigation\"\n:child nil}}}}"}
                  {:name "breadcrumb-click-fn"
                   :desc "map"
-                  :example "{:breadcrumb-click-fn #(println %1 %2)"}
+                  :example "{:breadcrumb-click-fn (fn [first second] (println first second))"}
                  {:name "footnote"
                   :desc "string"
                   :example "{:footnote \"Related Organization, Another Organization\"}"}
                  {:name "features"
                   :desc "vector of button-parameters"
-                  :example "{:meta [{:content \"Item\"\n:on-click-fn #(println %)}\n{:content \"Another Item\"}\n{:content \"Last Item\"}]}"}
+                  :example "{:meta [{:content \"Item\"\n:on-click-fn (fn [e] (println e))}\n{:content \"Another Item\"}\n{:content \"Last Item\"}]}"}
                  {:name "navigation"
                   :desc "vector"
-                  :example "{:navigation [{:icon \"info\"\n:label \"Info\"\n:active true\n:on-click-fn #(println \"Default icon-link clicked\")}\n{:icon \"insert_drive_file\"\n:label \"Documents\"\n:on-click-fn #(println \"Default icon-link clicked\")}]}"}
+                  :example "{:navigation [{:icon \"info\"\n:label \"Info\"\n:active true\n:on-click-fn (fn [] (println \"Default icon-link clicked\"))}\n{:icon \"insert_drive_file\"\n:label \"Documents\"\n:on-click-fn (fn [] (println \"Default icon-link clicked\"))}]}"}
                  {:name "theme-color"
                   :desc "color"
                   :example "{:theme-color color/color-pacific}"}
