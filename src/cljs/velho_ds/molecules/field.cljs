@@ -464,3 +464,97 @@
                                 (get-files (.-target %))
                                 (set! (-> % .-target .-value) nil))
                   :style {:display "none"}}]]]])))
+
+(defn drag-n-drop-area [{:keys [help-text on-change-fn]}]
+  (assert on-change-fn)
+  (let [files (r/atom {})
+        label-id (r/atom (sanitize-id (str (subs (str (rand)) 2 9))))
+        file-to-map (fn [item]
+                      {:name (.-name item)
+                       :description nil
+                       :file item})
+        get-files (fn [e]
+                    (do
+                      (-> e
+                          .-files
+                          array-seq
+                          (#(map file-to-map %))
+                          (#(reduce add-to-files @files %))
+                          (#(reset! files %)))
+                      (on-change-fn @files)))
+        file-metadata-changed (fn [key new-metadata]
+                                (do
+                                  (swap! files assoc key (merge (get @files key) new-metadata))
+                                  (on-change-fn @files)))
+        remove-item #(do
+                       (swap! files dissoc %)
+                       (on-change-fn @files))]
+    (fn []
+      [:div {:on-drag-over #(.preventDefault %)
+             :on-drag-enter #(.preventDefault %)
+             :on-drag-start #(.setData (.-dataTransfer %) "text/plain" "") ;; for Firefox. You MUST set something as data.
+             :on-drop #(do
+                         (.preventDefault %)
+                         (get-files (.-dataTransfer %)))}
+       (when (not (empty? @files))
+         (into [:ul (stylefy/use-style style/drag-n-drop-content-ul)]
+               (for [key (sort (keys @files))]
+                 (let [file-item (get @files key)]
+                   ^{:key key} [file-list-item {:filename (:name file-item)
+                                                :metadata {:description (:description file-item)
+                                                           :filename (:name file-item)}
+                                                :on-change-fn (partial file-metadata-changed key)
+                                                :delete-fn #(remove-item key)}]))))
+       [:div (merge (stylefy/use-style style/drag-n-drop-helparea)
+                    {:on-click #(.click (dommy/sel1 @ds/root-element (keyword (str "#file-input-" @label-id))))})
+        (when help-text [:p (stylefy/use-sub-style style/drag-n-drop-helparea :p) help-text])
+        [icons/icon {:name "cloud_upload"}]
+        [:input {:id (str "file-input-" @label-id)
+                 :type "file"
+                 :multiple "multiple"
+                 :on-change #(do
+                               (get-files (.-target %))
+                               (set! (-> % .-target .-value) nil))
+                 :style {:display "none"}}]]])))
+
+(defn item-list [{:keys [help-text data on-change-fn]}]
+  (assert on-change-fn)
+  (let [files (r/atom {1 {:name "seppio.jpeg", :description "asd", :file nil, :filename "seppio.jpeg"}
+                       2 {:name "teppio.jpeg", :description nil, :file nil, :filename "seppio.jpeg"}})
+        label-id (r/atom (sanitize-id (str (subs (str (rand)) 2 9))))
+        file-to-map (fn [item]
+                      {:name (.-name item)
+                       :description nil
+                       :file item})
+        get-files (fn [e]
+                    (do
+                      (-> e
+                          .-files
+                          array-seq
+                          (#(map file-to-map %))
+                          (#(reduce add-to-files @files %))
+                          (#(reset! files %)))
+                      (on-change-fn @files)))
+        file-metadata-changed (fn [key new-metadata]
+                                (do
+                                  (swap! files assoc key (merge (get @files key) new-metadata))
+                                  (on-change-fn @files)))
+        remove-item #(do
+                       (swap! files dissoc %)
+                       (on-change-fn @files))]
+    (fn []
+      [:div {:on-drag-over #(.preventDefault %)
+             :on-drag-enter #(.preventDefault %)
+             :on-drag-start #(.setData (.-dataTransfer %) "text/plain" "") ;; for Firefox. You MUST set something as data.
+             :on-drop #(do
+                         (.preventDefault %)
+                         (get-files (.-dataTransfer %)))}
+       (when (not (empty? @files))
+         (into [:ul (stylefy/use-style style/drag-n-drop-content-ul)]
+               (for [key (sort (keys @files))]
+                 (let [file-item (get @files key)]
+                   ^{:key key} [file-list-item {:filename (:name file-item)
+                                                :metadata {:description (:description file-item)
+                                                           :filename (:name file-item)}
+                                                :on-change-fn (partial file-metadata-changed key)
+                                                :delete-fn #(remove-item key)}]))))])))

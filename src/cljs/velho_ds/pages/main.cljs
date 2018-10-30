@@ -451,6 +451,70 @@
                                                           {:label "Sub-project 002"}]}])]
     (fn []
       [:div
+       [areas/dotted-area {:label "Header"}
+        [areas/shadow-area
+         [grid/grid-wrap {:rows 1
+                          :cols 2
+                          :styles {:padding "0 8px"
+                                   :grid-template-columns "auto minmax(64px, 33%)"}}
+          [grid/grid-cell {:col-start 1
+                           :col-end 1}
+           [:small {:style {:margin 0
+                            :font-weight 600
+                            :display "block"
+                            :line-height 1.25}} "Seppio.avi"]
+           [:small {:style {:line-height 1.25
+                            :display "block"
+                            :margin 0}} "Lorem ipsum seppio datsun."]
+           [:small {:style {:line-height 1
+                            :display "block"
+                            :margin 0
+                            :color color/color-neutral-4}} "3 Mb, 20.10.2018 03:00"]]
+          [grid/grid-cell {:col-start 2
+                           :col-end 2
+                           :styles {:align-self "center"
+                                    :justify-self "right"}}
+           [icons/clickable {:name "file_download"
+                             :styles {:padding "0 0 0 8px"}}]]]]
+        [dividers/default]
+
+        [areas/shadow-area
+         [grid/grid-wrap {:rows 1
+                          :cols 2
+                          :styles {:padding "0 8px"
+                                   :grid-template-columns "auto minmax(64px, 33%)"}}
+          [grid/grid-cell {:col-start 1
+                           :col-end 1}
+           [:small {:style {:margin 0
+                            :font-weight 600
+                            :display "block"
+                            :line-height 1.25}} "Muokattavaseppio.avi"]
+           [:small {:style {:line-height 1.25
+                            :display "block"
+                            :margin 0}} "Lorem ipsum seppio lada."]
+           [:small {:style {:line-height 1
+                            :display "block"
+                            :margin 0
+                            :color color/color-neutral-4}} "3 Mb, 21.10.2018 03:00"]]
+          [grid/grid-cell {:col-start 2
+                           :col-end 2
+                           :styles {:align-self "center"
+                                    :justify-self "right"}}
+           [icons/clickable {:name "edit"
+                             :styles {:padding "0 0 0 8px"}}]
+           [icons/clickable {:name "delete"
+                             :styles {:padding "0 0 0 8px"}}]]]
+         [:div {:style {:padding "0 8px"
+                        :display "block"}}
+          [dividers/default]
+          [fields/input-field {:label "Filename"
+                               :content "Seppio.avi"
+                               :styles {:padding "8px 0"}}]
+          [fields/input-field {:label "Desc"
+                               :content "Lada samara is vjery kud"
+                               :styles {:padding "8px 0"}}]]]
+        [dividers/default]
+        [fields/drag-n-drop-area {:on-change-fn #(println %)}]]
        [:p.rds-quote "Fields provide a ways of input and output. Input, such as typing, selecting or dragging and dropping can be used to provide several formats of information."]
        [dividers/default {:styles {:margin-top "2rem"
                                    :margin-bottom "2rem"}}]
