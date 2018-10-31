@@ -283,3 +283,20 @@
    :top (str "calc(" spacing/space-large-rem " + " border/border-large ")")
    :width "100%"
    :z-index 9999})
+
+(def list-element-label
+  {:margin 0
+   :font-weight 600
+   :display "block"
+   :line-height 1.25})
+
+(def list-element-desc
+  {:line-height 1.25
+   :display "block"
+   :margin 0})
+
+(def list-element-info
+  {:line-height 1
+   :display "block"
+   :margin 0
+   :color color/color-neutral-4})
