@@ -756,7 +756,22 @@
                      {:name "preselected-values"
                       :desc "vector"
                       :example "{:preselected-values [\"First\"]}"}]]
-       [:h3.rds-header3 "Drag-n-drop"]
+       [:h3.rds-header3 "Drag-n-drop-area"]
+       ($-> [fields/drag-n-drop-area {:help-text "Drag-n-drop files here." :on-change-fn (fn [e] println e)}])
+
+       [:h3.rds-header3 "Drag-n-drop example"]
+       ($-> [areas/dotted-area {:label "Dragn-n-drop"}
+             [fields/drag-n-drop-area {:help-text "Drag-n-drop files here." :on-change-fn (fn [e] println e)}]
+             [dividers/default]
+             [fields/list-element {:label "File"
+                                   :desc "Given descreption"
+                                   :info "3kt, 24.12.2018"
+                                   :sub-content [[fields/input-field {:label "Label"
+                                                                      :styles {:margin "0.5rem 0"}}]
+                                                 [fields/input-field {:label "Description"
+                                                                      :styles {:margin "0.5rem 0"}}]]
+                                   :buttons [[icons/clickable {:name "clear"}]]}]])
+
        ($-> [fields/drag-n-drop {:label "Example"
                                  :help-text "Drag-n-drop files or click here to upload"
                                  :on-change-fn (fn [e] (println e))}])

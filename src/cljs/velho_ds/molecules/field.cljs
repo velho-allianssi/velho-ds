@@ -468,7 +468,40 @@
                                 (set! (-> % .-target .-value) nil))
                   :style {:display "none"}}]]]])))
 
-(defn drag-n-drop-area [{:keys [help-text on-change-fn]}]
+(defn list-element [{:keys [label desc info sub-content buttons]}]
+  (let [state (r/atom {:expanded false})]
+    (fn [{:keys [label desc info sub-content buttons]}]
+      [areas/shadow-area {:styles {:margin (str "0 0 " spacing/space-x-small-rem " 0")}}
+       [grid/grid-wrap {:rows 1
+                        :cols 2
+                        :styles {:padding (str "0 " spacing/space-x-small-rem)
+                                 :grid-template-columns (str "auto minmax(" spacing/space-x-large-rem ", 33%)")}}
+        [grid/grid-cell {:col-start 1
+                         :col-end 1
+                         :styles {:align-self "center"}}
+         [:small (stylefy/use-style style/list-element-label) label]
+         (when desc
+           [:small (stylefy/use-style style/list-element-desc) desc])
+         (when info
+           [:small (stylefy/use-style style/list-element-info) info])]
+        [grid/grid-cell {:col-start 2
+                         :col-end 2
+                         :styles {:align-self "center"
+                                  :justify-self "right"
+                                  :height spacing/space-base-rem}}
+         (map-indexed #(with-meta %2 {:key %1})
+                      (if sub-content
+                        (conj buttons [icons/clickable {:name (if (:expanded @state) "expand_less" "expand_more")
+                                                        :styles {:padding (str "0 0 0 " spacing/space-x-small-rem)}
+                                                        :on-click-fn #(swap! state assoc :expanded (not (:expanded @state)))}])
+                        buttons))]]
+       (when sub-content
+         [:div {:style {:padding "0 8px"
+                        :display (if (:expanded @state) "block" "none")}}
+          [dividers/default]
+          (map-indexed #(with-meta %2 {:key %1}) sub-content)])])))
+
+(defn drag-n-drop-area [{:keys [help-text on-change-fn filename-label desc-label]}]
   (assert on-change-fn)
   (let [files (r/atom {})
         label-id (r/atom (sanitize-id (str (subs (str (rand)) 2 9))))
@@ -485,9 +518,9 @@
                           (#(reduce add-to-files @files %))
                           (#(reset! files %)))
                       (on-change-fn @files)))
-        file-metadata-changed (fn [key new-metadata]
+        file-metadata-changed (fn [key-path new-metadata]
                                 (do
-                                  (swap! files assoc key (merge (get @files key) new-metadata))
+                                  (swap! files assoc-in key-path new-metadata)
                                   (on-change-fn @files)))
         remove-item #(do
                        (swap! files dissoc %)
@@ -503,11 +536,20 @@
          (into [:ul (stylefy/use-style style/drag-n-drop-content-ul)]
                (for [key (sort (keys @files))]
                  (let [file-item (get @files key)]
-                   ^{:key key} [file-list-item {:filename (:name file-item)
-                                                :metadata {:description (:description file-item)
-                                                           :filename (:name file-item)}
-                                                :on-change-fn (partial file-metadata-changed key)
-                                                :delete-fn #(remove-item key)}]))))
+                   ^{:key key} [list-element {:label (:name file-item)
+                                              :desc (:description file-item)
+                                              :sub-content [[input-field {:label (if filename-label filename-label "Filename")
+                                                                          :placeholder ""
+                                                                          :content (:name file-item)
+                                                                          :on-change-fn (partial file-metadata-changed [key :name])
+                                                                          :styles {:margin (str spacing/space-x-small-rem "  0")}}]
+                                                            [input-field {:label (if desc-label desc-label "Description")
+                                                                          :placeholder ""
+                                                                          :content (:description file-item)
+                                                                          :on-change-fn (partial file-metadata-changed [key :description])
+                                                                          :styles {:margin (str spacing/space-x-small-rem "  0")}}]]
+                                              :buttons [[icons/clickable {:name "clear"
+                                                                          :on-click-fn #(remove-item key)}]]}]))))
        [:div (merge (stylefy/use-style style/drag-n-drop-helparea)
                     {:on-click #(.click (dommy/sel1 @ds/root-element (keyword (str "#file-input-" @label-id))))})
         (when help-text [:p (stylefy/use-sub-style style/drag-n-drop-helparea :p) help-text])
@@ -519,45 +561,3 @@
                                (get-files (.-target %))
                                (set! (-> % .-target .-value) nil))
                  :style {:display "none"}}]]])))
-
-(defn list-element [{:keys [label desc info sub-content buttons]}]
-  (let [state (r/atom {:expanded false})]
-    (fn []
-      [areas/shadow-area {:styles {:margin "0 0 0.5rem 0"}}
-       [grid/grid-wrap {:rows 1
-                        :cols 2
-                        :styles {:padding "0 8px"
-                                 :grid-template-columns "auto minmax(64px, 33%)"}}
-        [grid/grid-cell {:col-start 1
-                         :col-end 1
-                         :styles {:align-self "center"}}
-         [:small {:style {:margin 0
-                          :font-weight 600
-                          :display "block"
-                          :line-height 1.25}} label]
-         (when desc
-           [:small {:style {:line-height 1.25
-                            :display "block"
-                            :margin 0}} desc])
-         (when info
-           [:small {:style {:line-height 1
-                            :display "block"
-                            :margin 0
-                            :color color/color-neutral-4}} info])]
-        [grid/grid-cell {:col-start 2
-                         :col-end 2
-                         :styles {:align-self "center"
-                                  :justify-self "right"}}
-         (map-indexed #(with-meta %2 {:key %1})
-                      (if sub-content
-                        (conj buttons [icons/clickable {:name (if (:expanded @state) "expand_less" "expand_more")
-                                                        :styles {:padding "0 0 0 8px"}
-                                                        :on-click-fn #(swap! state assoc :expanded (not (:expanded @state)))}])
-                        buttons))]]
-       (when sub-content
-         [:div {:style {:padding "0 8px"
-                        :display (if (:expanded @state) "block" "none")}}
-          [dividers/default]
-          (map-indexed #(with-meta %2 {:key %1}) sub-content)])])))
-
-
