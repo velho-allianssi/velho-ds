@@ -63,6 +63,15 @@
                                    :output-dir "public/js/test/out"
                                    :optimizations :whitespace
                                    :pretty-print true}}
+                       {:id "testwheel"
+                        :source-paths ["src/cljs" "src/cljc" "test/cljs"]
+                        :figwheel {:open-urls ["http://localhost:3600/public/test.html"]}
+                        :compiler {:output-to "target/test/resources/public/cljstest.js"
+                                   :output-dir "target/test/resources/public/cljstest/out"
+                                   :asset-path "cljstest/out"
+                                   :main velho-ds.test-runner
+                                   :optimizations :none
+                                   :pretty-print true}}
                        {:id "release"
                         :source-paths ["src/cljs" "env/prod/cljs"]
                         :compiler {:main "velho-ds.prod"
@@ -72,9 +81,16 @@
   :aliases {"dev" ["do" "clean"
                    ["figwheel"]]
             "prod" ["do" "clean"
-                    ["cljsbuild" "once" "release"]]}
+                    ["cljsbuild" "once" "release"]]
+            "testwheel" ["with-profile" "testwheel" "do"
+                         "clean"
+                         ["figwheel" "testwheel"]]}
 
   :profiles {:dev {:dependencies [[binaryage/devtools "0.9.7"]
                                   [cljs-react-test "0.1.4-SNAPSHOT"]
                                   [clj-chrome-devtools "20180528" :exclusions [org.clojure/core.async]]]}
-             :release {}})
+             :release {}
+             :testwheel {:resource-paths ["public" "env/dev/resources" "target/test/resources"]
+                         :dependencies [[cljs-react-test "0.1.4-SNAPSHOT"]
+                                        [com.bhauman/cljs-test-display "0.1.1"]]
+                         :figwheel {:server-port 3600}}})
