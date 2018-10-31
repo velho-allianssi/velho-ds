@@ -531,19 +531,19 @@
         [grid/grid-cell {:col-start 1
                          :col-end 1
                          :styles {:align-self "center"}}
-         [:small {:style {:margin 0
-                          :font-weight 600
-                          :display "block"
-                          :line-height 1.25}} label]
+         [:small.vds-label {:style {:margin 0
+                                    :font-weight 600
+                                    :display "block"
+                                    :line-height 1.25}} label]
          (when desc
-           [:small {:style {:line-height 1.25
-                            :display "block"
-                            :margin 0}} desc])
+           [:small.vds-desc {:style {:line-height 1.25
+                                     :display "block"
+                                     :margin 0}} desc])
          (when info
-           [:small {:style {:line-height 1
-                            :display "block"
-                            :margin 0
-                            :color color/color-neutral-4}} info])]
+           [:small.vds-info {:style {:line-height 1
+                                     :display "block"
+                                     :margin 0
+                                     :color color/color-neutral-4}} info])]
         [grid/grid-cell {:col-start 2
                          :col-end 2
                          :styles {:align-self "center"
@@ -555,8 +555,8 @@
                                                         :on-click-fn #(swap! state assoc :expanded (not (:expanded @state)))}])
                         buttons))]]
        (when sub-content
-         [:div {:style {:padding "0 8px"
-                        :display (if (:expanded @state) "block" "none")}}
+         [:div.vds-sub-content {:style {:padding "0 8px"
+                                        :display (if (:expanded @state) "block" "none")}}
           [dividers/default]
           (map-indexed #(with-meta %2 {:key %1}) sub-content)])])))
 
