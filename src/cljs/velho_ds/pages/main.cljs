@@ -89,7 +89,25 @@
                   :example "{:styles {:font-size \"1.25rem\"}}"}
                  {:name "content"
                   :desc "components"
-                  :example "[:p \"This is an info area\"]"}]]])
+                  :example "[:p \"This is an info area\"]"}]]
+
+   [:h2.rds-header2 "Shadow-area"]
+   ($-> [areas/shadow-area {:styles {:font-size "1.25rem"}} [:p "This is a shadow area"]])
+   [props-table [{:name "styles"
+                  :desc "map"
+                  :example "{:styles {:font-size \"1.25rem\"}}"}
+                 {:name "content"
+                  :desc "components"
+                  :example "[:p \"This is a shadow area\"]"}]]
+
+   [:h2.rds-header2 "Dotted-area"]
+   ($-> [areas/dotted-area {:label "Header"} [:p "This is a dotted area"]])
+   [props-table [{:name "label"
+                  :desc "string"
+                  :example "{:label \"Header\"}"}
+                 {:name "content"
+                  :desc "components"
+                  :example "[:p \"This is a dotted area\"]"}]]])
 
 (defmethod page-contents :buttons []
   [:div
@@ -521,6 +539,47 @@
                       :desc "string"
                       :example "{:content \"29.09.2017 - 01.12.2022\"}"}]]
 
+       [:h3.rds-header3 "List-element"]
+       ($-> [fields/list-element {:label "Label"
+                                  :desc "Description"
+                                  :info "Additional information"
+                                  :buttons [[icons/clickable {:name "clear"}]]}])
+       [props-table [{:name "label"
+                      :desc "string"
+                      :example "{:label \"Label\"}"}
+                     {:name "desc"
+                      :desc "string"
+                      :example "{:desc \"Description\"}"}
+                     {:name "info"
+                      :desc "string"
+                      :example "{:info \"Additional information\"}"}
+                     {:name "buttons"
+                      :desc "vector"
+                      :example "[[icons/clickable {:name \"clear\"}]]"}]]
+
+       [:h3.rds-header3 "List-element (with sub-content)"]
+       ($-> [fields/list-element {:label "Label"
+                                  :desc "Description"
+                                  :info "Additional information"
+                                  :sub-content [[fields/input-field {:label "Label"}]
+                                                [fields/input-field {:label "Description"}]]
+                                  :buttons [[icons/clickable {:name "clear"}]]}])
+       [props-table [{:name "label"
+                      :desc "string"
+                      :example "{:label \"Label\"}"}
+                     {:name "desc"
+                      :desc "string"
+                      :example "{:desc \"Description\"}"}
+                     {:name "info"
+                      :desc "string"
+                      :example "{:info \"Additional information\"}"}
+                     {:name "buttons"
+                      :desc "vector"
+                      :example "[[icons/clickable {:name \"clear\"}]]"}
+                     {:name "sub-content"
+                      :desc "vector"
+                      :example ":sub-content [[fields/input-field {:label \"Label\"}] [fields/input-field {:label \"Description\"}]]"}]]
+
        [dividers/default {:styles {:margin-top "2rem"
                                    :margin-bottom "2rem"}}]
        [:h2.rds-header2 "Input"]
@@ -581,8 +640,8 @@
 
        [:h3.rds-header3 "Multiline-field"]
        ($-> [fields/multiline-field {:label "Multiline-field"
-                                     :on-change-fn  (fn [e] (println e))
-                                     :on-blur-fn  (fn [e] (println e))
+                                     :on-change-fn (fn [e] (println e))
+                                     :on-blur-fn (fn [e] (println e))
                                      :icon-click-fn (fn [] (println (str "Icon Clicked")))}])
        [props-table [{:name "label"
                       :desc "string"
@@ -796,7 +855,7 @@
                   :example "[:span \"Warning notification\"] [:span {:style {:text-decoration \"underline\"}\n:on-click (fn (js/alert \"Alert\"))} \"Warning notification 2\"]"}]]
    [:h3.rds-header3 "Warning"]
    ($-> [notifications/warning {:close-fn (fn [] (js/alert "Warning notification icon clicked"))} [:span "Warning notification"] [:span {:style {:text-decoration "underline"}
-                                                                                                                                  :on-click (fn [] (js/alert "Alert"))} "Warning notification 2"]])
+                                                                                                                                         :on-click (fn [] (js/alert "Alert"))} "Warning notification 2"]])
    [props-table [{:name "close-fn"
                   :desc "function"
                   :example "{:close-fn (fn [] (js/alert \"Warning notification icon clicked\"))}"}
@@ -1064,5 +1123,5 @@
                   :example "{:theme-color color/color-pacific}"}
                  {:name "info-keyvalues"
                   :desc "vector"
-                  :example "{:info-keyvalues [{:label \"Type\"\n:content \"Project\"}\n{:label \"Schedule\"\n:content \"29.09.2017 - 01.01.2021\"}\n{:label \"State\"\n:content \"In Progress\"}]}"}]]
-   ])
+                  :example "{:info-keyvalues [{:label \"Type\"\n:content \"Project\"}\n{:label \"Schedule\"\n:content \"29.09.2017 - 01.01.2021\"}\n{:label \"State\"\n:content \"In Progress\"}]}"}]]])
+
