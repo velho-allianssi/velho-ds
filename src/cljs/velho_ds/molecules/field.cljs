@@ -479,11 +479,11 @@
         [grid/grid-cell {:col-start 1
                          :col-end 1
                          :styles {:align-self "center"}}
-         [:small (stylefy/use-style style/list-element-label) label]
+         [:small.vds-label (stylefy/use-style style/list-element-label) label]
          (when desc
-           [:small (stylefy/use-style style/list-element-desc) desc])
+           [:small.vds-desc (stylefy/use-style style/list-element-desc) desc])
          (when info
-           [:small (stylefy/use-style style/list-element-info) info])]
+           [:small.vds-info (stylefy/use-style style/list-element-info) info])]
         [grid/grid-cell {:col-start 2
                          :col-end 2
                          :styles {:align-self "center"
@@ -496,8 +496,8 @@
                                                         :on-click-fn #(swap! state assoc :expanded (not (:expanded @state)))}])
                         buttons))]]
        (when sub-content
-         [:div {:style {:padding "0 8px"
-                        :display (if (:expanded @state) "block" "none")}}
+         [:div.vds-sub-content {:style {:padding "0 8px"
+                                        :display (if (:expanded @state) "block" "none")}}
           [dividers/default]
           (map-indexed #(with-meta %2 {:key %1}) sub-content)])])))
 

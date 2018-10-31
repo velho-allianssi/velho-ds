@@ -5,6 +5,7 @@
             [reagent.core :as r]
             [velho-ds.testutils :refer [container-fixture sel1 sel container style-definition]]
             [velho-ds.molecules.field :as field]
+            [velho-ds.atoms.icon :as icon]
             [clojure.string :as string]))
 
 (use-fixtures :each container-fixture)
@@ -94,4 +95,63 @@
 
         ; Reset the state to the same that it was before this test
         (r/unmount-component-at-node @container)
-        (r/render [field/file-list-item params] @container)))))
+        (r/render [field/file-list-item params] @container))))
+  ; Reset the state to the same that it was before this test
+  (r/unmount-component-at-node @container))
+
+(deftest list-element
+  (let [params {:label "Label"
+                :desc "Description"
+                :info "Information"
+                :buttons [[icon/clickable {:name "clear"}]]}]
+    (r/render [field/list-element params] @container)
+
+    (testing "Label is set for the component"
+      (is (= (:label params)
+             (dommy/text (sel1 :.vds-label)))))
+
+    (testing "Description is set for the component"
+      (is (= (:desc params)
+             (dommy/text (sel1 :.vds-desc)))))
+
+    (testing "Info is set for the component"
+      (is (= (:info params)
+             (dommy/text (sel1 :.vds-info)))))
+
+    (testing "Sub-content is not set for the component"
+      (is (not (sel1 :.vds-sub-content)))))
+  ; Reset the state to the same that it was before this test
+  (r/unmount-component-at-node @container))
+
+(deftest list-element-with-sub-content
+  (let [params {:label "Label"
+                :desc "Description"
+                :info "Information"
+                :buttons [[icon/clickable {:name "clear"}]]
+                :sub-content [[field/input-field {:label "Input"}]]}]
+    (r/render [field/list-element params] @container)
+
+    (testing "Sub-content is set for the component"
+      (is (sel1 :.vds-sub-content)))
+
+    (testing "Clicking expand toggles the visibility of sub-content div"
+      (let [sub-content (sel1 :.vds-sub-content)
+            sub-content-display-value #(style-definition sub-content "display")
+            expand-btn #(last (array-seq (sel :button)))]
+        (is (= "none" (sub-content-display-value)))
+
+        (is (= "expand_more") (dommy/text (expand-btn)))
+
+        (sim/click (expand-btn) {})
+        (r/force-update-all)
+
+        (is (= "block" (sub-content-display-value)))
+        (is (= "expand_less") (dommy/text (expand-btn)))
+
+        (sim/click (expand-btn) {})
+        (r/force-update-all)
+
+        (is (= "none" (sub-content-display-value)))
+        (is (= "expand_more") (dommy/text (expand-btn))))))
+  ; Reset the state to the same that it was before this test
+  (r/unmount-component-at-node @container))
