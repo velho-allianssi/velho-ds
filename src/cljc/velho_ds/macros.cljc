@@ -2,7 +2,7 @@
   (:require [zprint.core :refer [zprint-str]]))
 
 (defmacro $-> [input]
-  `(vector :div.rds-code-example {:key ~input}
+  `(vector :div.rds-code-example {:key ~(str input (subs (str (rand)) 2 9))}
            (vector :div.rds-code-example-content-example
                    (map-indexed #(with-meta %2 {:key %1}) (list ~input)))
            (vector :pre.rds-code-example-content-code {:key ~input}

@@ -89,7 +89,25 @@
                   :example "{:styles {:font-size \"1.25rem\"}}"}
                  {:name "content"
                   :desc "components"
-                  :example "[:p \"This is an info area\"]"}]]])
+                  :example "[:p \"This is an info area\"]"}]]
+
+   [:h2.rds-header2 "Shadow-area"]
+   ($-> [areas/shadow-area {:styles {:font-size "1.25rem"}} [:p "This is a shadow area"]])
+   [props-table [{:name "styles"
+                  :desc "map"
+                  :example "{:styles {:font-size \"1.25rem\"}}"}
+                 {:name "content"
+                  :desc "components"
+                  :example "[:p \"This is a shadow area\"]"}]]
+
+   [:h2.rds-header2 "Dotted-area"]
+   ($-> [areas/dotted-area {:label "Header"} [:p "This is a dotted area"]])
+   [props-table [{:name "label"
+                  :desc "string"
+                  :example "{:label \"Header\"}"}
+                 {:name "content"
+                  :desc "components"
+                  :example "[:p \"This is a dotted area\"]"}]]])
 
 (defmethod page-contents :buttons []
   [:div
@@ -497,70 +515,6 @@
                                                           {:label "Sub-project 002"}]}])]
     (fn []
       [:div
-       [areas/dotted-area {:label "Header"}
-        [areas/shadow-area
-         [grid/grid-wrap {:rows 1
-                          :cols 2
-                          :styles {:padding "0 8px"
-                                   :grid-template-columns "auto minmax(64px, 33%)"}}
-          [grid/grid-cell {:col-start 1
-                           :col-end 1}
-           [:small {:style {:margin 0
-                            :font-weight 600
-                            :display "block"
-                            :line-height 1.25}} "Seppio.avi"]
-           [:small {:style {:line-height 1.25
-                            :display "block"
-                            :margin 0}} "Lorem ipsum seppio datsun."]
-           [:small {:style {:line-height 1
-                            :display "block"
-                            :margin 0
-                            :color color/color-neutral-4}} "3 Mb, 20.10.2018 03:00"]]
-          [grid/grid-cell {:col-start 2
-                           :col-end 2
-                           :styles {:align-self "center"
-                                    :justify-self "right"}}
-           [icons/clickable {:name "file_download"
-                             :styles {:padding "0 0 0 8px"}}]]]]
-        [dividers/default]
-
-        [areas/shadow-area
-         [grid/grid-wrap {:rows 1
-                          :cols 2
-                          :styles {:padding "0 8px"
-                                   :grid-template-columns "auto minmax(64px, 33%)"}}
-          [grid/grid-cell {:col-start 1
-                           :col-end 1}
-           [:small {:style {:margin 0
-                            :font-weight 600
-                            :display "block"
-                            :line-height 1.25}} "Muokattavaseppio.avi"]
-           [:small {:style {:line-height 1.25
-                            :display "block"
-                            :margin 0}} "Lorem ipsum seppio lada."]
-           [:small {:style {:line-height 1
-                            :display "block"
-                            :margin 0
-                            :color color/color-neutral-4}} "3 Mb, 21.10.2018 03:00"]]
-          [grid/grid-cell {:col-start 2
-                           :col-end 2
-                           :styles {:align-self "center"
-                                    :justify-self "right"}}
-           [icons/clickable {:name "edit"
-                             :styles {:padding "0 0 0 8px"}}]
-           [icons/clickable {:name "delete"
-                             :styles {:padding "0 0 0 8px"}}]]]
-         [:div {:style {:padding "0 8px"
-                        :display "block"}}
-          [dividers/default]
-          [fields/input-field {:label "Filename"
-                               :content "Seppio.avi"
-                               :styles {:padding "8px 0"}}]
-          [fields/input-field {:label "Desc"
-                               :content "Lada samara is vjery kud"
-                               :styles {:padding "8px 0"}}]]]
-        [dividers/default]
-        [fields/drag-n-drop-area {:on-change-fn #(println %)}]]
        [:p.rds-quote "Fields provide a ways of input and output. Input, such as typing, selecting or dragging and dropping can be used to provide several formats of information."]
        [dividers/default {:styles {:margin-top "2rem"
                                    :margin-bottom "2rem"}}]
@@ -584,6 +538,47 @@
                      {:name "content"
                       :desc "string"
                       :example "{:content \"29.09.2017 - 01.12.2022\"}"}]]
+
+       [:h3.rds-header3 "List-element"]
+       ($-> [fields/list-element {:label "Label"
+                                  :desc "Description"
+                                  :info "Additional information"
+                                  :buttons [[icons/clickable {:name "clear"}]]}])
+       [props-table [{:name "label"
+                      :desc "string"
+                      :example "{:label \"Label\"}"}
+                     {:name "desc"
+                      :desc "string"
+                      :example "{:desc \"Description\"}"}
+                     {:name "info"
+                      :desc "string"
+                      :example "{:info \"Additional information\"}"}
+                     {:name "buttons"
+                      :desc "vector"
+                      :example "[[icons/clickable {:name \"clear\"}]]"}]]
+
+       [:h3.rds-header3 "List-element (with sub-content)"]
+       ($-> [fields/list-element {:label "Label"
+                                  :desc "Description"
+                                  :info "Additional information"
+                                  :sub-content [[fields/input-field {:label "Label"}]
+                                                [fields/input-field {:label "Description"}]]
+                                  :buttons [[icons/clickable {:name "clear"}]]}])
+       [props-table [{:name "label"
+                      :desc "string"
+                      :example "{:label \"Label\"}"}
+                     {:name "desc"
+                      :desc "string"
+                      :example "{:desc \"Description\"}"}
+                     {:name "info"
+                      :desc "string"
+                      :example "{:info \"Additional information\"}"}
+                     {:name "buttons"
+                      :desc "vector"
+                      :example "[[icons/clickable {:name \"clear\"}]]"}
+                     {:name "sub-content"
+                      :desc "vector"
+                      :example ":sub-content [[fields/input-field {:label \"Label\"}] [fields/input-field {:label \"Description\"}]]"}]]
 
        [dividers/default {:styles {:margin-top "2rem"
                                    :margin-bottom "2rem"}}]
@@ -645,8 +640,8 @@
 
        [:h3.rds-header3 "Multiline-field"]
        ($-> [fields/multiline-field {:label "Multiline-field"
-                                     :on-change-fn  (fn [e] (println e))
-                                     :on-blur-fn  (fn [e] (println e))
+                                     :on-change-fn (fn [e] (println e))
+                                     :on-blur-fn (fn [e] (println e))
                                      :icon-click-fn (fn [] (println (str "Icon Clicked")))}])
        [props-table [{:name "label"
                       :desc "string"
@@ -860,7 +855,7 @@
                   :example "[:span \"Warning notification\"] [:span {:style {:text-decoration \"underline\"}\n:on-click (fn (js/alert \"Alert\"))} \"Warning notification 2\"]"}]]
    [:h3.rds-header3 "Warning"]
    ($-> [notifications/warning {:close-fn (fn [] (js/alert "Warning notification icon clicked"))} [:span "Warning notification"] [:span {:style {:text-decoration "underline"}
-                                                                                                                                  :on-click (fn [] (js/alert "Alert"))} "Warning notification 2"]])
+                                                                                                                                         :on-click (fn [] (js/alert "Alert"))} "Warning notification 2"]])
    [props-table [{:name "close-fn"
                   :desc "function"
                   :example "{:close-fn (fn [] (js/alert \"Warning notification icon clicked\"))}"}
@@ -1128,5 +1123,5 @@
                   :example "{:theme-color color/color-pacific}"}
                  {:name "info-keyvalues"
                   :desc "vector"
-                  :example "{:info-keyvalues [{:label \"Type\"\n:content \"Project\"}\n{:label \"Schedule\"\n:content \"29.09.2017 - 01.01.2021\"}\n{:label \"State\"\n:content \"In Progress\"}]}"}]]
-   ])
+                  :example "{:info-keyvalues [{:label \"Type\"\n:content \"Project\"}\n{:label \"Schedule\"\n:content \"29.09.2017 - 01.01.2021\"}\n{:label \"State\"\n:content \"In Progress\"}]}"}]]])
+
