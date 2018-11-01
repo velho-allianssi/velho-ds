@@ -271,7 +271,9 @@
   [:div (stylefy/use-style styles)
    [:label (stylefy/use-style style/element)
     [:span (stylefy/use-style style/dropdown-label) label]
-    (into [:select (stylefy/use-style style/dropdown {:defaultValue "value"
+    (into [:select (stylefy/use-style style/dropdown {:defaultValue (if default-value
+                                                                      (:id default-value)
+                                                                      "value")
                                                       :on-change #(-> % .-target .-value selected-fn)})
            (when (not default-value)
              [:option
