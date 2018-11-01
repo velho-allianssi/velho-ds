@@ -6,9 +6,6 @@ language: clojure
 jdk:
 - oraclejdk8
 
-before_install:
-  - chmod +x .travis/push.sh
-
 jobs:
   include:
     - stage: unit tests
