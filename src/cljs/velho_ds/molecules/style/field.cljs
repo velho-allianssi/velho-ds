@@ -245,6 +245,7 @@
 
 (def dropdown-list-item
   {:list-style "none"
+   :user-select "none"
    :padding (str spacing/space-xx-small-rem " " spacing/space-x-small-rem)
    :cursor "pointer"
    :color color/color-neutral-5
@@ -266,6 +267,7 @@
 
 (def dropdown-list-header-item
   {:margin 0
+   :user-select "none"
    :display "inline-block"
    :cursor "pointer"
    :padding 0

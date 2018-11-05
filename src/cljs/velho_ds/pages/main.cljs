@@ -671,7 +671,7 @@
                                    :on-change-fn example-search-fn
                                    :on-blur-fn (fn [e] (println "On blur: " e))
                                    :on-focus-fn (fn [e] (println "On focus: " e))
-                                   :on-item-select-fn (fn [first second] (println "Item selected: " first second))
+                                   :selected-fn (fn [e] (println "Item selected: " e))
                                    :selected-item {:label "File 1"}}])
        [props-table [{:name "label"
                       :desc "string"
