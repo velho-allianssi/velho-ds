@@ -241,7 +241,7 @@
 (def dropdown-list
   {:z-index 9999
    :padding 0
-   :margin (str spacing/space-xx-small-rem " 0")})
+   :margin 0})
 
 (def dropdown-list-item
   {:list-style "none"
@@ -260,10 +260,8 @@
 
 (def dropdown-list-header
   (merge dropdown-list-item
-         {:padding (str spacing/space-xx-small-rem " " spacing/space-x-small-rem " 0")
-          :color color/color-neutral-4
-          :font-family font/font-family-heading
-          ::stylefy/mode {:hover {:color color/color-neutral-4}}}))
+         {:padding spacing/space-x-small-rem
+          :color color/color-neutral-4}))
 
 (def dropdown-list-header-item
   {:margin 0

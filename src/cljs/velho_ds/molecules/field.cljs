@@ -48,18 +48,20 @@
                         #{values})]
     (into [] (set/difference remove-from to-be-removed))))
 
-(defn- list-item [{:keys [on-click-fn content is-selected? styles]}]
+(defn- list-item [{:keys [on-click-fn content is-selected? hover? styles]}]
   [:li (stylefy/use-style (merge {:background-color (if is-selected? color/color-primary color/color-neutral-1)
-                                  :color (if is-selected? color/color-neutral-2 color/color-black)
+                                  :color (if is-selected? color/color-neutral-2 color/color-neutral-5)
                                   :cursor "pointer"
                                   :display "block"
                                   :padding "0.5rem"
-                                  ::stylefy/mode {:hover {:background-color color/color-primary
-                                                          :color color/color-neutral-2}}}
+                                  ::stylefy/mode {:hover {:background-color color/color-primary-light
+                                                          :color color/color-neutral-5}}}
+                                 (when hover? {:background-color color/color-primary-light
+                                               :color color/color-neutral-5})
                                  styles)
                           {:on-click #(on-click-fn content)
                            :key content
-                           :class "dropdown-multi"}) content])
+                           :class (str "dropdown-multi" (when hover? " hover") (when is-selected? " selected"))}) content])
 
 (defn- selected-list-items [{:keys [on-click-fn content]}]
   [:li (stylefy/use-style {:background-color color/color-neutral-5
@@ -167,7 +169,6 @@
                                    (do (swap! state assoc :selected-item nil)
                                        (swap! state assoc :input-text ""))
                                    (swap! state assoc :selected-item %))
-                                 (swap! state assoc :selected-idx nil)
                                  (selected-fn (:selected-item @state))
                                  (swap! state update :focus not))
         filtered-selections (fn []
@@ -179,27 +180,55 @@
                                          :items
                                          (filter #(string/includes? (string/lower-case (:label %)) (string/lower-case (:input-text @state))) (:items section))))
                                      (:options @state))))
+        scroll-content (fn [val]
+                         (-> (dommy/sel1 ".seppio")
+                             .-scrollTop
+                             (set! (-> (dommy/sel1 ".hover")
+                                       .-offsetTop
+                                       (- val)))))
         key-press-handler-fn (fn [key]
-                               (when (and (= key "ArrowDown")
-                                            (or (and (nil? (:selected-idx @state)) ; For the case there is only one item in the suggestion list
-                                                     (= (count (filtered-selections)) 1))
-                                                (< (:selected-idx @state) (dec (count (filtered-selections))))))
-                                   (if (nil? (:selected-idx @state))
-                                     (swap! state assoc :selected-idx 0)
-                                     (swap! state update-in [:selected-idx] inc))
-                                   (swap! state assoc :selected-from-filter (nth (filtered-selections) (:selected-idx @state))))
+                               (when (not (= key (or "Enter" "Tab")))
+                                 (swap! state assoc :focus true))
+                               (when (and (= key "ArrowDown") (< (:selected-idx @state) (dec (count (flatten (map #(get % :items) (filtered-selections)))))))
+                                 (if (nil? (:selected-idx @state))
+                                   (swap! state assoc :selected-idx 0)
+                                   (swap! state update-in [:selected-idx] inc))
+                                 (swap! state assoc :selected-from-filter (:label (nth (flatten (map #(get % :items) (filtered-selections))) (:selected-idx @state))))
+                                 (try (if (string/includes? (-> (dommy/sel1 ".hover")
+                                                                .-parentNode
+                                                                .-lastChild
+                                                                .-className)
+                                                            "hover")
+                                        (scroll-content 0)
+                                        (scroll-content 35))
+                                      (catch :default e false)))
                                (when (and (= key "ArrowUp") (> (:selected-idx @state) 0))
-                                   (swap! state update-in [:selected-idx] dec)
-                                   (swap! state assoc :selected-from-filter (nth (filtered-selections) (:selected-idx @state))))
+                                 (swap! state update-in [:selected-idx] dec)
+                                 (swap! state assoc :selected-from-filter (:label (nth (flatten (map #(get % :items) (filtered-selections))) (:selected-idx @state))))
+                                 (try (if (string/includes? (-> (dommy/sel1 ".hover")
+                                                                .-parentNode
+                                                                .-firstChild
+                                                                .-nextSibling
+                                                                .-className)
+                                                            "hover")
+                                        (scroll-content 70)
+                                        (scroll-content 35))
+                                      (catch :default e false)))
                                (when (and (= key "Enter"))
                                  (when (not (nil? (:selected-idx @state)))
-                                   (list-item-selected-fn (nth (filtered-selections) (:selected-idx @state))))
-                                 (swap! state assoc :selected-idx nil)
-                                 (swap! state assoc :selected-from-filter ""))
+                                   (list-item-selected-fn (:label (nth (flatten (map #(get % :items) (filtered-selections))) (:selected-idx @state)))))
+                                 (swap! state assoc :selected-from-filter "")
+                                 (try (if (string/includes? (-> (dommy/sel1 ".hover")
+                                                                .-parentNode
+                                                                .-firstChild
+                                                                .-nextSibling
+                                                                .-className)
+                                                            "hover")
+                                        (scroll-content 70)
+                                        (scroll-content 35))
+                                      (catch :default e false)))
                                (when (= key "Tab")
-                                 (swap! state assoc :focus false))
-                               (println "indx: "(:selected-idx @state))
-                               (println "filter: "(:selected-from-filter @state)))
+                                 (swap! state assoc :focus false)))
         click-in-dropdown? (fn click-in-dropdown? [element id]
                              (if (nil? element)
                                false
@@ -225,26 +254,27 @@
                            [:span (stylefy/use-style style/dropdown-label) label]
                            [:div (stylefy/use-style style/dropdown-multiple-input-background)
                             [:input (stylefy/use-style style/dropdown-multiple-input {:type "text"
-                                                                                      :on-change #(-> % .-target .-value input-value-changed-fn)
+                                                                                      :on-click #(swap! state assoc :focus true)
+                                                                                      :on-change #(do
+                                                                                                    (swap! state assoc :selected-idx nil)
+                                                                                                    (-> % .-target .-value input-value-changed-fn))
                                                                                       :on-key-down #(-> % .-key key-press-handler-fn)
                                                                                       :value (if (not (:focus @state)) (:selected-item @state) (:input-text @state))
                                                                                       :placeholder (if (:selected-item @state) (:selected-item @state) placeholder)})]
                             [icons/clickable {:name (if (:focus @state) "arrow_drop_up" "arrow_drop_down")
                                               :styles style/dropdown-multiple-icon
                                               :on-click-fn #(swap! state update :focus not)}]]]
-                          (into [:div (stylefy/use-style (merge style/dropdown-multiple-list {:background color/color-neutral-1
-                                                                                              :display (if (:focus @state) "block" "none")}))]
+                          (into [:div.seppio (stylefy/use-style (merge style/dropdown-multiple-list {:background color/color-neutral-1
+                                                                                                     :display (if (:focus @state) "block" "none")}))]
                                 (for [section (filtered-selections)]
                                   (into [:ul (stylefy/use-style style/dropdown-list)
                                          (when (:section section)
-                                           [:li (stylefy/use-style style/dropdown-list-header)
-                                            [:p (stylefy/use-style style/dropdown-list-header-item) (str (get section :section) " (" (count (get section :items)) ")")]])]
+                                           [:li (stylefy/use-style style/dropdown-list-header) (str (get section :section) " (" (count (get section :items)) ")")])]
                                         (mapv #(do
                                                  (vector list-item {:on-click-fn list-item-selected-fn
                                                                     :is-selected? (= (:selected-item @state) (:label %))
                                                                     :content (:label %)
-                                                                    :styles (when (or (= (:label %) placeholder)
-                                                                                      (= (:label %) "")) {:color color/color-neutral-3})})) (:items section)))))])})))
+                                                                    :hover? (= (:selected-from-filter @state) (:label %))})) (:items section)))))])})))
 
 #_(defn dropdown-menu [{:keys [label
                                placeholder
