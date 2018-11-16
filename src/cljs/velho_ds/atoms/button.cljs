@@ -6,10 +6,10 @@
 
 (defn default [{:keys [content icon styles on-click-fn]}]
   (assert (or content icon))
-   [:button (stylefy/use-style (merge style/button styles) {:on-click on-click-fn})
-    (if icon [icons/icon {:name icon
+  [:button (stylefy/use-style (merge style/button styles) {:on-click on-click-fn})
+   (if icon [icons/icon {:name icon
                          :styles style/button-icon}])
-    (if content [:span (stylefy/use-sub-style (merge style/button styles) :span) content])])
+   (if content [:span (stylefy/use-sub-style (merge style/button styles) :span) content])])
 
 (defn primary [{:keys [content icon] :as btn-args}]
   (assert (or content icon))
@@ -41,8 +41,8 @@
 
 (defn icon-link [{:keys [icon label active on-click-fn]}]
   [:a (stylefy/use-style (if active
-                             style/icon-link-active
-                             style/icon-link) {:on-click on-click-fn})
+                           style/icon-link-active
+                           style/icon-link) {:on-click on-click-fn})
    [icons/icon {:name icon
                 :styles style/icon-link-icon}]
    [:span (stylefy/use-style style/icon-link-value) label]])
