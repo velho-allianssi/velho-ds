@@ -5,25 +5,25 @@
             [velho-ds.tokens.line-height :as line-height]))
 
 
-(def p
+(def text
   {:font-family font/font-family-text
-   :font-size font-size/font-size-base
-   :font-weight font/font-weight-base
    :line-height line-height/line-height-base
-   :white-space "pre-line"})
+   :font-weight font/font-weight-base
+   :font-size font-size/font-size-base})
+
+(def p text)
+(def span text)
+(def td text)
+(def li text)
 
 (def a
-  (merge p
+  (merge text
          {:cursor "pointer"
           :color color/color-primary}))
 
-(def span p)
-
 (def small
-  {:font-family font/font-family-text
-   :font-size font-size/font-size-small
-   :font-weight font/font-weight-base
-   :line-height line-height/line-height-base})
+  (merge text
+         {:font-size font-size/font-size-small}))
 
 (def h1
   {:font-family font/font-family-text
@@ -54,11 +54,3 @@
    :font-size font-size/font-size-large
    :font-weight font/font-weight-semi-bold
    :line-height line-height/line-height-base})
-
-(def td
-  p)
-
-(def li
-  {:font-family font/font-family-text
-   :font-size font-size/font-size-base
-   :font-weight font/font-weight-base})
