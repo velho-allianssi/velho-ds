@@ -6,63 +6,65 @@
             [velho-ds.tools.measures :as measures]
             [velho-ds.tokens.border :as border]
             [velho-ds.tokens.box-shadow :as box-shadow]
+            [velho-ds.atoms.style.font :as font-style]
             [stylefy.core :as stylefy]))
 
-(def button
-  {:cursor "pointer"
-   :user-select "none"
-   :font-size font-size/font-size-base
-   :padding (str font-size/font-size-large " " font-size/font-size-x-large)
-   :box-sizing "border-box"
-   :border "none"
+;; Options
+(def default-text font-style/text)
+
+(def default-layout
+  {:box-sizing "border-box"
+   :display "inline-table"
+   :height spacing/space-x-large-rem
+   :padding (str font-size/font-size-large " " font-size/font-size-x-large)})
+
+(def default-theme
+  {:border "none"
    :box-shadow box-shadow/box-shadow
    :color color/color-neutral-5
    :background color/color-white
    :background-color color/color-primary
    :background-position "left center"
-   :background-size "200% auto"
-   :display "inline-table"
-   :line-height font-size/font-size-xx-large
-   :height spacing/space-x-large
+   :background-size "200% auto"})
+
+(def default-mode-hover
+  {:background-position "left bottom"
+   :background-size "200% auto"})
+
+(def default-mode-active
+  {:background-position "right center"
+   :outline "none"
+   :box-shadow box-shadow/box-shadow-small
+   :transform "scale(0.95, 0.95)"})
+(def default-mode-focus
+  {:outline "none"})
+
+(def default-interaction
+  {:cursor "pointer"
    :transition (str "all " timing/duration-slow " ease-in-out")
-   ::stylefy/mode {:hover {:background-position "left bottom"
-                           :background-size "200% auto"}
-                   :active {:background-position "right center"
-                            :outline "none"
-                            :box-shadow box-shadow/box-shadow-small
-                            :transform "scale(0.95, 0.95)"}
-                   :focus {:outline "none"}}
-   ::stylefy/sub-styles {:i {:font-size font-size/font-size-xx-large
-                             :display "table-cell"
-                             :vertical-align "middle"}
-                         :span {:padding-left spacing/space-x-small-rem
-                                :padding-right spacing/space-x-small-rem
-                                :text-decoration "none"
-                                :display "table-cell"
-                                :vertical-align "middle"}}
-   ::stylefy/vendors ["webkit" "moz" "o"]
+   :user-select "none"
+   ::stylefy/mode {:hover default-mode-hover
+                   :active default-mode-active
+                   :focus default-mode-focus}})
+
+(def button-vendor-prefixes
+  {::stylefy/vendors ["webkit" "moz" "o"]
    ::stylefy/auto-prefix #{:transition :box-sizing}})
 
-(def button-disabled
-  (merge
-    button
-    {:color color/color-neutral-2
-     :background color/color-neutral-3
-     :background-color color/color-neutral-3
-     :box-shadow box-shadow/box-shadow-small
-     :transition (str "all " timing/duration-slow " ease-in-out")
-     ::stylefy/mode {:hover {:background-position "left bottom"
-                             :background-size "200% auto"}
-                     :active {:background-position "right center"
-                              :outline "none"
-                              :box-shadow box-shadow/box-shadow-small
-                              :transform "translate(1px, 1px) rotate(-1deg)"}
-                     :focus {:outline "none"}}}))
+(def disabled-theme
+  {:color color/color-neutral-2
+   :background color/color-neutral-3
+   :background-color color/color-neutral-3
+   :box-shadow box-shadow/box-shadow-small})
 
-(def button-icon
-  {:font-size font-size/font-size-xx-large
-   :display "table-cell"
-   :vertical-align "middle"})
+(def disabled-interaction
+  (merge default-interaction
+         {::stylefy/mode {:hover default-mode-hover
+                          :active (merge default-mode-active
+                                         {:transform "translate(1px, 1px) rotate(-1deg)"})
+                          :focus default-mode-focus}}))
+
+
 
 (def small
   {:height (measures/rem-times spacing/space-small-rem 2)
@@ -102,26 +104,6 @@
 (def outline-small
   (merge small outline {:padding (str "0 calc(0.25rem - " border/border-default ")")}))
 
-(def upper
-  {:position "relative"
-   ::stylefy/mode {:hover {:background color/color-neutral-1}
-                   :active {:background color/color-neutral-2
-                            :transform "translateY(1px) scale(0.95, 0.95)"
-                            :box-shadow box-shadow/box-shadow-small}
-                   :focus {:outline "none"}}
-   ::stylefy/vendors ["webkit" "moz" "o"]
-   ::stylefy/auto-prefix #{:transition}})
-
-(def lower
-  {:position "relative"
-   ::stylefy/mode {:hover {:background color/color-neutral-1}
-                   :active {:background color/color-neutral-2
-                            :transform "scale(0.95, 0.95)"
-                            :box-shadow box-shadow/box-shadow-small}
-                   :focus {:outline "none"}}
-   ::stylefy/vendors ["webkit" "moz" "o"]
-   ::stylefy/auto-prefix #{:transition}})
-
 (def icon-link
   {:margin 0
    :white-space "nowrap"
@@ -149,3 +131,19 @@
   {:color "inherit"
    :padding-left "6px"
    :white-space "nowrap"})
+
+(def button-span
+  {:display "inline-block"
+   :padding (str "0 " spacing/space-x-small-rem)
+   :vertical-align "middle"})
+
+(def button-icon
+  {:font-size font-size/font-size-xx-large
+   :display "inline-block"
+   :vertical-align "middle"})
+
+(def default
+  (merge default-text default-layout default-theme default-interaction button-vendor-prefixes))
+
+(def disabled
+  (merge default disabled-theme disabled-interaction))

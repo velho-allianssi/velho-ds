@@ -4,22 +4,22 @@
             [velho-ds.tools.style :as tools-style]
             [stylefy.core :as stylefy]))
 
+(defn- button-icon [icon]
+  [icons/icon {:name icon
+               :styles style/button-icon}])
+
 (defn default [{:keys [content icon styles on-click-fn disabled?]}]
   (assert (or content icon))
-  [:button (stylefy/use-style
-             (if disabled?
-               (merge styles style/button-disabled)
-               (merge style/button styles))
-             {:on-click (when (not disabled?) on-click-fn)
-              :disabled disabled?})
-   (if disabled?
-     [icons/icon {:name "block"
-                  :styles style/button-icon}]
+  (let [btn-style (if disabled?
+                    (merge styles style/disabled)
+                    (merge style/default styles))
+        icon (if disabled? "block" icon)]
+    [:button (stylefy/use-style btn-style
+                                {:on-click (when (not disabled?) on-click-fn)})
      (when icon
-       [icons/icon {:name icon
-                    :styles style/button-icon}]))
-   (when content
-     [:span (stylefy/use-sub-style (merge style/button styles) :span) content])])
+       [button-icon icon])
+     (when content
+       [:span (stylefy/use-style style/button-span) content])]))
 
 (defn primary [{:keys [content icon] :as btn-args}]
   (assert (or content icon))
