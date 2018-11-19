@@ -9,15 +9,17 @@
             [velho-ds.atoms.style.font :as font-style]
             [stylefy.core :as stylefy]))
 
-;; Options
+
 (def default-text font-style/text)
 
+;; LAYOUTS
 (def default-layout
   {:box-sizing "border-box"
    :display "inline-table"
    :height spacing/space-x-large-rem
    :padding (str font-size/font-size-large " " font-size/font-size-x-large)})
 
+;; THEMES
 (def default-theme
   {:border "none"
    :box-shadow box-shadow/box-shadow
@@ -27,6 +29,13 @@
    :background-position "left center"
    :background-size "200% auto"})
 
+(def disabled-theme
+  {:color color/color-neutral-2
+   :background color/color-neutral-3
+   :background-color color/color-neutral-3
+   :box-shadow box-shadow/box-shadow-small})
+
+;; MODES
 (def default-mode-hover
   {:background-position "left bottom"
    :background-size "200% auto"})
@@ -36,9 +45,11 @@
    :outline "none"
    :box-shadow box-shadow/box-shadow-small
    :transform "scale(0.95, 0.95)"})
+
 (def default-mode-focus
   {:outline "none"})
 
+;; INTERACTIONS
 (def default-interaction
   {:cursor "pointer"
    :transition (str "all " timing/duration-slow " ease-in-out")
@@ -47,16 +58,6 @@
                    :active default-mode-active
                    :focus default-mode-focus}})
 
-(def button-vendor-prefixes
-  {::stylefy/vendors ["webkit" "moz" "o"]
-   ::stylefy/auto-prefix #{:transition :box-sizing}})
-
-(def disabled-theme
-  {:color color/color-neutral-2
-   :background color/color-neutral-3
-   :background-color color/color-neutral-3
-   :box-shadow box-shadow/box-shadow-small})
-
 (def disabled-interaction
   (merge default-interaction
          {::stylefy/mode {:hover default-mode-hover
@@ -64,6 +65,10 @@
                                          {:transform "translate(1px, 1px) rotate(-1deg)"})
                           :focus default-mode-focus}}))
 
+;; VENDOR
+(def button-vendor-prefixes
+  {::stylefy/vendors ["webkit" "moz" "o"]
+   ::stylefy/auto-prefix #{:transition :box-sizing}})
 
 
 (def small
