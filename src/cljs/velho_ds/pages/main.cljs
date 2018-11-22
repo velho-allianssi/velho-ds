@@ -497,10 +497,10 @@
 
 (def data-example (r/atom [{:items [{:label "Project 001"}
                                     {:label "Project 002"}
-                                    {:label "Project 003"}
-                                    {:label "Project 004"}
-                                    {:label "Project 005"}
-                                    {:label "Project 006"}
+                                    {:label "Another projectt 003"}
+                                    {:label "Example 004"}
+                                    {:label "Short 005"}
+                                    {:label "Longer project name than usually 006"}
                                     {:label "Project 007"}
                                     {:label "Project 008"}
                                     {:label "Project 009"}
@@ -664,11 +664,8 @@
        ($-> [fields/dropdown-menu {:label "Dropdown menu"
                                    :placeholder "Select"
                                    :item-list @example-data
-                                   :on-change-fn example-search-fn
-                                   :on-blur-fn (fn [e] (println "On blur: " e))
-                                   :on-focus-fn (fn [e] (println "On focus: " e))
                                    :selected-fn (fn [e] (println "Item selected: " e))
-                                   :selected-item {:label "File 1"}}])
+                                   :preselected-value "Project 001"}])
        [props-table [{:name "label"
                       :desc "string"
                       :example "{:title \"Dropdown menu\"}"}

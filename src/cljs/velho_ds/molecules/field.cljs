@@ -58,16 +58,20 @@
     (into [] (set/difference remove-from to-be-removed))))
 
 (defn- list-item [{:keys [on-click-fn content is-selected? hover? on-hover-fn styles]}]
-  [:li (stylefy/use-style (merge {:background-color (if is-selected? color/color-primary color/color-neutral-1)
+  [:li (stylefy/use-style (merge {:background-color (if is-selected? (if (and hover? is-selected?)
+                                                                       color/color-primary
+                                                                       color/color-primary-dark)
+                                                                     color/color-neutral-1)
                                   :color (if is-selected? color/color-neutral-2 color/color-neutral-5)
                                   :cursor "pointer"
                                   :display "block"
                                   :padding "0.5rem"}
-                                 (when hover? {:background-color color/color-primary-light
-                                               :color color/color-neutral-5})
+                                 (when (and hover? (not is-selected?))
+                                   {:background-color color/color-primary-light
+                                    :color color/color-neutral-5})
                                  styles)
                           {:on-click #(on-click-fn content)
-                           :on-mouse-over #(on-hover-fn content)
+                           :on-mouse-over (when on-hover-fn #(on-hover-fn content))
                            :key content
                            :class (str "dropdown-multi" (when hover? " hover") (when is-selected? " selected"))}) content])
 
@@ -192,7 +196,7 @@
                                  (if (first (:items-filtered @state))
                                    (do (swap! state assoc :selected-idx 0)
                                        (swap! state assoc :selected-from-filter (:label (nth (:items-filtered @state) (:selected-idx @state))))
-                                       (-> (dommy/sel1 (str ".dropdown-menu-list" @dropdown-id))
+                                       (-> (dommy/sel1 (str ".dropdown-menu-list-" @dropdown-id))
                                            .-scrollTop
                                            (set! 0)))
                                    (swap! state assoc :selected-idx nil)))
@@ -243,7 +247,6 @@
        :component-did-mount (fn [this]
                               (add-event-listener (dommy/sel1 (r/dom-node this) :input) :focus #(swap! state assoc :focus true)))
        :reagent-render (fn []
-                         (println "update")
                          (if (:focus @state)
                            (add-event-listener :click global-click-handler)
                            (do (swap! state assoc :input-text "")
@@ -382,7 +385,9 @@
                                  (mapv #(do
                                           (vector list-item {:on-click-fn list-item-selected-fn
                                                              :is-selected? (= (:selected-from-filter @state) %)
-                                                             :content %})) (filtered-selections)))]])})))
+                                                             :content %
+                                                             :styles {::stylefy/mode {:hover {:background color/color-primary-light
+                                                                                              :color color/color-neutral-5}}}})) (filtered-selections)))]])})))
 
 (defn file-list-item
   [{:keys [filename metadata on-change-fn delete-fn]}]
