@@ -495,23 +495,19 @@
 
 ;; MOLECULES
 
-(def data-example (r/atom [{:section "Projects"
-                            :items [{:label "Project 001"}
+(def data-example (r/atom [{:items [{:label "Project 001"}
                                     {:label "Project 002"}
                                     {:label "Project 003"}
                                     {:label "Project 004"}
-                                    {:label "Project 005"}]}
-                           {:section "Sub-projects"
-                            :items [{:label "Sub-project 001"}
-                                    {:label "Sub-project 002"}]}
-                           {:section "Files"
-                            :items [{:label "File 1"}
-                                    {:label "File 2"}
-                                    {:label "File 3"}]}]))
+                                    {:label "Project 005"}
+                                    {:label "Project 006"}
+                                    {:label "Project 007"}
+                                    {:label "Project 008"}
+                                    {:label "Project 009"}
+                                    {:label "Project 010"}]}]))
 (defmethod page-contents :fields []
   (let [example-data (r/atom @data-example)
-        example-search-fn #(reset! example-data [{:section "Sub-projects"
-                                                  :items [{:label "Sub-project 001"}
+        example-search-fn #(reset! example-data [{:items [{:label "Sub-project 001"}
                                                           {:label "Sub-project 002"}]}])]
     (fn []
       [:div

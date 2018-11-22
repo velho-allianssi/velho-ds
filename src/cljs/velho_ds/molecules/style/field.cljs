@@ -171,11 +171,15 @@
 
 (def dropdown-multiple-list
   {:box-shadow box-shadow/box-shadow-small
-   :max-height (str "calc(4*" font-size/font-size-base " + 8*" spacing/space-x-small-rem " + 4*1px)")
+   :max-height (str "calc(6*" font-size/font-size-base " + 12*" spacing/space-x-small-rem " + 6*1px)")
    :overflow-y "auto"
    :position "absolute"
    :width "100%"
    :z-index z-index/z-index-sticky})
+
+(def dropdown-menu-list
+  (merge dropdown-multiple-list
+         {:background color/color-neutral-1}))
 
 (def dropdown-multiple-list-item
   {:list-style-type "none"

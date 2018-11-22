@@ -26,8 +26,17 @@
   ([element event func]
    (dommy/unlisten! element event func)))
 
-(defn- search-in-list [collection search-word]
-  (filter #(string/includes? (string/lower-case %) search-word) collection))
+(defn- search-in-list [collection search-word & key]
+  (filter #(string/includes? (if key (string/lower-case (str (get % (first key))))
+                                     (string/lower-case %)) (string/lower-case search-word)) collection))
+
+(defn- filtered-items [items search-word]
+  (filter
+    #(not (empty? (:items %)))
+    (map #(assoc % :items (search-in-list (:items %) search-word :label)) items)))
+
+(defn- index-of-item [label items]
+  (first (first (filter (fn [item] (= label (:label (second item)))) (map-indexed vector items)))))
 
 (defn- element-has-class? [e classname]
   (let [target (.-target e)]
@@ -48,20 +57,26 @@
                         #{values})]
     (into [] (set/difference remove-from to-be-removed))))
 
-(defn- list-item [{:keys [on-click-fn content is-selected? hover? styles]}]
+(defn- list-item [{:keys [on-click-fn content is-selected? hover? on-hover-fn styles]}]
   [:li (stylefy/use-style (merge {:background-color (if is-selected? color/color-primary color/color-neutral-1)
                                   :color (if is-selected? color/color-neutral-2 color/color-neutral-5)
                                   :cursor "pointer"
                                   :display "block"
-                                  :padding "0.5rem"
-                                  ::stylefy/mode {:hover {:background-color color/color-primary-light
-                                                          :color color/color-neutral-5}}}
+                                  :padding "0.5rem"}
                                  (when hover? {:background-color color/color-primary-light
                                                :color color/color-neutral-5})
                                  styles)
                           {:on-click #(on-click-fn content)
+                           :on-mouse-over #(on-hover-fn content)
                            :key content
                            :class (str "dropdown-multi" (when hover? " hover") (when is-selected? " selected"))}) content])
+
+(defn- scroll-content-to [content child val]
+  (-> (dommy/sel1 content)
+      .-scrollTop
+      (set! (-> (dommy/sel1 child)
+                .-offsetTop
+                (- val)))))
 
 (defn- selected-list-items [{:keys [on-click-fn content]}]
   [:li (stylefy/use-style {:background-color color/color-neutral-5
@@ -156,93 +171,73 @@
   (assert (fn? selected-fn) ":selected-fn function is required for dropdown-menu")
   (assert (vector? item-list) ":item-list vector is required for dropdown-menu")
   (let [dropdown-id (atom (str (random-uuid)))
-        state (r/atom {:options (into [{:items [{:label (if placeholder placeholder "")}]}] item-list)
-                       :input-text ""
-                       :selected-item (if preselected-value preselected-value nil)
-                       :selected-idx nil
-                       :selected-from-filter ""
-                       :focus false})
-        input-value-changed-fn #(swap! state assoc :input-text %)
+        state (r/atom (let [itemlist (into [{:items [{:label (if placeholder placeholder "")}]}] item-list)]
+                        {:items itemlist
+                         :input-text ""
+                         :items-filtered (flatten (map #(get % :items) (filtered-items itemlist "")))
+                         :selected-item (if preselected-value preselected-value nil)
+                         :selected-idx (if preselected-value (index-of-item preselected-value (flatten (map #(get % :items) (filtered-items itemlist "")))) 0)
+                         :selected-from-filter (if preselected-value preselected-value placeholder)
+                         :focus false}))
+
+        input-value-changed-fn (fn [input]
+                                 (swap! state assoc :input-text input)
+                                 (swap! state assoc :items-filtered (flatten (map #(get % :items) (filtered-items (:items @state) input))))
+                                 (if (first (:items-filtered @state))
+                                   (do (swap! state assoc :selected-idx 0)
+                                       (swap! state assoc :selected-from-filter (:label (nth (:items-filtered @state) (:selected-idx @state))))
+                                       (-> (dommy/sel1 (str ".dropdown-menu-list" @dropdown-id))
+                                           .-scrollTop
+                                           (set! 0)))
+                                   (swap! state assoc :selected-idx nil)))
+
         list-item-selected-fn #(do
                                  (if (or (= % placeholder)
                                          (= % ""))
                                    (do (swap! state assoc :selected-item nil)
                                        (swap! state assoc :input-text ""))
-                                   (swap! state assoc :selected-item %))
-                                 (selected-fn (:selected-item @state))
+                                   (do (swap! state assoc :selected-item %)
+                                       (selected-fn (:selected-item @state))))
+                                 (swap! state assoc :items-filtered (flatten (map (fn [i] (get i :items)) (filtered-items (:items @state) ""))))
+                                 (swap! state assoc :selected-idx (index-of-item % (:items-filtered @state)))
                                  (swap! state update :focus not))
-        filtered-selections (fn []
-                              (filter
-                                #(not (empty? (:items %)))
-                                (map (fn [section]
-                                       (assoc
-                                         section
-                                         :items
-                                         (filter #(string/includes? (string/lower-case (:label %)) (string/lower-case (:input-text @state))) (:items section))))
-                                     (:options @state))))
-        scroll-content (fn [val]
-                         (-> (dommy/sel1 ".seppio")
-                             .-scrollTop
-                             (set! (-> (dommy/sel1 ".hover")
-                                       .-offsetTop
-                                       (- val)))))
+
+        hover-fn #(do (swap! state assoc :selected-idx (index-of-item % (:items-filtered @state)))
+                      (swap! state assoc :selected-from-filter %))
+
         key-press-handler-fn (fn [key]
-                               (when (not (= key (or "Enter" "Tab")))
+                               (if (contains? #{"Escape" "Tab"} key)
+                                 (swap! state assoc :focus false)
                                  (swap! state assoc :focus true))
-                               (when (and (= key "ArrowDown") (< (:selected-idx @state) (dec (count (flatten (map #(get % :items) (filtered-selections)))))))
+                               (when (and (= key "ArrowDown") (< (:selected-idx @state) (dec (count (:items-filtered @state)))))
                                  (if (nil? (:selected-idx @state))
                                    (swap! state assoc :selected-idx 0)
                                    (swap! state update-in [:selected-idx] inc))
-                                 (swap! state assoc :selected-from-filter (:label (nth (flatten (map #(get % :items) (filtered-selections))) (:selected-idx @state))))
-                                 (try (if (string/includes? (-> (dommy/sel1 ".hover")
-                                                                .-parentNode
-                                                                .-lastChild
-                                                                .-className)
-                                                            "hover")
-                                        (scroll-content 0)
-                                        (scroll-content 35))
-                                      (catch :default e false)))
+                                 (swap! state assoc :selected-from-filter (:label (nth (:items-filtered @state) (:selected-idx @state))))
+                                 (r/after-render #(scroll-content-to (str ".dropdown-menu-list-" @dropdown-id) ".hover" 70)))
                                (when (and (= key "ArrowUp") (> (:selected-idx @state) 0))
                                  (swap! state update-in [:selected-idx] dec)
-                                 (swap! state assoc :selected-from-filter (:label (nth (flatten (map #(get % :items) (filtered-selections))) (:selected-idx @state))))
-                                 (try (if (string/includes? (-> (dommy/sel1 ".hover")
-                                                                .-parentNode
-                                                                .-firstChild
-                                                                .-nextSibling
-                                                                .-className)
-                                                            "hover")
-                                        (scroll-content 70)
-                                        (scroll-content 35))
-                                      (catch :default e false)))
+                                 (swap! state assoc :selected-from-filter (:label (nth (:items-filtered @state) (:selected-idx @state))))
+                                 (r/after-render #(scroll-content-to (str ".dropdown-menu-list-" @dropdown-id) ".hover" 70)))
                                (when (and (= key "Enter"))
                                  (when (not (nil? (:selected-idx @state)))
-                                   (list-item-selected-fn (:label (nth (flatten (map #(get % :items) (filtered-selections))) (:selected-idx @state)))))
-                                 (swap! state assoc :selected-from-filter "")
-                                 (try (if (string/includes? (-> (dommy/sel1 ".hover")
-                                                                .-parentNode
-                                                                .-firstChild
-                                                                .-nextSibling
-                                                                .-className)
-                                                            "hover")
-                                        (scroll-content 70)
-                                        (scroll-content 35))
-                                      (catch :default e false)))
-                               (when (= key "Tab")
-                                 (swap! state assoc :focus false)))
+                                   (list-item-selected-fn (:label (nth (:items-filtered @state) (:selected-idx @state)))))))
+
         click-in-dropdown? (fn click-in-dropdown? [element id]
                              (if (nil? element)
                                false
                                (if (= id (.-id element))
                                  true
                                  (click-in-dropdown? (.-parentElement element) id))))
+
         global-click-handler #(let [target (.-target %)]
                                 (when-not (click-in-dropdown? target @dropdown-id)
                                   (swap! state assoc :focus false)))]
     (r/create-class
-      {:display-name "seppionjuttu"
+      {:display-name (str ".dropdown-menu" @dropdown-id)
        :component-did-mount (fn [this]
                               (add-event-listener (dommy/sel1 (r/dom-node this) :input) :focus #(swap! state assoc :focus true)))
-       :reagent-render (fn [item-list]
+       :reagent-render (fn []
                          (if (:focus @state)
                            (add-event-listener :click global-click-handler)
                            (do
@@ -256,25 +251,28 @@
                             [:input (stylefy/use-style style/dropdown-multiple-input {:type "text"
                                                                                       :on-click #(swap! state assoc :focus true)
                                                                                       :on-change #(do
-                                                                                                    (swap! state assoc :selected-idx nil)
                                                                                                     (-> % .-target .-value input-value-changed-fn))
                                                                                       :on-key-down #(-> % .-key key-press-handler-fn)
-                                                                                      :value (if (not (:focus @state)) (:selected-item @state) (:input-text @state))
+                                                                                      :value (if (:focus @state) (:input-text @state) (:selected-item @state))
                                                                                       :placeholder (if (:selected-item @state) (:selected-item @state) placeholder)})]
                             [icons/clickable {:name (if (:focus @state) "arrow_drop_up" "arrow_drop_down")
                                               :styles style/dropdown-multiple-icon
-                                              :on-click-fn #(swap! state update :focus not)}]]]
-                          (into [:div.seppio (stylefy/use-style (merge style/dropdown-multiple-list {:background color/color-neutral-1
-                                                                                                     :display (if (:focus @state) "block" "none")}))]
-                                (for [section (filtered-selections)]
+                                              :on-click-fn #(swap! state update :focus not)
+                                              :tabindex "-1"}]]]
+                          (into [:div (stylefy/use-style (merge style/dropdown-menu-list {:display (if (:focus @state) "block" "none")})
+                                                         {:class (str "dropdown-menu-list-" @dropdown-id)})]
+                                (for [section (filtered-items (:items @state) (:input-text @state))]
                                   (into [:ul (stylefy/use-style style/dropdown-list)
                                          (when (:section section)
                                            [:li (stylefy/use-style style/dropdown-list-header) (str (get section :section) " (" (count (get section :items)) ")")])]
                                         (mapv #(do
                                                  (vector list-item {:on-click-fn list-item-selected-fn
+                                                                    :on-hover-fn hover-fn
                                                                     :is-selected? (= (:selected-item @state) (:label %))
                                                                     :content (:label %)
-                                                                    :hover? (= (:selected-from-filter @state) (:label %))})) (:items section)))))])})))
+                                                                    :hover? (= (:selected-from-filter @state) (:label %))
+                                                                    :styles (when (= (:label %) placeholder)
+                                                                              {:color color/color-neutral-4})})) (:items section)))))])})))
 
 #_(defn dropdown-menu [{:keys [label
                                placeholder
