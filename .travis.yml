@@ -6,18 +6,12 @@ language: clojure
 jdk:
 - oraclejdk8
 
-before_install:
-  - chmod +x .travis/push.sh
-
 jobs:
   include:
     - stage: unit tests
       script: lein with-profile dev do clean, deps, compile, test
     - stage: release
       script: lein with-profile release do clean, deps, compile, uberjar, cljsbuild once release
-
-after_success:
-- ".travis/push.sh"
 
 env:
   global:
