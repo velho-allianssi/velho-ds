@@ -113,15 +113,15 @@
         [grid/grid-cell {:col-start 4
                          :col-end 4
                          :styles {:align-self "center"}}
-         [fields/dropdown-menu {:placeholder search-placeholder
-                                :icon (if @search-text "close" "search")
-                                :item-list search-results
-                                :on-item-select-fn search-result-clicked-fn
-                                :on-change-fn #(do (search-fn %)
-                                                   (reset! search-text %))
-                                :on-blur-fn #(reset! search-text nil)
-                                :selected-item @search-selected-item
-                                :icon-click-fn empty}]]]
+         [fields/dropdown-menu-legacy {:placeholder search-placeholder
+                                       :icon (if @search-text "close" "search")
+                                       :item-list search-results
+                                       :on-item-select-fn search-result-clicked-fn
+                                       :on-change-fn #(do (search-fn %)
+                                                          (reset! search-text %))
+                                       :on-blur-fn #(reset! search-text nil)
+                                       :selected-item @search-selected-item
+                                       :icon-click-fn empty}]]]
        (into [:div (stylefy/use-style (merge style/page-heading-container
                                              {:display (if @sub-content-open? "block" "none")}))]
              (for [item sub-content] ^{:key item} item))])))
@@ -149,8 +149,8 @@
                       theme-color
                       color/color-neutral-4)]
     [content-header (tools-style/merge-styles {:styles {:box-shadow box-shadow/box-shadow
-                                                      :background color/color-white
-                                                      :grid-template-columns "1fr minmax(12rem, 25%)"}} styles)
+                                                        :background color/color-white
+                                                        :grid-template-columns "1fr minmax(12rem, 25%)"}} styles)
      [content-info {:breadcrumb breadcrumb
                     :breadcrumb-click-fn breadcrumb-click-fn
                     :footnote footnote
