@@ -290,6 +290,7 @@
 (defn dropdown-multiple [{:keys [label placeholder selected-fn options preselected-values]}]
   (assert (fn? selected-fn) ":selected-fn function is required for dropdown-multiple")
   (assert (vector? options) ":options vector is required for dropdown-multiple")
+  (assert (or (nil? preselected-values) (vector? preselected-values)) ":preselected-values must be vector when given")
   (let [state (r/atom {:options options
                        :input-text ""
                        :selected-items (if preselected-values preselected-values [])
