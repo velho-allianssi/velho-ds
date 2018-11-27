@@ -17,10 +17,13 @@
 (defn close [modal-id]
   (.remove (.getElementById js/document modal-id) js/document))
 
-(defn default [{:keys [header header-buttons content footer is-open styles]}]
-  [:div (if is-open (stylefy/use-style style/modal-area)
-                    (stylefy/use-style (merge style/modal-area {:display "none"})))
-   [:div (stylefy/use-style (merge style/modal-dialog styles))
+(defn default [{:keys [header header-buttons content footer is-open styles background-on-click-fn]}]
+  [:div
+   (assoc
+     (if is-open (stylefy/use-style style/modal-background-area)
+                 (stylefy/use-style (merge style/modal-background-area {:display "none"})))
+     :on-click background-on-click-fn)
+   [:div (assoc (stylefy/use-style (merge style/modal-dialog styles)) :on-click #(.stopPropagation %))
     [:div (stylefy/use-style style/modal-box)
      [:header (stylefy/use-style style/modal-header)
       [:h2 (stylefy/use-sub-style style/modal-header :h2) header]

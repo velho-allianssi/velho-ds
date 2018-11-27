@@ -813,7 +813,9 @@
                                    [buttons/primary {:content "Confirm"
                                                      :on-click-fn (fn [] (swap! modal-open not))
                                                      :styles {:margin-left "16px"}}]]
-                          :styles {:max-width "640px"}}]
+                          :styles {:max-width "640px"}
+                          :background-on-click-fn #(reset! modal-open false)}]
+
          [buttons/default {:content "Open modal"
                            :on-click-fn (fn [] (swap! modal-open not))}]]))))
 
