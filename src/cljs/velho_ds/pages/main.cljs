@@ -675,27 +675,12 @@
                      {:name "item-list"
                       :desc "vector"
                       :example "{:item-list [{:section \"Sub-projects\"\n:items [{:label \"Sub-project 001\"}\n{:label \"Sub-project 002\"}]}]}"}
-                     {:name "on-change-fn"
+                     {:name "selected-fn"
                       :desc "function"
-                      :example "{:on-change-fn (fn [e] (sort-fn e)}"}
-                     {:name "on-blur-fn"
-                      :desc "function"
-                      :example "{:on-blur-fn (fn [e] (println \"On blur: \" e))}"}
-                     {:name "on-focus-fn"
-                      :desc "function"
-                      :example "{:on-focus-fn (fn [e] (println \"On focus: \" e))}"}
-                     {:name "on-item-select-fn"
-                      :desc "function"
-                      :example "{:on-item-select-fn (fn [first second] (println \"Item selected: \" first second))}"}
-                     {:name "selected-item"
-                      :desc "map"
-                      :example "{:selected-item {:label \"Sub-project 002\"}}"}
-                     {:name "icon-click-fn"
-                      :desc "function"
-                      :example "{:icon-click-fn clear-sort-fn}"}
-                     {:name "icon"
+                      :example "{:selected-fn (fn [e] (println \"Item selected: \" e)"}
+                     {:name "preselected-value"
                       :desc "string"
-                      :example "{:icon \"close\"}"}
+                      :example "{:preselected-value \"Project 001\"}"}
                      {:name "error-messages"
                       :desc "vector"
                       :example "{:error-messages [\"Value has to be valid!\"]}"}

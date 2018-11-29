@@ -172,6 +172,7 @@
                              item-list
                              selected-fn
                              preselected-value
+                             disabled
                              styles]}]
   (assert (fn? selected-fn) ":selected-fn function is required for dropdown-menu")
   (assert (vector? item-list) ":item-list vector is required for dropdown-menu")
@@ -185,7 +186,8 @@
                          :selected-item (if preselected-value preselected-value nil)
                          :selected-idx (if preselected-value (index-of-item preselected-value flatten-itemlist) 0)
                          :selected-from-filter (if preselected-value preselected-value placeholder)
-                         :focus false}))
+                         :focus false
+                         :disabled (if disabled disabled false)}))
 
         style-list-item (fn [item]
                           (when (= (:label item) placeholder)
@@ -265,10 +267,12 @@
                                                                                                     (-> % .-target .-value input-value-changed-fn))
                                                                                       :on-key-down #(-> % .-key key-press-handler-fn)
                                                                                       :value (if (:focus @state) (:input-text @state) (:selected-item @state))
-                                                                                      :placeholder (if (:selected-item @state) (:selected-item @state) placeholder)})]
+                                                                                      :placeholder (if (:selected-item @state) (:selected-item @state) placeholder)
+                                                                                      :disabled (:disabled @state)})]
                             [icons/clickable {:name (if (:focus @state) "arrow_drop_up" "arrow_drop_down")
                                               :styles style/dropdown-multiple-icon
                                               :on-click-fn #(swap! state update :focus not)
+                                              :disabled (:disabled @state)
                                               :tabindex "-1"}]]]
                           (into [:div (stylefy/use-style (merge style/dropdown-menu-list
                                                                 {:display (if (:focus @state) "block" "none")})
