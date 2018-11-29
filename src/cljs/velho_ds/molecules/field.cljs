@@ -171,7 +171,8 @@
                              placeholder
                              item-list
                              selected-fn
-                             preselected-value]}]
+                             preselected-value
+                             styles]}]
   (assert (fn? selected-fn) ":selected-fn function is required for dropdown-menu")
   (assert (vector? item-list) ":item-list vector is required for dropdown-menu")
   (let [dropdown-id (atom (str (random-uuid)))
@@ -251,11 +252,13 @@
                            (add-event-listener :click global-click-handler)
                            (do (swap! state assoc :input-text "")
                                (remove-event-listener :click global-click-handler)))
-                         [:div (stylefy/use-style {:position "relative"}
+                         [:div (stylefy/use-style (merge {:position "relative"} styles)
                                                   {:id @dropdown-id})
-                          [:div (stylefy/use-style {:padding-top "1rem"})
-                           [:span (stylefy/use-style style/dropdown-label) label]
-                           [:div (stylefy/use-style style/dropdown-multiple-input-background)
+                          [:div
+                           [:span (stylefy/use-style (merge style/dropdown-label (when (:focus @state)
+                                                                                   {:color color/color-primary}))) label]
+                           [:div (stylefy/use-style (merge style/dropdown-multiple-input-background (when (:focus @state)
+                                                                                                      {:border-bottom (str "1px solid " color/color-primary)})))
                             [:input (stylefy/use-style style/dropdown-multiple-input {:type "text"
                                                                                       :on-click #(swap! state assoc :focus true)
                                                                                       :on-change #(do

@@ -81,6 +81,7 @@
 
 (def dropdown-label
   {:display "block"
+   :color color/color-neutral-4
    :font-size font-size/font-size-small
    :cursor "inherit"
    :transition (str "all " timing/duration-slow " ease-in-out")
