@@ -103,20 +103,21 @@
    [:span (stylefy/use-style style/iconvalue-value) content]])
 
 ;; INPUTS
-(defn- create-input-field [{:keys [label content placeholder icon-click-fn on-change-fn on-blur-fn on-focus-fn styles]} input-type]
-  (let [input-text (r/atom content)
+(defn- create-input-field [{:keys [label content placeholder icon-click-fn on-change-fn on-blur-fn on-focus-fn transform-fn styles]} input-type]
+  (let [value-text (r/atom content)
         state (r/atom {:is-focused false
-                       :has-value (not (nil? @input-text))})
-        change (fn [val]
-                 (reset! input-text val)
-                 (swap! state assoc :has-value (not (or (= val "") (nil? val))))
-                 (when on-change-fn (on-change-fn @input-text)))
+                       :has-value (not (nil? @value-text))})
+        change (fn [value]
+                 (let [value (if transform-fn (transform-fn value) value)]
+                   (reset! value-text value)
+                   (swap! state assoc :has-value (not (or (= value "") (nil? value))))
+                   (when on-change-fn (on-change-fn @value-text))))
         blur (fn []
                (swap! state assoc :is-focused false)
-               (when on-blur-fn (on-blur-fn @input-text)))
+               (when on-blur-fn (on-blur-fn @value-text)))
         focus (fn []
                 (swap! state assoc :is-focused true)
-                (when on-focus-fn (on-focus-fn @input-text)))]
+                (when on-focus-fn (on-focus-fn @value-text)))]
     (fn [{:keys [icon error-messages]}]
       [:div.vds-input-field (stylefy/use-style styles)
        [:label (stylefy/use-style style/element)
@@ -129,7 +130,7 @@
                                        {:on-change #(-> % .-target .-value change)
                                         :on-blur blur
                                         :on-focus focus
-                                        :value @input-text
+                                        :value @value-text
                                         :placeholder placeholder})]
         (when icon [icons/clickable (merge (when icon-click-fn {:on-click-fn icon-click-fn})
                                            {:name icon
