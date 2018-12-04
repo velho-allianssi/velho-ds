@@ -3,12 +3,13 @@
             [stylefy.core :as stylefy]
             [velho-ds.atoms.style.table :as style]))
 
-(defn table-header [{:keys [label on-click-fn] :as header}]
+(defn table-header [{:keys [label on-click-fn sub-content] :as header}]
   ^{:key header}
   [:th
    (cond-> (stylefy/use-sub-style style/thead-default :th)
            on-click-fn (assoc :on-click on-click-fn))
-   label])
+   label
+   sub-content])
 
 (defn default [{:keys [headers content footers styles]}]
   (let [cols (r/atom (for [val headers] (get val :key-path)))]
