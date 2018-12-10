@@ -125,21 +125,33 @@
    [:span (stylefy/use-style style/iconvalue-value) content]])
 
 ;; INPUTS
-(defn- create-input-field [{:keys [label content placeholder icon-click-fn on-change-fn on-blur-fn on-focus-fn styles]} input-type]
-  (let [input-text (r/atom content)
+(defn- create-input-field [{:keys [label
+                                   content
+                                   placeholder
+                                   icon-click-fn
+                                   on-change-fn
+                                   on-blur-fn
+                                   on-focus-fn
+                                   transform-fn
+                                   styles]}
+                           input-type]
+  (let [value-text (r/atom content)
         state (r/atom {:is-focused false
-                       :has-value (not (nil? @input-text))})
-        change (fn [val]
-                 (reset! input-text val)
-                 (swap! state assoc :has-value (not (or (= val "") (nil? val))))
-                 (when on-change-fn (on-change-fn @input-text)))
+                       :has-value (not (nil? @value-text))})
+        change (fn [value]
+                 (let [value (if transform-fn (transform-fn value) value)]
+                   (reset! value-text value)
+                   (swap! state assoc :has-value (not (or (= value "") (nil? value))))
+                   (when on-change-fn (on-change-fn @value-text))))
         blur (fn []
                (swap! state assoc :is-focused false)
-               (when on-blur-fn (on-blur-fn @input-text)))
+               (when on-blur-fn (on-blur-fn @value-text)))
         focus (fn []
                 (swap! state assoc :is-focused true)
-                (when on-focus-fn (on-focus-fn @input-text)))]
-    (fn [{:keys [icon error-messages]}]
+                (when on-focus-fn (on-focus-fn @value-text)))]
+    (fn [{:keys [icon error-messages content]}]
+      (when (not content)
+        (reset! value-text nil))
       [:div.vds-input-field (stylefy/use-style styles)
        [:label (stylefy/use-style style/element)
         (when label [:span (label-styles error-messages @state placeholder label) label])
@@ -151,7 +163,7 @@
                                        {:on-change #(-> % .-target .-value change)
                                         :on-blur blur
                                         :on-focus focus
-                                        :value @input-text
+                                        :value @value-text
                                         :placeholder placeholder})]
         (when icon [icons/clickable (merge (when icon-click-fn {:on-click-fn icon-click-fn})
                                            {:name icon
@@ -313,6 +325,7 @@
 (defn dropdown-multiple [{:keys [label placeholder selected-fn options preselected-values]}]
   (assert (fn? selected-fn) ":selected-fn function is required for dropdown-multiple")
   (assert (vector? options) ":options vector is required for dropdown-multiple")
+  (assert (or (nil? preselected-values) (vector? preselected-values)) ":preselected-values must be vector when given")
   (let [state (r/atom {:options options
                        :input-text ""
                        :selected-items (if preselected-values preselected-values [])
@@ -528,55 +541,22 @@
           [dividers/default]
           (map-indexed #(with-meta %2 {:key %1}) sub-content)])])))
 
-(defn drag-n-drop-area [{:keys [help-text on-change-fn filename-label desc-label]}]
-  (assert on-change-fn)
-  (let [files (r/atom {})
-        label-id (r/atom (sanitize-id (str (subs (str (rand)) 2 9))))
-        file-to-map (fn [item]
-                      {:name (.-name item)
-                       :description nil
-                       :file item})
-        get-files (fn [e]
-                    (do
-                      (-> e
-                          .-files
-                          array-seq
-                          (#(map file-to-map %))
-                          (#(reduce add-to-files @files %))
-                          (#(reset! files %)))
-                      (on-change-fn @files)))
-        file-metadata-changed (fn [key-path new-metadata]
-                                (do
-                                  (swap! files assoc-in key-path new-metadata)
-                                  (on-change-fn @files)))
-        remove-item #(do
-                       (swap! files dissoc %)
-                       (on-change-fn @files))]
+(defn drag-n-drop-area [{:keys [help-text on-drop-fn]}]
+  (assert on-drop-fn)
+  (let [label-id (r/atom (sanitize-id (str (subs (str (rand)) 2 9))))
+        add-files (fn [e]
+                    (doseq [file (->> e
+                                      .-files
+                                      array-seq
+                                      (map (fn [item] {:name (.-name item), :file item})))]
+                      (on-drop-fn file)))]
     (fn []
       [:div {:on-drag-over #(.preventDefault %)
              :on-drag-enter #(.preventDefault %)
              :on-drag-start #(.setData (.-dataTransfer %) "text/plain" "") ;; for Firefox. You MUST set something as data.
              :on-drop #(do
                          (.preventDefault %)
-                         (get-files (.-dataTransfer %)))}
-       (when (not (empty? @files))
-         (into [:ul (stylefy/use-style style/drag-n-drop-content-ul)]
-               (for [key (sort (keys @files))]
-                 (let [file-item (get @files key)]
-                   ^{:key key} [list-element {:label (:name file-item)
-                                              :desc (:description file-item)
-                                              :sub-content [[input-field {:label (if filename-label filename-label "Filename")
-                                                                          :placeholder ""
-                                                                          :content (:name file-item)
-                                                                          :on-change-fn (partial file-metadata-changed [key :name])
-                                                                          :styles {:margin (str spacing/space-x-small-rem "  0")}}]
-                                                            [input-field {:label (if desc-label desc-label "Description")
-                                                                          :placeholder ""
-                                                                          :content (:description file-item)
-                                                                          :on-change-fn (partial file-metadata-changed [key :description])
-                                                                          :styles {:margin (str spacing/space-x-small-rem "  0")}}]]
-                                              :buttons [[icons/clickable {:name "clear"
-                                                                          :on-click-fn #(remove-item key)}]]}]))))
+                         (add-files (.-dataTransfer %)))}
        [:div (merge (stylefy/use-style style/drag-n-drop-helparea)
                     {:on-click #(.click (dommy/sel1 @ds/root-element (keyword (str "#file-input-" @label-id))))})
         (when help-text [:p (stylefy/use-sub-style style/drag-n-drop-helparea :p) help-text])
@@ -585,7 +565,7 @@
                  :type "file"
                  :multiple "multiple"
                  :on-change #(do
-                               (get-files (.-target %))
+                               (add-files (.-target %))
                                (set! (-> % .-target .-value) nil))
                  :style {:display "none"}}]]])))
 
