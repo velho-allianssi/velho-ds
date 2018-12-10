@@ -81,6 +81,7 @@
 
 (def dropdown-label
   {:display "block"
+   :color color/color-neutral-4
    :font-size font-size/font-size-small
    :cursor "inherit"
    :transition (str "all " timing/duration-slow " ease-in-out")
@@ -171,11 +172,15 @@
 
 (def dropdown-multiple-list
   {:box-shadow box-shadow/box-shadow-small
-   :max-height (str "calc(4*" font-size/font-size-base " + 8*" spacing/space-x-small-rem " + 4*1px)")
+   :max-height (str "calc(6*" font-size/font-size-base " + 12*" spacing/space-x-small-rem " + 6*1px)")
    :overflow-y "auto"
    :position "absolute"
    :width "100%"
    :z-index z-index/z-index-sticky})
+
+(def dropdown-menu-list
+  (merge dropdown-multiple-list
+         {:background color/color-neutral-1}))
 
 (def dropdown-multiple-list-item
   {:list-style-type "none"
@@ -241,10 +246,11 @@
 (def dropdown-list
   {:z-index 9999
    :padding 0
-   :margin (str spacing/space-xx-small-rem " 0")})
+   :margin 0})
 
 (def dropdown-list-item
   {:list-style "none"
+   :user-select "none"
    :padding (str spacing/space-xx-small-rem " " spacing/space-x-small-rem)
    :cursor "pointer"
    :color color/color-neutral-5
@@ -259,13 +265,12 @@
 
 (def dropdown-list-header
   (merge dropdown-list-item
-         {:padding (str spacing/space-xx-small-rem " " spacing/space-x-small-rem " 0")
-          :color color/color-neutral-4
-          :font-family font/font-family-heading
-          ::stylefy/mode {:hover {:color color/color-neutral-4}}}))
+         {:padding spacing/space-x-small-rem
+          :color color/color-neutral-4}))
 
 (def dropdown-list-header-item
   {:margin 0
+   :user-select "none"
    :display "inline-block"
    :cursor "pointer"
    :padding 0

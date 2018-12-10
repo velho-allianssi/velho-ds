@@ -8,14 +8,15 @@
   [:i.material-icons (if styles (use-style styles)
                                 (use-style style/icon)) name])
 
-(defn clickable [{:keys [name styles on-click-fn disabled]}]
+(defn clickable [{:keys [name styles on-click-fn disabled tabindex]}]
   (assert name)
   [:button (stylefy/use-style (merge (if disabled
                                        style/clickable-disabled
                                        style/clickable)
                                      styles)
-                              {:disabled (if disabled disabled false)
-                               :on-click on-click-fn})
+                              (merge {:disabled (if disabled disabled false)
+                                      :on-click on-click-fn}
+                                     (when tabindex {:tab-index tabindex})))
    [:i.material-icons (stylefy/use-sub-style (merge style/clickable styles) :i) name]])
 
 (defn- circle [{:keys [color inner-color width height]} & content]

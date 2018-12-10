@@ -495,23 +495,19 @@
 
 ;; MOLECULES
 
-(def data-example (r/atom [{:section "Projects"
-                            :items [{:label "Project 001"}
+(def data-example (r/atom [{:items [{:label "Project 001"}
                                     {:label "Project 002"}
-                                    {:label "Project 003"}
-                                    {:label "Project 004"}
-                                    {:label "Project 005"}]}
-                           {:section "Sub-projects"
-                            :items [{:label "Sub-project 001"}
-                                    {:label "Sub-project 002"}]}
-                           {:section "Files"
-                            :items [{:label "File 1"}
-                                    {:label "File 2"}
-                                    {:label "File 3"}]}]))
+                                    {:label "Another projectt 003"}
+                                    {:label "Example 004"}
+                                    {:label "Short 005"}
+                                    {:label "Longer project name than usually 006"}
+                                    {:label "Project 007"}
+                                    {:label "Project 008"}
+                                    {:label "Project 009"}
+                                    {:label "Project 010"}]}]))
 (defmethod page-contents :fields []
   (let [example-data (r/atom @data-example)
-        example-search-fn #(reset! example-data [{:section "Sub-projects"
-                                                  :items [{:label "Sub-project 001"}
+        example-search-fn #(reset! example-data [{:items [{:label "Sub-project 001"}
                                                           {:label "Sub-project 002"}]}])]
     (fn []
       [:div
@@ -667,12 +663,9 @@
        [:h3.rds-header3 "Dropdown-menu"]
        ($-> [fields/dropdown-menu {:label "Dropdown menu"
                                    :placeholder "Select"
-                                   :item-list @example-data
-                                   :on-change-fn example-search-fn
-                                   :on-blur-fn (fn [e] (println "On blur: " e))
-                                   :on-focus-fn (fn [e] (println "On focus: " e))
-                                   :on-item-select-fn (fn [first second] (println "Item selected: " first second))
-                                   :selected-item {:label "File 1"}}])
+                                   :items @example-data
+                                   :on-select-fn (fn [e] (println "Item selected: " e))
+                                   :preselected-item "Project 001"}])
        [props-table [{:name "label"
                       :desc "string"
                       :example "{:title \"Dropdown menu\"}"}
@@ -682,27 +675,12 @@
                      {:name "item-list"
                       :desc "vector"
                       :example "{:item-list [{:section \"Sub-projects\"\n:items [{:label \"Sub-project 001\"}\n{:label \"Sub-project 002\"}]}]}"}
-                     {:name "on-change-fn"
+                     {:name "selected-fn"
                       :desc "function"
-                      :example "{:on-change-fn (fn [e] (sort-fn e)}"}
-                     {:name "on-blur-fn"
-                      :desc "function"
-                      :example "{:on-blur-fn (fn [e] (println \"On blur: \" e))}"}
-                     {:name "on-focus-fn"
-                      :desc "function"
-                      :example "{:on-focus-fn (fn [e] (println \"On focus: \" e))}"}
-                     {:name "on-item-select-fn"
-                      :desc "function"
-                      :example "{:on-item-select-fn (fn [first second] (println \"Item selected: \" first second))}"}
-                     {:name "selected-item"
-                      :desc "map"
-                      :example "{:selected-item {:label \"Sub-project 002\"}}"}
-                     {:name "icon-click-fn"
-                      :desc "function"
-                      :example "{:icon-click-fn clear-sort-fn}"}
-                     {:name "icon"
+                      :example "{:selected-fn (fn [e] (println \"Item selected: \" e)"}
+                     {:name "preselected-value"
                       :desc "string"
-                      :example "{:icon \"close\"}"}
+                      :example "{:preselected-value \"Project 001\"}"}
                      {:name "error-messages"
                       :desc "vector"
                       :example "{:error-messages [\"Value has to be valid!\"]}"}
