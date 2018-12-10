@@ -103,7 +103,16 @@
    [:span (stylefy/use-style style/iconvalue-value) content]])
 
 ;; INPUTS
-(defn- create-input-field [{:keys [label content placeholder icon-click-fn on-change-fn on-blur-fn on-focus-fn transform-fn styles]} input-type]
+(defn- create-input-field [{:keys [label
+                                   content
+                                   placeholder
+                                   icon-click-fn
+                                   on-change-fn
+                                   on-blur-fn
+                                   on-focus-fn
+                                   transform-fn
+                                   styles]}
+                           input-type]
   (let [value-text (r/atom content)
         state (r/atom {:is-focused false
                        :has-value (not (nil? @value-text))})
@@ -118,7 +127,9 @@
         focus (fn []
                 (swap! state assoc :is-focused true)
                 (when on-focus-fn (on-focus-fn @value-text)))]
-    (fn [{:keys [icon error-messages]}]
+    (fn [{:keys [icon error-messages content]}]
+      (when (not content)
+        (reset! value-text nil))
       [:div.vds-input-field (stylefy/use-style styles)
        [:label (stylefy/use-style style/element)
         (when label [:span (label-styles error-messages @state placeholder label) label])
