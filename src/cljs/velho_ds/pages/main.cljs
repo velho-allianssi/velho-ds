@@ -663,9 +663,9 @@
        [:h3.rds-header3 "Dropdown-menu"]
        ($-> [fields/dropdown-menu {:label "Dropdown menu"
                                    :placeholder "Select"
-                                   :item-list @example-data
-                                   :selected-fn (fn [e] (println "Item selected: " e))
-                                   :preselected-value "Project 001"}])
+                                   :items @example-data
+                                   :on-select-fn (fn [e] (println "Item selected: " e))
+                                   :preselected-item "Project 001"}])
        [props-table [{:name "label"
                       :desc "string"
                       :example "{:title \"Dropdown menu\"}"}

@@ -169,25 +169,25 @@
 
 (defn dropdown-menu [{:keys [label
                              placeholder
-                             item-list
-                             selected-fn
-                             preselected-value
+                             items
+                             on-select-fn
+                             preselected-item
                              disabled
                              styles]}]
-  (assert (fn? selected-fn) ":selected-fn function is required for dropdown-menu")
-  (assert (vector? item-list) ":item-list vector is required for dropdown-menu")
-  (assert (or (nil? preselected-value) (string? preselected-value)) ":preselected-values must be string when given")
+  (assert (fn? on-select-fn) ":on-select-fn function is required for dropdown-menu")
+  (assert (vector? items) ":items vector is required for dropdown-menu")
+  (assert (or (nil? preselected-item) (string? preselected-item)) ":preselected-items must be string when given")
   (let [dropdown-id (atom (str (random-uuid)))
 
         state (r/atom (let [itemlist (into [{:items [{:label (if placeholder placeholder "")
-                                                      :type "placeholder"}]}] item-list)
+                                                      :type "placeholder"}]}] items)
                             flatten-itemlist (flatten (map (fn [item] (get item :items)) (filter-items itemlist "")))]
                         {:items itemlist
                          :input-text ""
                          :items-filtered flatten-itemlist
-                         :selected-item (if preselected-value preselected-value nil)
-                         :selected-idx (if preselected-value (index-of-item preselected-value flatten-itemlist) 0)
-                         :selected-from-filter (if preselected-value preselected-value placeholder)
+                         :selected-item (if preselected-item preselected-item nil)
+                         :selected-idx (if preselected-item (index-of-item preselected-item flatten-itemlist) 0)
+                         :selected-from-filter (if preselected-item preselected-item placeholder)
                          :focus false
                          :disabled (if disabled disabled false)}))
 
@@ -206,11 +206,11 @@
                                            (set! 0)))
                                    (swap! state assoc :selected-idx nil)))
 
-        list-item-selected-fn #(do (if (= (:type %) "placeholder")
+        list-item-select-fn #(do (if (= (:type %) "placeholder")
                                      (do (swap! state assoc :selected-item nil)
                                          (swap! state assoc :input-text ""))
                                      (do (swap! state assoc :selected-item (:label %))
-                                         (selected-fn (:selected-item @state))))
+                                         (on-select-fn %)))
                                    (swap! state assoc :items-filtered (flatten (map (fn [i] (get i :items)) (filter-items (:items @state) ""))))
                                    (swap! state assoc :selected-idx (index-of-item (:label %) (:items-filtered @state)))
                                    (swap! state update :focus not))
@@ -234,7 +234,7 @@
                                  (r/after-render #(scroll-content-to (str ".dropdown-menu-list-" @dropdown-id) ".hover" 70)))
                                (when (and (= key "Enter"))
                                  (when (not (nil? (:selected-idx @state)))
-                                   (list-item-selected-fn (nth (:items-filtered @state) (:selected-idx @state))))))
+                                   (list-item-select-fn (nth (:items-filtered @state) (:selected-idx @state))))))
 
         click-in-dropdown? (fn click-in-dropdown? [element id]
                              (if (nil? element)
@@ -283,7 +283,7 @@
                                          (when (:section section)
                                            [:li (stylefy/use-style style/dropdown-list-header) (str (get section :section) " (" (count (get section :items)) ")")])]
                                         (mapv #(do
-                                                 (vector list-item {:on-click-fn list-item-selected-fn
+                                                 (vector list-item {:on-click-fn list-item-select-fn
                                                                     :on-hover-fn hover-fn
                                                                     :is-selected? (= (:selected-item @state) (:label %))
                                                                     :item %
