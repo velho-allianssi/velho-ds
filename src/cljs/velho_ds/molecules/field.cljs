@@ -78,9 +78,7 @@
 (defn- scroll-content-to [content child val]
   (-> (dommy/sel1 @ds/root-element content)
       .-scrollTop
-      (set! (-> (dommy/sel [@ds/root-element content child])
-                first
-                .-offsetTop
+      (set! (-> (.-offsetTop (.item (.querySelectorAll (.item (.querySelectorAll @ds/root-element content) 0) child) 0))
                 (- val)))))
 
 (defn- selected-list-items [{:keys [on-click-fn content]}]
