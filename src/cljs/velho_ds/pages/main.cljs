@@ -497,7 +497,7 @@
 
 (def data-example (r/atom [{:items [{:label "Project 001"}
                                     {:label "Project 002"}
-                                    {:label "Another projectt 003"}
+                                    {:label "Another project 003"}
                                     {:label "Example 004"}
                                     {:label "Short 005"}
                                     {:label "Longer project name than usually 006"}
@@ -665,22 +665,22 @@
                                    :placeholder "Select"
                                    :items @example-data
                                    :on-select-fn (fn [e] (println "Item selected: " e))
-                                   :preselected-item "Project 001"}])
+                                   :preselected-item {:label "Project 001"}}])
        [props-table [{:name "label"
                       :desc "string"
                       :example "{:title \"Dropdown menu\"}"}
                      {:name "placeholder"
                       :desc "string"
                       :example "{:placeholder \"Select\"}"}
-                     {:name "item-list"
+                     {:name "items"
                       :desc "vector"
                       :example "{:item-list [{:section \"Sub-projects\"\n:items [{:label \"Sub-project 001\"}\n{:label \"Sub-project 002\"}]}]}"}
-                     {:name "selected-fn"
+                     {:name "on-select-fn"
                       :desc "function"
                       :example "{:selected-fn (fn [e] (println \"Item selected: \" e)"}
-                     {:name "preselected-value"
+                     {:name "preselected-item"
                       :desc "string"
-                      :example "{:preselected-value \"Project 001\"}"}
+                      :example "{:preselected-item {:label \"Project 001\"}}"}
                      {:name "error-messages"
                       :desc "vector"
                       :example "{:error-messages [\"Value has to be valid!\"]}"}
