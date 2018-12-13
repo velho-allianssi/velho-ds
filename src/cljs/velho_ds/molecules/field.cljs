@@ -220,7 +220,8 @@
 
         list-item-select-fn #(do (if (= (:type %) "placeholder")
                                      (do (swap! state assoc :selected-item nil)
-                                         (swap! state assoc :input-text ""))
+                                         (swap! state assoc :input-text "")
+                                         (on-select-fn nil))
                                      (do (swap! state assoc :selected-item (:label %))
                                          (on-select-fn %)))
                                    (swap! state assoc :items-filtered (flatten (map (fn [i] (get i :items)) (filter-items (:items @state) ""))))
