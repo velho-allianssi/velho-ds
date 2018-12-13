@@ -173,7 +173,7 @@
         (when icon [icons/clickable (merge (when icon-click-fn {:on-click-fn icon-click-fn})
                                            {:name icon
                                             :styles style/icon})])]
-       (display-errors error-messages)])))
+       [display-errors error-messages]])))
 
 (defn input-field [properties]
   (create-input-field properties :input))
@@ -303,7 +303,7 @@
                                                                     :item %
                                                                     :hover? (= (:selected-from-filter @state) (:label %))
                                                                     :styles (style-list-item %)})) (:items section)))))
-                          (display-errors error-messages)])})))
+                          [display-errors error-messages]])})))
 
 (defn dropdown-menu-simple [{:keys [label selected-fn options default-value no-selection-text styles]}]
   [:div (stylefy/use-style styles)
@@ -689,4 +689,4 @@
                           :disabled (:disabled @state)
                           :name (if (nil? icon) (if (:focus @state) "arrow_drop_up" "arrow_drop_down") icon)
                           :styles (merge style/icon (when (nil? label) {:top spacing/space-xx-small-rem}))}]]
-       (display-errors error-messages)])))
+       [display-errors error-messages]])))
