@@ -289,9 +289,9 @@
                                               :on-click-fn #(swap! state update :is-focused not)
                                               :disabled (:disabled @state)
                                               :tabindex "-1"}]]]
-                          (into ^{:key (:items @state)} [:div (stylefy/use-style (merge style/dropdown-menu-list
-                                                                                        {:display (if (:is-focused @state) "block" "none")})
-                                                                                 {:class (str "dropdown-menu-list-" @dropdown-id)})]
+                          (into [:div (stylefy/use-style (merge style/dropdown-menu-list
+                                                                {:display (if (:is-focused @state) "block" "none")})
+                                                         {:class (str "dropdown-menu-list-" @dropdown-id)})]
                                 (for [section (filter-items (:items @state) (:input-text @state))]
                                   (into [:ul (stylefy/use-style style/dropdown-list)
                                          (when (:section section)
