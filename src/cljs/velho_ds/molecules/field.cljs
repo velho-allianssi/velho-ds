@@ -389,7 +389,7 @@
                            (remove-event-listener :click global-click-handler))
                          [:div (stylefy/use-style {:position "relative"}
                                                   {:id @dropdown-id})
-                          [:div (stylefy/use-style {:padding-top "1rem"})
+                          [:div
                            [:span (stylefy/use-style style/dropdown-label) label]
                            [:div
                             (into [:ul (stylefy/use-style style/dropdown-multiple-selected-items)]
