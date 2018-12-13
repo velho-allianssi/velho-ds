@@ -76,7 +76,9 @@
   {:font-size font-size/font-size-small
    :color color/state-error
    ::stylefy/sub-styles {:p {:color color/state-error
+                             :line-height font-size/font-size-small
                              :font-size font-size/font-size-small
+                             :padding "1px 0"
                              :margin 0}}})
 
 (def dropdown-label

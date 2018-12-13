@@ -101,7 +101,7 @@
 (defn- label-styles [error-messages state placeholder label]
   (if (first error-messages) (stylefy/use-style (merge style/input-field-label-error
                                                        (when (or (:is-focused state) (:input-text state) placeholder) {:top 0
-                                                                                                   :font-size font-size/font-size-small})))
+                                                                                                                       :font-size font-size/font-size-small})))
                              (stylefy/use-style (merge (if (and label placeholder)
                                                          style/input-field-label-static
                                                          style/input-field-label)
@@ -110,6 +110,12 @@
                                                           :font-size font-size/font-size-small})
                                                        (when (:is-focused state)
                                                          {:color color/color-primary})))))
+
+(defn- display-errors [error-messages]
+  (when (not (empty? error-messages))
+    [:div (stylefy/use-style style/validation-errors)
+     (doall (for [message error-messages]
+              (into ^{:key message} [:p (stylefy/use-sub-style style/validation-errors :p) message])))]))
 
 ;; OUTPUTS
 (defn keyvalue [{:keys [label content styles]}]
@@ -167,10 +173,7 @@
         (when icon [icons/clickable (merge (when icon-click-fn {:on-click-fn icon-click-fn})
                                            {:name icon
                                             :styles style/icon})])]
-       (when (first error-messages)
-         [:div (stylefy/use-style style/validation-errors)
-          (doall (for [message error-messages]
-                   (into ^{:key message} [:p (stylefy/use-sub-style style/validation-errors :p) message])))])])))
+       [display-errors error-messages]])))
 
 (defn input-field [properties]
   (create-input-field properties :input))
@@ -219,14 +222,14 @@
                                    (swap! state assoc :selected-idx nil)))
 
         list-item-select-fn #(do (if (= (:type %) "placeholder")
-                                     (do (swap! state assoc :selected-item nil)
-                                         (swap! state assoc :input-text "")
-                                         (on-select-fn nil))
-                                     (do (swap! state assoc :selected-item (:label %))
-                                         (on-select-fn %)))
-                                   (swap! state assoc :items-filtered (flatten (map (fn [i] (get i :items)) (filter-items (:items @state) ""))))
-                                   (swap! state assoc :selected-idx (index-of-item (:label %) (:items-filtered @state)))
-                                   (swap! state update :is-focused not))
+                                   (do (swap! state assoc :selected-item nil)
+                                       (swap! state assoc :input-text "")
+                                       (on-select-fn nil))
+                                   (do (swap! state assoc :selected-item (:label %))
+                                       (on-select-fn %)))
+                                 (swap! state assoc :items-filtered (flatten (map (fn [i] (get i :items)) (filter-items (:items @state) ""))))
+                                 (swap! state assoc :selected-idx (index-of-item (:label %) (:items-filtered @state)))
+                                 (swap! state update :is-focused not))
 
         hover-fn #(do (swap! state assoc :selected-idx (index-of-item (:label %) (:items-filtered @state)))
                       (swap! state assoc :selected-from-filter (:label %)))
@@ -301,10 +304,7 @@
                                                                     :item %
                                                                     :hover? (= (:selected-from-filter @state) (:label %))
                                                                     :styles (style-list-item %)})) (:items section)))))
-                          (when (not (empty? error-messages))
-                            [:div (stylefy/use-style style/validation-errors)
-                             (doall (for [message error-messages]
-                                      (into ^{:key message} [:p (stylefy/use-sub-style style/validation-errors :p) message])))])])})))
+                          [display-errors error-messages]])})))
 
 (defn dropdown-menu-simple [{:keys [label selected-fn options default-value no-selection-text styles]}]
   [:div (stylefy/use-style styles)
@@ -390,7 +390,7 @@
                            (remove-event-listener :click global-click-handler))
                          [:div (stylefy/use-style {:position "relative"}
                                                   {:id @dropdown-id})
-                          [:div (stylefy/use-style {:padding-top "1rem"})
+                          [:div
                            [:span (stylefy/use-style style/dropdown-label) label]
                            [:div
                             (into [:ul (stylefy/use-style style/dropdown-multiple-selected-items)]
@@ -690,7 +690,4 @@
                           :disabled (:disabled @state)
                           :name (if (nil? icon) (if (:focus @state) "arrow_drop_up" "arrow_drop_down") icon)
                           :styles (merge style/icon (when (nil? label) {:top spacing/space-xx-small-rem}))}]]
-       (when (first error-messages)
-         [:div (stylefy/use-style style/validation-errors)
-          (doall (for [message error-messages]
-                   (into ^{:key message} [:p (stylefy/use-sub-style style/validation-errors :p) message])))])])))
+       [display-errors error-messages]])))
