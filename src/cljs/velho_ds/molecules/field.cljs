@@ -216,7 +216,7 @@
                                  (if (not (empty? (:items-filtered @state)))
                                    (do (swap! state assoc :selected-idx 0)
                                        (swap! state assoc :selected-from-filter (:label (nth (:items-filtered @state) (:selected-idx @state))))
-                                       (-> (dommy/sel1 (str ".dropdown-menu-list-" @dropdown-id))
+                                       (-> (.item (.querySelectorAll @ds/root-element (str ".dropdown-menu-list-" @dropdown-id)) 0)
                                            .-scrollTop
                                            (set! 0)))
                                    (swap! state assoc :selected-idx nil)))
