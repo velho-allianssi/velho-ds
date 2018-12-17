@@ -76,7 +76,7 @@
                            :class (str "dropdown-item" (when hover? " hover") (when is-selected? " selected"))}) (:label item)])
 
 (defn- scroll-content-to [content child val]
-  (-> (dommy/sel1 @ds/root-element content)
+  (-> (.item (.querySelectorAll @ds/root-element content) 0)
       .-scrollTop
       (set! (-> (.-offsetTop (.item (.querySelectorAll (.item (.querySelectorAll @ds/root-element content) 0) child) 0))
                 (- val)))))
@@ -216,7 +216,7 @@
                                  (if (not (empty? (:items-filtered @state)))
                                    (do (swap! state assoc :selected-idx 0)
                                        (swap! state assoc :selected-from-filter (:label (nth (:items-filtered @state) (:selected-idx @state))))
-                                       (-> (dommy/sel1 (str ".dropdown-menu-list-" @dropdown-id))
+                                       (-> (.item (.querySelectorAll @ds/root-element (str ".dropdown-menu-list-" @dropdown-id)) 0)
                                            .-scrollTop
                                            (set! 0)))
                                    (swap! state assoc :selected-idx nil)))
