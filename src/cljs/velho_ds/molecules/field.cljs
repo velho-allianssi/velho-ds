@@ -340,12 +340,11 @@
                                  (swap! state assoc :selected-idx nil)
                                  (selected-fn (:selected-items @state)))
         selected-list-item-selected-fn (fn [selected]
-                                         (do
-                                           (swap! state update-in [:selected-items]
-                                                  (fn [values]
-                                                    (remove-from-collection values
-                                                                            [selected])))
-                                           (selected-fn (:selected-items @state))))
+                                         (swap! state update-in [:selected-items]
+                                                (fn [values]
+                                                  (remove-from-collection values
+                                                                          [selected])))
+                                         (selected-fn (:selected-items @state)))
         selectable-items #(remove-from-collection (:options @state) (:selected-items @state))
         filtered-selections #(into []
                                    (search-in-list
