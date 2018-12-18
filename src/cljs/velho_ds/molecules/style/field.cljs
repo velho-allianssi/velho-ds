@@ -111,8 +111,13 @@
 
 (def icon
   {:position "absolute"
-   :top (str "calc(" spacing/space-small-rem " + " spacing/space-xx-small-rem ")")
    :right spacing/space-xx-small-rem})
+
+(defn input-icon [label?]
+  (merge icon
+         (if label?
+           {:top (str "calc(" spacing/space-small-rem " + " spacing/space-xx-small-rem ")")}
+           {:top spacing/space-xx-small-rem})))
 
 (def dropdown-icon
   (merge icon

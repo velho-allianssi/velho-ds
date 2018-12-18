@@ -129,7 +129,9 @@
 (defn- create-input-field [{:keys [label
                                    content
                                    placeholder
+                                   icon
                                    icon-click-fn
+                                   clearable?
                                    on-change-fn
                                    on-blur-fn
                                    on-focus-fn
@@ -149,26 +151,30 @@
                (when on-blur-fn (on-blur-fn @value-text)))
         focus (fn []
                 (swap! state assoc :is-focused true)
-                (when on-focus-fn (on-focus-fn @value-text)))]
-    (fn [{:keys [icon error-messages content]}]
-      (when (not content)
-        (reset! value-text nil))
-      [:div.vds-input-field (stylefy/use-style styles)
+                (when on-focus-fn (on-focus-fn @value-text)))
+        input-padding-right (as-> 0 padding
+                                 (+ padding (when icon 2))
+                                 (+ padding (when clearable? 2))
+                                 (when (> padding 0) {:padding-right (str padding "rem")}))]
+    (fn [{:keys [icon error-messages content clearable?]}]
+      [:div.vds-input-field (stylefy/use-style (merge {:position "relative"} styles))
        [:label (stylefy/use-style style/element)
         (when label [:span (label-styles error-messages @state placeholder label) label])
         [input-type (stylefy/use-style (merge (if (first error-messages)
                                                 style/input-field-error
                                                 style/input-field)
-                                              (when icon {:padding-right "2rem"})
+                                              input-padding-right
                                               (when (not label) {:top 0}))
                                        {:on-change #(-> % .-target .-value change)
                                         :on-blur blur
                                         :on-focus focus
                                         :value @value-text
-                                        :placeholder placeholder})]
-        (when icon [icons/clickable (merge (when icon-click-fn {:on-click-fn icon-click-fn})
-                                           {:name icon
-                                            :styles style/icon})])]
+                                        :placeholder placeholder})]]
+       [:div (stylefy/use-style (style/input-icon label))
+        (when (and clearable? (not-empty @value-text)) [icons/clickable {:on-click-fn #(change nil)
+                                                                         :name "clear"}])
+        (when icon [icons/clickable (merge (when icon-click-fn {:on-click-fn #(icon-click-fn @value-text)})
+                                           {:name icon})])]
        [display-errors error-messages]])))
 
 (defn input-field [properties]
@@ -320,7 +326,7 @@
                                           {:selected "selected"}))
                          (:value %)) options))
     [icons/clickable {:name "arrow_drop_down"
-                      :styles (merge style/icon (when (nil? label) {:top spacing/space-xx-small-rem}))}]]])
+                      :styles (style/input-icon label)}]]])
 
 (defn dropdown-multiple [{:keys [label placeholder selected-fn options preselected-values]}]
   (assert (fn? selected-fn) ":selected-fn function is required for dropdown-multiple")
@@ -687,5 +693,5 @@
                                                            #(swap! state assoc :focus true)))
                           :disabled (:disabled @state)
                           :name (if (nil? icon) (if (:focus @state) "arrow_drop_up" "arrow_drop_down") icon)
-                          :styles (merge style/icon (when (nil? label) {:top spacing/space-xx-small-rem}))}]]
+                          :styles (style/input-icon label)}]]
        [display-errors error-messages]])))
