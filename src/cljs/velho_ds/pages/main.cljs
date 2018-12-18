@@ -588,6 +588,9 @@
                                    :example [fields/input-field]}
                                   {:name "With label"
                                    :example [fields/input-field {:label "Label"}]}
+                                  {:name "With icon"
+                                   :example [fields/input-field {:icon "search"
+                                                                 :icon-click-fn println}]}
                                   {:name "With label and placeholder"
                                    :example [fields/input-field {:label "Label"
                                                                  :placeholder "Placeholder"}]}
@@ -605,7 +608,13 @@
                                                                  :placeholder "Placeholder"
                                                                  :icon "search"
                                                                  :content "Invalid value"
-                                                                 :error-messages ["Value has to be valid!"]}]}]}]
+                                                                 :error-messages ["Value has to be valid!"]}]}
+                                  {:name "Clearable"
+                                   :example [fields/input-field {:clearable? true}]}
+                                  {:name "Clearable with icon"
+                                   :example [fields/input-field {:clearable? true
+                                                                 :icon "search"
+                                                                 :icon-click-fn println}]}]}]
        ($-> [fields/input-field {:label "Input with label and icon"
                                  :placeholder "Placeholder"
                                  :icon "search"
