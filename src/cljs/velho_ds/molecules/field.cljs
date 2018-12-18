@@ -49,13 +49,9 @@
                                  (assoc item :key @index))
                                (:items %))) data)))
 
-(defn- remove-from-vector [vect values]
-  (assert (vector? vect))
-  (let [remove-from (into #{} vect)
-        to-be-removed (if (coll? values)
-                        (into #{} values)
-                        #{values})]
-    (into [] (set/difference remove-from to-be-removed))))
+(defn- remove-from-collection [collection values]
+  (assert (coll? collection))
+  (into [] (remove (set values) collection)))
 
 (defn- list-item [{:keys [on-click-fn item is-selected? hover? on-hover-fn styles]}]
   [:li (stylefy/use-style (merge {:background-color (if is-selected? (if (and hover? is-selected?)
@@ -334,8 +330,8 @@
 
 (defn dropdown-multiple [{:keys [label placeholder selected-fn options preselected-values]}]
   (assert (fn? selected-fn) ":selected-fn function is required for dropdown-multiple")
-  (assert (vector? options) ":options vector is required for dropdown-multiple")
-  (assert (or (nil? preselected-values) (vector? preselected-values)) ":preselected-values must be vector when given")
+  (assert (coll? options) ":options collection is required for dropdown-multiple")
+  (assert (or (nil? preselected-values) (coll? preselected-values)) ":preselected-values must be collection when given")
   (let [state (r/atom {:options options
                        :input-text ""
                        :selected-items (if preselected-values preselected-values [])
@@ -349,15 +345,17 @@
                                  (swap! state assoc :input-text "")
                                  (swap! state assoc :selected-idx nil)
                                  (selected-fn (:selected-items @state)))
-        selected-list-item-selected-fn #(do
-                                          (swap! state update-in [:selected-items] remove-from-vector %)
-                                          (selected-fn (:selected-items @state)))
-        selectable-items #(remove-from-vector (:options @state) (:selected-items @state))
+        selected-list-item-selected-fn (fn [selected]
+                                         (swap! state update-in [:selected-items]
+                                                (fn [values]
+                                                  (remove-from-collection values
+                                                                          [selected])))
+                                         (selected-fn (:selected-items @state)))
+        selectable-items #(remove-from-collection (:options @state) (:selected-items @state))
         filtered-selections #(into []
-                                   (apply sorted-set
-                                          (search-in-list
-                                            (selectable-items)
-                                            (:input-text @state))))
+                                   (search-in-list
+                                     (selectable-items)
+                                     (:input-text @state)))
         key-press-handler-fn (fn [key]
                                (when (and (= key "ArrowDown")
                                           (or (and (nil? (:selected-idx @state)) ; For the case there is only one item in the suggestion list
