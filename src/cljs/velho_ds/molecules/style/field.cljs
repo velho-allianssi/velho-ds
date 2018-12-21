@@ -21,6 +21,7 @@
   {:top spacing/space-small-rem
    :width "100%"
    :font-size font-size/font-size-base
+   :font-family font/font-family-text
    :transition (str "border-color " timing/duration-slow " ease-in-out")
    :outline "none"
    :padding 0
