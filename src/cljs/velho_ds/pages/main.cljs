@@ -9,6 +9,7 @@
             [velho-ds.molecules.modal :as modals]
             [velho-ds.atoms.divider :as dividers]
             [velho-ds.atoms.table :as tables]
+            [velho-ds.atoms.input :as input]
             [velho-ds.tokens.font-size :as font-size]
             [velho-ds.tokens.font :as font]
             [velho-ds.tokens.color :as color]
@@ -492,6 +493,69 @@
                  {:name "styles"
                   :desc "map"
                   :example "{:styles {:margin \"1rem\"}}"}]]])
+
+(defmethod page-contents :input []
+  [:div
+   [:p.rds-quote "TODO"]
+   [dividers/default {:styles {:margin-top "2rem"
+                               :margin-bottom "2rem"}}]
+   ;[:h2.rds-header2 "Default Input"]
+   ;($-> [input/input])
+   [:h2.rds-header2 "Input"]
+   #_($-> [input/ds-input {:on-click println}])
+   [input/ds-div {:style {:background "whitesmoke"}} [:p "seppo"] [:div "kettu"]]
+   [input/ds-div {:on-click #(println "jeejee")} [:p "keijo"]]
+   [input/ds-div [:p "seppio"]]
+
+   [input/atomiksi :p {:style {:color "blue"} :on-click println} "KETTU"]
+   [input/atomiksi :div {:style {:color "blue"}} [:p "TOINEN KETTU"]]
+
+   [:div (stylefy/use-style {:color "blue"}) "kettu"]
+
+   [input/atomiksi :div {:style {:color "blue"}}
+    [input/atomiksi :div {:style {:color "red"}}
+     [input/atomiksi :div {:style {:color "green"}} "KETTU"]]]
+
+   [input/atomiksi :button {:on-click #(println "kovaa touhua")} [input/atomiksi :i.material-icons {:style {:font-size "2rem"}} "clear"]]
+   [input/atomiksi :button {:on-click #(println "kovaa touhua2")} [input/ds-icon {:style {:font-size "2rem"}} "clear"]]
+
+   [input/ds-input {:on-change #(println "jeesus " %)}]
+   [input/ds-input {:style {:font-size "2rem"}}]
+
+   [input/input-with-icon
+    [input/ds-input {:on-change #(println "INPUTTI: " %)}]
+    [input/ds-icon {:on-click #(println "ikonijuttu")} "clear"]]
+
+   [input/input-with-icons
+    [input/ds-input {:on-change #(println "INPUTTI: " %)}]
+    [input/ds-icon {:on-click #(println "ikonijuttu1")} "accessible"]
+    [input/ds-icon {:on-click #(println "ikonijuttu2")} "accessible_forward"]
+    [input/ds-icon {:on-click #(println "ikonijuttu3")} "accessibility"]
+    [input/ds-icon {:on-click #(println "ikonijuttu4")} "accessibility_new"]
+    [input/ds-icon {:on-click #(println "ikonijuttu5")} "thumbs_up_down"]]
+
+   #_[input/labeled-input
+    [input/ds-label "Laapeli"]
+    [input/ds-input {:style {:color "red"}
+                     :on-click println}]]
+
+    #_[input/labeled-input
+       [:div
+        [:span ":stylellä "]
+        [input/ds-label "Laapeli"]
+        [:span " seppo"]]
+       [input/ds-input {:style {:color "red"
+                                :font-size "2rem"}
+                        :on-click println}]]
+
+    #_[input/labeled-input
+       [:div
+        [:span ":stylellä "]
+        [(input/atomiksi :label {} "Laapeli")]
+        [:span " seppo"]]
+       [input/ds-input {:style {:color "red"
+                                :font-size "2rem"}
+                        :on-click println}]]])
 
 ;; MOLECULES
 

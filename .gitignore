@@ -8,6 +8,7 @@ pom.xml.asc
 *.class
 /.lein-*
 /.nrepl-port
+/.rebel_readline_history
 /resources/public/js
 /public/js
 /out

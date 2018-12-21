@@ -86,9 +86,15 @@
                          "clean"
                          ["figwheel" "testwheel"]]}
 
-  :profiles {:dev {:dependencies [[binaryage/devtools "0.9.7"]
+  :profiles {:dev {:source-paths ["env/dev/clj"]
+                   :dependencies [[binaryage/devtools "0.9.7"]
+                                  [figwheel-sidecar "0.5.16"]
+                                  [cider/piggieback "0.3.9"]
                                   [cljs-react-test "0.1.4-SNAPSHOT"]
-                                  [clj-chrome-devtools "20180528" :exclusions [org.clojure/core.async]]]}
+                                  [clj-chrome-devtools "20180528" :exclusions [org.clojure/core.async]]]
+                   :repl-options {:init-ns user
+                                  :init (user/start)
+                                  :nrepl-middleware [cider.piggieback/wrap-cljs-repl]}}
              :release {}
              :testwheel {:resource-paths ["public" "env/dev/resources" "target/test/resources"]
                          :dependencies [[cljs-react-test "0.1.4-SNAPSHOT"]
