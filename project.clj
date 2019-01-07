@@ -4,25 +4,25 @@
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
 
-  :dependencies [[org.clojure/clojure "1.9.0"]
+  :dependencies [[org.clojure/clojure "1.10.0"]
 
                  ;; Filesystem support
                  [me.raynes/fs "1.4.6"]
 
                  ;; Yaml
-                 [io.forward/yaml "1.0.8"]
+                 [io.forward/yaml "1.0.9"]
 
-                 [zprint "0.4.9"]
+                 [zprint "0.4.13"]
 
                  ;; Front end
-                 [org.clojure/clojurescript "1.10.238"]
+                 [org.clojure/clojurescript "1.10.439"]
                  [reagent "0.7.0" :exclusions [cljsjs/react]]
                  [cljsjs/react-with-addons "15.6.1-0"]
                  [cljsjs/react-dom "15.6.1-0" :exclusions [cljsjs/react]]
-                 [stylefy "1.9.0"]
-                 [bidi "2.1.3"]
+                 [stylefy "1.10.1"]
+                 [bidi "2.1.5"]
                  [venantius/accountant "0.2.4"]
-                 [reagent-utils "0.3.1"]
+                 [reagent-utils "0.3.2"]
                  [prismatic/dommy "1.1.0"]]
 
   :plugins [[lein-cljsbuild "1.1.5" :exclusions [[org.clojure/clojure]]]
@@ -87,9 +87,9 @@
                          ["figwheel" "testwheel"]]}
 
   :profiles {:dev {:source-paths ["env/dev/clj"]
-                   :dependencies [[binaryage/devtools "0.9.7"]
-                                  [figwheel-sidecar "0.5.16"]
-                                  [cider/piggieback "0.3.9"]
+                   :dependencies [[binaryage/devtools "0.9.10"]
+                                  [figwheel-sidecar "0.5.18"]
+                                  [cider/piggieback "0.3.10"]
                                   [cljs-react-test "0.1.4-SNAPSHOT"]
                                   [clj-chrome-devtools "20180528" :exclusions [org.clojure/core.async]]]
                    :repl-options {:init-ns user
