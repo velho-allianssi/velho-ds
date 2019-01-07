@@ -17,6 +17,7 @@
             [velho-ds.atoms.icon :as icons]
             [velho-ds.atoms.area :as areas]
             [velho-ds.organisms.heading :as headings]
+            [velho-ds.tools.ds :as ds]
             [stylefy.core :as stylefy]
             [reagent.core :as r]))
 
@@ -494,68 +495,96 @@
                   :desc "map"
                   :example "{:styles {:margin \"1rem\"}}"}]]])
 
+(defn- clearable-input-example []
+  (let [content (r/atom "This is default input value")]
+    (fn []
+      [input/wrap-input-with-icons
+       [input/input {:value @content
+                     :on-change #(let [arvo (-> % .-target .-value)]
+                                   (println arvo)
+                                   (reset! content arvo))}]
+       [input/icon {:on-click #(reset! content nil)} "clear"]])))
+
 (defmethod page-contents :input []
   [:div
    [:p.rds-quote "TODO"]
    [dividers/default {:styles {:margin-top "2rem"
                                :margin-bottom "2rem"}}]
-   ;[:h2.rds-header2 "Default Input"]
-   ;($-> [input/input])
    [:h2.rds-header2 "Input"]
-   #_($-> [input/ds-input {:on-click println}])
-   [input/ds-div {:style {:background "whitesmoke"}} [:p "seppo"] [:div "kettu"]]
-   [input/ds-div {:on-click #(println "jeejee")} [:p "keijo"]]
-   [input/ds-div [:p "seppio"]]
+   #_($-> [input/input {:on-click println}])
 
-   [input/atomiksi :p {:style {:color "blue"} :on-click println} "KETTU"]
-   [input/atomiksi :div {:style {:color "blue"}} [:p "TOINEN KETTU"]]
+   [ds/elem :p {:style {:color "blue"} :on-click println} "p-elementti"]
+   [ds/elem :div {:style {:color "blue"}} [:p "p-elementti div-elementissä"]]
 
-   [:div (stylefy/use-style {:color "blue"}) "kettu"]
+   [ds/elem :button {:on-click #(println "kovaa touhua")} [ds/elem :i.material-icons {:style {:font-size "2rem"}} "clear"]]
+   [ds/elem :button {:on-click #(println "kovaa touhua2")} [input/icon {:style {:font-size "2rem"}} "clear"]]
 
-   [input/atomiksi :div {:style {:color "blue"}}
-    [input/atomiksi :div {:style {:color "red"}}
-     [input/atomiksi :div {:style {:color "green"}} "KETTU"]]]
+   [input/input {:style {:font-size "2rem"}}]
 
-   [input/atomiksi :button {:on-click #(println "kovaa touhua")} [input/atomiksi :i.material-icons {:style {:font-size "2rem"}} "clear"]]
-   [input/atomiksi :button {:on-click #(println "kovaa touhua2")} [input/ds-icon {:style {:font-size "2rem"}} "clear"]]
+   [input/wrap-input-with-icons
+    [input/input {:on-change #(println "INPUTTI: " %)}]
+    [input/icon {:on-click #(println "ikonijuttu1")} "accessible"]
+    [input/icon {:on-click #(println "ikonijuttu2")} "accessible_forward"]
+    [input/icon {:on-click #(println "ikonijuttu3")} "accessibility"]
+    [input/icon {:on-click #(println "ikonijuttu4")} "accessibility_new"]
+    [input/icon {:on-click #(println "ikonijuttu5")} "thumbs_up_down"]]
 
-   [input/ds-input {:on-change #(println "jeesus " %)}]
-   [input/ds-input {:style {:font-size "2rem"}}]
+   [input/wrap-elem-with-label
+    [input/label "Laapeli"]
+    [input/input {:style {:font-size "2rem"}}]]
 
-   [input/input-with-icon
-    [input/ds-input {:on-change #(println "INPUTTI: " %)}]
-    [input/ds-icon {:on-click #(println "ikonijuttu")} "clear"]]
+   [dividers/default]
 
-   [input/input-with-icons
-    [input/ds-input {:on-change #(println "INPUTTI: " %)}]
-    [input/ds-icon {:on-click #(println "ikonijuttu1")} "accessible"]
-    [input/ds-icon {:on-click #(println "ikonijuttu2")} "accessible_forward"]
-    [input/ds-icon {:on-click #(println "ikonijuttu3")} "accessibility"]
-    [input/ds-icon {:on-click #(println "ikonijuttu4")} "accessibility_new"]
-    [input/ds-icon {:on-click #(println "ikonijuttu5")} "thumbs_up_down"]]
-
-   #_[input/labeled-input
-    [input/ds-label "Laapeli"]
-    [input/ds-input {:style {:color "red"}
-                     :on-click println}]]
-
-    #_[input/labeled-input
-       [:div
-        [:span ":stylellä "]
-        [input/ds-label "Laapeli"]
-        [:span " seppo"]]
-       [input/ds-input {:style {:color "red"
-                                :font-size "2rem"}
-                        :on-click println}]]
-
-    #_[input/labeled-input
-       [:div
-        [:span ":stylellä "]
-        [(input/atomiksi :label {} "Laapeli")]
-        [:span " seppo"]]
-       [input/ds-input {:style {:color "red"
-                                :font-size "2rem"}
-                        :on-click println}]]])
+   [:div "Default"]
+   [fields/input-field]
+   [input/input]
+   [:div "With label"]
+   [fields/input-field {:label "Label"}]
+   [:div "With icon"]
+   [fields/input-field {:icon "search"
+                        :icon-click-fn println}]
+   [input/wrap-input-with-icons
+    [input/input]
+    [input/icon {:on-click println} "search"]]
+   [:div "With label and placeholder"]
+   [fields/input-field {:label "Label"
+                        :placeholder "Placeholder"}]
+   [input/wrap-elem-with-label
+    [input/label "Label"]
+    [input/input {:placeholder "Placeholder"}]]
+   [:div "With label, placeholder and icon"]
+   [fields/input-field {:label "Label"
+                        :placeholder "Placeholder"
+                        :icon "search"}]
+   [input/wrap-elem-with-label
+    [input/label "Label"]
+    [input/wrap-input-with-icons
+     [input/input {:placeholder "Placeholder"}]
+     [input/icon {:on-click println} "search"]]]
+   [:div "With label, placeholder, icon and content"]
+   [fields/input-field {:label "Label"
+                        :placeholder "Placeholder"
+                        :icon "search"
+                        :content "Content"}]
+   [input/wrap-elem-with-label
+    [input/label "Label"]
+    [input/wrap-input-with-icons
+     [input/input {:placeholder "Placeholder"
+                   :default-value "Content"}]
+     [input/icon {:on-click println} "search"]]]
+   [:div "Invalid value"]
+   [fields/input-field {:label "Label"
+                        :placeholder "Placeholder"
+                        :icon "search"
+                        :content "Invalid value"
+                        :error-messages ["Value has to be valid!"]}]
+   [:div "Clearable"]
+   [fields/input-field {:clearable? true}]
+   [clearable-input-example]
+   [:div "Clearable with icon"]
+   [fields/input-field {:clearable? true
+                        :icon "search"
+                        :icon-click-fn println}]])
 
 ;; MOLECULES
 
