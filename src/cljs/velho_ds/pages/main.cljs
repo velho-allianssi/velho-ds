@@ -19,7 +19,8 @@
             [velho-ds.organisms.heading :as headings]
             [velho-ds.tools.ds :as ds]
             [stylefy.core :as stylefy]
-            [reagent.core :as r]))
+            [reagent.core :as r]
+            [velho-ds.molecules.style.field :as style]))
 
 
 (defn props-table [content]
@@ -495,16 +496,6 @@
                   :desc "map"
                   :example "{:styles {:margin \"1rem\"}}"}]]])
 
-(defn- clearable-input-example []
-  (let [content (r/atom "This is default input value")]
-    (fn []
-      [input/wrap-input-with-icons
-       [input/input {:value @content
-                     :on-change #(let [arvo (-> % .-target .-value)]
-                                   (println arvo)
-                                   (reset! content arvo))}]
-       [input/icon {:on-click #(reset! content nil)} "clear"]])))
-
 (defmethod page-contents :input []
   [:div
    [:p.rds-quote "TODO"]
@@ -529,7 +520,7 @@
     [input/icon {:on-click #(println "ikonijuttu4")} "accessibility_new"]
     [input/icon {:on-click #(println "ikonijuttu5")} "thumbs_up_down"]]
 
-   [input/wrap-elem-with-label
+   [input/label-wrap
     [input/label "Laapeli"]
     [input/input {:style {:font-size "2rem"}}]]
 
@@ -538,53 +529,88 @@
    [:div "Default"]
    [fields/input-field]
    [input/input]
+
    [:div "With label"]
    [fields/input-field {:label "Label"}]
+   (let [content (r/atom "")]
+     [(fn []
+        [input/label-wrap
+         [input/label {:style (if (not-empty @content) style/input-field-label-static style/input-field-label)} "Label"]
+         [input/input {:on-change #(let [arvo (-> % .-target .-value)]
+                                     (println arvo)
+                                     (reset! content arvo))}]])
+      content])
+
    [:div "With icon"]
    [fields/input-field {:icon "search"
                         :icon-click-fn println}]
    [input/wrap-input-with-icons
     [input/input]
     [input/icon {:on-click println} "search"]]
+
    [:div "With label and placeholder"]
    [fields/input-field {:label "Label"
                         :placeholder "Placeholder"}]
-   [input/wrap-elem-with-label
+   [input/label-wrap
     [input/label "Label"]
     [input/input {:placeholder "Placeholder"}]]
+
    [:div "With label, placeholder and icon"]
    [fields/input-field {:label "Label"
                         :placeholder "Placeholder"
                         :icon "search"}]
-   [input/wrap-elem-with-label
+   [input/label-wrap
     [input/label "Label"]
     [input/wrap-input-with-icons
      [input/input {:placeholder "Placeholder"}]
      [input/icon {:on-click println} "search"]]]
+
    [:div "With label, placeholder, icon and content"]
    [fields/input-field {:label "Label"
                         :placeholder "Placeholder"
                         :icon "search"
                         :content "Content"}]
-   [input/wrap-elem-with-label
+   [input/label-wrap
     [input/label "Label"]
     [input/wrap-input-with-icons
      [input/input {:placeholder "Placeholder"
                    :default-value "Content"}]
      [input/icon {:on-click println} "search"]]]
+
    [:div "Invalid value"]
    [fields/input-field {:label "Label"
                         :placeholder "Placeholder"
                         :icon "search"
                         :content "Invalid value"
                         :error-messages ["Value has to be valid!"]}]
+
    [:div "Clearable"]
    [fields/input-field {:clearable? true}]
-   [clearable-input-example]
+   (let [content (r/atom "Default content")]
+     [(fn []
+        [input/wrap-input-with-icons
+         [input/input {:value @content
+                       :on-change #(let [arvo (-> % .-target .-value)]
+                                     (println arvo)
+                                     (reset! content arvo))}]
+         [input/icon {:style {:display (if (not-empty @content) "inline-block" "none")}
+                      :on-click #(reset! content nil)} "clear"]])
+      content])
+
    [:div "Clearable with icon"]
    [fields/input-field {:clearable? true
                         :icon "search"
-                        :icon-click-fn println}]])
+                        :icon-click-fn println}]
+   (let [content (r/atom "")]
+     [(fn []
+        [input/wrap-input-with-icons
+         [input/input {:value @content
+                       :on-change #(reset! content (-> % .-target .-value))}]
+         [input/icon {:style {:display (if (not-empty @content) "inline-block" "none")}
+                      :on-click #(reset! content nil)} "clear"]
+         [input/icon {:on-click println} "search"]])
+      content])])
+
 
 ;; MOLECULES
 

@@ -3,7 +3,9 @@
             [velho-ds.molecules.style.field :as style]
             [velho-ds.tokens.font-size :as font-size]
             [velho-ds.tools.ds :as ds]
-            [velho-ds.tokens.color :as color]))
+            [velho-ds.tokens.color :as color]
+            [stylefy.core :as stylefy]
+            [velho-ds.atoms.style.icon :as icon-style]))
 
 (defn input [& args]
   (ds/create-component :input {:style style/input-field} args))
@@ -12,7 +14,7 @@
   (ds/create-component :span {:style style/input-field-label-static} args))
 
 (defn icon [& args]
-  (ds/create-component :i {:class "material-icons"} args))
+  (ds/create-component :i {:class "material-icons" :style icon-style/clickable} args))
 
 (defn wrap-input-with-icons [input & icons]
   (ds/elem :div {:style {:position "relative"}}
@@ -38,7 +40,7 @@
                                     (when (:is-focused state)
                                       {:color color/color-primary}))))
 
-(defn wrap-elem-with-label [label elem]
+(defn label-wrap [label elem]
   (ds/elem :label {:style style/element}
            label
            elem))
