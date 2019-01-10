@@ -670,11 +670,15 @@
                       :desc "function"
                       :example "{:on-blur-fn (fn [e] (println e))}"}]]
        [:h3.rds-header3 "Dropdown-menu"]
-       ($-> [fields/dropdown-menu {:label "Dropdown menu"
-                                   :placeholder "Select"
-                                   :items @example-data
-                                   :on-select-fn (fn [e] (println "Item selected: " e))
-                                   :preselected-item {:label "Project 001"}}])
+       (let [selected (r/atom (first (:items (first @example-data))))]
+         [(fn []
+            ($-> [fields/dropdown-menu {:label "Dropdown menu"
+                                        :placeholder "Select"
+                                        :items @example-data
+                                        :on-select-fn (fn [e]
+                                                        (reset! selected e)
+                                                        (println "Item selected: " @selected))
+                                        :preselected-item @selected}]))])
        [props-table [{:name "label"
                       :desc "string"
                       :example "{:title \"Dropdown menu\"}"}

@@ -32,11 +32,11 @@
 
 (defn- filter-items [items search-word]
   (filter
-    #(not (empty? (:items %)))
+    #(not-empty (:items %))
     (map #(assoc % :items (search-in-list (:items %) search-word :label)) items)))
 
 (defn- index-of-item [label items]
-  (first (first (filter (fn [item] (= label (:label (second item)))) (map-indexed vector items)))))
+  (ffirst (filter (fn [item] (= label (:label (second item)))) (map-indexed vector items))))
 
 (defn- element-has-class? [e classname]
   (let [target (.-target e)]
@@ -183,83 +183,83 @@
 (defn multiline-field [properties]
   (create-input-field properties :textarea))
 
+(defn dropdown-menu-list [{:keys [items preselected-item hovered-item on-click-fn hover-fn dropdown-id]}]
+  (let [style-list-item (fn [item]
+                          (when (= (:type item) "placeholder")
+                            {:color color/color-neutral-4}))]
+    (into [:div (stylefy/use-style style/dropdown-menu-list {:class (str "dropdown-menu-list-" dropdown-id)})]
+          (for [section items]
+            (into [:ul (stylefy/use-style style/dropdown-list)
+                   (when (:section section)
+                     [:li (stylefy/use-style style/dropdown-list-header) (str (get section :section) " (" (count (get section :items)) ")")])]
+                  (mapv #(do
+                           (vector list-item {:on-click-fn on-click-fn
+                                              :on-hover-fn hover-fn
+                                              :is-selected? (= (:label preselected-item) (:label %))
+                                              :item %
+                                              :hover? (= (:label hovered-item) (:label %))
+                                              :styles (style-list-item %)})) (:items section)))))))
+
 (defn dropdown-menu [{:keys [label
                              placeholder
                              items
                              on-select-fn
                              preselected-item
                              disabled
+                             on-change-fn
+                             icon
                              styles
                              error-messages]}]
   (assert (fn? on-select-fn) ":on-select-fn function is required for dropdown-menu")
-  (assert (vector? items) ":items vector is required for dropdown-menu")
+  (assert (or (nil? items) (coll? items) ":items should be collection"))
   (assert (or (nil? preselected-item) (map? preselected-item)) ":preselected-item must be map when given")
   (let [dropdown-id (atom (str (random-uuid)))
 
-        state (r/atom (let [itemlist (into [{:items [{:label (if placeholder placeholder "")
-                                                      :type "placeholder"}]}] items)
-                            flatten-itemlist (flatten (map (fn [item] (get item :items)) (filter-items itemlist "")))]
-                        {:items itemlist
-                         :input-text ""
-                         :items-filtered flatten-itemlist
-                         :selected-item (if preselected-item (:label preselected-item) nil)
-                         :selected-idx (if preselected-item (index-of-item (:label preselected-item) flatten-itemlist) 0)
-                         :selected-from-filter (if preselected-item (:label preselected-item) placeholder)
-                         :is-focused false
-                         :disabled (if disabled disabled false)}))
+        filtered-items (fn [items label-filter]
+                         (flatten (map #(get % :items) (filter-items items label-filter))))
 
-        style-list-item (fn [item]
-                          (when (= (:type item) "placeholder")
-                            {:color color/color-neutral-4}))
+        state (r/atom {:input-text ""
+                       :selected (when preselected-item (first (filter #(= (:label %) (:label preselected-item)) (filtered-items items ""))))
+                       :is-focused false
+                       :disabled disabled})
 
-        input-value-changed-fn (fn [input]
+        input-value-changed-fn (fn [items input]
                                  (swap! state assoc :input-text input)
-                                 (swap! state assoc :items-filtered (flatten (map #(get % :items) (filter-items (:items @state) input))))
-                                 (if (not (empty? (:items-filtered @state)))
-                                   (do (swap! state assoc :selected-idx 0)
-                                       (swap! state assoc :selected-from-filter (:label (nth (:items-filtered @state) (:selected-idx @state))))
-                                       (-> (.item (.querySelectorAll @ds/root-element (str ".dropdown-menu-list-" @dropdown-id)) 0)
-                                           .-scrollTop
-                                           (set! 0)))
-                                   (swap! state assoc :selected-idx nil)))
+                                 (swap! state assoc :selected (first (filtered-items items input)))
+                                 (when-let [dd-list (.item (.querySelectorAll @ds/root-element (str ".dropdown-menu-list-" @dropdown-id)) 0)]
+                                   (set! (.-scrollTop dd-list) 0))
+                                 (when on-change-fn (on-change-fn input)))
 
         list-item-select-fn #(do (if (= (:type %) "placeholder")
-                                   (do (swap! state assoc :selected-item nil)
-                                       (swap! state assoc :input-text "")
+                                   (do (swap! state assoc :input-text "")
                                        (on-select-fn nil))
-                                   (do (swap! state assoc :selected-item (:label %))
-                                       (on-select-fn %)))
-                                 (swap! state assoc :items-filtered (flatten (map (fn [i] (get i :items)) (filter-items (:items @state) ""))))
-                                 (swap! state assoc :selected-idx (index-of-item (:label %) (:items-filtered @state)))
+                                   (on-select-fn %))
+                                 (swap! state assoc :selected %)
                                  (swap! state update :is-focused not))
 
-        hover-fn #(do (swap! state assoc :selected-idx (index-of-item (:label %) (:items-filtered @state)))
-                      (swap! state assoc :selected-from-filter (:label %)))
-
-        key-press-handler-fn (fn [key]
-                               (if (contains? #{"Escape" "Tab"} key)
-                                 (swap! state assoc :is-focused false)
-                                 (swap! state assoc :is-focused true))
-                               (when (and (= key "ArrowDown") (< (:selected-idx @state) (dec (count (:items-filtered @state)))))
-                                 (if (nil? (:selected-idx @state))
-                                   (swap! state assoc :selected-idx 0)
-                                   (swap! state update-in [:selected-idx] inc))
-                                 (swap! state assoc :selected-from-filter (:label (nth (:items-filtered @state) (:selected-idx @state))))
-                                 (r/after-render #(scroll-content-to (str ".dropdown-menu-list-" @dropdown-id) ".hover" 70)))
-                               (when (and (= key "ArrowUp") (> (:selected-idx @state) 0))
-                                 (swap! state update-in [:selected-idx] dec)
-                                 (swap! state assoc :selected-from-filter (:label (nth (:items-filtered @state) (:selected-idx @state))))
-                                 (r/after-render #(scroll-content-to (str ".dropdown-menu-list-" @dropdown-id) ".hover" 70)))
-                               (when (and (= key "Enter"))
-                                 (when (not (nil? (:selected-idx @state)))
-                                   (list-item-select-fn (nth (:items-filtered @state) (:selected-idx @state))))))
+        key-press-handler-fn (fn [items key]
+                               (let [f-items (filtered-items items (:input-text @state))
+                                     selected-idx (index-of-item (:label (:selected @state)) f-items)]
+                                 (if (contains? #{"Escape" "Tab"} key)
+                                   (swap! state assoc :is-focused false)
+                                   (swap! state assoc :is-focused true))
+                                 (when (and (= key "ArrowDown") (< selected-idx (dec (count f-items))))
+                                   (if selected-idx
+                                     (swap! state assoc :selected (nth f-items (inc selected-idx)))
+                                     (swap! state assoc :selected (first f-items)))
+                                   (r/after-render #(scroll-content-to (str ".dropdown-menu-list-" @dropdown-id) ".hover" 70)))
+                                 (when (and (= key "ArrowUp") (> selected-idx 0))
+                                   (swap! state assoc :selected (nth f-items (dec selected-idx)))
+                                   (r/after-render #(scroll-content-to (str ".dropdown-menu-list-" @dropdown-id) ".hover" 70)))
+                                 (when (and (= key "Enter") selected-idx)
+                                   (list-item-select-fn (:selected @state)))))
 
         click-in-dropdown? (fn click-in-dropdown? [element id]
                              (if (nil? element)
                                false
                                (if (= id (.-id element))
                                  true
-                                 (click-in-dropdown? (.-parentElement element) id))))
+                                 (recur (.-parentElement element) id))))
 
         global-click-handler #(let [target (.-target %)]
                                 (when-not (click-in-dropdown? target @dropdown-id)
@@ -268,45 +268,40 @@
       {:display-name (str "dropdown-menu-" @dropdown-id)
        :component-did-mount (fn [this]
                               (add-event-listener (dommy/sel1 (r/dom-node this) :input) :is-focused #(swap! state assoc :is-focused true)))
-       :reagent-render (fn []
-                         (if (:is-focused @state)
-                           (add-event-listener :click global-click-handler)
-                           (do (swap! state assoc :input-text "")
-                               (remove-event-listener :click global-click-handler)))
-                         [:div (stylefy/use-style (merge {:position "relative"} styles)
-                                                  {:id @dropdown-id})
-                          [:div
-                           (when label [:span (label-styles error-messages @state placeholder label) label])
-                           [:div (stylefy/use-style (merge style/dropdown-multiple-input-background (when (:is-focused @state)
-                                                                                                      {:border-bottom (str "1px solid " color/color-primary)})))
-                            [:input (stylefy/use-style style/dropdown-multiple-input {:type "text"
-                                                                                      :on-click #(swap! state assoc :is-focused true)
-                                                                                      :on-change #(do
-                                                                                                    (-> % .-target .-value input-value-changed-fn))
-                                                                                      :on-key-down #(-> % .-key key-press-handler-fn)
-                                                                                      :value (if (:is-focused @state) (:input-text @state) (:selected-item @state))
-                                                                                      :placeholder (if (:selected-item @state) (:selected-item @state) placeholder)
-                                                                                      :disabled (:disabled @state)})]
-                            [icons/clickable {:name (if (:is-focused @state) "arrow_drop_up" "arrow_drop_down")
-                                              :styles style/dropdown-multiple-icon
-                                              :on-click-fn #(swap! state update :is-focused not)
-                                              :disabled (:disabled @state)
-                                              :tabindex "-1"}]]]
-                          (into [:div (stylefy/use-style (merge style/dropdown-menu-list
-                                                                {:display (if (:is-focused @state) "block" "none")})
-                                                         {:class (str "dropdown-menu-list-" @dropdown-id)})]
-                                (for [section (filter-items (:items @state) (:input-text @state))]
-                                  (into [:ul (stylefy/use-style style/dropdown-list)
-                                         (when (:section section)
-                                           [:li (stylefy/use-style style/dropdown-list-header) (str (get section :section) " (" (count (get section :items)) ")")])]
-                                        (mapv #(do
-                                                 (vector list-item {:on-click-fn list-item-select-fn
-                                                                    :on-hover-fn hover-fn
-                                                                    :is-selected? (= (:selected-item @state) (:label %))
-                                                                    :item %
-                                                                    :hover? (= (:selected-from-filter @state) (:label %))
-                                                                    :styles (style-list-item %)})) (:items section)))))
-                          [display-errors error-messages]])})))
+       :reagent-render (fn [{:keys [items preselected-item]}]
+                         (let [items (into [{:items [{:label (if placeholder placeholder "")
+                                                      :type "placeholder"}]}] items)]
+                           (if (:is-focused @state)
+                             (add-event-listener :click global-click-handler)
+                             (do (swap! state assoc :input-text "")
+                                 (remove-event-listener :click global-click-handler)))
+                           [:div (stylefy/use-style (merge {:position "relative"} styles)
+                                                    {:id @dropdown-id})
+                             [:div
+                               (when label [:span (label-styles error-messages @state placeholder label) label])
+                               [:div (stylefy/use-style (merge style/dropdown-multiple-input-background (when (:is-focused @state)
+                                                                                                          {:border-bottom (str "1px solid " color/color-primary)})))
+                                 [:input (stylefy/use-style style/dropdown-multiple-input {:type "text"
+                                                                                           :on-click #(swap! state assoc :is-focused true)
+                                                                                           :on-change #(-> % .-target .-value ((partial input-value-changed-fn items)))
+                                                                                           :on-key-down #(-> % .-key ((partial key-press-handler-fn items)))
+                                                                                           :value (if (:is-focused @state) (:input-text @state) (:label preselected-item))
+                                                                                           :placeholder (if preselected-item (:label preselected-item) placeholder)
+                                                                                           :disabled (:disabled @state)})]
+                                 [icons/clickable {:name (if icon icon (if (:is-focused @state) "arrow_drop_up" "arrow_drop_down"))
+                                                   :styles style/dropdown-multiple-icon
+                                                   :on-click-fn #(swap! state update :is-focused not)
+                                                   :disabled (:disabled @state)
+                                                   :tabindex "-1"}]]
+
+                               (when (:is-focused @state)
+                                 [dropdown-menu-list {:items (filter-items items (:input-text @state))
+                                                      :preselected-item preselected-item
+                                                      :hovered-item (:selected @state)
+                                                      :hover-fn #(swap! state assoc :selected %)
+                                                      :on-click-fn list-item-select-fn
+                                                      :dropdown-id @dropdown-id}])
+                               [display-errors error-messages]]]))})))
 
 (defn dropdown-menu-simple [{:keys [label selected-fn options default-value no-selection-text styles]}]
   [:div (stylefy/use-style styles)
