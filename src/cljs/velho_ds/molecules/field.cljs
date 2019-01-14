@@ -136,9 +136,12 @@
                                    on-blur-fn
                                    on-focus-fn
                                    transform-fn
-                                   styles]}
+                                   error-messages
+                                   styles] :as attributes}
                            input-type]
-  (let [value-text (r/atom content)
+  (let [attributes (apply dissoc attributes [:label :content :placeholder :icon :icon-click-fn :clearable? :on-change-fn :on-blur-fn :on-focus-fn :transform-fn :error-messages :styles])
+
+        value-text (r/atom content)
         state (r/atom {:is-focused false
                        :has-value (not (nil? @value-text))})
         change (fn [value]
@@ -157,7 +160,7 @@
                                  (+ padding (when clearable? 2))
                                  (when (> padding 0) {:padding-right (str padding "rem")}))]
     (fn [{:keys [icon error-messages content clearable?]}]
-      [:div.vds-input-field (stylefy/use-style (merge {:position "relative"} styles))
+      [:div.vds-input-field (stylefy/use-style (merge {:position "relative"} styles) attributes)
        [:label (stylefy/use-style style/element)
         (when label [:span (label-styles error-messages @state placeholder label) label])
         [input-type (stylefy/use-style (merge (if (first error-messages)
@@ -190,11 +193,12 @@
                              preselected-item
                              disabled
                              styles
-                             error-messages]}]
+                             error-messages] :as attributes}]
   (assert (fn? on-select-fn) ":on-select-fn function is required for dropdown-menu")
   (assert (vector? items) ":items vector is required for dropdown-menu")
   (assert (or (nil? preselected-item) (map? preselected-item)) ":preselected-item must be map when given")
-  (let [dropdown-id (atom (str (random-uuid)))
+  (let [attributes (apply dissoc attributes [:label :placeholder :items :on-select-fn :preselected-item :disabled :styles :error-messages])
+        dropdown-id (atom (str (random-uuid)))
 
         state (r/atom (let [itemlist (into [{:items [{:label (if placeholder placeholder "")
                                                       :type "placeholder"}]}] items)
@@ -274,7 +278,8 @@
                            (do (swap! state assoc :input-text "")
                                (remove-event-listener :click global-click-handler)))
                          [:div (stylefy/use-style (merge {:position "relative"} styles)
-                                                  {:id @dropdown-id})
+                                                  (merge {:id @dropdown-id}
+                                                         attributes))
                           [:div
                            (when label [:span (label-styles error-messages @state placeholder label) label])
                            [:div (stylefy/use-style (merge style/dropdown-multiple-input-background (when (:is-focused @state)
@@ -308,31 +313,33 @@
                                                                     :styles (style-list-item %)})) (:items section)))))
                           [display-errors error-messages]])})))
 
-(defn dropdown-menu-simple [{:keys [label selected-fn options default-value no-selection-text styles]}]
-  [:div (stylefy/use-style styles)
-   [:label (stylefy/use-style style/element)
-    [:span (stylefy/use-style style/dropdown-label) label]
-    (into [:select (stylefy/use-style style/dropdown {:defaultValue (if default-value
-                                                                      (:id default-value)
-                                                                      "value")
-                                                      :on-change #(-> % .-target .-value selected-fn)})
-           (when (not default-value)
-             [:option
-              {:value "value"
-               :disabled "disabled"}
-              no-selection-text])]
-          (mapv #(vector :option (merge {:value (:id %)}
-                                        (when (= default-value %)
-                                          {:selected "selected"}))
-                         (:value %)) options))
-    [icons/clickable {:name "arrow_drop_down"
-                      :styles (style/input-icon label)}]]])
+(defn dropdown-menu-simple [{:keys [label selected-fn options default-value no-selection-text styles] :as attributes}]
+  (let [attributes (apply dissoc attributes [:label :selected-fn :options :default-value :no-selection-text :styles])]
+    [:div (stylefy/use-style styles attributes)
+     [:label (stylefy/use-style style/element)
+      [:span (stylefy/use-style style/dropdown-label) label]
+      (into [:select (stylefy/use-style style/dropdown {:defaultValue (if default-value
+                                                                        (:id default-value)
+                                                                        "value")
+                                                        :on-change #(-> % .-target .-value selected-fn)})
+             (when (not default-value)
+               [:option
+                {:value "value"
+                 :disabled "disabled"}
+                no-selection-text])]
+            (mapv #(vector :option (merge {:value (:id %)}
+                                          (when (= default-value %)
+                                            {:selected "selected"}))
+                           (:value %)) options))
+      [icons/clickable {:name "arrow_drop_down"
+                        :styles (style/input-icon label)}]]]))
 
-(defn dropdown-multiple [{:keys [label placeholder selected-fn options preselected-values]}]
+(defn dropdown-multiple [{:keys [label placeholder selected-fn options preselected-values] :as attributes}]
   (assert (fn? selected-fn) ":selected-fn function is required for dropdown-multiple")
   (assert (coll? options) ":options collection is required for dropdown-multiple")
   (assert (or (nil? preselected-values) (coll? preselected-values)) ":preselected-values must be collection when given")
-  (let [state (r/atom {:options options
+  (let [attributes (apply dissoc attributes [:label :placeholder :selected-fn :options :preselected-values])
+        state (r/atom {:options options
                        :input-text ""
                        :selected-items (if preselected-values preselected-values [])
                        :selected-idx nil
@@ -393,7 +400,8 @@
                            (add-event-listener :click global-click-handler)
                            (remove-event-listener :click global-click-handler))
                          [:div (stylefy/use-style {:position "relative"}
-                                                  {:id @dropdown-id})
+                                                  (merge {:id @dropdown-id}
+                                                         attributes))
                           [:div
                            [:span (stylefy/use-style style/dropdown-label) label]
                            [:div

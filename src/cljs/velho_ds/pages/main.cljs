@@ -726,7 +726,6 @@
               [fields/dropdown-multiple {:label "Multiselect dropdown"
                                          :selected-fn (fn [e] (println (str "Selected values: " e)))
                                          :options options
-                                         :no-selection-text "- No selection -"
                                          :preselected-values ["John"]}]))
        [props-table [{:name "label"
                       :desc "string"
