@@ -30,7 +30,7 @@
                :stroke color/color-white
                :stroke-miterlimit 10
                :stroke-width "2px"}]
-   content])
+   (map-indexed #(with-meta %2 {:key %1}) content)])
 
 (defn circle-single [{:keys [color inner-color width height] :as icon-args}]
   [circle (merge icon-args {:color (if color color color/color-pacific-light)})])
