@@ -11,31 +11,8 @@
             [velho-ds.tokens.box-shadow :as box-shadow]
             [velho-ds.tools.measures :as measures]))
 
-(def breadcrumb
-  {:text-decoration "none"
-   :margin 0
-   :cursor "pointer"
-   :color color/color-primary-dark
-   :display "inline-block"
-   :font-family font/font-family-heading
-   :font-size font-size/font-size-x-large
-   :font-weight font/font-weight-light
-   :line-height line-height/line-height-heading})
-
-(def breadcrumb-breaker
-  {:margin 0
-   :display "inline-block"
-   :padding (str "0 " spacing/space-x-small-rem)
-   :line-height spacing/space-base-rem})
-
-(def breadcrumb-current-page
-  {:margin 0
-   :display "inline-block"
-   :padding-right "0"
-   :line-height spacing/space-base-rem})
-
 (def content-info
-  {:padding (str "0 0 0 " spacing/space-small-rem )
+  {:padding (str "0 0 0 " spacing/space-small-rem)
    :background "white"
    :height "100%"
    :grid-template-rows "auto 1fr"

@@ -209,7 +209,8 @@
                              on-change-fn
                              icon
                              styles
-                             error-messages]}]
+                             error-messages
+                             empty-allowed?]}]
   (assert (fn? on-select-fn) ":on-select-fn function is required for dropdown-menu")
   (assert (or (nil? items) (coll? items) ":items should be collection"))
   (assert (or (nil? preselected-item) (map? preselected-item)) ":preselected-item must be map when given")
@@ -230,7 +231,7 @@
                                    (set! (.-scrollTop dd-list) 0))
                                  (when on-change-fn (on-change-fn input)))
 
-        list-item-select-fn #(do (if (= (:type %) "placeholder")
+        list-item-select-fn #(do (if (= (:type %) :placeholder)
                                    (do (swap! state assoc :input-text "")
                                        (on-select-fn nil))
                                    (on-select-fn %))
@@ -269,8 +270,10 @@
        :component-did-mount (fn [this]
                               (add-event-listener (dommy/sel1 (r/dom-node this) :input) :is-focused #(swap! state assoc :is-focused true)))
        :reagent-render (fn [{:keys [items preselected-item]}]
-                         (let [items (into [{:items [{:label (if placeholder placeholder "")
-                                                      :type "placeholder"}]}] items)]
+                         (let [items (if empty-allowed?
+                                       (into [{:items [{:label (if placeholder placeholder "")
+                                                        :type :placeholder}]}] items)
+                                       items)]
                            (if (:is-focused @state)
                              (add-event-listener :click global-click-handler)
                              (do (swap! state assoc :input-text "")
@@ -690,3 +693,23 @@
                           :name (if (nil? icon) (if (:focus @state) "arrow_drop_up" "arrow_drop_down") icon)
                           :styles (style/input-icon label)}]]
        [display-errors error-messages]])))
+
+(defn breadcrumb [{:keys [current-page
+                          click-fn]} & content]
+  (let [pages (r/atom [])
+        get-pages (fn [map]
+                    (loop [page map]
+                      (when (:label page)
+                        (swap! pages conj page)
+                        (recur (:child page)))))]
+    (get-pages current-page)
+    (fn []
+      [:div
+       (for [page (butlast @pages)]
+         ^{:key page} [:span
+                       [:a {:on-click #(when click-fn (click-fn page))
+                            :style style/breadcrumb} (:label page)]
+                       [:h2 {:style style/breadcrumb-breaker} "/"]])
+       [:span {:style {:display "inline-block"}}
+        [:h2 (stylefy/use-style style/breadcrumb-current-page) (:label (last @pages))]
+        (map-indexed #(with-meta %2 {:key %1}) content)]])))

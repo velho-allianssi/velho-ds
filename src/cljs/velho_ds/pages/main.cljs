@@ -506,9 +506,7 @@
                                     {:label "Project 009"}
                                     {:label "Project 010"}]}]))
 (defmethod page-contents :fields []
-  (let [example-data (r/atom @data-example)
-        example-search-fn #(reset! example-data [{:items [{:label "Sub-project 001"}
-                                                          {:label "Sub-project 002"}]}])]
+  (let [example-data (r/atom @data-example)]
     (fn []
       [:div
        [:p.rds-quote "Fields provide a ways of input and output. Input, such as typing, selecting or dragging and dropping can be used to provide several formats of information."]
@@ -678,7 +676,8 @@
                                         :on-select-fn (fn [e]
                                                         (reset! selected e)
                                                         (println "Item selected: " @selected))
-                                        :preselected-item @selected}]))])
+                                        :preselected-item @selected
+                                        :empty-allowed? true}]))])
        [props-table [{:name "label"
                       :desc "string"
                       :example "{:title \"Dropdown menu\"}"}
@@ -754,7 +753,19 @@
                       :example "{:help-text \"Drag-n-drop files or click here to upload.\"}"}
                      {:name "on-drop-fn"
                       :desc "function"
-                      :example "{:on-drop-fn (fn [e] (println e))}"}]]])))
+                      :example "{:on-drop-fn (fn [e] (println e))}"}]]
+       [:h3.rds-header3 "Breadcrumb"]
+       ($-> [fields/breadcrumb {:current-page {:label "X-Files"
+                                               :child {:label "Animals"
+                                                       :child {:label "Flying squirrel investigation"
+                                                               :child nil}}}
+                                :click-fn (fn [e] (println e))}])
+       [props-table [{:name "current-page"
+                      :desc "map"
+                      :example "{:current-page {:label \"X-Files\",  :child {:label \"Animals\", :child {:label \"Flying squirrel investigation\", :child nil}}}"}
+                     {:name "click-fn"
+                      :desc "function"
+                      :example "{:click-fn (fn [e] (println e))}"}]]])))
 
 (def modal-example
   (let [modal-open (r/atom false)]
@@ -994,7 +1005,7 @@
                                 :sub-content [[:p "Given content"]]
                                 :search-placeholder "Search"
                                 :search-results @data-example
-                                :search-result-clicked-fn (fn [first second] (println "Item selected: " first second))
+                                :search-result-clicked-fn (fn [s] (println "Item selected: " s))
                                 :search-fn (fn [e] (println "Search-fn: " e))
                                 :styles {:z-index z-index/z-index-docked}}])
    [props-table [{:name "current-page"

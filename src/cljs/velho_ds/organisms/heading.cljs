@@ -61,31 +61,15 @@
 
 (defn page-heading [{:keys [current-page
                             search-placeholder
-                            search-initial-select
                             search-fn
                             search-results
                             search-result-clicked-fn
                             sub-content
                             breadcrumb-click-fn
                             styles]}]
-  (let [search-selected-item (r/atom [])
-        search-text (r/atom nil)
-        sub-content-open? (r/atom false)
-        empty (fn []
-                (reset! search-text nil)
-                (reset! search-selected-item []))
-        breadcrumb-clicked (fn [page]
-                             (when breadcrumb-click-fn (breadcrumb-click-fn page)))
-        pages (r/atom [])
-        get-pages (fn [map]
-                    (loop [page map]
-                      (when (:label page)
-                        (swap! pages conj page)
-                        (recur (:child page)))))]
-    (get-pages current-page)
+  (let [sub-content-open? (r/atom false)]
     (fn [{:keys [current-page
                  search-placeholder
-                 search-initial-select
                  search-fn
                  search-results
                  search-result-clicked-fn
@@ -96,32 +80,22 @@
        [grid/grid-wrap {:rows 1
                         :cols 4
                         :styles style/page-heading}
-        (into [grid/grid-cell {:col-start 1
-                               :col-end 4
-                               :styles style/page-heading-breadcrumb}]
-              (for [page @pages]
-                (if (not= page (last @pages))
-                  ^{:key page} [:a {:on-click #(breadcrumb-clicked page)
-                                    :style style/breadcrumb} (:label page)
-                                [:h2 {:style style/breadcrumb-breaker} "/"]]
-                  [:span {:style {:display "inline-block"}}
-                   [:h2 (stylefy/use-style style/breadcrumb-current-page) (:label page)]
-                   [icons/clickable {:name (if @sub-content-open? "arrow_drop_up" "arrow_drop_down")
-                                     :styles {:position "relative"
-                                              :top "5px"}
-                                     :on-click-fn #(swap! sub-content-open? not)}]])))
+        [grid/grid-cell {:col-start 1
+                         :col-end 4
+                         :styles style/page-heading-breadcrumb}
+         [fields/breadcrumb {:current-page current-page
+                             :click-fn breadcrumb-click-fn}
+          [icons/clickable {:name (if @sub-content-open? "arrow_drop_up" "arrow_drop_down")
+                            :styles {:position "relative"
+                                     :top "5px"}
+                            :on-click-fn #(swap! sub-content-open? not)}]]]
         [grid/grid-cell {:col-start 4
                          :col-end 4
                          :styles {:align-self "center"}}
-         [fields/dropdown-menu-legacy {:placeholder search-placeholder
-                                       :icon (if @search-text "close" "search")
-                                       :item-list search-results
-                                       :on-item-select-fn search-result-clicked-fn
-                                       :on-change-fn #(do (search-fn %)
-                                                          (reset! search-text %))
-                                       :on-blur-fn #(reset! search-text nil)
-                                       :selected-item @search-selected-item
-                                       :icon-click-fn empty}]]]
+         [fields/dropdown-menu {:placeholder search-placeholder
+                                :items search-results
+                                :on-select-fn search-result-clicked-fn
+                                :on-change-fn #(search-fn %)}]]]
        (into [:div (stylefy/use-style (merge style/page-heading-container
                                              {:display (if @sub-content-open? "block" "none")}))]
              (for [item sub-content] ^{:key item} item))])))
