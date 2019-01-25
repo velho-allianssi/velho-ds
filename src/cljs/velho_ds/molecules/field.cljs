@@ -276,7 +276,7 @@
                                        (into [{:items [{:label (if placeholder placeholder "")
                                                         :type :placeholder}]}] items)
                                        items)]
-                           (reset! items-atom items)
+                           (reset! items-atom items) ; Dereferencing this atom inside this render function might cause rendering to loop indefinitely.
 
                            (if (:is-focused @state)
                              (add-event-listener :click global-click-handler)
