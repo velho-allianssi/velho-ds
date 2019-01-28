@@ -1,8 +1,7 @@
 (ns velho-ds.atoms.style.table
   (:require [stylefy.core :as stylefy]
             [velho-ds.tokens.font :as font]
-            [velho-ds.tokens.color :as color]
-            [velho-ds.atoms.style.font :as pre-font]))
+            [velho-ds.tokens.color :as color]))
 
 (def table-default
   {:margin "0"

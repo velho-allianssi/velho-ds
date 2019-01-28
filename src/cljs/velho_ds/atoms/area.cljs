@@ -1,7 +1,6 @@
 (ns velho-ds.atoms.area
   (:require [velho-ds.atoms.style.area :as style]
             [velho-ds.atoms.icon :as icons]
-            [velho-ds.tools.style :as tools-style]
             [dommy.core :as dommy]
             [reagent.core :as r]
             [stylefy.core :as stylefy]
