@@ -1,7 +1,6 @@
 (ns velho-ds.molecules.style.tab
   (:require [velho-ds.tokens.color :as color]
             [velho-ds.tokens.spacing :as spacing]
-            [velho-ds.tokens.border :as border]
             [stylefy.core :as stylefy]))
 
 (def tab

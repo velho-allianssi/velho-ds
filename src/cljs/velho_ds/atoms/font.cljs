@@ -1,7 +1,6 @@
 (ns velho-ds.atoms.font
   (:require [stylefy.core :as stylefy]
-            [velho-ds.atoms.style.font :as style]
-            [reagent.dom :as dom]))
+            [velho-ds.atoms.style.font :as style]))
 
 (defn font-styles []
   (.appendChild (aget (.getElementsByTagName js/document "head") 0) (doto (.createElement js/document "link")

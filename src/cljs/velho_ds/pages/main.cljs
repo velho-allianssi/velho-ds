@@ -11,12 +11,8 @@
             [velho-ds.atoms.table :as tables]
             [velho-ds.tokens.font-size :as font-size]
             [velho-ds.tokens.font :as font]
-            [velho-ds.tokens.color :as color]
-            [velho-ds.tokens.z-index :as z-index]
             [velho-ds.atoms.icon :as icons]
             [velho-ds.atoms.area :as areas]
-            [velho-ds.organisms.heading :as headings]
-            [stylefy.core :as stylefy]
             [reagent.core :as r]))
 
 
@@ -996,131 +992,5 @@
                   :example "[grid/grid-cell {:col-start 1\n:col-end 4\n:style {:background-color \"whitesmoke\"\n:text-align \"center\"\n:border \"1px solid silver\"}} [:p \"test\"]]"}]]])
 
 (defmethod page-contents :headings []
-  [:div
-   ($-> [headings/page-heading {:current-page {:label "X-Files"
-                                               :child {:label "Animals"
-                                                       :child {:label "Flying squirrel investigation"
-                                                               :child nil}}}
-                                :breadcrumb-click-fn (fn [e] (println e))
-                                :sub-content [[:p "Given content"]]
-                                :search-placeholder "Search"
-                                :search-results @data-example
-                                :search-result-clicked-fn (fn [s] (println "Item selected: " s))
-                                :search-fn (fn [e] (println "Search-fn: " e))
-                                :styles {:z-index z-index/z-index-docked}}])
-   [props-table [{:name "current-page"
-                  :desc "map"
-                  :example "{:current-page {:label \"X-Files\"\n:child {:label \"Animals\"\n:child {:label \"Flying squirrel investigation\"\n:child nil}}}}"}
-                 {:name "search-placeholder"
-                  :desc "string"
-                  :example "{:search-placeholder \"Search\"}"}
-                 {:name "search-input"
-                  :desc "string"
-                  :example "{:search-input \"X-Files\"}"}
-                 {:name "search-fn"
-                  :desc "function"
-                  :example "{:search-fn search}"}
-                 {:name "search-results"
-                  :desc "vector (r/atom)"
-                  :example "{:search-results [{:section \"Projects\"\n:items [{:label \"Project 001\"}\n{:label \"Project 002\"}\n{:label \"Project 003\"}\n{:label \"Project 004\"}\n{:label \"Project 005\"}]}\n{:section \"Sub-projects\"\n:items [{:label \"Sub-project 001\"}\n{:label \"Sub-project 002\"}]}\n{:section \"Files\"\n:items [{:label \"File 1\"}\n{:label \"File 2\"}\n{:label \"File 3\"}]}]}"}
-                 {:name "search-results-show"
-                  :desc "int"
-                  :example "{:search-results-show 4}"}
-                 {:name "search-results-msg"
-                  :desc "str"
-                  :example "{:search-results-msg \"No results, sorry\"}"}
-                 {:name "search-result-clicked-fn"
-                  :desc "function"
-                  :example "{:search-result-clicked-fn (fn [e] (println e))}"}
-                 {:name "search-heading-fn"
-                  :desc "function"
-                  :example "{:search-heading-fn (fn [e] (println e))}"}
-                 {:name "sub-content"
-                  :desc "vector"
-                  :example "{:sub-content [[:p \"Given content\"]]}"}
-                 {:name "styles"
-                  :desc "map"
-                  :example "{:styles {:z-index \"4\"}}"}]]
-
-   [:h2.rds-header2 "Content-header"]
-   [:p "Used to build header for content."]
-   ($-> [headings/content-header
-         [headings/content-info {:breadcrumb {:label "X-Files"
-                                              :child {:label "Animals"
-                                                      :child {:label "Flying squirrel investigation"}}}
-                                 :footnote "Related Organization, Another Organization"
-                                 :features [[buttons/primary-small {:content "Item"}]
-                                            [buttons/primary-small {:content "Another Item"}]
-                                            [buttons/primary-small {:content "Last Item"}]]
-                                 :navigation [[buttons/icon-link {:icon "info"
-                                                                  :label "Info"
-                                                                  :active true
-                                                                  :on-click-fn (fn [] (println "Info"))}]
-                                              [buttons/icon-link {:icon "insert_drive_file"
-                                                                  :label "Documents"
-                                                                  :on-click-fn (fn [] (println "Documents"))}]]
-                                 :bar-color color/color-pacific}]
-         [areas/info
-          [icons/circle-single {:color color/color-pacific}]
-          [fields/keyvalue {:label "Type"
-                            :content "Project"}]
-          [fields/keyvalue {:label "Schedule"
-                            :content "29.09.2017 - 01.01.2021"}]
-          [fields/keyvalue {:label "State"
-                            :content "In Progress"}]]])
-   [props-table [{:name "styles"
-                  :desc "map"
-                  :example "{:styles {:padding \"2px\"}"}
-                 {:name "content"
-                  :desc "components"
-                  :example "[areas/info\n[icons/circle-single {:color color/color-pacific}]\n[fields/keyvalue {:label \"Type\"\n:content \"Project\"}]\n[fields/keyvalue {:label \"Schedule\"\n:content \"29.09.2017 - 01.01.2021\"}]\n[fields/keyvalue {:label \"State\"\n:content \"In Progress\"}]]"}]]
-
-   [:h2.rds-header2 "Content-header-default"]
-   [:p "Default structure of content-header. Parameters can be used to change values, but the styles are strict."]
-   ($-> [headings/content-header-default {:breadcrumb {:label "X-Files"
-                                                       :child {:label "Animals"
-                                                               :child {:label "Flying squirrel investigation"
-                                                                       :child nil}}}
-                                          :breadcrumb-click-fn (fn [first second] (println first second))
-                                          :footnote "Related Organization, Another Organization"
-                                          :features [{:content "Item"
-                                                      :on-click-fn (fn [e] (println e))}
-                                                     {:content "Another Item"}
-                                                     {:content "Last Item"}]
-                                          :navigation [{:icon "info"
-                                                        :label "Info"
-                                                        :active true
-                                                        :on-click-fn (fn [] (println "Default icon-link clicked"))}
-                                                       {:icon "insert_drive_file"
-                                                        :label "Documents"
-                                                        :on-click-fn (fn [] (println "Default icon-link clicked"))}]
-                                          :theme-color color/color-pacific
-                                          :info-icon [icons/circle-single]
-                                          :info-keyvalues [{:label "Type"
-                                                            :content "Project"}
-                                                           {:label "Schedule"
-                                                            :content "29.09.2017 - 01.01.2021"}
-                                                           {:label "State"
-                                                            :content "In Progress"}]}])
-   [props-table [{:name "breadcrumb"
-                  :desc "map"
-                  :example " {:breadcrumb {:label \"X-Files\"\n:child {:label \"Animals\"\n:child {:label \"Flying squirrel investigation\"\n:child nil}}}}"}
-                 {:name "breadcrumb-click-fn"
-                  :desc "map"
-                  :example "{:breadcrumb-click-fn (fn [first second] (println first second))"}
-                 {:name "footnote"
-                  :desc "string"
-                  :example "{:footnote \"Related Organization, Another Organization\"}"}
-                 {:name "features"
-                  :desc "vector of button-parameters"
-                  :example "{:meta [{:content \"Item\"\n:on-click-fn (fn [e] (println e))}\n{:content \"Another Item\"}\n{:content \"Last Item\"}]}"}
-                 {:name "navigation"
-                  :desc "vector"
-                  :example "{:navigation [{:icon \"info\"\n:label \"Info\"\n:active true\n:on-click-fn (fn [] (println \"Default icon-link clicked\"))}\n{:icon \"insert_drive_file\"\n:label \"Documents\"\n:on-click-fn (fn [] (println \"Default icon-link clicked\"))}]}"}
-                 {:name "theme-color"
-                  :desc "color"
-                  :example "{:theme-color color/color-pacific}"}
-                 {:name "info-keyvalues"
-                  :desc "vector"
-                  :example "{:info-keyvalues [{:label \"Type\"\n:content \"Project\"}\n{:label \"Schedule\"\n:content \"29.09.2017 - 01.01.2021\"}\n{:label \"State\"\n:content \"In Progress\"}]}"}]]])
+  [:div])
 
