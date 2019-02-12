@@ -768,31 +768,23 @@
     (fn []
       ($->
         [:div
-         [modals/default {:is-open @modal-open
-                          :header "Confirm modal"
-                          :header-buttons [{:icon "more_vert"
-                                            :on-click-fn (fn [] (swap! modal-open not))}
-                                           {:icon "close"
-                                            :on-click-fn (fn [] (swap! modal-open not))}]
-                          :content [[fields/input-field {:label "First"
-                                                         :placeholder "Placeholder"}]
-                                    [fields/input-field {:label "Second"
-                                                         :placeholder "Placeholder"}]
-                                    [fields/input-field {:label "Third"
-                                                         :placeholder "Placeholder"}]
-                                    [fields/input-field {:label "Fourth"
-                                                         :placeholder "Placeholder"}]
-                                    [fields/input-field {:label "Fifth"
-                                                         :placeholder "Placeholder"}]
-                                    [fields/input-field {:label "Sixth"
-                                                         :placeholder "Placeholder"}]]
-                          :footer [[buttons/outline {:content "Cancel"
-                                                     :on-click-fn (fn [] (swap! modal-open not))}]
-                                   [buttons/primary {:content "Confirm"
-                                                     :on-click-fn (fn [] (swap! modal-open not))
-                                                     :styles {:margin-left "16px"}}]]
-                          :styles {:max-width "640px"}
-                          :background-on-click-fn #(reset! modal-open false)}]
+         (when @modal-open
+           [modals/wrapper
+            [modals/header
+             [:h2 "Modal example"]
+             [:div
+              [icons/clickable {:name "edit"
+                                :styles {:margin "0 0.5rem 0 0"}}]
+              [icons/clickable {:name "close"
+                                :on-click-fn (fn [] (swap! modal-open not))}]]]
+            [modals/content
+             [:p "Modal content text."]]
+            [modals/footer
+             [buttons/default-small {:content "Cancel"
+                                     :styles {:margin-right "0.5rem"}
+                                     :on-click-fn (fn [] (swap! modal-open not))}]
+             [buttons/primary-small {:content "Ok"
+                                     :on-click-fn (fn [] (swap! modal-open not))}]]])
 
          [buttons/default {:content "Open modal"
                            :on-click-fn (fn [] (swap! modal-open not))}]]))))
