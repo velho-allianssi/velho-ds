@@ -1,98 +1,67 @@
 (ns velho-ds.molecules.style.modal
   (:require [stylefy.core :as stylefy]
-            [velho-ds.tokens.font-size :as font-size]
             [velho-ds.tokens.timing :as timing]
-            [velho-ds.tokens.z-index :as z-index]
             [velho-ds.tokens.box-shadow :as box-shadow]
-            [velho-ds.tokens.border-radius :as border-radius]
-            [velho-ds.tokens.border :as border]
-            [velho-ds.tokens.color :as color]
-            [velho-ds.tokens.spacing :as spacing]))
+            [velho-ds.tokens.color :as color]))
 
-(def modal-background-area
+(def fade
   {:position "fixed"
-   :top 0
-   :right 0
-   :left 0
-   :bottom 0
-   :z-index z-index/z-index-modal
-   :overflow-y "auto"
+   :top "0"
+   :right "0"
+   :bottom "0"
+   :left "0"
+   :z-index "1050"
    :overflow-x "hidden"
-   :text-align "center"
-   :background-color "hsla(0, 0%, 20%, 0.8)" ;; Needs token or function for alpha changes?
-   ::stylefy/mode {:before {:content "''"
-                            :display "inline-block"
-                            :height "100%"
-                            :vertical-align "middle"
-                            :margin (str "0 0 -" spacing/space-xx-small " 0")
-                            :box-sizing "border-box"}}
-   ::stylefy/vendors ["webkit" "moz" "o"]
-   ::stylefy/auto-prefix #{:box-sizing}})
+   :overflow-y "auto"
+   :outline "0"
+   :padding ".5rem"
+   :background "hsla(0, 0%, 20%, 0.85)"})
 
-(def modal-dialog
-  {:background color/color-white
-   :display "inline-block"
-   :text-align "left"
-   :vertical-align "middle"
-   :width "50%"
-   :position "relative"
-   :box-sizing "border-box"
-   :margin (str "0 " spacing/space-small-rem)
-   :border-radius border-radius/border-radius-default
-   :box-shadow box-shadow/box-shadow
-   :transition (str "all " timing/duration-slow " ease-in-out")
-   ::stylefy/media {{:max-width "640px"} {:width "calc(100% - 2rem)"}}
-   ::stylefy/vendors ["webkit" "moz" "o"]
-   ::stylefy/auto-prefix #{:box-sizing :transition}})
+(def wrapper
+  {:position "relative"
+   :display "table"
+   :min-width "calc(100% / 3)"
+   :max-width "calc(200% / 3)"
+   :margin "0 auto"
+   :pointer-events "none"
+   :transition (str "max-width " timing/duration-slow " ease-in-out")
+   ::stylefy/media {{:max-width "768px"} {:max-width "calc(100% - 1rem)"}}
+   ::stylefy/auto-prefix #{:transition}})
 
-(def modal-box
-  {:width "100%"
-   :overflow "hidden"
-   :position "relative"
-   :text-align "left"
-   :margin (str "0 0 -" spacing/space-xx-small " 0")
-   :display "inline-block"})
+(def bg
+  {:position "relative"
+   :display "flex"
+   :flex-direction "column"
+   :pointer-events "auto"
+   :background-color "#fff"
+   :background-clip "padding-box"
+   :border "1px solid rgba(0,0,0,.2)"
+   :border-radius ".3rem"
+   :outline "0"})
 
-
-(def modal-header
-  {:display "flex"
+(def header
+  {:position "relative"
+   :display "flex"
+   :justify-content "space-between"
    :align-items "center"
-   :min-height spacing/space-x-large-rem
+   :pointer-events "auto"
+   :background-clip "padding-box"
+   :outline "0"
+   :min-height "4rem"
    :box-sizing "border-box"
    :border "none"
-   :margin (str "0 0 " spacing/space-xx-small " 0")
+   :margin "0 0 0.25rem 0"
    :box-shadow box-shadow/box-shadow-small
-   :padding-left spacing/space-base-rem
-   :background color/color-white
-   ::stylefy/sub-styles {:h2 {:align-self "center"
-                              :margin 0}}})
+   :padding "0 1.5rem"})
 
-(def modal-content
-  {:height "auto"
-   :max-height (str "calc(100vh - (" spacing/space-large-rem" * 6))")
-   :overflow-y "auto"
-   :padding spacing/space-base-rem
-   :margin 0})
+(def content
+  {:position "relative"
+   :flex "1 1 auto"
+   :padding "1rem"})
 
-(def modal-footer
-  {:padding-top spacing/space-small-rem
-   :border-top (str border/border-default " solid " color/color-neutral-3)
-   :margin (str "0 " spacing/space-small-rem " " spacing/space-small-rem " " spacing/space-small-rem)
+(def footer
+  {:display "flex"
+   :align-items "center"
    :justify-content "flex-end"
-   :display "flex"
-   :flex-wrap "wrap"})
-
-(def modal-header-btn-area
-  {:padding-left spacing/space-base-rem
-   :padding-right spacing/space-small-rem
-   :margin-left "auto"
-   :display "flex"
-   :width "auto"})
-
-(def modal-header-btn
-  {:box-shadow "none"
-   :padding (str "0 " spacing/space-x-small-rem)
-   ::stylefy/mode {:active {:outline "none"
-                            :box-shadow "none"
-                            :transform "none"}
-                   :focus {:outline "none"}}})
+   :padding "1rem"
+   :border-top (str "1px solid " color/color-neutral-2)})
