@@ -9,11 +9,13 @@
             [velho-ds.molecules.modal :as modals]
             [velho-ds.atoms.divider :as dividers]
             [velho-ds.atoms.table :as tables]
+            [velho-ds.atoms.input :as input]
             [velho-ds.tokens.font-size :as font-size]
             [velho-ds.tokens.font :as font]
             [velho-ds.atoms.icon :as icons]
             [velho-ds.atoms.area :as areas]
-            [reagent.core :as r]))
+            [reagent.core :as r]
+            [velho-ds.molecules.style.field :as style]))
 
 
 (defn props-table [content]
@@ -488,6 +490,96 @@
                  {:name "styles"
                   :desc "map"
                   :example "{:styles {:margin \"1rem\"}}"}]]])
+
+(defmethod page-contents :input []
+  [:div
+   [:h2.rds-header2 "Work in progress input fields"]
+
+   [:div "Default"]
+   [fields/input-field]
+   [input/input]
+
+   [:div "With label"]
+   [fields/input-field {:label "Label"}]
+   (let [content (r/atom "")]
+     [(fn []
+        [input/label-wrap
+         [input/label {:style (if (not-empty @content) style/input-field-label-static style/input-field-label)} "Label"]
+         [input/input {:on-change #(let [arvo (-> % .-target .-value)]
+                                     (println arvo)
+                                     (reset! content arvo))}]])
+      content])
+
+   [:div "With icon"]
+   [fields/input-field {:icon "search"
+                        :icon-click-fn println}]
+   [input/wrap-input-with-icons
+    [input/input]
+    [input/icon {:on-click println} "search"]]
+
+   [:div "With label and placeholder"]
+   [fields/input-field {:label "Label"
+                        :placeholder "Placeholder"}]
+   [input/label-wrap
+    [input/label "Label"]
+    [input/input {:placeholder "Placeholder"}]]
+
+   [:div "With label, placeholder and icon"]
+   [fields/input-field {:label "Label"
+                        :placeholder "Placeholder"
+                        :icon "search"}]
+   [input/label-wrap
+    [input/label "Label"]
+    [input/wrap-input-with-icons
+     [input/input {:placeholder "Placeholder"}]
+     [input/icon {:on-click println} "search"]]]
+
+   [:div "With label, placeholder, icon and content"]
+   [fields/input-field {:label "Label"
+                        :placeholder "Placeholder"
+                        :icon "search"
+                        :content "Content"}]
+   [input/label-wrap
+    [input/label "Label"]
+    [input/wrap-input-with-icons
+     [input/input {:placeholder "Placeholder"
+                   :default-value "Content"}]
+     [input/icon {:on-click println} "search"]]]
+
+   [:div "Invalid value"]
+   [fields/input-field {:label "Label"
+                        :placeholder "Placeholder"
+                        :icon "search"
+                        :content "Invalid value"
+                        :error-messages ["Value has to be valid!"]}]
+
+   [:div "Clearable"]
+   [fields/input-field {:clearable? true}]
+   (let [content (r/atom "Default content")]
+     [(fn []
+        [input/wrap-input-with-icons
+         [input/input {:value @content
+                       :on-change #(let [arvo (-> % .-target .-value)]
+                                     (println arvo)
+                                     (reset! content arvo))}]
+         [input/icon {:style {:display (if (not-empty @content) "inline-block" "none")}
+                      :on-click #(reset! content nil)} "clear"]])
+      content])
+
+   [:div "Clearable with icon"]
+   [fields/input-field {:clearable? true
+                        :icon "search"
+                        :icon-click-fn println}]
+   (let [content (r/atom "")]
+     [(fn []
+        [input/wrap-input-with-icons
+         [input/input {:value @content
+                       :on-change #(reset! content (-> % .-target .-value))}]
+         [input/icon {:style {:display (if (not-empty @content) "inline-block" "none")}
+                      :on-click #(reset! content nil)} "clear"]
+         [input/icon {:on-click println} "search"]])
+      content])])
+
 
 ;; MOLECULES
 
