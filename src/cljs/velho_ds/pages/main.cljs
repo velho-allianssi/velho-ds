@@ -14,7 +14,8 @@
             [velho-ds.tokens.font :as font]
             [velho-ds.atoms.icon :as icons]
             [velho-ds.atoms.area :as areas]
-            [reagent.core :as r]))
+            [reagent.core :as r]
+            [velho-ds.molecules.style.field :as style]))
 
 
 (defn props-table [content]
@@ -492,33 +493,7 @@
 
 (defmethod page-contents :input []
   [:div
-   [:p.rds-quote "TODO"]
-   [dividers/default {:styles {:margin-top "2rem"
-                               :margin-bottom "2rem"}}]
-   [:h2.rds-header2 "Input"]
-   #_($-> [input/input {:on-click println}])
-
-   [ds/elem :p {:style {:color "blue"} :on-click println} "p-elementti"]
-   [ds/elem :div {:style {:color "blue"}} [:p "p-elementti div-elementissä"]]
-
-   [ds/elem :button {:on-click #(println "kovaa touhua")} [ds/elem :i.material-icons {:style {:font-size "2rem"}} "clear"]]
-   [ds/elem :button {:on-click #(println "kovaa touhua2")} [input/icon {:style {:font-size "2rem"}} "clear"]]
-
-   [input/input {:style {:font-size "2rem"}}]
-
-   [input/wrap-input-with-icons
-    [input/input {:on-change #(println "INPUTTI: " %)}]
-    [input/icon {:on-click #(println "ikonijuttu1")} "accessible"]
-    [input/icon {:on-click #(println "ikonijuttu2")} "accessible_forward"]
-    [input/icon {:on-click #(println "ikonijuttu3")} "accessibility"]
-    [input/icon {:on-click #(println "ikonijuttu4")} "accessibility_new"]
-    [input/icon {:on-click #(println "ikonijuttu5")} "thumbs_up_down"]]
-
-   [input/label-wrap
-    [input/label "Laapeli"]
-    [input/input {:style {:font-size "2rem"}}]]
-
-   [dividers/default]
+   [:h2.rds-header2 "Work in progress input fields"]
 
    [:div "Default"]
    [fields/input-field]

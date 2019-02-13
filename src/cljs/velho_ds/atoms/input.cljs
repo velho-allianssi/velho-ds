@@ -4,7 +4,6 @@
             [velho-ds.tokens.font-size :as font-size]
             [velho-ds.tools.ds :as ds]
             [velho-ds.tokens.color :as color]
-            [stylefy.core :as stylefy]
             [velho-ds.atoms.style.icon :as icon-style]))
 
 (defn input [& args]
@@ -20,12 +19,6 @@
   (ds/elem :div {:style {:position "relative"}}
            (ds/add-attr input {:style {:padding-right (str (* 2 (count icons)) "rem")}})
            (ds/elem :div {:style (style/input-icon false)} (map-indexed #(with-meta %2 {:key %1}) icons))))
-
-#_(def label-styles
-    {:line-height "1"
-     :font-size font-size/font-size-small
-     :font-family font/font-family-text
-     :color "inherit"})
 
 (defn- label-styles [error-messages state placeholder label]
   (if (first error-messages) (merge style/input-field-label-error
