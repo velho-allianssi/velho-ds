@@ -8,6 +8,8 @@ props:
     value: "9999"
   z-index-sticky:
     value: "100"
+  z-index-floating:
+    value: "50"
   z-index-docked:
     value: "4"
   z-index-default:

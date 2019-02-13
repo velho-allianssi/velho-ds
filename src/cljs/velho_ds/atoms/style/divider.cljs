@@ -1,8 +1,7 @@
 (ns velho-ds.atoms.style.divider
   (:require [velho-ds.tokens.border :as border]
             [velho-ds.tokens.color :as color]
-            [velho-ds.tokens.spacing :as spacing]
-            [stylefy.core :as stylefy]))
+            [velho-ds.tokens.spacing :as spacing]))
 
 (def line
   {:display "block"

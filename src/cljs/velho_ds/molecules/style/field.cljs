@@ -21,6 +21,7 @@
   {:top spacing/space-small-rem
    :width "100%"
    :font-size font-size/font-size-base
+   :font-family font/font-family-text
    :transition (str "border-color " timing/duration-slow " ease-in-out")
    :outline "none"
    :padding 0
@@ -312,3 +313,26 @@
    :display "block"
    :margin 0
    :color color/color-neutral-4})
+
+(def breadcrumb
+  {:text-decoration "none"
+   :margin 0
+   :cursor "pointer"
+   :color color/color-primary-dark
+   :display "inline-block"
+   :font-family font/font-family-heading
+   :font-size font-size/font-size-x-large
+   :font-weight font/font-weight-light
+   :line-height line-height/line-height-heading})
+
+(def breadcrumb-breaker
+  {:margin 0
+   :display "inline-block"
+   :padding (str "0 " spacing/space-x-small-rem)
+   :line-height spacing/space-base-rem})
+
+(def breadcrumb-current-page
+  {:margin 0
+   :display "inline-block"
+   :padding-right "0"
+   :line-height spacing/space-base-rem})

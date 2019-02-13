@@ -12,15 +12,9 @@
             [velho-ds.atoms.input :as input]
             [velho-ds.tokens.font-size :as font-size]
             [velho-ds.tokens.font :as font]
-            [velho-ds.tokens.color :as color]
-            [velho-ds.tokens.z-index :as z-index]
             [velho-ds.atoms.icon :as icons]
             [velho-ds.atoms.area :as areas]
-            [velho-ds.organisms.heading :as headings]
-            [velho-ds.tools.ds :as ds]
-            [stylefy.core :as stylefy]
-            [reagent.core :as r]
-            [velho-ds.molecules.style.field :as style]))
+            [reagent.core :as r]))
 
 
 (defn props-table [content]
@@ -625,9 +619,7 @@
                                     {:label "Project 009"}
                                     {:label "Project 010"}]}]))
 (defmethod page-contents :fields []
-  (let [example-data (r/atom @data-example)
-        example-search-fn #(reset! example-data [{:items [{:label "Sub-project 001"}
-                                                          {:label "Sub-project 002"}]}])]
+  (let [example-data (r/atom @data-example)]
     (fn []
       [:div
        [:p.rds-quote "Fields provide a ways of input and output. Input, such as typing, selecting or dragging and dropping can be used to provide several formats of information."]
@@ -789,11 +781,16 @@
                       :desc "function"
                       :example "{:on-blur-fn (fn [e] (println e))}"}]]
        [:h3.rds-header3 "Dropdown-menu"]
-       ($-> [fields/dropdown-menu {:label "Dropdown menu"
-                                   :placeholder "Select"
-                                   :items @example-data
-                                   :on-select-fn (fn [e] (println "Item selected: " e))
-                                   :preselected-item {:label "Project 001"}}])
+       (let [selected (r/atom (first (:items (first @example-data))))]
+         [(fn []
+            ($-> [fields/dropdown-menu {:label "Dropdown menu"
+                                        :placeholder "Select"
+                                        :items @example-data
+                                        :on-select-fn (fn [e]
+                                                        (reset! selected e)
+                                                        (println "Item selected: " @selected))
+                                        :preselected-item @selected
+                                        :empty-allowed? true}]))])
        [props-table [{:name "label"
                       :desc "string"
                       :example "{:title \"Dropdown menu\"}"}
@@ -869,38 +866,42 @@
                       :example "{:help-text \"Drag-n-drop files or click here to upload.\"}"}
                      {:name "on-drop-fn"
                       :desc "function"
-                      :example "{:on-drop-fn (fn [e] (println e))}"}]]])))
+                      :example "{:on-drop-fn (fn [e] (println e))}"}]]
+       [:h3.rds-header3 "Breadcrumb"]
+       ($-> [fields/breadcrumb {:current-page {:label "X-Files"
+                                               :child {:label "Animals"
+                                                       :child {:label "Flying squirrel investigation"
+                                                               :child nil}}}
+                                :click-fn (fn [e] (println e))}])
+       [props-table [{:name "current-page"
+                      :desc "map"
+                      :example "{:current-page {:label \"X-Files\",  :child {:label \"Animals\", :child {:label \"Flying squirrel investigation\", :child nil}}}"}
+                     {:name "click-fn"
+                      :desc "function"
+                      :example "{:click-fn (fn [e] (println e))}"}]]])))
 
 (def modal-example
   (let [modal-open (r/atom false)]
     (fn []
       ($->
         [:div
-         [modals/default {:is-open @modal-open
-                          :header "Confirm modal"
-                          :header-buttons [{:icon "more_vert"
-                                            :on-click-fn (fn [] (swap! modal-open not))}
-                                           {:icon "close"
-                                            :on-click-fn (fn [] (swap! modal-open not))}]
-                          :content [[fields/input-field {:label "First"
-                                                         :placeholder "Placeholder"}]
-                                    [fields/input-field {:label "Second"
-                                                         :placeholder "Placeholder"}]
-                                    [fields/input-field {:label "Third"
-                                                         :placeholder "Placeholder"}]
-                                    [fields/input-field {:label "Fourth"
-                                                         :placeholder "Placeholder"}]
-                                    [fields/input-field {:label "Fifth"
-                                                         :placeholder "Placeholder"}]
-                                    [fields/input-field {:label "Sixth"
-                                                         :placeholder "Placeholder"}]]
-                          :footer [[buttons/outline {:content "Cancel"
-                                                     :on-click-fn (fn [] (swap! modal-open not))}]
-                                   [buttons/primary {:content "Confirm"
-                                                     :on-click-fn (fn [] (swap! modal-open not))
-                                                     :styles {:margin-left "16px"}}]]
-                          :styles {:max-width "640px"}
-                          :background-on-click-fn #(reset! modal-open false)}]
+         (when @modal-open
+           [modals/wrapper
+            [modals/header
+             [:h2 "Modal example"]
+             [:div
+              [icons/clickable {:name "edit"
+                                :styles {:margin "0 0.5rem 0 0"}}]
+              [icons/clickable {:name "close"
+                                :on-click-fn (fn [] (swap! modal-open not))}]]]
+            [modals/content
+             [:p "Modal content text."]]
+            [modals/footer
+             [buttons/default-small {:content "Cancel"
+                                     :styles {:margin-right "0.5rem"}
+                                     :on-click-fn (fn [] (swap! modal-open not))}]
+             [buttons/primary-small {:content "Ok"
+                                     :on-click-fn (fn [] (swap! modal-open not))}]]])
 
          [buttons/default {:content "Open modal"
                            :on-click-fn (fn [] (swap! modal-open not))}]]))))
@@ -1100,131 +1101,5 @@
                   :example "[grid/grid-cell {:col-start 1\n:col-end 4\n:style {:background-color \"whitesmoke\"\n:text-align \"center\"\n:border \"1px solid silver\"}} [:p \"test\"]]"}]]])
 
 (defmethod page-contents :headings []
-  [:div
-   ($-> [headings/page-heading {:current-page {:label "X-Files"
-                                               :child {:label "Animals"
-                                                       :child {:label "Flying squirrel investigation"
-                                                               :child nil}}}
-                                :breadcrumb-click-fn (fn [e] (println e))
-                                :sub-content [[:p "Given content"]]
-                                :search-placeholder "Search"
-                                :search-results @data-example
-                                :search-result-clicked-fn (fn [first second] (println "Item selected: " first second))
-                                :search-fn (fn [e] (println "Search-fn: " e))
-                                :styles {:z-index z-index/z-index-docked}}])
-   [props-table [{:name "current-page"
-                  :desc "map"
-                  :example "{:current-page {:label \"X-Files\"\n:child {:label \"Animals\"\n:child {:label \"Flying squirrel investigation\"\n:child nil}}}}"}
-                 {:name "search-placeholder"
-                  :desc "string"
-                  :example "{:search-placeholder \"Search\"}"}
-                 {:name "search-input"
-                  :desc "string"
-                  :example "{:search-input \"X-Files\"}"}
-                 {:name "search-fn"
-                  :desc "function"
-                  :example "{:search-fn search}"}
-                 {:name "search-results"
-                  :desc "vector (r/atom)"
-                  :example "{:search-results [{:section \"Projects\"\n:items [{:label \"Project 001\"}\n{:label \"Project 002\"}\n{:label \"Project 003\"}\n{:label \"Project 004\"}\n{:label \"Project 005\"}]}\n{:section \"Sub-projects\"\n:items [{:label \"Sub-project 001\"}\n{:label \"Sub-project 002\"}]}\n{:section \"Files\"\n:items [{:label \"File 1\"}\n{:label \"File 2\"}\n{:label \"File 3\"}]}]}"}
-                 {:name "search-results-show"
-                  :desc "int"
-                  :example "{:search-results-show 4}"}
-                 {:name "search-results-msg"
-                  :desc "str"
-                  :example "{:search-results-msg \"No results, sorry\"}"}
-                 {:name "search-result-clicked-fn"
-                  :desc "function"
-                  :example "{:search-result-clicked-fn (fn [e] (println e))}"}
-                 {:name "search-heading-fn"
-                  :desc "function"
-                  :example "{:search-heading-fn (fn [e] (println e))}"}
-                 {:name "sub-content"
-                  :desc "vector"
-                  :example "{:sub-content [[:p \"Given content\"]]}"}
-                 {:name "styles"
-                  :desc "map"
-                  :example "{:styles {:z-index \"4\"}}"}]]
-
-   [:h2.rds-header2 "Content-header"]
-   [:p "Used to build header for content."]
-   ($-> [headings/content-header
-         [headings/content-info {:breadcrumb {:label "X-Files"
-                                              :child {:label "Animals"
-                                                      :child {:label "Flying squirrel investigation"}}}
-                                 :footnote "Related Organization, Another Organization"
-                                 :features [[buttons/primary-small {:content "Item"}]
-                                            [buttons/primary-small {:content "Another Item"}]
-                                            [buttons/primary-small {:content "Last Item"}]]
-                                 :navigation [[buttons/icon-link {:icon "info"
-                                                                  :label "Info"
-                                                                  :active true
-                                                                  :on-click-fn (fn [] (println "Info"))}]
-                                              [buttons/icon-link {:icon "insert_drive_file"
-                                                                  :label "Documents"
-                                                                  :on-click-fn (fn [] (println "Documents"))}]]
-                                 :bar-color color/color-pacific}]
-         [areas/info
-          [icons/circle-single {:color color/color-pacific}]
-          [fields/keyvalue {:label "Type"
-                            :content "Project"}]
-          [fields/keyvalue {:label "Schedule"
-                            :content "29.09.2017 - 01.01.2021"}]
-          [fields/keyvalue {:label "State"
-                            :content "In Progress"}]]])
-   [props-table [{:name "styles"
-                  :desc "map"
-                  :example "{:styles {:padding \"2px\"}"}
-                 {:name "content"
-                  :desc "components"
-                  :example "[areas/info\n[icons/circle-single {:color color/color-pacific}]\n[fields/keyvalue {:label \"Type\"\n:content \"Project\"}]\n[fields/keyvalue {:label \"Schedule\"\n:content \"29.09.2017 - 01.01.2021\"}]\n[fields/keyvalue {:label \"State\"\n:content \"In Progress\"}]]"}]]
-
-   [:h2.rds-header2 "Content-header-default"]
-   [:p "Default structure of content-header. Parameters can be used to change values, but the styles are strict."]
-   ($-> [headings/content-header-default {:breadcrumb {:label "X-Files"
-                                                       :child {:label "Animals"
-                                                               :child {:label "Flying squirrel investigation"
-                                                                       :child nil}}}
-                                          :breadcrumb-click-fn (fn [first second] (println first second))
-                                          :footnote "Related Organization, Another Organization"
-                                          :features [{:content "Item"
-                                                      :on-click-fn (fn [e] (println e))}
-                                                     {:content "Another Item"}
-                                                     {:content "Last Item"}]
-                                          :navigation [{:icon "info"
-                                                        :label "Info"
-                                                        :active true
-                                                        :on-click-fn (fn [] (println "Default icon-link clicked"))}
-                                                       {:icon "insert_drive_file"
-                                                        :label "Documents"
-                                                        :on-click-fn (fn [] (println "Default icon-link clicked"))}]
-                                          :theme-color color/color-pacific
-                                          :info-icon [icons/circle-single]
-                                          :info-keyvalues [{:label "Type"
-                                                            :content "Project"}
-                                                           {:label "Schedule"
-                                                            :content "29.09.2017 - 01.01.2021"}
-                                                           {:label "State"
-                                                            :content "In Progress"}]}])
-   [props-table [{:name "breadcrumb"
-                  :desc "map"
-                  :example " {:breadcrumb {:label \"X-Files\"\n:child {:label \"Animals\"\n:child {:label \"Flying squirrel investigation\"\n:child nil}}}}"}
-                 {:name "breadcrumb-click-fn"
-                  :desc "map"
-                  :example "{:breadcrumb-click-fn (fn [first second] (println first second))"}
-                 {:name "footnote"
-                  :desc "string"
-                  :example "{:footnote \"Related Organization, Another Organization\"}"}
-                 {:name "features"
-                  :desc "vector of button-parameters"
-                  :example "{:meta [{:content \"Item\"\n:on-click-fn (fn [e] (println e))}\n{:content \"Another Item\"}\n{:content \"Last Item\"}]}"}
-                 {:name "navigation"
-                  :desc "vector"
-                  :example "{:navigation [{:icon \"info\"\n:label \"Info\"\n:active true\n:on-click-fn (fn [] (println \"Default icon-link clicked\"))}\n{:icon \"insert_drive_file\"\n:label \"Documents\"\n:on-click-fn (fn [] (println \"Default icon-link clicked\"))}]}"}
-                 {:name "theme-color"
-                  :desc "color"
-                  :example "{:theme-color color/color-pacific}"}
-                 {:name "info-keyvalues"
-                  :desc "vector"
-                  :example "{:info-keyvalues [{:label \"Type\"\n:content \"Project\"}\n{:label \"Schedule\"\n:content \"29.09.2017 - 01.01.2021\"}\n{:label \"State\"\n:content \"In Progress\"}]}"}]]])
+  [:div])
 

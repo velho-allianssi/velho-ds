@@ -1,37 +1,23 @@
 (ns velho-ds.molecules.modal
   (:require [stylefy.core :as stylefy]
-            [velho-ds.tools.style :as tools-style]
-            [velho-ds.atoms.button :as button]
             [velho-ds.molecules.style.modal :as style]
             [reagent.core :as r]))
 
-;; Appending modal to content
-(defn appended-modal [modal-id]
-  (.appendChild (.-body js/document) (doto (.createElement js/document "div")
-                                       (.setAttribute "id" modal-id))))
+(defn wrapper [& content]
+  [:div (stylefy/use-style style/fade)
+   [:div (stylefy/use-style style/wrapper)
+    [:div (stylefy/use-style style/bg)
+     (map-indexed #(with-meta %2 {:key %1}) content)]]])
 
-(defn open [modal modal-id]
-  (r/render modal
-            (appended-modal modal-id)))
+(defn header [otsikko & ikoni]
+  [:header (stylefy/use-style style/header)
+   otsikko
+   (map-indexed #(with-meta %2 {:key %1}) ikoni)])
 
-(defn close [modal-id]
-  (.remove (.getElementById js/document modal-id) js/document))
+(defn content [& content]
+  [:div (stylefy/use-style style/content)
+   (map-indexed #(with-meta %2 {:key %1}) content)])
 
-(defn default [{:keys [header header-buttons content footer is-open styles background-on-click-fn]}]
-  [:div
-   (assoc
-     (if is-open (stylefy/use-style style/modal-background-area)
-                 (stylefy/use-style (merge style/modal-background-area {:display "none"})))
-     :on-click background-on-click-fn)
-   [:div (assoc (stylefy/use-style (merge style/modal-dialog styles)) :on-click #(.stopPropagation %))
-    [:div (stylefy/use-style style/modal-box)
-     [:header (stylefy/use-style style/modal-header)
-      [:h2 (stylefy/use-sub-style style/modal-header :h2) header]
-      (into [:div (stylefy/use-style style/modal-header-btn-area)]
-            (for [item header-buttons] ^{:key item} [button/default (tools-style/merge-styles item style/modal-header-btn)]))]
-     (when content
-       (into [:div (stylefy/use-style style/modal-content)]
-             (for [item content] ^{:key item} item)))
-     (when footer
-       (into [:footer (stylefy/use-style style/modal-footer)]
-             (for [item footer] ^{:key item} item)))]]])
+(defn footer [& content]
+  [:div (stylefy/use-style style/footer)
+   (map-indexed #(with-meta %2 {:key %1}) content)])

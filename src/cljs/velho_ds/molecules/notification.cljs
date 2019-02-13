@@ -1,6 +1,5 @@
 (ns velho-ds.molecules.notification
-  (:require [reagent.core :as r]
-            [stylefy.core :as stylefy]
+  (:require [stylefy.core :as stylefy]
             [velho-ds.tools.style :as tools-style]
             [velho-ds.atoms.icon :as icon]
             [velho-ds.molecules.style.notification :as style]

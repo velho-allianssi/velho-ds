@@ -1,7 +1,5 @@
 (ns velho-ds.templates.main
-  (:require [stylefy.core :refer [use-style]]
-            [velho-ds.organisms.heading :as heading]
-            [velho-ds.organisms.navigation :as navigation]))
+  (:require [velho-ds.organisms.heading :as heading]))
 
 (defn default [content]
   [:div.grid-layout

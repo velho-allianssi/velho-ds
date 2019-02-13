@@ -1,6 +1,6 @@
-(defproject velho-ds "0.0.0.47"
+(defproject velho-ds "0.0.0.52"
   :description "Velho Allianssi Design System"
-  :url "https://github.com/trinne/velho-ds"
+  :url "https://github.com/velho-allianssi/velho-ds"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
 
@@ -26,7 +26,7 @@
                  [prismatic/dommy "1.1.0"]]
 
   :plugins [[lein-cljsbuild "1.1.5" :exclusions [[org.clojure/clojure]]]
-            [lein-figwheel "0.5.16"]]
+            [lein-figwheel "0.5.18"]]
 
   :source-paths ["src/clj" "src/cljc" "src/cljs"]
   :test-paths ["test/clj" "test/cljs"]
