@@ -15,6 +15,7 @@
 (def thead-default
   {:margin "0"
    :padding "0"
+   :vertical-align "top"
    ::stylefy/sub-styles {:th {:padding "1.25rem 1rem"
                               :border (str "1px solid " color/color-neutral-2)}}})
 
