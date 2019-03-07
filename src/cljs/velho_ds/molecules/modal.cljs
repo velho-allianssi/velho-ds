@@ -4,10 +4,17 @@
             [reagent.core :as r]))
 
 (defn wrapper [& content]
-  [:div (stylefy/use-style style/fade)
-   [:div (stylefy/use-style style/wrapper)
-    [:div (stylefy/use-style style/bg)
-     (map-indexed #(with-meta %2 {:key %1}) content)]]])
+  (let [drag (r/atom false)
+        events {:on-drop #(do (reset! drag false) (.preventDefault %))
+                :on-drag-leave #(reset! drag false)
+                :on-drag-over #(do (reset! drag true) (.preventDefault %))}
+        fade style/fade
+        solid (merge fade {:background "hsla(0, 0%, 20%, 1)"})]
+    (fn []
+      [:div (stylefy/use-style (if @drag solid fade) events)
+       [:div (stylefy/use-style style/wrapper)
+        [:div (stylefy/use-style style/bg)
+         (map-indexed #(with-meta %2 {:key %1}) content)]]])))
 
 (defn header [otsikko & ikoni]
   [:header (stylefy/use-style style/header)
