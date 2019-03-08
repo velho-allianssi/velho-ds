@@ -43,7 +43,7 @@
      "M16,9.3c-3.7,0-6.7,3-6.7,6.7s3,6.7,6.7,6.7s6.7-3,6.7-6.7S19.7,9.3,16,9.3L16,9.3z M13.3,19.7  c-0.9,0-1.7-0.7-1.7-1.7s0.7-1.7,1.7-1.7c0.9,0,1.7,0.7,1.7,1.7S14.3,19.7,13.3,19.7L13.3,19.7z M14.3,13.3c0-0.9,0.7-1.7,1.7-1.7  s1.7,0.7,1.7,1.7c0,0.9-0.7,1.7-1.7,1.7S14.3,14.3,14.3,13.3L14.3,13.3z M18.7,19.7c-0.9,0-1.7-0.7-1.7-1.7s0.7-1.7,1.7-1.7  c0.9,0,1.7,0.7,1.7,1.7S19.6,19.7,18.7,19.7L18.7,19.7z"}]])
 
 (defn circle-group [{:keys [color inner-color width height] :as icon-args}]
-  [circle (merge icon-args {:color (if color color color/color-pacific-dark)})
+    [circle (merge icon-args {:color (if color color color/color-pacific-dark)})
    [:path
     {:fill color/color-white
      :d
