@@ -314,16 +314,21 @@
    :margin 0
    :color color/color-neutral-4})
 
+(def ellipsis
+  {:white-space "nowrap"
+   :overflow "hidden"
+   :text-overflow "ellipsis"})
+
 (def breadcrumb
-  {:text-decoration "none"
-   :margin 0
-   :cursor "pointer"
-   :color color/color-primary-dark
-   :display "inline-block"
-   :font-family font/font-family-heading
-   :font-size font-size/font-size-x-large
-   :font-weight font/font-weight-light
-   :line-height line-height/line-height-heading})
+  (merge ellipsis {:text-decoration "none"
+                   :margin          0
+                   :cursor          "pointer"
+                   :color           color/color-primary-dark
+                   :display         "inline"
+                   :font-family     font/font-family-heading
+                   :font-size       font-size/font-size-x-large
+                   :font-weight     font/font-weight-light
+                   :line-height     line-height/line-height-heading}))
 
 (def breadcrumb-breaker
   {:margin 0
@@ -332,7 +337,7 @@
    :line-height spacing/space-base-rem})
 
 (def breadcrumb-current-page
-  {:margin 0
-   :display "inline-block"
-   :padding-right "0"
-   :line-height spacing/space-base-rem})
+  (merge ellipsis {:margin        0
+                   :display       "inline"
+                   :padding-right "0"
+                   :line-height   spacing/space-base-rem}))
