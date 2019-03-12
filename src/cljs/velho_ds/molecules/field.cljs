@@ -289,11 +289,14 @@
                                   [:div (stylefy/use-style (merge style/dropdown-multiple-input-background (when (:is-focused @state)
                                                                                                              {:border-bottom (str "1px solid " color/color-primary)})))
                                    [:input (stylefy/use-style style/dropdown-multiple-input {:type        "text"
-                                                                                             :on-click    #(swap! state assoc :is-focused true)
-                                                                                             :on-change   #(do
-                                                                                                             (.stopPropagation %)
-                                                                                                             (-> % .-target .-value input-value-changed-fn))
-                                                                                             :on-key-down #(-> % .-key key-press-handler-fn)
+                                                                                             :on-click    (when-not disabled
+                                                                                                            #(swap! state assoc :is-focused true))
+                                                                                             :on-change   (when-not disabled
+                                                                                                            #(do
+                                                                                                               (.stopPropagation %)
+                                                                                                               (-> % .-target .-value input-value-changed-fn)))
+                                                                                             :on-key-down (when-not disabled
+                                                                                                            #(-> % .-key key-press-handler-fn))
                                                                                              :value       (if (:is-focused @state) (:input-text @state) (:label preselected-item))
                                                                                              :placeholder (if preselected-item (:label preselected-item) placeholder)
                                                                                              :disabled    (:disabled @state)})]
