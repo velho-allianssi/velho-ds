@@ -594,12 +594,15 @@
                         (recur (:child page)))))]
     (get-pages current-page)
     (fn []
-      [:div
+      [:div {:style {:display "flex"
+                     :overflow "hidden"
+                     :align-items "center"}}
        (for [page (butlast @pages)]
-         ^{:key page} [:span
+         ^{:key page} [:span {:style {:overflow "hidden"
+                                      :display "flex"
+                                      :align-items "center"}}
                        [:a {:on-click #(when click-fn (click-fn page))
                             :style style/breadcrumb} (:label page)]
                        [:h2 {:style style/breadcrumb-breaker} "/"]])
-       [:span {:style {:display "inline-block"}}
-        [:h2 (stylefy/use-style style/breadcrumb-current-page) (:label (last @pages))]
-        (map-indexed #(with-meta %2 {:key %1}) content)]])))
+       [:h2 (stylefy/use-style style/breadcrumb-current-page) (:label (last @pages))]
+       (map-indexed #(with-meta %2 {:key %1}) content)])))
