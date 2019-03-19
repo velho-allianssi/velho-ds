@@ -15,7 +15,7 @@
                                        style/clickable)
                                      styles)
                               (merge {:disabled (if disabled disabled false)
-                                      :on-click on-click-fn}
+                                      :on-click (when-not disabled on-click-fn)}
                                      (when tabindex {:tab-index tabindex})))
    [:i.material-icons (stylefy/use-sub-style (merge style/clickable styles) :i) name]])
 
