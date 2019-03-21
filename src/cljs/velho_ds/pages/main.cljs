@@ -813,12 +813,13 @@
                       :desc "string"
                       :example "{:no-selection-text \"- No selection -\"}"}]]
        [:h3.rds-header3 "Dropdown-multiple"]
-       ($-> (let [options ["John" "Sandra" "Matt" "Will" "Kate" "Alex" "Keith" "Melinda"]]
+       ($-> (let [items [{:label "John" :value :john} {:label "Sandra" :value :sandra} {:label "Matt" :value :matt} {:label "Will" :value :will}
+                         {:label "Kate" :value :kate} {:label "Alex" :value :alex} {:label "Keith" :value :keith} {:label "Melinda" :value :melinda}]]
               [fields/dropdown-multiple {:label "Multiselect dropdown"
-                                         :selected-fn (fn [e] (println (str "Selected values: " e)))
-                                         :options options
-                                         :no-selection-text "- No selection -"
-                                         :preselected-values ["John"]}]))
+                                         :on-select-fn (fn [e] (println (str "Selected values: " e)))
+                                         :items items
+                                         :placeholder "- No selection -"
+                                         :preselected-items [(first items)]}]))
        [props-table [{:name "label"
                       :desc "string"
                       :example "{:label \"Label\"}"}
@@ -830,10 +831,10 @@
                       :example "{:selected-fn (fn [e] (println (str \"Selected values: \" e)))}"}
                      {:name "options"
                       :desc "vector"
-                      :example "{:options [{:id 1 :value \"First\"}\n{:id 2 :value \"Second\"}]}"}
+                      :example "{:options [{:id 1 :label \"First\"}\n{:id 2 :label \"Second\"}]}"}
                      {:name "preselected-values"
                       :desc "vector"
-                      :example "{:preselected-values [\"First\"]}"}]]
+                      :example "{:preselected-values [{:id 1 :label \"First\"}]}"}]]
        [:h3.rds-header3 "Drag-n-drop-area"]
        ($-> [fields/drag-n-drop-area {:help-text "Drag-n-drop files or click here to upload." :on-drop-fn (fn [e] (println e))}])
        [props-table [{:name "help-text"
