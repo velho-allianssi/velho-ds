@@ -818,7 +818,7 @@
               [fields/dropdown-multiple {:label "Multiselect dropdown"
                                          :on-select-fn (fn [e] (println (str "Selected values: " e)))
                                          :items items
-                                         :placeholder "- No selection -"
+                                         :placeholder "- Select values -"
                                          :preselected-items [(first items)]}]))
        [props-table [{:name "label"
                       :desc "string"
@@ -826,15 +826,15 @@
                      {:name "placeholder"
                       :desc "string"
                       :example "{:placeholder \"Placeholder\"}"}
-                     {:name "selected-fn"
+                     {:name "on-select-fn"
                       :desc "function"
-                      :example "{:selected-fn (fn [e] (println (str \"Selected values: \" e)))}"}
-                     {:name "options"
+                      :example "{:on-select-fn (fn [e] (println (str \"Selected values: \" e)))}"}
+                     {:name "items"
                       :desc "vector"
                       :example "{:options [{:id 1 :label \"First\"}\n{:id 2 :label \"Second\"}]}"}
-                     {:name "preselected-values"
+                     {:name "preselected-items"
                       :desc "vector"
-                      :example "{:preselected-values [{:id 1 :label \"First\"}]}"}]]
+                      :example "{:preselected-items [{:id 1 :label \"First\"}]}"}]]
        [:h3.rds-header3 "Drag-n-drop-area"]
        ($-> [fields/drag-n-drop-area {:help-text "Drag-n-drop files or click here to upload." :on-drop-fn (fn [e] (println e))}])
        [props-table [{:name "help-text"
