@@ -270,7 +270,7 @@
       {:display-name        (str "dropdown-menu-" @dropdown-id)
        :component-did-mount (fn [this]
                               (add-event-listener (dommy/sel1 (r/dom-node this) :input) :is-focused #(swap! state assoc :is-focused true)))
-       :reagent-render      (fn [{:keys [items preselected-item]}]
+       :reagent-render      (fn [{:keys [items preselected-item error-messages]}]
                               (let [items (if empty-allowed?
                                             (into [{:items [{:label (if placeholder placeholder "")
                                                              :type  :placeholder}]}] items)
@@ -385,7 +385,7 @@
       {:display-name "dropdown-multiple"
        :component-did-mount (fn [this]
                               (add-event-listener (dommy/sel1 (r/dom-node this) :input) :focus #(swap! state assoc :focus true)))
-       :reagent-render (fn []
+       :reagent-render (fn [{:keys [error-messages]}]
                          (if (:focus @state)
                            (add-event-listener :click global-click-handler)
                            (do (swap! state assoc :input-text "")
