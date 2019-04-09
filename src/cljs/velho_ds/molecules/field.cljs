@@ -63,7 +63,7 @@
                                   :display "block"
                                   :padding "0.5rem"}
                                  (when (and hover? (not is-selected?))
-                                   {:background-color color/color-primary-light
+                                   {:background-color color/color-primary-lightest
                                     :color color/color-neutral-5})
                                  styles)
                           {:on-click      (fn [event]

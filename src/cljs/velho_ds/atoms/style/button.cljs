@@ -132,7 +132,7 @@
    :display "inline-block"
    :transition (str "all " timing/duration-slow " ease-in-out")
    ::stylefy/mode {:hover {:color color/color-primary-dark}
-                   :active {:color color/color-primary-light}}
+                   :active {:color color/color-primary-lightest}}
    ::stylefy/auto-prefix #{:transition :color}})
 
 (def icon-link-active

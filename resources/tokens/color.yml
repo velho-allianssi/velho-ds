@@ -26,6 +26,12 @@ props:
     value: "hsla({!primary}, 31%, 1)"
     category: color-group-1
   color-primary-light:
+    value: "hsla({!primary}, 62%, 1)"
+    category: color-group-1
+  color-primary-lighter:
+    value: "hsla({!primary}, 80%, 1)"
+    category: color-group-1
+  color-primary-lightest:
     value: "hsla({!primary}, 96%, 1)"
     category: color-group-1
   color-neutral-1:
@@ -44,31 +50,31 @@ props:
     value: "hsla({!black}, 20%, 1)"
     category: color-group-2
   color-pacific:
-    value: "hsla({!pacific}, 37%, 1)"
+    value: "hsla({!pacific}, 28%, 1)"
     category: color-group-3
   color-pacific-dark:
-    value: "hsla({!pacific}, 33%, 1)"
+    value: "hsla({!pacific}, 21%, 1)"
     category: color-group-3
   color-pacific-light:
-    value: "hsla({!pacific}, 43%, 1)"
+    value: "hsla({!pacific}, 35%, 1)"
     category: color-group-3
   color-pinky:
     value: "hsla({!pinky}, 43%, 1)"
     category: color-group-3
   color-pinky-dark:
-    value: "hsla({!pinky}, 37%, 1)"
+    value: "hsla({!pinky}, 33%, 1)"
     category: color-group-3
   color-pinky-light:
     value: "hsla({!pinky}, 47%, 1)"
     category: color-group-3
   color-greeny:
-    value: "hsla({!greeny}, 37%, 1)"
+    value: "hsla({!greeny}, 26%, 1)"
     category: color-group-3
   color-greeny-dark:
-    value: "hsla({!greeny}, 33%, 1)"
+    value: "hsla({!greeny}, 19%, 1)"
     category: color-group-3
   color-greeny-light:
-    value: "hsla({!greeny}, 43%, 1)"
+    value: "hsla({!greeny}, 33%, 1)"
     category: color-group-3
   color-black:
     value: "hsla({!black}, 0%, 1)"
