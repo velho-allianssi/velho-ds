@@ -52,7 +52,12 @@
 (defn icon-link [{:keys [icon label active on-click-fn]}]
   [:a (stylefy/use-style (if active
                            style/icon-link-active
-                           style/icon-link) {:on-click on-click-fn})
+                           style/icon-link)
+                         {:href "#"
+                          :on-click #(do
+                                       (.preventDefault %)
+                                       (.stopPropagation %)
+                                       (on-click-fn %))})
    [icons/icon {:name icon
                 :styles style/icon-link-icon}]
    [:span (stylefy/use-style style/icon-link-value) label]])

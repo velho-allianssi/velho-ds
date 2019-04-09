@@ -7,7 +7,7 @@
 
 (defn default [{:keys [close-fn styles]} & content]
   [:div (stylefy/use-style (merge style/notification-area styles))
-   [:a (merge (stylefy/use-sub-style style/notification-area :a))
+   [:div (stylefy/use-sub-style style/notification-area :div)
     [icon/clickable {:name "close"
                      :on-click-fn close-fn
                      :styles {:top "2px"

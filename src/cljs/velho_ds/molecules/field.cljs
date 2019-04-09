@@ -600,7 +600,11 @@
          ^{:key page} [:span {:style {:overflow "hidden"
                                       :display "flex"
                                       :align-items "center"}}
-                       [:a {:on-click #(when click-fn (click-fn page))
+                       [:a {:href "#"
+                            :on-click #(do
+                                         (.preventDefault %)
+                                         (.stopPropagation %)
+                                         (when click-fn (click-fn page)))
                             :style style/breadcrumb} (:label page)]
                        [:h2 {:style style/breadcrumb-breaker} "/"]])
        [:h2 (stylefy/use-style style/breadcrumb-current-page) (:label (last @pages))]
