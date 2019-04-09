@@ -55,8 +55,8 @@
                            style/icon-link)
                          {:href "#"
                           :on-click #(do
-                                       (.-preventDefault %)
-                                       (.-stopPropagation %)
+                                       (.preventDefault %)
+                                       (.stopPropagation %)
                                        (on-click-fn %))})
    [icons/icon {:name icon
                 :styles style/icon-link-icon}]

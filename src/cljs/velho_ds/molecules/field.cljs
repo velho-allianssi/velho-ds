@@ -602,8 +602,8 @@
                                       :align-items "center"}}
                        [:a {:href "#"
                             :on-click #(do
-                                         (.-preventDefault %)
-                                         (.-stopPropagation %)
+                                         (.preventDefault %)
+                                         (.stopPropagation %)
                                          (when click-fn (click-fn page)))
                             :style style/breadcrumb} (:label page)]
                        [:h2 {:style style/breadcrumb-breaker} "/"]])
