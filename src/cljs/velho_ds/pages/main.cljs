@@ -5,7 +5,6 @@
             [velho-ds.organisms.grid :as grid]
             [velho-ds.atoms.loader :as loaders]
             [velho-ds.molecules.notification :as notifications]
-            [velho-ds.molecules.tab :as tabs]
             [velho-ds.molecules.modal :as modals]
             [velho-ds.atoms.divider :as dividers]
             [velho-ds.atoms.table :as tables]
@@ -956,53 +955,6 @@
                  {:name "content"
                   :desc "components"
                   :example "[:span \"Warning notification\"] [:span {:style {:text-decoration \"underline\"}\n:on-click (fn [] (js/alert \"Alert\"))} \"Warning notification 2\"]"}]]])
-
-(defmethod page-contents :tabs []
-  [:div
-   [:p.rds-quote "Tabs are used to alternate related views within the same context."]
-   [dividers/default {:styles {:margin-top "2rem"
-                               :margin-bottom "2rem"}}]
-   [:h2.rds-header2 "Single tab"]
-   ($-> [tabs/default {:tab-id 1
-                       :icon "info"
-                       :label "Info"
-                       :on-click-fn (fn [] (println "Default tab clicked"))}])
-   [props-table [{:name "tab-id"
-                  :desc "int"
-                  :example "{:tab-id 1}"}
-                 {:name "icon"
-                  :desc "string"
-                  :example "{:icon \"info\"}"}
-                 {:name "label"
-                  :desc "string"
-                  :example "{:label \"Info\"}"}
-                 {:name "on-click-fn"
-                  :desc "function"
-                  :example "{:on-click-fn (fn [] (println \"Default tab clicked\"))}"}
-                 {:name "styles"
-                  :desc "map"
-                  :example "{:styles {:margin \"1rem\"}}"}]]
-   [dividers/default {:styles {:margin-top "2rem"
-                               :margin-bottom "2rem"}}]
-   [:h2.rds-header2 "Default tabset"]
-   ($-> [tabs/tabset {:selected-id 1}
-         [tabs/default {:tab-id 1
-                        :icon "info"
-                        :label "Info"
-                        :on-click-fn (fn [] (println "Default tab clicked"))}]
-         [tabs/default {:tab-id 2
-                        :icon "group_work"
-                        :label "Relations"
-                        :on-click-fn (fn [] (println "Default tab clicked"))}]])
-   [props-table [{:name "selected-id"
-                  :desc "int"
-                  :example "{:selected-id 1}"}
-                 {:name "styles"
-                  :desc "map"
-                  :example "{:styles {:margin \"1rem\"}}"}
-                 {:name "content"
-                  :desc "components"
-                  :example "[tabs/default {:tab-id 1\n:icon \"info\"\n:label \"Info\"\n:on-click-fn (fn [] (println \"Default tab clicked\"))}]\n[tabs/default {:tab-id 2\n:icon \"group_work\"\n:label \"Relations\"\n:on-click-fn (fn [] (println \"Default tab clicked\"))}]"}]]])
 
 ;; ORGANISMS
 

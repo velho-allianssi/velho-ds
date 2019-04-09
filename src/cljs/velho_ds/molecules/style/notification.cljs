@@ -12,11 +12,11 @@
    :color color/color-white
    :position "relative"
    :background-color color/color-primary
-   ::stylefy/sub-styles {:a {:width spacing/space-base
-                             :cursor "pointer"
-                             :position "absolute"
-                             :top spacing/space-xx-small
-                             :right spacing/space-xx-small}}})
+   ::stylefy/sub-styles {:div {:width spacing/space-base
+                               :cursor "pointer"
+                               :position "absolute"
+                               :top spacing/space-xx-small
+                               :right spacing/space-xx-small}}})
 
 (def error
   (merge notification-area
