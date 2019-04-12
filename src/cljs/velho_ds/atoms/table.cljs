@@ -23,11 +23,11 @@
                          (stylefy/use-sub-style style/tfoot-default :td)
                          (get item :value)])))])
 
-(defn table-content [headers content]
+(defn table-content [headers content row-key-fn]
   (let [cols (r/atom (for [val headers] (get val :key-path)))]
     [:tbody (stylefy/use-style style/tbody-default)
      (doall (for [row content]
-              ^{:key row}
+              ^{:key ((or row-key-fn identity) row)}
               [:tr
                (doall
                  (for [col @cols]
