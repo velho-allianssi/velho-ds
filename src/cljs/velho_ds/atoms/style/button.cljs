@@ -44,20 +44,18 @@
    ::stylefy/auto-prefix #{:transition :box-sizing}})
 
 (def button-disabled
-  (merge
-    button
-    {:color color/color-neutral-2
-     :background color/color-neutral-3
-     :background-color color/color-neutral-3
-     :box-shadow box-shadow/box-shadow-small
-     :transition (str "all " timing/duration-slow " ease-in-out")
-     ::stylefy/mode {:hover {:background-position "left bottom"
-                             :background-size "200% auto"}
-                     :active {:background-position "right center"
-                              :outline "none"
-                              :box-shadow box-shadow/box-shadow-small
-                              :transform "translate(1px, 1px) rotate(-1deg)"}
-                     :focus {:outline "none"}}}))
+  {:color color/color-neutral-2
+   :background color/color-neutral-3
+   :background-color color/color-neutral-3
+   :box-shadow box-shadow/box-shadow-small
+   :transition (str "all " timing/duration-slow " ease-in-out")
+   ::stylefy/mode {:hover {:background-position "left bottom"
+                           :background-size "200% auto"}
+                   :active {:background-position "right center"
+                            :outline "none"
+                            :box-shadow box-shadow/box-shadow-small
+                            :transform "translate(1px, 1px) rotate(-1deg)"}
+                   :focus {:outline "none"}}})
 
 (def button-icon
   {:font-size font-size/font-size-xx-large

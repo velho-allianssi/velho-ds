@@ -7,9 +7,7 @@
 (defn default [{:keys [content icon styles on-click-fn disabled?]}]
   (assert (or content icon))
   [:button (stylefy/use-style
-             (if disabled?
-               (merge styles style/button-disabled)
-               (merge style/button styles))
+             (merge style/button styles (when disabled? style/button-disabled))
              {:on-click (when (not disabled?) on-click-fn)
               :disabled disabled?})
    (if disabled?
