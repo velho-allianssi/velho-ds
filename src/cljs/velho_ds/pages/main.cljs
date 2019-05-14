@@ -121,29 +121,43 @@
                               {:label "Content only"
                                :key-path [:contentonly]}
                               {:label "Icon only"
-                               :key-path [:icononly]}]
+                               :key-path [:icononly]}
+                              {:label "C. & I. (disabled)"
+                               :key-path [:contenticon-disabled]}]
                     :content [{:name "Default"
                                :example "[buttons/default]"
                                :contenticon [buttons/default {:content "Default"
                                                               :icon "autorenew"}]
+                               :contenticon-disabled [buttons/default {:content "Default"
+                                                                       :disabled? true
+                                                                       :icon "autorenew"}]
                                :contentonly [buttons/default {:content "Default"}]
                                :icononly [buttons/default {:icon "autorenew"}]}
                               {:name "Primary"
                                :example "[buttons/primary]"
                                :contenticon [buttons/primary {:content "Primary"
                                                               :icon "autorenew"}]
+                               :contenticon-disabled [buttons/primary {:content "Primary"
+                                                                       :disabled? true
+                                                                       :icon "autorenew"}]
                                :contentonly [buttons/primary {:content "Primary"}]
                                :icononly [buttons/primary {:icon "autorenew"}]}
                               {:name "Secondary"
                                :example "[buttons/secondary]"
                                :contenticon [buttons/secondary {:content "Secondary"
                                                                 :icon "autorenew"}]
+                               :contenticon-disabled [buttons/secondary {:content "Secondary"
+                                                                         :disabled? true
+                                                                         :icon "autorenew"}]
                                :contentonly [buttons/secondary {:content "Secondary"}]
                                :icononly [buttons/secondary {:icon "autorenew"}]}
                               {:name "Outline"
                                :example "[buttons/outline]"
                                :contenticon [buttons/outline {:content "Outline"
                                                               :icon "autorenew"}]
+                               :contenticon-disabled [buttons/outline {:content "Outline"
+                                                                       :disabled? true
+                                                                       :icon "autorenew"}]
                                :contentonly [buttons/outline {:content "Outline"}]
                                :icononly [buttons/outline {:icon "autorenew"}]}]}]
 
@@ -174,29 +188,43 @@
                               {:label "Content only"
                                :key-path [:contentonly]}
                               {:label "Icon only"
-                               :key-path [:icononly]}]
+                               :key-path [:icononly]}
+                              {:label "C. & I. (disabled)"
+                               :key-path [:contenticon-disabled]}]
                     :content [{:name "Default-small"
                                :example "[buttons/default-small]"
                                :contenticon [buttons/default-small {:content "Default"
                                                                     :icon "autorenew"}]
+                               :contenticon-disabled [buttons/default-small {:content "Default"
+                                                                             :disabled? true
+                                                                             :icon "autorenew"}]
                                :contentonly [buttons/default-small {:content "Default"}]
                                :icononly [buttons/default-small {:icon "autorenew"}]}
                               {:name "Primary-small"
                                :example "[buttons/primary-small]"
                                :contenticon [buttons/primary-small {:content "Primary"
                                                                     :icon "autorenew"}]
+                               :contenticon-disabled [buttons/primary-small {:content "Primary"
+                                                                             :disabled? true
+                                                                             :icon "autorenew"}]
                                :contentonly [buttons/primary-small {:content "Primary"}]
                                :icononly [buttons/primary-small {:icon "autorenew"}]}
                               {:name "Secondary-small"
                                :example "[buttons/secondary-small]"
                                :contenticon [buttons/secondary-small {:content "Secondary"
                                                                       :icon "autorenew"}]
+                               :contenticon-disabled [buttons/secondary-small {:content "Secondary"
+                                                                               :disabled? true
+                                                                               :icon "autorenew"}]
                                :contentonly [buttons/secondary-small {:content "Secondary"}]
                                :icononly [buttons/secondary-small {:icon "autorenew"}]}
                               {:name "Outline-small"
                                :example "[buttons/outline-small]"
                                :contenticon [buttons/outline-small {:content "Outline"
                                                                     :icon "autorenew"}]
+                               :contenticon-disabled [buttons/outline-small {:content "Outline"
+                                                                             :disabled? true
+                                                                             :icon "autorenew"}]
                                :contentonly [buttons/outline-small {:content "Outline"}]
                                :icononly [buttons/outline-small {:icon "autorenew"}]}]}]
 
