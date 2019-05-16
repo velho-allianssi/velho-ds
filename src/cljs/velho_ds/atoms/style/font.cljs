@@ -44,9 +44,9 @@
    :line-height line-height/line-height-heading})
 
 (def h4
-  {:font-family font/font-family-heading
+  {:font-family font/font-family-text
    :font-size font-size/font-size-base
-   :font-weight font/font-weight-bold
+   :font-weight font/font-weight-semi-bold
    :line-height line-height/line-height-heading})
 
 (def th

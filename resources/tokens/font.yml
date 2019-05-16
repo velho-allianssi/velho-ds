@@ -11,7 +11,7 @@ props:
   font-weight-bold:
     value: "700"
   font-weight-semi-bold:
-    value: "600"
+    value: "500"
   font-weight-base:
     value: "400"
   font-weight-light:
