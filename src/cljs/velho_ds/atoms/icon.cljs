@@ -5,7 +5,8 @@
             [stylefy.core :as stylefy]))
 
 (defn icon [{:keys [name styles attributes]}]
-  [:i.material-icons (use-style (merge style/icon styles) attributes) name])
+  [:i.material-icons (if styles (use-style styles attributes)
+                                (use-style style/icon attributes)) name])
 
 (defn clickable [{:keys [name styles on-click-fn disabled tabindex]}]
   (assert name)
