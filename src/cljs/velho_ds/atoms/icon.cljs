@@ -4,9 +4,8 @@
             [velho-ds.atoms.style.icon :as style]
             [stylefy.core :as stylefy]))
 
-(defn icon [{:keys [name styles]}]
-  [:i.material-icons (if styles (use-style styles)
-                                (use-style style/icon)) name])
+(defn icon [{:keys [name styles attributes]}]
+  [:i.material-icons (use-style (merge style/icon styles) attributes) name])
 
 (defn clickable [{:keys [name styles on-click-fn disabled tabindex]}]
   (assert name)
