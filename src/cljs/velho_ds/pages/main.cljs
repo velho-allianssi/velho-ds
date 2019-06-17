@@ -14,7 +14,9 @@
             [velho-ds.atoms.icon :as icons]
             [velho-ds.atoms.area :as areas]
             [reagent.core :as r]
-            [velho-ds.molecules.style.field :as style]))
+            [velho-ds.molecules.style.field :as style]
+            [velho-ds.tokens.spacing :as spacing]
+            [velho-ds.tokens.color :as color]))
 
 
 (defn props-table [content]
@@ -1055,6 +1057,32 @@
                  {:name "content"
                   :desc "components"
                   :example "[grid/grid-cell {:col-start 1\n:col-end 4\n:style {:background-color \"whitesmoke\"\n:text-align \"center\"\n:border \"1px solid silver\"}} [:p \"test\"]]"}]]])
+
+(defn notification-default [& content]
+  [:div (stylefy/use-style {:margin              "auto"
+                            :padding-top         "6px"
+                            :padding-right       spacing/space-large
+                            :padding-bottom      (str "calc(" spacing/space-base " / 4)")
+                            :padding-left        spacing/space-small
+                            :color               color/color-white
+                            :position            "relative"
+                            :background-color    color/color-primary
+                            ::stylefy/sub-styles {:div {:width    spacing/space-base
+                                                        :cursor   "pointer"
+                                                        :position "absolute"
+                                                        :top      spacing/space-xx-small
+                                                        :right    spacing/space-xx-small}}})
+   (map-indexed #(with-meta %2 {:key %1}) content)])
+
+(defn notification-error [& content]
+  [default (tools-style/merge-styles args style/error) content])
+
+(defn notification-warning [& content]
+  [default (tools-style/merge-styles args style/warning) content])
+
+(defn notification-success [& content]
+  [default (tools-style/merge-styles args style/success) content])
+
 
 (defmethod page-contents :headings []
   [:div])
