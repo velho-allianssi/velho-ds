@@ -2,7 +2,8 @@
   (:require [stylefy.core :as stylefy]
             [velho-ds.tokens.timing :as timing]
             [velho-ds.tokens.box-shadow :as box-shadow]
-            [velho-ds.tokens.color :as color]))
+            [velho-ds.tokens.color :as color]
+            [velho-ds.tokens.z-index :as z-index]))
 
 (def fade
   {:position "fixed"
@@ -42,6 +43,7 @@
 (def header
   {:position "relative"
    :display "flex"
+   :z-index z-index/z-index-default
    :justify-content "space-between"
    :align-items "center"
    :pointer-events "auto"
@@ -50,7 +52,7 @@
    :min-height "4rem"
    :box-sizing "border-box"
    :border "none"
-   :margin "0 0 0.25rem 0"
+   :margin "0"
    :box-shadow box-shadow/box-shadow-small
    :padding "0 1.5rem"})
 
