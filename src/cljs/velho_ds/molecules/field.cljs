@@ -66,12 +66,12 @@
                                    {:background-color color/color-primary-lightest
                                     :color color/color-neutral-5})
                                  styles)
-                          {:on-click      (fn [event]
-                                            (.stopPropagation event)
-                                            (when on-click-fn (on-click-fn item)))
+                          {:on-click (fn [event]
+                                       (.stopPropagation event)
+                                       (when on-click-fn (on-click-fn item)))
                            :on-mouse-over (when on-hover-fn #(on-hover-fn item))
-                           :key           (:label item)
-                           :class         (str "dropdown-item" (when hover? " hover") (when is-selected? " selected"))}) (:label item)])
+                           :key (:label item)
+                           :class (str "dropdown-item" (when hover? " hover") (when is-selected? " selected"))}) (:label item)])
 
 (defn- scroll-content-to [content child val]
   (-> (.item (.querySelectorAll @ds/root-element content) 0)
@@ -155,9 +155,9 @@
                 (swap! state assoc :is-focused true)
                 (when on-focus-fn (on-focus-fn @value-text)))
         input-padding-right (as-> 0 padding
-                                 (+ padding (when icon 2))
-                                 (+ padding (when clearable? 2))
-                                 (when (> padding 0) {:padding-right (str padding "rem")}))]
+                                  (+ padding (when icon 2))
+                                  (+ padding (when clearable? 2))
+                                  (when (> padding 0) {:padding-right (str padding "rem")}))]
     (fn [{:keys [icon error-messages content clearable?]}]
       [:div.vds-input-field (stylefy/use-style (merge {:position "relative"} styles))
        [:label (stylefy/use-style style/element)
@@ -267,52 +267,52 @@
                                 (when-not (click-in-dropdown? target @dropdown-id)
                                   (swap! state assoc :is-focused false)))]
     (r/create-class
-      {:display-name        (str "dropdown-menu-" @dropdown-id)
+      {:display-name (str "dropdown-menu-" @dropdown-id)
        :component-did-mount (fn [this]
                               (add-event-listener (dommy/sel1 (r/dom-node this) :input) :is-focused #(swap! state assoc :is-focused true)))
-       :reagent-render      (fn [{:keys [items preselected-item error-messages]}]
-                              (let [items (if empty-allowed?
-                                            (into [{:items [{:label (if placeholder placeholder "")
-                                                             :type  :placeholder}]}] items)
-                                            items)]
-                                (reset! items-atom items) ; Dereferencing this atom inside this render function might cause rendering to loop indefinitely.
+       :reagent-render (fn [{:keys [items preselected-item error-messages]}]
+                         (let [items (if empty-allowed?
+                                       (into [{:items [{:label (if placeholder placeholder "")
+                                                        :type :placeholder}]}] items)
+                                       items)]
+                           (reset! items-atom items) ; Dereferencing this atom inside this render function might cause rendering to loop indefinitely.
 
-                                (if (:is-focused @state)
-                                  (add-event-listener :click global-click-handler)
-                                  (do (swap! state assoc :input-text "")
-                                      (remove-event-listener :click global-click-handler)))
-                                [:div (stylefy/use-style (merge {:position "relative"} styles)
-                                                         {:id @dropdown-id})
-                                 [:div
-                                  (when label [:span (label-styles error-messages @state placeholder label) label])
-                                  [:div (stylefy/use-style (merge style/dropdown-multiple-input-background (when (:is-focused @state)
-                                                                                                             {:border-bottom (str "1px solid " color/color-primary)})))
-                                   [:input (stylefy/use-style style/dropdown-multiple-input {:type        "text"
-                                                                                             :on-click    (when-not disabled
-                                                                                                            #(swap! state assoc :is-focused true))
-                                                                                             :on-change   (when-not disabled
-                                                                                                            #(do
-                                                                                                               (.stopPropagation %)
-                                                                                                               (-> % .-target .-value input-value-changed-fn)))
-                                                                                             :on-key-down (when-not disabled
-                                                                                                            #(-> % .-key key-press-handler-fn))
-                                                                                             :value       (if (:is-focused @state) (:input-text @state) (:label preselected-item))
-                                                                                             :placeholder (if preselected-item (:label preselected-item) placeholder)
-                                                                                             :disabled    (:disabled @state)})]
-                                   [icons/clickable {:name        (if icon icon (if (:is-focused @state) "arrow_drop_up" "arrow_drop_down"))
-                                                     :styles      style/dropdown-multiple-icon
-                                                     :on-click-fn #(swap! state update :is-focused not)
-                                                     :disabled    (:disabled @state)
-                                                     :tabindex    "-1"}]]
+                           (if (:is-focused @state)
+                             (add-event-listener :click global-click-handler)
+                             (do (swap! state assoc :input-text "")
+                                 (remove-event-listener :click global-click-handler)))
+                           [:div (stylefy/use-style (merge {:position "relative"} styles)
+                                                    {:id @dropdown-id})
+                            [:div
+                             (when label [:span (label-styles error-messages @state placeholder label) label])
+                             [:div (stylefy/use-style (merge style/dropdown-multiple-input-background (when (:is-focused @state)
+                                                                                                        {:border-bottom (str "1px solid " color/color-primary)})))
+                              [:input (stylefy/use-style style/dropdown-multiple-input {:type "text"
+                                                                                        :on-click (when-not disabled
+                                                                                                    #(swap! state assoc :is-focused true))
+                                                                                        :on-change (when-not disabled
+                                                                                                     #(do
+                                                                                                        (.stopPropagation %)
+                                                                                                        (-> % .-target .-value input-value-changed-fn)))
+                                                                                        :on-key-down (when-not disabled
+                                                                                                       #(-> % .-key key-press-handler-fn))
+                                                                                        :value (if (:is-focused @state) (:input-text @state) (:label preselected-item))
+                                                                                        :placeholder (if preselected-item (:label preselected-item) placeholder)
+                                                                                        :disabled (:disabled @state)})]
+                              [icons/clickable {:name (if icon icon (if (:is-focused @state) "arrow_drop_up" "arrow_drop_down"))
+                                                :styles style/dropdown-multiple-icon
+                                                :on-click-fn #(swap! state update :is-focused not)
+                                                :disabled (:disabled @state)
+                                                :tabindex "-1"}]]
 
-                                  (when (:is-focused @state)
-                                    [dropdown-menu-list {:items            (filter-dropdown-items items (:input-text @state))
-                                                         :preselected-item preselected-item
-                                                         :hovered-item     (:selected @state)
-                                                         :hover-fn         #(swap! state assoc :selected %)
-                                                         :on-click-fn      list-item-select-fn
-                                                         :dropdown-id      @dropdown-id}])
-                                  [display-errors error-messages]]]))})))
+                             (when (:is-focused @state)
+                               [dropdown-menu-list {:items (filter-dropdown-items items (:input-text @state))
+                                                    :preselected-item preselected-item
+                                                    :hovered-item (:selected @state)
+                                                    :hover-fn #(swap! state assoc :selected %)
+                                                    :on-click-fn list-item-select-fn
+                                                    :dropdown-id @dropdown-id}])
+                             [display-errors error-messages]]]))})))
 
 (defn dropdown-menu-simple [{:keys [label selected-fn options default-value no-selection-text styles]}]
   [:div (stylefy/use-style styles)
@@ -583,29 +583,27 @@
                                (set! (-> % .-target .-value) nil))
                  :style {:display "none"}}]]])))
 
-(defn breadcrumb [{:keys [current-page
-                          click-fn]} & content]
-  (let [pages (r/atom [])
-        get-pages (fn [map]
-                    (loop [page map]
-                      (when (:label page)
-                        (swap! pages conj page)
-                        (recur (:child page)))))]
-    (get-pages current-page)
-    (fn []
-      [:div {:style {:display "flex"
-                     :overflow "hidden"
-                     :align-items "center"}}
-       (for [page (butlast @pages)]
-         ^{:key page} [:span {:style {:overflow "hidden"
-                                      :display "flex"
-                                      :align-items "center"}}
-                       [:a {:href "#"
-                            :on-click #(do
-                                         (.preventDefault %)
-                                         (.stopPropagation %)
-                                         (when click-fn (click-fn page)))
-                            :style style/breadcrumb} (:label page)]
-                       [:h2 {:style style/breadcrumb-breaker} "/"]])
-       [:h2 (stylefy/use-style style/breadcrumb-current-page) (:label (last @pages))]
-       (map-indexed #(with-meta %2 {:key %1}) content)])))
+(defn breadcrumb [pages & content]
+  (let [on-click (fn [page]
+                   #(do (.preventDefault %)
+                        (.stopPropagation %)
+                        (when (:on-click-fn page)
+                          ((:on-click-fn page) %))))
+        link (fn [page]
+               [:a {:href "#"
+                    :on-click (on-click page)
+                    :style style/breadcrumb} (:label page)])
+        breaker (fn []
+                  [:h2 {:style style/breadcrumb-breaker} "/"])
+        page-element (fn [page]
+                       ^{:key page} [:span {:style {:overflow "hidden"
+                                                    :display "flex"
+                                                    :align-items "center"}}
+                                     (link page)
+                                     (breaker)])]
+    (cond-> (into [:div {:style {:display "flex"
+                                 :overflow "hidden"
+                                 :align-items "center"}}]
+                  (mapv page-element (butlast pages)))
+            true (conj [:h2 (stylefy/use-style style/breadcrumb-current-page) (:label (last pages))])
+            (not (empty? content)) (conj (map-indexed #(with-meta %2 {:key %1}) content)))))

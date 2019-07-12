@@ -334,10 +334,10 @@
   {:margin 0
    :display "inline-block"
    :padding (str "0 " spacing/space-x-small-rem)
-   :line-height spacing/space-base-rem})
+   :line-height line-height/line-height-heading})
 
 (def breadcrumb-current-page
   (merge ellipsis {:margin        0
                    :display       "inline"
                    :padding-right "0"
-                   :line-height   spacing/space-base-rem}))
+                   :line-height   line-height/line-height-heading}))
