@@ -884,11 +884,11 @@
                       :desc    "function"
                       :example "{:on-drop-fn (fn [e] (println e))}"}]]
        [:h3.rds-header3 "Breadcrumb"]
-       ($-> [fields/breadcrumb {:current-page {:label "X-Files"
-                                               :child {:label "Animals"
-                                                       :child {:label "Flying squirrel investigation"
-                                                               :child nil}}}
-                                :click-fn     (fn [e] (println e))}])
+       ($-> [fields/breadcrumb [{:current-page {:label "X-Files"}
+                                 :click-fn (fn [e] (println e))}
+                                {:label "Animals"
+                                 :click-fn (fn [e] (println e))}
+                                {:label "Flying squirrel investigation"}]])
        [props-table [{:name    "current-page"
                       :desc    "map"
                       :example "{:current-page {:label \"X-Files\",  :child {:label \"Animals\", :child {:label \"Flying squirrel investigation\", :child nil}}}"}
