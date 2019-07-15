@@ -47,6 +47,18 @@
                                   :border-color color/state-error}
                           :valid {:border-color color/state-error}}}))
 
+(def input-field-warning
+  (merge input-field
+         {::stylefy/mode {:focus {:border-bottom (str border/border-large " solid")
+                                  :border-color color/state-warning}
+                          :valid {:border-color color/state-warning}}}))
+
+(def input-field-success
+  (merge input-field
+         {::stylefy/mode {:focus {:border-bottom (str border/border-large " solid")
+                                  :border-color color/state-success}
+                          :valid {:border-color color/state-success}}}))
+
 (def text-field
   (merge input-field
          {:height (measures/rem-times spacing/space-small-rem 2)
@@ -73,10 +85,25 @@
 (def input-field-label-error
   (merge input-field-label {:color color/state-error}))
 
+(def input-field-label-warning
+  (merge input-field-label {:color color/state-warning}))
+
+(def input-field-label-success
+  (merge input-field-label {:color color/state-success}))
+
 (def validation-errors
   {:font-size font-size/font-size-small
    :color color/state-error
    ::stylefy/sub-styles {:p {:color color/state-error
+                             :line-height font-size/font-size-small
+                             :font-size font-size/font-size-small
+                             :padding "1px 0"
+                             :margin 0}}})
+
+(def validation-warnings
+  {:font-size font-size/font-size-small
+   :color color/state-error
+   ::stylefy/sub-styles {:p {:color color/state-warning
                              :line-height font-size/font-size-small
                              :font-size font-size/font-size-small
                              :padding "1px 0"

@@ -1,4 +1,4 @@
-(defproject velho-ds "0.0.0.75"
+(defproject velho-ds "0.0.0.76-input-field-states"
   :description "Velho Allianssi Design System"
   :url "https://github.com/velho-allianssi/velho-ds"
   :license {:name "Eclipse Public License"
@@ -16,7 +16,7 @@
 
                  ;; Front end
                  [org.clojure/clojurescript "1.10.520"]
-                 [reagent "0.7.0" :exclusions [cljsjs/react cljsjs/react-dom]]
+                 [reagent "0.8.1" :exclusions [cljsjs/react cljsjs/react-dom]]
                  [cljsjs/react-with-addons "15.6.1-0"]
                  [cljsjs/react-dom "15.6.1-0" :exclusions [cljsjs/react]]
                  [stylefy "1.12.0" :exclusions [args4j]]
