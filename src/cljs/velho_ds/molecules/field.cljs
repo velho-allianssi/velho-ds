@@ -143,12 +143,10 @@
   (let [value-text (r/atom content)
         state (r/atom {:is-focused false
                        :has-value (not (nil? @value-text))})
-        set-internal-value-text (fn [value]
-                                  (reset! value-text value)
-                                  (swap! state assoc :has-value (not (or (= value "") (nil? value)))))
         change (fn [value]
                  (let [value (if transform-fn (transform-fn value) value)]
-                   (set-internal-value-text value)
+                   (reset! value-text value)
+                   (swap! state assoc :has-value (not (or (= value "") (nil? value))))
                    (when on-change-fn (on-change-fn @value-text))))
         blur (fn []
                (swap! state assoc :is-focused false)
@@ -161,7 +159,6 @@
                                   (+ padding (when clearable? 2))
                                   (when (> padding 0) {:padding-right (str padding "rem")}))]
     (fn [{:keys [icon error-messages content clearable?]}]
-      (set-internal-value-text content)
       [:div.vds-input-field (stylefy/use-style (merge {:position "relative"} styles))
        [:label (stylefy/use-style style/element)
         (when label [:span (label-styles error-messages @state placeholder label) label])
