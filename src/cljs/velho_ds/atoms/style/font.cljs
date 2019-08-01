@@ -51,7 +51,7 @@
 
 (def th
   {:font-family font/font-family-heading
-   :font-size font-size/font-size-large
+   :font-size font-size/font-size-base
    :font-weight font/font-weight-semi-bold
    :line-height line-height/line-height-base})
 
