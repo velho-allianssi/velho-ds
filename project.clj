@@ -15,7 +15,7 @@
                  [zprint "0.4.15"]
 
                  ;; Front end
-                 [org.clojure/clojurescript "1.10.520"]
+                 [org.clojure/clojurescript "1.10.63"]
                  [reagent "0.7.0" :exclusions [cljsjs/react cljsjs/react-dom]]
                  [cljsjs/react-with-addons "15.6.1-0"]
                  [cljsjs/react-dom "15.6.1-0" :exclusions [cljsjs/react]]
