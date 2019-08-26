@@ -45,8 +45,8 @@
          {:animation-name "bar-calculating"}))
 
 (def pulse-animated
-  {:width spacing/space-base
-   :height spacing/space-base
+  {:width spacing/space-base-rem
+   :height spacing/space-base-rem
    :box-sizing "border-box"
    :border (str border/border-large " solid " color/color-neutral-3)
    :border-radius border-radius/border-radius-circle

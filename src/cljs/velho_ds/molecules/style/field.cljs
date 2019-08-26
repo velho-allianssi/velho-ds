@@ -199,8 +199,8 @@
   {:margin "auto"
    :border (str border/border-default " solid " color/color-neutral-4)
    :padding-top "6px"
-   :padding-right spacing/space-large
-   :padding-bottom (str "calc(" spacing/space-base " / 4)")
+   :padding-right spacing/space-large-rem
+   :padding-bottom (str "calc(" spacing/space-base-rem " / 4)")
    :padding-left spacing/space-small
    :color color/color-white
    :position "relative"
