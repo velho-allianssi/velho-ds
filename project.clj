@@ -19,7 +19,7 @@
                  [reagent "0.7.0" :exclusions [cljsjs/react cljsjs/react-dom]]
                  [cljsjs/react-with-addons "15.6.1-0"]
                  [cljsjs/react-dom "15.6.1-0" :exclusions [cljsjs/react]]
-                 [stylefy "1.12.0" :exclusions [args4j]]
+                 [stylefy "1.14.0" :exclusions [args4j]]
                  [bidi "2.1.5"]
                  [venantius/accountant "0.2.4"]
                  [reagent-utils "0.3.2"]
