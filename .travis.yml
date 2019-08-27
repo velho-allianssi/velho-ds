@@ -4,7 +4,7 @@ cache:
   - "$HOME/.m2"
 language: clojure
 jdk:
-- oraclejdk11
+- oraclejdk8
 
 jobs:
   include:
