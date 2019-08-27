@@ -23,7 +23,7 @@
    :background-size "200% auto"
    :display "inline-table"
    :line-height font-size/font-size-xx-large
-   :height spacing/space-x-large
+   :height spacing/space-x-large-rem
    :transition (str "all " timing/duration-slow " ease-in-out")
    ::stylefy/mode {:hover {:background-position "left bottom"
                            :background-size "200% auto"}
