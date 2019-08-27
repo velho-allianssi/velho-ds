@@ -1,4 +1,4 @@
-(defproject velho-ds "0.0.0.77"
+(defproject velho-ds "0.0.0.78"
   :description "Velho Allianssi Design System"
   :url "https://github.com/velho-allianssi/velho-ds"
   :license {:name "Eclipse Public License"
@@ -12,28 +12,31 @@
                  ;; Yaml
                  [io.forward/yaml "1.0.9"]
 
-                 [zprint "0.4.15"]
+                 [zprint "0.4.16"]
 
                  ;; Front end
-                 [org.clojure/clojurescript "1.10.520"]
+                 [org.clojure/clojurescript "1.10.63"]
                  [reagent "0.7.0" :exclusions [cljsjs/react cljsjs/react-dom]]
                  [cljsjs/react-with-addons "15.6.1-0"]
                  [cljsjs/react-dom "15.6.1-0" :exclusions [cljsjs/react]]
-                 [stylefy "1.12.0" :exclusions [args4j]]
+                 [stylefy "1.14.0" :exclusions [args4j]]
                  [bidi "2.1.5"]
                  [venantius/accountant "0.2.4"]
                  [reagent-utils "0.3.2"]
                  [prismatic/dommy "1.1.0"]]
 
+  :managed-dependencies [[org.clojure/core.rrb-vector "0.0.13"]
+                         [org.flatland/ordered "1.5.7"]]
+
   :plugins [[lein-cljsbuild "1.1.7" :exclusions [[org.clojure/clojure]]]
-            [lein-figwheel "0.5.18" :exclusion [org.clojure/tools.nrepl args4j]]]
+            [lein-figwheel "0.5.19" :exclusion [org.clojure/tools.nrepl args4j]]]
 
   :source-paths ["src/clj" "src/cljc" "src/cljs"]
   :test-paths ["test/clj" "test/cljs"]
 
   :main ^:skip-aot velho-ds.main
 
-  :min-lein-version "2.5.0"
+  :min-lein-version "2.8.0"
   :clean-targets ^{:protect false} [:target-path
                                     "public/js/out"
                                     "public/js/app.js"
@@ -88,10 +91,10 @@
 
   :profiles {:dev {:source-paths ["env/dev/clj"]
                    :dependencies [[binaryage/devtools "0.9.10"]
-                                  [figwheel-sidecar "0.5.18" :exclusions [org.clojure/tools.nrepl org.clojure/core.async args4j]]
-                                  [cider/piggieback "0.4.0"]
+                                  [figwheel-sidecar "0.5.19" :exclusions [org.clojure/tools.nrepl org.clojure/core.async args4j]]
+                                  [cider/piggieback "0.4.1"]
                                   [cljs-react-test "0.1.4-SNAPSHOT"]
-                                  [clj-chrome-devtools "20190329" :exclusions [org.clojure/core.async]]]
+                                  [clj-chrome-devtools "20190601" :exclusions [org.clojure/core.async]]]
                    :repl-options {:init-ns user
                                   :init (user/start)
                                   :nrepl-middleware [cider.piggieback/wrap-cljs-repl]}}
