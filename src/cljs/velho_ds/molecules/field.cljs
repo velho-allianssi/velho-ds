@@ -140,20 +140,18 @@
                                    transform-fn
                                    styles]}
                            input-type]
-  (let [value-text (r/atom content)
-        state (r/atom {:is-focused false
-                       :has-value (not (nil? @value-text))})
+  (let [state (r/atom {:is-focused false
+                       :has-value (not (nil? @content))})
         change (fn [value]
                  (let [value (if transform-fn (transform-fn value) value)]
-                   (reset! value-text value)
                    (swap! state assoc :has-value (not (or (= value "") (nil? value))))
-                   (when on-change-fn (on-change-fn @value-text))))
+                   (when on-change-fn (on-change-fn value))))
         blur (fn []
                (swap! state assoc :is-focused false)
-               (when on-blur-fn (on-blur-fn @value-text)))
+               (when on-blur-fn (on-blur-fn @content)))
         focus (fn []
                 (swap! state assoc :is-focused true)
-                (when on-focus-fn (on-focus-fn @value-text)))
+                (when on-focus-fn (on-focus-fn @content)))
         input-padding-right (as-> 0 padding
                                   (+ padding (when icon 2))
                                   (+ padding (when clearable? 2))
@@ -170,12 +168,12 @@
                                        {:on-change #(-> % .-target .-value change)
                                         :on-blur blur
                                         :on-focus focus
-                                        :value @value-text
+                                        :value @content
                                         :placeholder placeholder})]]
        [:div (stylefy/use-style (style/input-icon label))
-        (when (and clearable? (not-empty @value-text)) [icons/clickable {:on-click-fn #(change nil)
-                                                                         :name "clear"}])
-        (when icon [icons/clickable (merge (when icon-click-fn {:on-click-fn #(icon-click-fn @value-text)})
+        (when (and clearable? (not-empty @content)) [icons/clickable {:on-click-fn #(change nil)
+                                                                      :name "clear"}])
+        (when icon [icons/clickable (merge (when icon-click-fn {:on-click-fn #(icon-click-fn @content)})
                                            {:name icon})])]
        [display-errors error-messages]])))
 
@@ -446,7 +444,7 @@
                                          (stylefy/use-style style/drag-n-drop-item-description-area-hidden))]
              (for [meta-key (keys metadata)]
                ^{:key meta-key} [input-field {:label (string/capitalize (name meta-key))
-                                              :content (get metadata meta-key)
+                                              :content (r/atom (get metadata meta-key))
                                               :on-change-fn (partial update-data meta-key)}]))])))
 
 (defn- add-to-files [filemap item]

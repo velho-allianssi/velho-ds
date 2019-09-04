@@ -124,11 +124,14 @@
   (r/unmount-component-at-node @container))
 
 (deftest list-element-with-sub-content
-  (let [params {:label "Label"
+  (let [subcontent-content (r/atom "")
+        params {:label "Label"
                 :desc "Description"
                 :info "Information"
                 :buttons [[icon/clickable {:name "clear"}]]
-                :sub-content [[field/input-field {:label "Input"}]]}]
+                :sub-content [[field/input-field {:label "Input"
+                                                  :content subcontent-content
+                                                  :on-change-fn #(reset! subcontent-content %)}]]}]
     (r/render [field/list-element params] @container)
 
     (testing "Sub-content is set for the component"
