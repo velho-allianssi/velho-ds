@@ -536,11 +536,16 @@
    [:h2.rds-header2 "Work in progress input fields"]
 
    [:div "Default"]
-   [fields/input-field]
+   (let [content (r/atom "")]
+     [fields/input-field {:content content
+                          :on-change-fn #(reset! content %)}])
    [input/input]
 
    [:div "With label"]
-   [fields/input-field {:label "Label"}]
+   (let [content (r/atom "")]
+     [fields/input-field {:label "Label"
+                          :content content
+                          :on-change-fn #(reset! content %)}])
    (let [content (r/atom "")]
      [(fn []
         [input/label-wrap
@@ -551,23 +556,32 @@
       content])
 
    [:div "With icon"]
-   [fields/input-field {:icon          "search"
-                        :icon-click-fn println}]
+   (let [content (r/atom "")]
+     [fields/input-field {:icon          "search"
+                          :icon-click-fn println
+                          :content content
+                          :on-change-fn #(reset! content %)}])
    [input/wrap-input-with-icons
     [input/input]
     [input/icon {:on-click println} "search"]]
 
    [:div "With label and placeholder"]
-   [fields/input-field {:label       "Label"
-                        :placeholder "Placeholder"}]
+   (let [content (r/atom "")]
+     [fields/input-field {:label       "Label"
+                          :placeholder "Placeholder"
+                          :content content
+                          :on-change-fn #(reset! content %)}])
    [input/label-wrap
     [input/label "Label"]
     [input/input {:placeholder "Placeholder"}]]
 
    [:div "With label, placeholder and icon"]
-   [fields/input-field {:label       "Label"
-                        :placeholder "Placeholder"
-                        :icon        "search"}]
+   (let [content (r/atom "")]
+     [fields/input-field {:label       "Label"
+                          :placeholder "Placeholder"
+                          :icon        "search"
+                          :content content
+                          :on-change-fn #(reset! content %)}])
    [input/label-wrap
     [input/label "Label"]
     [input/wrap-input-with-icons
@@ -575,10 +589,12 @@
      [input/icon {:on-click println} "search"]]]
 
    [:div "With label, placeholder, icon and content"]
-   [fields/input-field {:label       "Label"
-                        :placeholder "Placeholder"
-                        :icon        "search"
-                        :content     "Content"}]
+   (let [content (r/atom "Content")]
+     [fields/input-field {:label       "Label"
+                          :placeholder "Placeholder"
+                          :icon        "search"
+                          :content     content
+                          :on-change-fn #(reset! content %)}])
    [input/label-wrap
     [input/label "Label"]
     [input/wrap-input-with-icons
@@ -587,14 +603,19 @@
      [input/icon {:on-click println} "search"]]]
 
    [:div "Invalid value"]
-   [fields/input-field {:label          "Label"
-                        :placeholder    "Placeholder"
-                        :icon           "search"
-                        :content        "Invalid value"
-                        :error-messages ["Value has to be valid!"]}]
+   (let [content (r/atom "")]
+     [fields/input-field {:label          "Label"
+                          :placeholder    "Placeholder"
+                          :icon           "search"
+                          :content        content
+                          :on-change-fn #(reset! content %)
+                          :error-messages ["Value has to be valid!"]}])
 
    [:div "Clearable"]
-   [fields/input-field {:clearable? true}]
+   (let [content (r/atom "")]
+     [fields/input-field {:clearable? true
+                          :content content
+                          :on-change-fn #(reset! content %)}])
    (let [content (r/atom "Default content")]
      [(fn []
         [input/wrap-input-with-icons
@@ -607,9 +628,12 @@
       content])
 
    [:div "Clearable with icon"]
-   [fields/input-field {:clearable?    true
-                        :icon          "search"
-                        :icon-click-fn println}]
+   (let [content (r/atom "")]
+     [fields/input-field {:clearable?    true
+                          :icon          "search"
+                          :icon-click-fn println
+                          :content content
+                          :on-change-fn #(reset! content %)}])
    (let [content (r/atom "")]
      [(fn []
         [input/wrap-input-with-icons
@@ -683,8 +707,14 @@
        ($-> [fields/list-element {:label       "Label"
                                   :desc        "Description"
                                   :info        "Additional information"
-                                  :sub-content [[fields/input-field {:label "Label"}]
-                                                [fields/input-field {:label "Description"}]]
+                                  :sub-content (let [label (r/atom "")
+                                                     desc (r/atom "")]
+                                                 [[fields/input-field {:label "Label"
+                                                                       :content label
+                                                                       :on-change-fn #(reset! label %)}]
+                                                  [fields/input-field {:label "Description"
+                                                                       :content desc
+                                                                       :on-change-fn #(reset! desc %)}]])
                                   :buttons     [[icons/clickable {:name "clear"}]]}])
        [props-table [{:name    "label"
                       :desc    "string"
@@ -711,48 +741,76 @@
                                   {:label    "Example"
                                    :key-path [:example]}]
                         :content [{:name    "Default"
-                                   :example [fields/input-field]}
+                                   :example (let [content (r/atom "")]
+                                              [fields/input-field {:content content
+                                                                   :on-change-fn #(reset! content %)}])}
                                   {:name    "With label"
-                                   :example [fields/input-field {:label "Label"}]}
+                                   :example (let [content (r/atom "")]
+                                              [fields/input-field {:label "Label"
+                                                                   :content content
+                                                                   :on-change-fn #(reset! content %)}])}
                                   {:name    "With icon"
-                                   :example [fields/input-field {:icon          "search"
-                                                                 :icon-click-fn println}]}
+                                   :example (let [content (r/atom "")]
+                                              [fields/input-field {:icon          "search"
+                                                                   :icon-click-fn println
+                                                                   :content content
+                                                                   :on-change-fn #(reset! content %)}])}
                                   {:name    "With label and placeholder"
-                                   :example [fields/input-field {:label       "Label"
-                                                                 :placeholder "Placeholder"}]}
+                                   :example (let [content (r/atom "")]
+                                              [fields/input-field {:label       "Label"
+                                                                   :placeholder "Placeholder"
+                                                                   :content content
+                                                                   :on-change-fn #(reset! content %)}])}
                                   {:name    "With label, placeholder and icon"
-                                   :example [fields/input-field {:label       "Label"
-                                                                 :placeholder "Placeholder"
-                                                                 :icon        "search"}]}
+                                   :example (let [content (r/atom "")]
+                                              [fields/input-field {:label       "Label"
+                                                                   :placeholder "Placeholder"
+                                                                   :icon        "search"
+                                                                   :content content
+                                                                   :on-change-fn #(reset! content %)}])}
                                   {:name    "With label, placeholder, icon and content"
-                                   :example [fields/input-field {:label       "Label"
-                                                                 :placeholder "Placeholder"
-                                                                 :icon        "search"
-                                                                 :content     "Content"}]}
+                                   :example (let [content (r/atom "Content")]
+                                              [fields/input-field {:label       "Label"
+                                                                   :placeholder "Placeholder"
+                                                                   :icon        "search"
+                                                                   :content     content
+                                                                   :on-change-fn #(reset! content %)}])}
                                   {:name    "Invalid value"
-                                   :example [fields/input-field {:label          "Label"
-                                                                 :placeholder    "Placeholder"
-                                                                 :icon           "search"
-                                                                 :content        "Invalid value"
-                                                                 :error-messages ["Value has to be valid!"]}]}
+                                   :example (let [content (r/atom "Invalid value")]
+                                              [fields/input-field {:label          "Label"
+                                                                   :placeholder    "Placeholder"
+                                                                   :icon           "search"
+                                                                   :content content
+                                                                   :on-change-fn #(reset! content %)
+                                                                   :error-messages ["Value has to be valid!"]}])}
                                   {:name    "Clearable"
-                                   :example [fields/input-field {:clearable? true}]}
+                                   :example (let [content (r/atom "")]
+                                              [fields/input-field {:clearable? true
+                                                                   :content content
+                                                                   :on-change-fn #(reset! content %)}])}
                                   {:name    "Clearable with icon"
-                                   :example [fields/input-field {:clearable?    true
-                                                                 :icon          "search"
-                                                                 :icon-click-fn println}]}]}]
-       ($-> [fields/input-field {:label         "Input with label and icon"
-                                 :placeholder   "Placeholder"
-                                 :icon          "search"
-                                 :on-change-fn  (fn [e] (println e))
-                                 :on-blur-fn    (fn [e] (println e))
-                                 :icon-click-fn (fn [] (println (str "Icon Clicked")))}])
+                                   :example (let [content (r/atom "")]
+                                              [fields/input-field {:clearable?    true
+                                                                   :icon          "search"
+                                                                   :icon-click-fn println
+                                                                   :content content
+                                                                   :on-change-fn #(reset! content %)}])}]}]
+       (let [content (r/atom "")]
+         ($-> [fields/input-field {:label         "Input with label and icon"
+                                   :placeholder   "Placeholder"
+                                   :icon          "search"
+                                   :content content
+                                   :on-change-fn  (fn [e]
+                                                    (println e)
+                                                    (reset! content e))
+                                   :on-blur-fn    (fn [e] (println e))
+                                   :icon-click-fn (fn [] (println (str "Icon Clicked")))}]))
        [props-table [{:name    "label"
                       :desc    "string"
                       :example "{:label \"Label\"}"}
                      {:name    "content"
-                      :desc    "string"
-                      :example "{:content \"Content\"}"}
+                      :desc    "ref"
+                      :example "{:content content}"}
                      {:name    "placeholder"
                       :desc    "string"
                       :example "{:placeholder \"Placeholder\"}"}
@@ -764,22 +822,26 @@
                       :example "{:icon-click-fn (fn [] (println (str \"Icon Clicked\")))}"}
                      {:name    "on-change-fn"
                       :desc    "function"
-                      :example "{:on-blur-fn (fn [e] (println e))}"}
+                      :example "{:on-blur-fn (fn [e] (println e) (reset! content e))}"}
                      {:name    "on-blur-fn"
                       :desc    "function"
                       :example "{:on-blur-fn (fn [e] (println e))}"}]]
 
        [:h3.rds-header3 "Multiline-field"]
-       ($-> [fields/multiline-field {:label         "Multiline-field"
-                                     :on-change-fn  (fn [e] (println e))
-                                     :on-blur-fn    (fn [e] (println e))
-                                     :icon-click-fn (fn [] (println (str "Icon Clicked")))}])
+       (let [content (r/atom "")]
+         ($-> [fields/multiline-field {:label         "Multiline-field"
+                                       :content content
+                                       :on-change-fn  (fn [e]
+                                                        (println e)
+                                                        (reset! content e))
+                                       :on-blur-fn    (fn [e] (println e))
+                                       :icon-click-fn (fn [] (println (str "Icon Clicked")))}]))
        [props-table [{:name    "label"
                       :desc    "string"
                       :example "{:label \"Label\"}"}
                      {:name    "content"
-                      :desc    "string"
-                      :example "{:content \"Content\"}"}
+                      :desc    "ref"
+                      :example "{:content content}"}
                      {:name    "placeholder"
                       :desc    "string"
                       :example "{:placeholder \"Placeholder\"}"}
@@ -791,7 +853,7 @@
                       :example "{:icon-click-fn (fn [] (println (str \"Icon Clicked\")))}"}
                      {:name    "on-change-fn"
                       :desc    "function"
-                      :example "{:on-blur-fn (fn [e] (println e))}"}
+                      :example "{:on-blur-fn (fn [e] (println e) (reset! content e))}"}
                      {:name    "on-blur-fn"
                       :desc    "function"
                       :example "{:on-blur-fn (fn [e] (println e))}"}]]
@@ -1118,15 +1180,19 @@
                                      :font-weight font/font-weight-semi-bold}) "Invalid value"]
           [:small "Please provide missing information"]]
          [:i.material-icons (stylefy/use-style {:cursor "pointer"}) "close"]]
-        [modals/content
-         [fields/input-field {:label       "Foo"
-                              :placeholder "Placeholder"
-                              :content     "Some text"
-                              :styles      {:padding-bottom "1rem"}}]
-         [fields/input-field {:label          "Bar"
-                              :placeholder    "Placeholder"
-                              :content        "Invalid text"
-                              :error-messages ["Value has to be valid!"]}]]
+        (let [c1 (r/atom "Some text")
+              c2 (r/atom "Invalid text")]
+          [modals/content
+           [fields/input-field {:label       "Foo"
+                                :placeholder "Placeholder"
+                                :content     c1
+                                :on-change-fn #(reset! c1 %)
+                                :styles      {:padding-bottom "1rem"}}]
+           [fields/input-field {:label          "Bar"
+                                :placeholder    "Placeholder"
+                                :content     c2
+                                :on-change-fn #(reset! c2 %)
+                                :error-messages ["Value has to be valid!"]}]])
         [modals/footer
          [buttons/default-small {:content "Cancel"
                                  :styles  {:margin-right "0.5rem"}}]
