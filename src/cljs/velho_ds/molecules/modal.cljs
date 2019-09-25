@@ -10,7 +10,7 @@
                 :on-drag-over #(do (reset! drag true) (.preventDefault %))}
         fade style/fade
         solid (merge fade {:background "hsla(0, 0%, 20%, 1)"})]
-    (fn []
+    (fn [& content]
       [:div (stylefy/use-style (if @drag solid fade) events)
        [:div (stylefy/use-style style/wrapper)
         [:div (stylefy/use-style style/bg)
