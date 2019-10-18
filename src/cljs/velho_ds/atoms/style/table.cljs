@@ -22,7 +22,7 @@
 (def tbody-default
   {:margin "0"
    :padding "0"
-   ::stylefy/sub-styles {:td {:padding "0.875rem 1rem"
+   ::stylefy/sub-styles {:td {:padding "0.75rem 1rem"
                               :border (str "1px solid " color/color-neutral-2)}}})
 
 (def tfoot-default
