@@ -142,16 +142,10 @@
                            input-type]
   (let [state (r/atom {:is-focused false
                        :has-value (not (nil? @content))})
-        change (fn [target]
-                 (let [value (-> (.-value target)
-                                 (#(if transform-fn (transform-fn %) %)))
-                       cursor-start (.-selectionStart target)
-                       cursor-end (.-selectionEnd target)]
+        change (fn [value]
+                 (let [value (if transform-fn (transform-fn value) value)]
                    (swap! state assoc :has-value (not (or (= value "") (nil? value))))
-                   (when on-change-fn (on-change-fn value))
-
-                   ;; Move cursor back to it's original position after changing data
-                   (.setSelectionRange target cursor-start cursor-end)))
+                   (when on-change-fn (on-change-fn value))))
         blur (fn []
                (swap! state assoc :is-focused false)
                (when on-blur-fn (on-blur-fn @content)))
@@ -171,7 +165,7 @@
                                                 style/input-field)
                                               input-padding-right
                                               (when (not label) {:top 0}))
-                                       {:on-change #(-> % .-target change)
+                                       {:on-change #(-> % .-target .-value change)
                                         :on-blur blur
                                         :on-focus focus
                                         :value @content
