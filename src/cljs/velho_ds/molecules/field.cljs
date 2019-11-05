@@ -138,6 +138,7 @@
                                    on-blur-fn
                                    on-focus-fn
                                    transform-fn
+                                   disabled
                                    styles]}
                            input-type]
   (let [state (r/atom {:is-focused false
@@ -164,12 +165,15 @@
                                                 style/input-field-error
                                                 style/input-field)
                                               input-padding-right
-                                              (when (not label) {:top 0}))
+                                              (when (not label) {:top 0})
+                                              (when disabled {:color color/color-neutral-3
+                                                              :border-color color/color-neutral-3}))
                                        {:on-change #(-> % .-target .-value change)
                                         :on-blur blur
                                         :on-focus focus
                                         :value @content
-                                        :placeholder placeholder})]]
+                                        :placeholder placeholder
+                                        :disabled disabled})]]
        [:div (stylefy/use-style (style/input-icon label))
         (when (and clearable? (not-empty @content)) [icons/clickable {:on-click-fn #(change nil)
                                                                       :name "clear"}])
