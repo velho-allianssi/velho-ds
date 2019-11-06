@@ -287,20 +287,25 @@
                                                     {:id @dropdown-id})
                             [:div
                              (when label [:span (label-styles error-messages @state placeholder label) label])
-                             [:div (stylefy/use-style (merge style/dropdown-multiple-input-background (when (:is-focused @state)
-                                                                                                        {:border-bottom (str "1px solid " color/color-primary)})))
-                              [:input (stylefy/use-style style/dropdown-multiple-input {:type "text"
-                                                                                        :on-click (when-not disabled
-                                                                                                    #(swap! state assoc :is-focused true))
-                                                                                        :on-change (when-not disabled
-                                                                                                     #(do
-                                                                                                        (.stopPropagation %)
-                                                                                                        (-> % .-target .-value input-value-changed-fn)))
-                                                                                        :on-key-down (when-not disabled
-                                                                                                       #(-> % .-key key-press-handler-fn))
-                                                                                        :value (if (:is-focused @state) (:input-text @state) (:label preselected-item))
-                                                                                        :placeholder (if preselected-item (:label preselected-item) placeholder)
-                                                                                        :disabled (:disabled @state)})]
+                             [:div (stylefy/use-style (merge style/dropdown-multiple-input-background
+                                                             (when (:is-focused @state)
+                                                               {:border-bottom (str "1px solid " color/color-primary)})
+                                                             (when disabled
+                                                               {:border-color color/color-neutral-3})))
+                              [:input (stylefy/use-style (merge style/dropdown-multiple-input
+                                                                (when disabled {:color color/color-neutral-3}))
+                                                         {:type "text"
+                                                          :on-click (when-not disabled
+                                                                      #(swap! state assoc :is-focused true))
+                                                          :on-change (when-not disabled
+                                                                       #(do
+                                                                          (.stopPropagation %)
+                                                                          (-> % .-target .-value input-value-changed-fn)))
+                                                          :on-key-down (when-not disabled
+                                                                         #(-> % .-key key-press-handler-fn))
+                                                          :value (if (:is-focused @state) (:input-text @state) (:label preselected-item))
+                                                          :placeholder (if preselected-item (:label preselected-item) placeholder)
+                                                          :disabled (:disabled @state)})]
                               [icons/clickable {:name (if icon icon (if (:is-focused @state) "arrow_drop_up" "arrow_drop_down"))
                                                 :styles style/dropdown-multiple-icon
                                                 :on-click-fn #(swap! state update :is-focused not)
