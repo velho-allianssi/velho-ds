@@ -26,6 +26,14 @@
   ([element event func]
    (dommy/unlisten! element event func)))
 
+(defn- target [event]
+  (if (-> event (.-composedPath))
+    (first (-> event (.composedPath)))
+    (-> event (.-target))))
+
+(defn- target-value [event]
+  (.-value (target event)))
+
 (defn- search-in-list [collection search-word & key]
   (filter #(string/includes? (if key (string/lower-case (str (get % (first key))))
                                      (string/lower-case %)) (string/lower-case search-word)) collection))
@@ -168,7 +176,7 @@
                                               (when (not label) {:top 0})
                                               (when disabled {:color color/color-neutral-3
                                                               :border-color color/color-neutral-3}))
-                                       {:on-change #(-> % .-target .-value change)
+                                       {:on-change #(-> % (target-value) change)
                                         :on-blur blur
                                         :on-focus focus
                                         :value @content
@@ -300,7 +308,7 @@
                                                           :on-change (when-not disabled
                                                                        #(do
                                                                           (.stopPropagation %)
-                                                                          (-> % .-target .-value input-value-changed-fn)))
+                                                                          (-> % (target-value) input-value-changed-fn)))
                                                           :on-key-down (when-not disabled
                                                                          #(-> % .-key key-press-handler-fn))
                                                           :value (if (:is-focused @state) (:input-text @state) (:label preselected-item))
@@ -328,7 +336,7 @@
     (into [:select (stylefy/use-style style/dropdown {:defaultValue (if default-value
                                                                       (:id default-value)
                                                                       "value")
-                                                      :on-change #(-> % .-target .-value selected-fn)})
+                                                      :on-change #(-> % (target-value) selected-fn)})
            (when (not default-value)
              [:option
               {:value "value"
@@ -412,7 +420,7 @@
                                                                                       :on-change (when-not (:disabled @state)
                                                                                                    #(do
                                                                                                       (.stopPropagation %)
-                                                                                                      (-> % .-target .-value input-value-changed-fn)))
+                                                                                                      (-> % (target-value) input-value-changed-fn)))
                                                                                       :on-key-down (when-not (:disabled @state)
                                                                                                      #(-> % .-key key-press-handler-fn))
                                                                                       :value (:input-text @state)
