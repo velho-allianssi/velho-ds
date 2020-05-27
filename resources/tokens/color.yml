@@ -16,8 +16,16 @@ aliases:
     value: "314, 100%"
   greeny:
     value: "164, 100%"
+  rusty:
+    value: "13, 57%"
   black:
     value: "0, 0%"
+  purple:
+    value: "300, 33%"
+  green:
+    value: "100, 47%"
+  yellow:
+    value: "46, 100%"
 props:
   color-primary:
     value: "hsla({!primary}, 40%, 1)"
@@ -82,6 +90,60 @@ props:
   color-white:
     value: "hsla({!black}, 100%, 1)"
     category: color-group-4
+  color-purple-1:
+    value: "hsla({!purple}, 54%, 1)"
+    category: color-group-5
+  color-purple-2:
+    value: "hsla({!purple}, 47%, 1)"
+    category: color-group-5
+  color-purple-3:
+    value: "hsla({!purple}, 40%, 1)"
+    category: color-group-5
+  color-purple-4:
+    value: "hsla({!purple}, 33%, 1)"
+    category: color-group-5
+  color-purple-5:
+    value: "hsla({!purple}, 26%, 1)"
+    category: color-group-5
+  color-green-1:
+    value: "hsla({!green}, 68%, 1)"
+    category: color-group-6
+  color-green-2:
+    value: "hsla({!green}, 61%, 1)"
+    category: color-group-6
+  color-green-3:
+    value: "hsla({!green}, 54%, 1)"
+    category: color-group-6
+  color-green-4:
+    value: "hsla({!green}, 47%, 1)"
+    category: color-group-6
+  color-green-5:
+    value: "hsla({!green}, 40%, 1)"
+    category: color-group-6
+  color-yellow-1:
+    value: "hsla({!yellow}, 57%, 1)"
+    category: color-group-7
+  color-yellow-2:
+    value: "hsla({!yellow}, 50%, 1)"
+    category: color-group-7
+  color-yellow-3:
+    value: "hsla({!yellow}, 43%, 1)"
+    category: color-group-7
+  color-yellow-4:
+    value: "hsla({!yellow}, 36%, 1)"
+    category: color-group-7
+  color-yellow-5:
+    value: "hsla({!yellow}, 29%, 1)"
+    category: color-group-7
+  color-rusty:
+    value: "hsla({!rusty}, 59%, 1)"
+    category: color-group-8
+  color-rusty-dark:
+    value: "hsla({!rusty}, 43%, 1)"
+    category: color-group-8
+  color-rusty-light:
+    value: "hsla({!rusty}, 66%, 1)"
+    category: color-group-8
   text-default:
     value: "hsla({!black}, 20%, 1)"
     category: color-group-text
