@@ -1,5 +1,5 @@
 {:paths ["src/clj" "src/cljc" "src/cljs"]
-	:deps {org.clojure/clojure {:mvn/version "1.10.0"}
+ :deps {org.clojure/clojure {:mvn/version "1.10.0"}
 
         ;; Filesystem support
         me.raynes/fs {:mvn/version "1.4.6"}
@@ -7,18 +7,18 @@
         ;; Yaml
         io.forward/yaml {:mvn/version "1.0.9"}
 
-        zprint {:mvn/version "0.4.15"}
+        zprint/zprint {:mvn/version "0.4.15"}
 
         ;; Front end
         org.clojure/clojurescript {:mvn/version "1.10.520"}
-        reagent {:mvn/version "0.7.0"
-                  :exclusions [cljsjs/react cljsjs/react-dom]}
+        reagent/reagent {:mvn/version "0.7.0"
+                         :exclusions [cljsjs/react cljsjs/react-dom]}
         cljsjs/react-with-addons {:mvn/version "15.6.1-0"}
         cljsjs/react-dom {:mvn/version "15.6.1-0"
-                           :exclusions [cljsjs/react]}
-        stylefy {:mvn/version "1.12.0"
-                  :exclusions [args4j]}
-        bidi {:mvn/version "2.1.5"}
+                          :exclusions [cljsjs/react]}
+        stylefy/stylefy {:mvn/version "1.12.0"
+                         :exclusions [args4j]}
+        bidi/bidi {:mvn/version "2.1.5"}
         venantius/accountant {:mvn/version "0.2.4"}
         reagent-utils {:mvn/version "0.3.2"}
         prismatic/dommy {:mvn/version "1.1.0"}}}
