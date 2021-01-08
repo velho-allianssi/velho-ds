@@ -2,6 +2,7 @@
   (:require [accountant.core :as accountant]
             [bidi.bidi :as bidi]
             [reagent.core :as r]
+            [reagent.dom :as r-dom]
             [reagent.session :as session]
             [velho-ds.pages.main :as main]
             [velho-ds.atoms.font :as font]
@@ -64,7 +65,7 @@
 
 (defn mount-root []
   (font/font-styles)
-  (r/render [page [navigation (last routes)]] (.getElementById js/document "app")))
+  (r-dom/render [page [navigation (last routes)]] (.getElementById js/document "app")))
 
 (defn init! []
   (design-system/init-ds! (.getElementById js/document "velho-ds"))

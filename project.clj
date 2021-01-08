@@ -1,4 +1,4 @@
-(defproject velho-ds "0.0.0.87"
+(defproject velho-ds "0.0.0.88"
   :description "Velho Allianssi Design System"
   :url "https://github.com/velho-allianssi/velho-ds"
   :license {:name "Eclipse Public License"
@@ -10,24 +10,24 @@
                  [me.raynes/fs "1.4.6"]
 
                  ;; Yaml
-                 [io.forward/yaml "1.0.9"]
+                 [io.forward/yaml "1.0.10"]
 
                  [zprint "0.5.3"]
 
                  ;; Front end
                  [org.clojure/clojurescript "1.10.63"]
-                 [reagent "0.8.1"]
-                 [stylefy "1.14.0" :exclusions [args4j]]
+                 [reagent "1.0.0"]
+                 [stylefy "2.2.1" :exclusions [args4j]]
                  [bidi "2.1.6"]
                  [venantius/accountant "0.2.5"]
                  [reagent-utils "0.3.3"]
                  [prismatic/dommy "1.1.0"]]
 
-  :managed-dependencies [[org.clojure/core.rrb-vector "0.0.13"]
-                         [org.flatland/ordered "1.5.7"]]
+  :managed-dependencies [[org.clojure/core.rrb-vector "0.1.2"]
+                         [org.flatland/ordered "1.5.9"]]
 
   :plugins [[lein-cljsbuild "1.1.7" :exclusions [[org.clojure/clojure]]]
-            [lein-figwheel "0.5.19" :exclusion [org.clojure/tools.nrepl args4j]]]
+            [lein-figwheel "0.5.20" :exclusion [org.clojure/tools.nrepl args4j]]]
 
   :source-paths ["src/clj" "src/cljc" "src/cljs"]
 
@@ -67,9 +67,10 @@
                     ["cljsbuild" "once" "release"]]}
 
   :profiles {:dev {:source-paths ["env/dev/clj"]
-                   :dependencies [[binaryage/devtools "0.9.11"]
-                                  [figwheel-sidecar "0.5.19" :exclusions [org.clojure/tools.nrepl org.clojure/core.async args4j]]
-                                  [cider/piggieback "0.4.2"]]
+                   :dependencies [[binaryage/devtools "1.0.2"]
+                                  [figwheel-sidecar "0.5.20" :exclusions [org.clojure/tools.nrepl org.clojure/core.async args4j]]
+                                  [cider/piggieback "0.5.2"]]
+                   :plugins [[lein-ancient "0.6.15"]]
                    :repl-options {:init-ns user
                                   :init (user/start)
                                   :nrepl-middleware [cider.piggieback/wrap-cljs-repl]}}
