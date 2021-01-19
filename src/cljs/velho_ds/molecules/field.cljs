@@ -88,22 +88,24 @@
       (set! (-> (.-offsetTop (.item (.querySelectorAll (.item (.querySelectorAll @ds/root-element content) 0) child) 0))
                 (- val)))))
 
-(defn- selected-list-items [{:keys [on-click-fn content]}]
+(defn- selected-list-items [{:keys [on-click-fn content disabled]}]
   [:li (stylefy/use-style {:background-color color/color-neutral-5
                            :color color/color-neutral-2
                            :cursor "pointer"
                            :display "inline-block"
                            :margin "0px 4px 4px 0px"
                            :padding "0.25rem 0.5rem"}
-                          {:on-mouse-down #(on-click-fn content)
+                          {:on-mouse-down #(when-not disabled
+                                             (on-click-fn content))
                            :key content
                            :class "dropdown-item"})
    [:span (stylefy/use-style {:margin-right "0.5rem"}) (:label content)]
-   [icons/clickable {:name "cancel"
-                     :styles {:top "3px"
-                              :position "relative"
-                              :font-size "1rem"
-                              :color "inherit"}}]])
+   (when-not disabled
+     [icons/clickable {:name "cancel"
+                       :styles {:top "3px"
+                                :position "relative"
+                                :font-size "1rem"
+                                :color "inherit"}}])])
 
 (defn- label-styles [error-messages state placeholder label]
   (if (first error-messages) (stylefy/use-style (merge style/input-field-label-error
@@ -146,6 +148,7 @@
                                    on-change-fn
                                    on-blur-fn
                                    on-focus-fn
+                                   on-key-up-fn
                                    transform-fn
                                    disabled
                                    styles]}
@@ -180,6 +183,7 @@
                                        {:on-change #(-> % (target-value) change)
                                         :on-blur blur
                                         :on-focus focus
+                                        :on-key-up on-key-up-fn
                                         :value @content
                                         :placeholder placeholder
                                         :disabled disabled})]]
@@ -195,6 +199,36 @@
 
 (defn multiline-field [properties]
   (create-input-field properties :textarea))
+
+(defn multi-input [{:keys [on-blur on-focus items disabled on-change placeholder transform-fn error-messages]}]
+  (let [input-value (r/atom "")
+        remove-item (fn [values value-to-remove]
+                      (on-change (vec (remove (fn [v] (= value-to-remove v)) values))))
+        add-item (fn [values]
+                   (when (not (empty? @input-value))
+                     (on-change (vec (distinct (conj values @input-value))))
+                     (reset! input-value "")))
+        ENTER-KEY 13]
+    (fn [{:keys [items disabled placeholder error-messages]}]
+      [:div
+       [:div
+        (into [:ul (stylefy/use-style style/dropdown-multiple-selected-items)]
+              (for [item @items]
+                [selected-list-items {:on-click-fn #(remove-item @items (:label %))
+                                      :content {:label item}
+                                      :disabled disabled}]))]
+       [input-field {:content input-value
+                     :disabled disabled
+                     :icon "add"
+                     :icon-click-fn #(add-item @items)
+                     :on-blur on-blur
+                     :on-focus on-focus
+                     :on-change #(reset! input-value %)
+                     :on-key-up #(when (= ENTER-KEY (-> % .-keyCode))
+                                   (add-item @items))
+                     :placeholder placeholder
+                     :transform-fn transform-fn
+                     :error-messages error-messages}]])))
 
 (defn dropdown-menu-list [{:keys [items preselected-item hovered-item on-click-fn hover-fn dropdown-id]}]
   (let [style-list-item (fn [item]
