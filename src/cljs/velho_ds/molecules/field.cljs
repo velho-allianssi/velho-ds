@@ -221,11 +221,11 @@
                      :disabled disabled
                      :icon "add"
                      :icon-click-fn #(add-item @items)
-                     :on-blur on-blur
-                     :on-focus on-focus
-                     :on-change #(reset! input-value %)
-                     :on-key-up #(when (= ENTER-KEY (-> % .-keyCode))
-                                   (add-item @items))
+                     :on-blur-fn on-blur
+                     :on-focus-fn on-focus
+                     :on-change-fn #(reset! input-value %)
+                     :on-key-up-fn #(when (= ENTER-KEY (-> % .-keyCode))
+                                      (add-item @items))
                      :placeholder placeholder
                      :transform-fn transform-fn
                      :error-messages error-messages}]])))
