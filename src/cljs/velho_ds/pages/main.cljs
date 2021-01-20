@@ -862,7 +862,7 @@
        [:h3.rds-header3 "Multi-input"]
        (let [items (r/atom ["foo" "bar"])]
          [(fn []
-            ($-> [fields/multi-input {:items items
+            ($-> [fields/multi-input {:items @items
                                       :placeholder "Type something"
                                       :on-change #(do
                                                     (prn %)

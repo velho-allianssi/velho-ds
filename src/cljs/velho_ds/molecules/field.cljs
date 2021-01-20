@@ -139,19 +139,7 @@
    [:span (stylefy/use-style style/iconvalue-value) content]])
 
 ;; INPUTS
-(defn- create-input-field [{:keys [label
-                                   content
-                                   placeholder
-                                   icon
-                                   icon-click-fn
-                                   clearable?
-                                   on-change-fn
-                                   on-blur-fn
-                                   on-focus-fn
-                                   on-key-up-fn
-                                   transform-fn
-                                   disabled
-                                   styles]}
+(defn- create-input-field [{:keys [clearable? content disabled error-messages icon icon-click-fn label on-blur-fn on-change-fn on-focus-fn on-key-up-fn placeholder styles transform-fn]}
                            input-type]
   (let [state (r/atom {:is-focused false
                        :has-value (not (nil? @content))})
@@ -169,7 +157,7 @@
                                   (+ padding (when icon 2))
                                   (+ padding (when clearable? 2))
                                   (when (> padding 0) {:padding-right (str padding "rem")}))]
-    (fn [{:keys [icon error-messages content clearable?]}]
+    (fn [{:keys [clearable? content disabled error-messages icon icon-click-fn label on-blur-fn on-change-fn on-focus-fn on-key-up-fn placeholder styles transform-fn]}]
       [:div.vds-input-field (stylefy/use-style (merge {:position "relative"} styles))
        [:label (stylefy/use-style style/element)
         (when label [:span (label-styles error-messages @state placeholder label) label])
@@ -213,19 +201,19 @@
       [:div
        [:div
         (into [:ul (stylefy/use-style style/dropdown-multiple-selected-items)]
-              (for [item @items]
-                [selected-list-items {:on-click-fn #(remove-item @items (:label %))
+              (for [item items]
+                [selected-list-items {:on-click-fn #(remove-item items (:label %))
                                       :content {:label item}
                                       :disabled disabled}]))]
        [input-field {:content input-value
                      :disabled disabled
                      :icon "add"
-                     :icon-click-fn #(add-item @items)
+                     :icon-click-fn #(add-item items)
                      :on-blur-fn on-blur
                      :on-focus-fn on-focus
                      :on-change-fn #(reset! input-value %)
                      :on-key-up-fn #(when (= ENTER-KEY (-> % .-keyCode))
-                                      (add-item @items))
+                                      (add-item items))
                      :placeholder placeholder
                      :transform-fn transform-fn
                      :error-messages error-messages}]])))
