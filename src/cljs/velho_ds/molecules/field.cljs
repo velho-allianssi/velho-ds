@@ -219,9 +219,10 @@
                      :error-messages error-messages}]])))
 
 (defn dropdown-menu-list [{:keys [items preselected-item hovered-item on-click-fn hover-fn dropdown-id]}]
-  (let [style-list-item (fn [item]
-                          (when (= (:type item) :placeholder)
-                            {:color color/color-neutral-4}))]
+  (let [style-list-item (fn [{:keys [type style]}]
+                          (if (= type :placeholder)
+                            (merge style {:color color/color-neutral-4})
+                            style))]
     (into [:div (stylefy/use-style style/dropdown-menu-list {:class (str "dropdown-menu-list-" dropdown-id)})]
           (for [section items]
             (into [:ul (stylefy/use-style style/dropdown-list)
